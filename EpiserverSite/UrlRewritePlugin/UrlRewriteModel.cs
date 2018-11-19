@@ -1,5 +1,6 @@
 ﻿using EPiServer.Data;
 using EPiServer.Data.Dynamic;
+using System;
 
 namespace EpiserverSite.UrlRewritePlugin
 {
@@ -10,5 +11,7 @@ namespace EpiserverSite.UrlRewritePlugin
         public string OldUrl { get; set; }
 
         public string NewUrl { get; set; }
+
+        public Guid ContentGuid { get; set; }
     }
 }

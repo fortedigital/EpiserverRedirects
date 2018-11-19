@@ -7,3 +7,7 @@
 .epiStringList .epiStringListError .dijitTextArea {
     border: solid 1px #d46464;
 }
+
+.result-container {
+    height: 20px;
+}

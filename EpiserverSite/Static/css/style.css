@@ -10,6 +10,9 @@
 
 /*General*/
 
+.kot {
+    display:none;
+}
 
 h1 {
 	font-family:verdana;

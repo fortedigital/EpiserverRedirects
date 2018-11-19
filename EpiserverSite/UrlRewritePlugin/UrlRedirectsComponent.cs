@@ -7,8 +7,7 @@ namespace EpiserverSite.UrlRewritePlugin
          Title = "Url redirects",
          Categories = "cms",
          WidgetType = "alloy/UrlRedirectsComponent",
-         Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
-         PlugInAreas = PlugInArea.AssetsDefaultGroup
+         PlugInAreas = PlugInArea.Assets
      )]
      public class UrlRedirectsComponent
      {
