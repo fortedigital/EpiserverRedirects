@@ -41,12 +41,9 @@
             },
 
             _setupGrid: function () {
-
                 this.grid = new this._gridClass({
                     columns: {
-                        oldUrl: "Old Url",
-                        newUrl: "New Url",
-                        contextMenu: ""
+                        oldUrl: "Old Url"
                     },
                     selectionMode: 'single',
                     cellNavigation: false

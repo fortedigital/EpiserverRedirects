@@ -30,25 +30,25 @@ define([
         return declare([_WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, _ContentContextMixin], {
             templateString: template,
             searchText: "",
-            currentContentGuid: null,
+            currentContextId: 0,
 
             itemChanged: function (id, item) {
                 this.inherited(arguments);
 
-                this.currentContentGuid = item.contentGuid;
-                this._getResults(item.contentGuid);
+                this._setCurrentContextId(id);
+                this._getResults();
             },
 
             postCreate: function () {
-                on(this.search, "change", this._onSearchChange.bind(this));
+                this.search.onSearchBoxChange = this._onSearchChange.bind(this);
 
                 var registry = dependency.resolve("epi.storeregistry");
                 this.store = this.store || registry.get("alloy.urlRewriteStore");
             },
 
-            _getResults: function (id) {
+            _getResults: function () {
                 this.store.query({
-                    id: id,
+                    contextId: this.currentContextId,
                     filter: this.searchText
                 }).then(result => {
                     this.urlRedirectsGrid.setData(result);
@@ -57,7 +57,11 @@ define([
 
             _onSearchChange: function (newSearchText) {
                 this.searchText = newSearchText;
-                this._getResults(this.currentContentGuid);
+                this._getResults();
+            },
+
+            _setCurrentContextId(newCurrentContextId) {
+                this.currentContextId = newCurrentContextId.includes("_") ? newCurrentContextId.split("_")[0] : newCurrentContextId;
             }
         });
     });

@@ -1,3 +1,7 @@
 ﻿.field-contextMenu {
     width: 20px;
 }
+
+.grid-container {
+    height: 50%;
+}

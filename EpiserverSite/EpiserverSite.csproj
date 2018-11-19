@@ -303,7 +303,6 @@
     <Compile Include="Business\UIDescriptors\ContainerPageUIDescriptor.cs" />
     <Compile Include="Controllers\ContactBlockController.cs" />
     <Compile Include="Controllers\DefaultPageController.cs" />
-    <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\ImageFileController.cs" />
     <Compile Include="Controllers\PageControllerBase.cs" />
     <Compile Include="Controllers\PageListBlockController.cs" />
@@ -322,6 +321,7 @@
     <Compile Include="Helpers\HtmlHelpers.cs" />
     <Compile Include="Helpers\UrlHelpers.cs" />
     <Compile Include="UrlRewritePlugin\UrlRedirectsComponent.cs" />
+    <Compile Include="UrlRewritePlugin\UrlRewriteMiddleware.cs" />
     <Compile Include="UrlRewritePlugin\UrlRewriteStore.cs" />
     <Compile Include="UrlRewritePlugin\UrlRewriteModule.cs" />
     <Compile Include="UrlRewritePlugin\RedirectHelper.cs" />

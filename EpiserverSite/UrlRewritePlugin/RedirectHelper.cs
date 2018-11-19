@@ -1,5 +1,8 @@
-﻿using EPiServer.Core;
+﻿using EPiServer;
+using EPiServer.Core;
 using EPiServer.Data.Dynamic;
+using EPiServer.ServiceLocation;
+using EPiServer.Web.Routing;
 using Geta.EPi.Extensions;
 using System;
 using System.Linq;
@@ -10,28 +13,37 @@ namespace EpiserverSite.UrlRewritePlugin
     {
         public static void AddRedirects(PageData pageData, string oldUrl, string newUrl)
         {
-            AddRedirectsToDDS(oldUrl, newUrl, pageData.ContentGuid);
+            AddRedirectsToDDS(oldUrl, newUrl, pageData.ContentLink.ID);
             HandleChildren(pageData, oldUrl, newUrl);
         }
 
         public static UrlRewriteModel GetRedirectModel(string oldUrl)
         {
             var store = DynamicDataStoreFactory.Instance.CreateStore(typeof(UrlRewriteModel));
+
             return store.Items<UrlRewriteModel>().FirstOrDefault(x => x.OldUrl == oldUrl);
         }
 
-        private static void AddRedirectsToDDS(string oldUrl, string newUrl, Guid contentGuid)
+        public static string GetRedirectUrl(int contextId)
+        {
+            var contentReference = new ContentReference(contextId);
+            var urlResolver = ServiceLocator.Current.GetInstance<UrlResolver>();
+            var virtualPathData = urlResolver.GetVirtualPath(contentReference);
+
+            return virtualPathData?.VirtualPath.NormalizePath();
+        }
+
+        private static void AddRedirectsToDDS(string oldUrl, string newUrl, int contextId)
         {
             var urlRewriteModel = new UrlRewriteModel
             {
                 OldUrl = oldUrl.NormalizePath(),
-                NewUrl = newUrl.NormalizePath(),
-                ContentGuid = contentGuid
+                ContextId = contextId
             };
             var store = DynamicDataStoreFactory.Instance.CreateStore(typeof(UrlRewriteModel));
 
             var redirectAlredyExist = store.Items<UrlRewriteModel>()
-                .FirstOrDefault(x => x.OldUrl == urlRewriteModel.OldUrl && x.NewUrl == urlRewriteModel.NewUrl);
+                .FirstOrDefault(x => x.OldUrl == urlRewriteModel.OldUrl);
 
             if (redirectAlredyExist != null)
             {
@@ -61,7 +73,7 @@ namespace EpiserverSite.UrlRewritePlugin
                 var oldChildUrl = Combine(oldUrl, pageData.URLSegment);
                 var newChildUrl = Combine(newUrl, pageData.URLSegment);
 
-                AddRedirectsToDDS(oldChildUrl, newChildUrl, pageData.ContentGuid);
+                AddRedirectsToDDS(oldChildUrl, newChildUrl, pageData.ContentLink.ID);
                 HandleChildren(pageData, oldChildUrl, newChildUrl);
             }
         }
