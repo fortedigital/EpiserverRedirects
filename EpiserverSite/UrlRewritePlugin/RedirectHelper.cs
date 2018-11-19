@@ -11,10 +11,10 @@ namespace EpiserverSite.UrlRewritePlugin
 {
     public static class RedirectHelper
     {
-        public static void AddRedirects(PageData pageData, string oldUrl, string newUrl)
+        public static void AddRedirects(PageData pageData, string oldUrl)
         {
-            AddRedirectsToDDS(oldUrl, newUrl, pageData.ContentLink.ID);
-            HandleChildren(pageData, oldUrl, newUrl);
+            AddRedirectsToDDS(oldUrl, pageData.ContentLink.ID);
+            HandleChildren(pageData, oldUrl);
         }
 
         public static UrlRewriteModel GetRedirectModel(string oldUrl)
@@ -24,22 +24,29 @@ namespace EpiserverSite.UrlRewritePlugin
             return store.Items<UrlRewriteModel>().FirstOrDefault(x => x.OldUrl == oldUrl);
         }
 
-        public static string GetRedirectUrl(int contextId)
+        public static string GetRedirectUrl(int contentId)
         {
-            var contentReference = new ContentReference(contextId);
+            var contentReference = new ContentReference(contentId);
             var urlResolver = ServiceLocator.Current.GetInstance<UrlResolver>();
             var virtualPathData = urlResolver.GetVirtualPath(contentReference);
 
             return virtualPathData?.VirtualPath.NormalizePath();
         }
 
-        private static void AddRedirectsToDDS(string oldUrl, string newUrl, int contextId)
+        private static void AddRedirectsToDDS(string oldUrl, int contentId)
         {
             var urlRewriteModel = new UrlRewriteModel
             {
                 OldUrl = oldUrl.NormalizePath(),
-                ContextId = contextId
+                ContentId = contentId,
+                Type = "System"
             };
+
+            AddRedirectsToDDS(urlRewriteModel);
+        }
+
+        private static void AddRedirectsToDDS(UrlRewriteModel urlRewriteModel)
+        {
             var store = DynamicDataStoreFactory.Instance.CreateStore(typeof(UrlRewriteModel));
 
             var redirectAlredyExist = store.Items<UrlRewriteModel>()
@@ -50,31 +57,18 @@ namespace EpiserverSite.UrlRewritePlugin
                 return;
             }
 
-            //var urlsToUpdate = store.Items<UrlRewriteModel>().Where(x => x.NewUrl == urlRewriteModel.OldUrl).ToList();
-
-            //if (urlsToUpdate.Any())
-            //{
-            //    foreach (var urlToUpdate in urlsToUpdate)
-            //    {
-            //        urlToUpdate.NewUrl = urlRewriteModel.NewUrl;
-            //        store.Save(urlToUpdate);
-            //    }
-            //}
-
             store.Save(urlRewriteModel);
         }
 
-        private static void HandleChildren(PageData data, string oldUrl, string newUrl)
+        private static void HandleChildren(PageData data, string oldUrl)
         {
             var pageDataCollection = data.GetChildren();
 
             foreach (var pageData in pageDataCollection)
             {
                 var oldChildUrl = Combine(oldUrl, pageData.URLSegment);
-                var newChildUrl = Combine(newUrl, pageData.URLSegment);
-
-                AddRedirectsToDDS(oldChildUrl, newChildUrl, pageData.ContentLink.ID);
-                HandleChildren(pageData, oldChildUrl, newChildUrl);
+                AddRedirectsToDDS(oldChildUrl, pageData.ContentLink.ID);
+                HandleChildren(pageData, oldChildUrl);
             }
         }
 

@@ -10,6 +10,10 @@ namespace EpiserverSite.UrlRewritePlugin
         
         public string OldUrl { get; set; }
 
-        public int ContextId { get; set; }
+        public string NewUrl { get; set; }
+
+        public int ContentId { get; set; }
+
+        public string Type { get; set; }
     }
 }

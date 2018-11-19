@@ -9,26 +9,20 @@ namespace EpiserverSite.UrlRewritePlugin
 
         public async override Task Invoke(IOwinContext context)
         {
-            var url = context.Request.Path.ToString().NormalizePath();
-            var urlRewriteModel = RedirectHelper.GetRedirectModel(url);
+            await Next.Invoke(context);
 
-            if (urlRewriteModel != null)
+            if (context.Response.StatusCode == 404)
             {
-                var redirectUrl = RedirectHelper.GetRedirectUrl(urlRewriteModel.ContextId);
+                var url = context.Request.Path.ToString().NormalizePath();
+                var urlRewriteModel = RedirectHelper.GetRedirectModel(url);
 
-                if (string.IsNullOrEmpty(redirectUrl))
+                if (urlRewriteModel != null)
                 {
-                    context.Response.StatusCode = 404;
-                } 
-                else
-                {
+                    var redirectUrl = RedirectHelper.GetRedirectUrl(urlRewriteModel.ContentId);
                     context.Response.Redirect(redirectUrl);
                 }
             }
-            else
-            {
-                await Next.Invoke(context);
-            }
+
         }
     }
 }

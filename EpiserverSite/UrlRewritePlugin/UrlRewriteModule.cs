@@ -25,7 +25,6 @@ namespace EpiserverSite.UrlRewritePlugin
         private static void EventsPublishedContent(object sender, ContentEventArgs e)
         {
             var urlHelper = ServiceLocator.Current.GetInstance<UrlHelper>();
-            var newUrl = urlHelper.ContentUrl(e.ContentLink);
             var cvr = ServiceLocator.Current.GetInstance<IContentVersionRepository>();
             var lastVersion = cvr
                 .List(e.ContentLink)
@@ -35,12 +34,11 @@ namespace EpiserverSite.UrlRewritePlugin
 
             if (lastVersion == null) return;
             var oldUrl = urlHelper.ContentUrl(lastVersion.ContentLink);
-            if (newUrl.Equals(oldUrl)) return;
 
             var contentRepository = ServiceLocator.Current.GetInstance<IContentRepository>();
             var pageData = contentRepository.Get<IContentData>(lastVersion.ContentLink) as PageData;
             
-            RedirectHelper.AddRedirects(pageData, oldUrl, newUrl);
+            RedirectHelper.AddRedirects(pageData, oldUrl);
         }
 
         public void Uninitialize(InitializationEngine context)
@@ -53,8 +51,6 @@ namespace EpiserverSite.UrlRewritePlugin
         private static void EventsMovedContent(object sender, ContentEventArgs e)
         {
             if (!(e.Content is IChangeTrackable)) return;
-            var urlHelper = ServiceLocator.Current.GetInstance<UrlHelper>();
-            var newUrl = urlHelper.ContentUrl(e.ContentLink);
 
             var originalParent = (e as MoveContentEventArgs)?.OriginalParent;
             var contentRepository = ServiceLocator.Current.GetInstance<IContentRepository>();
@@ -71,7 +67,7 @@ namespace EpiserverSite.UrlRewritePlugin
                     ContentLanguage.PreferredCulture.Name, virtualPathArguments)
                 + pageData.URLSegment;
 
-            RedirectHelper.AddRedirects(pageData, oldUrl, newUrl);
+            RedirectHelper.AddRedirects(pageData, oldUrl);
         }
     }
 }

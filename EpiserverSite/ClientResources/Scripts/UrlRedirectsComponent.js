@@ -30,12 +30,12 @@ define([
         return declare([_WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, _ContentContextMixin], {
             templateString: template,
             searchText: "",
-            currentContextId: 0,
+            currentContentId: 0,
 
             itemChanged: function (id, item) {
                 this.inherited(arguments);
 
-                this._setCurrentContextId(id);
+                this._setCurrentContentId(id);
                 this._getResults();
             },
 
@@ -48,7 +48,7 @@ define([
 
             _getResults: function () {
                 this.store.query({
-                    contextId: this.currentContextId,
+                    contentId: this.currentContentId,
                     filter: this.searchText
                 }).then(result => {
                     this.urlRedirectsGrid.setData(result);
@@ -60,8 +60,8 @@ define([
                 this._getResults();
             },
 
-            _setCurrentContextId(newCurrentContextId) {
-                this.currentContextId = newCurrentContextId.includes("_") ? newCurrentContextId.split("_")[0] : newCurrentContextId;
+            _setCurrentContentId(newCurrentContentId) {
+                this.currentContentId = newCurrentContentId.includes("_") ? newCurrentContentId.split("_")[0] : newCurrentContentId;
             }
         });
     });

@@ -17,14 +17,14 @@ namespace EpiserverSite.UrlRewritePlugin
         }
 
         [HttpGet]
-        public ActionResult Get(int contextId, string filter)
+        public ActionResult Get(int contentId, string filter)
         {
             var store = dynamicDataStoreFactory.CreateStore(typeof(UrlRewriteModel));
 
             var urlRewriteStore = store.Items<UrlRewriteModel>();
             var result = urlRewriteStore
                 .Where(item => item.OldUrl.Contains(filter))
-                .Where(item => item.ContextId == contextId);
+                .Where(item => item.ContentId == contentId);
 
             return Rest(result.ToList());
         }
