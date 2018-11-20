@@ -1,4 +1,4 @@
-﻿define("alloy/UrlRedirectsGrid", [
+﻿define("urlRewritePlugin-urlRedirectsComponent/UrlRedirectsGrid", [
     "dojo/_base/declare",
     "dojo/when",
 

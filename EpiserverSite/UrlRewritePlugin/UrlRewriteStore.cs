@@ -28,6 +28,5 @@ namespace EpiserverSite.UrlRewritePlugin
 
             return Rest(result.ToList());
         }
-
     }
 }

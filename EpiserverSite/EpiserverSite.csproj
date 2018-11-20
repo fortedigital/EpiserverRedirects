@@ -320,6 +320,8 @@
     <Compile Include="Helpers\CategorizableExtensions.cs" />
     <Compile Include="Helpers\HtmlHelpers.cs" />
     <Compile Include="Helpers\UrlHelpers.cs" />
+    <Compile Include="UrlRewritePlugin\Menu\UrlRedirectsController.cs" />
+    <Compile Include="UrlRewritePlugin\Menu\UrlRedirectsMenuProvider.cs" />
     <Compile Include="UrlRewritePlugin\UrlRedirectsComponent.cs" />
     <Compile Include="UrlRewritePlugin\UrlRewriteMiddleware.cs" />
     <Compile Include="UrlRewritePlugin\UrlRewriteStore.cs" />
@@ -376,11 +378,14 @@
     </Content>
     <Content Include="ClientResources\Images\icons\layoutIcons24x24.png" />
     <Content Include="ClientResources\Scripts\Editors\StringList.js" />
-    <Content Include="ClientResources\Scripts\UrlRedirectsComponent.css" />
-    <Content Include="ClientResources\Scripts\UrlRedirectsComponent.html" />
-    <Content Include="ClientResources\Scripts\UrlRedirectsComponent.js" />
-    <Content Include="ClientResources\Scripts\UrlRedirectsGrid.js" />
-    <Content Include="ClientResources\Scripts\UrlRedirectsModuleInitializer.js" />
+    <Content Include="ClientResources\UrlRewritePlugin\UrlRedirectsComponent\UrlRedirectsComponent.css" />
+    <Content Include="ClientResources\UrlRewritePlugin\UrlRedirectsComponent\UrlRedirectsComponent.html" />
+    <Content Include="ClientResources\UrlRewritePlugin\UrlRedirectsComponent\UrlRedirectsComponent.js" />
+    <Content Include="ClientResources\UrlRewritePlugin\UrlRedirectsComponent\UrlRedirectsGrid.js" />
+    <Content Include="ClientResources\UrlRewritePlugin\UrlRedirectsMenu\UrlRedirectsMenu.html" />
+    <Content Include="ClientResources\UrlRewritePlugin\UrlRedirectsMenu\UrlRedirectsMenu.js" />
+    <Content Include="ClientResources\UrlRewritePlugin\UrlRedirectsMenu\UrlRedirectsMenuViewModel.js" />
+    <Content Include="ClientResources\UrlRewritePlugin\UrlRedirectsModuleInitializer.js" />
     <Content Include="ClientResources\Styles\LayoutIcons.css" />
     <Content Include="ClientResources\Styles\Styles.css" />
     <Content Include="favicon.ico" />
@@ -489,6 +494,8 @@
     <Content Include="Views\ContactBlock\Index.cshtml" />
     <Content Include="Views\ArticlePage\Index.cshtml" />
     <Content Include="Views\TestPage\Index.cshtml" />
+    <Content Include="UrlRewritePlugin\Menu\UrlRedirectsLayout.cshtml" />
+    <Content Include="UrlRewritePlugin\Menu\UrlRedirects.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -496,6 +503,7 @@
       <DependentUpon>Web.config</DependentUpon>
     </None>
   </ItemGroup>
+  <ItemGroup />
   <ProjectExtensions>
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">

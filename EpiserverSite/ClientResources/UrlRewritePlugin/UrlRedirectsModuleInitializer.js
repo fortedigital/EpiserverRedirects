@@ -15,7 +15,7 @@
     dependency,
     routes
 ) {
-   return declare("alloy.UrlRedirectsModuleInitializer", [_Module], {
+    return declare("urlRewritePlugin.UrlRedirectsModuleInitializer", [_Module], {
 
         initialize: function () {
 
@@ -23,7 +23,7 @@
 
             var registry = this.resolveDependency("epi.storeregistry");
             //Register the store
-            registry.create("alloy.urlRewriteStore", this._getRestPath("urlRewriteStore"));
+            registry.create("urlRewritePlugin.urlRewriteStore", this._getRestPath("urlRewriteStore"));
         },
         _getRestPath: function (name) {
             return routes.getRestPath({ moduleArea: "app", storeName: name });
