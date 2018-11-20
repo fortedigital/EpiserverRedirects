@@ -1,13 +1,12 @@
 ﻿using EPiServer.Shell;
 using EPiServer.Shell.ViewComposition;
 
-namespace EpiserverSite.UrlRewritePlugin
- {
+namespace EpiserverSite.UrlRewritePlugin.Component
+{
      [Component(
          Title = "Url redirects",
          Categories = "cms",
-         WidgetType = "urlRewritePlugin-urlRedirectsComponent/UrlRedirectsComponent",
-         PlugInAreas = PlugInArea.Assets
+         WidgetType = "urlRewritePlugin-urlRedirectsComponent/UrlRedirectsComponent"
      )]
      public class UrlRedirectsComponent
      {

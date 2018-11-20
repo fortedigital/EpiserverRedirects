@@ -4,7 +4,7 @@ using System;
 using System.Linq;
 using System.Web.Mvc;
 
-namespace EpiserverSite.UrlRewritePlugin
+namespace EpiserverSite.UrlRewritePlugin.Component
 {
     [RestStore("urlRewriteStore")]
     public class UrlRewriteStore : RestControllerBase
