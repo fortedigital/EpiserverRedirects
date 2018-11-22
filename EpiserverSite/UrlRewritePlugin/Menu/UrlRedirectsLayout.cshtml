@@ -10,6 +10,7 @@
 @{
     var dojo = new DojoConfig { Async = true, ParseOnLoad = true };
 }
+
 <!DOCTYPE html>
 
 <html>
@@ -22,7 +23,8 @@
     @Html.Raw(ClientResources.RenderResources("ShellWidgets"))
 
     <!-- LightTheme -->
-    @Html.Raw(ClientResources.RenderResources("ShellCoreLightTheme"))
+    @*@Html.Raw(ClientResources.RenderResources("ShellCoreLightTheme"))*@
+    @Html.Raw(ClientResources.RenderResources("Sleek"))
     @Html.Raw(ClientResources.RenderResources("ShellWidgetsLightTheme"))
     <!-- Navigation -->
     @Html.Raw(ClientResources.RenderResources("Navigation"))
@@ -32,6 +34,10 @@
     @Html.Raw(ClientResources.RenderResources("DijitWidgets", new[] { ClientResourceType.Style }))
 
     @Html.CssLink("/App_Themes/Default/Styles/system.css")
+
+    <link href="@Url.Content(EPiServer.Shell.Paths.ToShellClientResource("ClientResources/epi/themes/sleek/document.css"))" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content(EPiServer.Shell.Paths.ToShellClientResource("ClientResources/epi/themes/sleek/sleek1.css"))" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content(EPiServer.Shell.Paths.ToShellClientResource("ClientResources/epi/themes/sleek/sleek2.css"))" rel="stylesheet" type="text/css" />
 
 </head>
 <body>

@@ -15,7 +15,7 @@ namespace EpiserverSite.UrlRewritePlugin.Menu
         {
             var menuItems = new List<UrlMenuItem>();
             menuItems.Add(new UrlMenuItem("Url Redirects",
-                MenuPaths.Global + "/cms" + "/cmsMenuItem",
+                MenuPaths.Global + "/cms/cmsMenuItem",
                 "/UrlRedirects")
             );
 

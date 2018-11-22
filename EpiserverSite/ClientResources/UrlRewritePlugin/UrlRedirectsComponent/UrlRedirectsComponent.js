@@ -7,7 +7,7 @@ define([
     "dijit/_WidgetBase",
     "dijit/_TemplatedMixin",
     "dijit/_WidgetsInTemplateMixin",
-    "urlRewritePlugin-urlRedirectsComponent/UrlRedirectsGrid",
+    "urlRewritePlugin-urlRedirectsComponent/UrlRedirectsComponentGrid",
 
     "epi-cms/_ContentContextMixin",
     "epi/dependency",
@@ -22,7 +22,7 @@ define([
         _WidgetBase,
         _TemplatedMixin,
         _WidgetsInTemplateMixin,
-        UrlRedirectsGrid,
+        UrlRedirectsComponentGrid,
 
         _ContentContextMixin,
         dependency
@@ -51,7 +51,7 @@ define([
                     contentId: this.currentContentId,
                     filter: this.searchText
                 }).then(result => {
-                    this.urlRedirectsGrid.setData(result);
+                    this.urlRedirectsComponentGrid.setData(result);
                 });
             },
 

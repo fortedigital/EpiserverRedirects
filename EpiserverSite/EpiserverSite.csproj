@@ -320,6 +320,7 @@
     <Compile Include="Helpers\CategorizableExtensions.cs" />
     <Compile Include="Helpers\HtmlHelpers.cs" />
     <Compile Include="Helpers\UrlHelpers.cs" />
+    <Compile Include="UrlRewritePlugin\Menu\UrlRedirectsStore.cs" />
     <Compile Include="UrlRewritePlugin\Menu\UrlRedirectsController.cs" />
     <Compile Include="UrlRewritePlugin\Menu\UrlRedirectsMenuProvider.cs" />
     <Compile Include="UrlRewritePlugin\Component\UrlRedirectsComponent.cs" />
@@ -381,9 +382,13 @@
     <Content Include="ClientResources\UrlRewritePlugin\UrlRedirectsComponent\UrlRedirectsComponent.css" />
     <Content Include="ClientResources\UrlRewritePlugin\UrlRedirectsComponent\UrlRedirectsComponent.html" />
     <Content Include="ClientResources\UrlRewritePlugin\UrlRedirectsComponent\UrlRedirectsComponent.js" />
-    <Content Include="ClientResources\UrlRewritePlugin\UrlRedirectsComponent\UrlRedirectsGrid.js" />
+    <Content Include="ClientResources\UrlRewritePlugin\UrlRedirectsComponent\UrlRedirectsComponentGrid.js" />
+    <Content Include="ClientResources\UrlRewritePlugin\UrlRedirectsMenu\UrlRedirectsMenuForm.js" />
+    <Content Include="ClientResources\UrlRewritePlugin\UrlRedirectsMenu\UrlRedirectsMenuForm.html" />
+    <Content Include="ClientResources\UrlRewritePlugin\UrlRedirectsMenu\UrlRedirectsMenu.css" />
     <Content Include="ClientResources\UrlRewritePlugin\UrlRedirectsMenu\UrlRedirectsMenu.html" />
     <Content Include="ClientResources\UrlRewritePlugin\UrlRedirectsMenu\UrlRedirectsMenu.js" />
+    <Content Include="ClientResources\UrlRewritePlugin\UrlRedirectsMenu\UrlRedirectsMenuGrid.js" />
     <Content Include="ClientResources\UrlRewritePlugin\UrlRedirectsMenu\UrlRedirectsMenuViewModel.js" />
     <Content Include="ClientResources\UrlRewritePlugin\UrlRedirectsModuleInitializer.js" />
     <Content Include="ClientResources\Styles\LayoutIcons.css" />

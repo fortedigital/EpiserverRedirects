@@ -39,7 +39,7 @@ namespace EpiserverSite.UrlRewritePlugin
             {
                 OldUrl = oldUrl.NormalizePath(),
                 ContentId = contentId,
-                Type = "System"
+                Type = "system"
             };
 
             AddRedirectsToDDS(urlRewriteModel);
