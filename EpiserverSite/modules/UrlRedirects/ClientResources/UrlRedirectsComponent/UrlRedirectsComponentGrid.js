@@ -1,4 +1,4 @@
-﻿define("urlRewritePlugin-urlRedirectsComponent/UrlRedirectsComponentGrid", [
+﻿define("urlRedirectsComponent/UrlRedirectsComponentGrid", [
     "dojo/_base/declare",
     "dojo/when",
 

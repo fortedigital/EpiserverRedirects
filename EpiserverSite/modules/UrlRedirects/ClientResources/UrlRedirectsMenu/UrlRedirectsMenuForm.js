@@ -1,4 +1,4 @@
-﻿define("urlRewritePlugin-urlRedirectsMenu/UrlRedirectsMenuForm", [
+﻿define("urlRedirectsMenu/UrlRedirectsMenuForm", [
     "dojo/_base/declare",
     "dojo/text!./UrlRedirectsMenuForm.html",
     "dojo/on",
@@ -24,6 +24,7 @@
 
         return declare([_WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin], {
             templateString: template,
+            id: "",
 
             postCreate: function () {
                 this.contentIdTextBox.set("disabled", true);
@@ -32,6 +33,7 @@
             },
 
             updateView: function (model, mode) {
+                this.id = model.id;
                 if (mode === "edit") {
                     this._updateEditMode(model);
                 }
@@ -46,6 +48,7 @@
 
                 this.oldUrlTextBox.set("disabled", !isCustomType);
                 this.newUrlTextBox.set("disabled", !isCustomType);
+                this.saveButton.set("disabled", !isCustomType);
 
                 this.oldUrlTextBox.set("value", model.oldUrl);
                 this.newUrlTextBox.set("value", model.newUrl);
@@ -64,6 +67,7 @@
 
                 this.oldUrlTextBox.set("disabled", false);
                 this.newUrlTextBox.set("disabled", false);
+                this.saveButton.set("disabled", false);
             },
 
             _getModel: function () {
@@ -71,7 +75,8 @@
                     oldUrl: this.oldUrlTextBox.get("value"),
                     newUrl: this.newUrlTextBox.get("value"),
                     contentId: this.contentIdTextBox.get("value"),
-                    type: this.typeTextBox.get("value")
+                    type: this.typeTextBox.get("value"),
+                    id: this.id
                 };
 
                 return model;

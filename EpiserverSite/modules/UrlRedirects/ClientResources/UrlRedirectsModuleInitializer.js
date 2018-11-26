@@ -1,21 +1,17 @@
 ﻿define([
     // Dojo
-    "dojo",
     "dojo/_base/declare",
     //CMS
     "epi/_Module",
-    "epi/dependency",
     "epi/routes"
 ], function (
     // Dojo
-    dojo,
     declare,
     //CMS
     _Module,
-    dependency,
     routes
 ) {
-    return declare("urlRewritePlugin.UrlRedirectsModuleInitializer", [_Module], {
+    return declare("urlRedirect.UrlRedirectsModuleInitializer", [_Module], {
 
         initialize: function () {
 
@@ -23,10 +19,11 @@
 
             var registry = this.resolveDependency("epi.storeregistry");
             //Register the store
-            registry.create("urlRewritePlugin.urlRewriteStore", this._getRestPath("urlRewriteStore"));
+            registry.create("urlRedirectsComponent.urlRedirectsStore", this._getRestPath("UrlRedirectsComponentStore"));
+            registry.create("urlRedirectsMenu.urlRedirectsStore", this._getRestPath("UrlRedirectsMenuStore"));
         },
         _getRestPath: function (name) {
-            return routes.getRestPath({ moduleArea: "app", storeName: name });
+            return routes.getRestPath({ moduleArea: "UrlRedirects", storeName: name });
         }
    });
 });

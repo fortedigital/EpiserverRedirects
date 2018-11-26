@@ -7,7 +7,7 @@ define([
     "dijit/_WidgetBase",
     "dijit/_TemplatedMixin",
     "dijit/_WidgetsInTemplateMixin",
-    "urlRewritePlugin-urlRedirectsComponent/UrlRedirectsComponentGrid",
+    "urlRedirectsComponent/UrlRedirectsComponentGrid",
 
     "epi-cms/_ContentContextMixin",
     "epi/dependency",
@@ -43,7 +43,7 @@ define([
                 this.search.onSearchBoxChange = this._onSearchChange.bind(this);
 
                 var registry = dependency.resolve("epi.storeregistry");
-                this.store = this.store || registry.get("urlRewritePlugin.urlRewriteStore");
+                this.store = this.store || registry.get("urlRedirectsComponent.urlRedirectsStore");
             },
 
             _getResults: function () {

@@ -6,12 +6,12 @@ using System.Web.Mvc;
 
 namespace EpiserverSite.UrlRewritePlugin.Component
 {
-    [RestStore("urlRewriteStore")]
-    public class UrlRewriteStore : RestControllerBase
+    [RestStore("UrlRedirectsComponentStore")]
+    public class UrlRedirectsComponentStore : RestControllerBase
     {
         private readonly DynamicDataStoreFactory dynamicDataStoreFactory;
 
-        public UrlRewriteStore(DynamicDataStoreFactory dynamicDataStoreFactory)
+        public UrlRedirectsComponentStore(DynamicDataStoreFactory dynamicDataStoreFactory)
         {
             this.dynamicDataStoreFactory = dynamicDataStoreFactory;
         }

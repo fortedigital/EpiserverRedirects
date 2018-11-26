@@ -1,0 +1,45 @@
+﻿.dgrid .dgrid-row-table {
+    background-color: inherit;
+    margin: 0;
+}
+
+.dgrid-spacer-row {
+    display: none;
+}
+
+.dgrid .dgrid-scroller {
+    margin-top: 55px;
+}
+
+.dgrid .dgrid-header {
+    height: 55px;
+}
+
+.dgrid .dijitTextBox {
+    margin: 0;
+    width: 100%;
+}
+
+.dgrid .dgrid-selected {
+    background: #c7d500 !important;
+}
+
+.dgrid .dgrid-column-0-0 {
+    padding: 3px !important;
+}
+
+.dgrid .dgrid-column-0-1 {
+    padding: 3px !important;
+}
+
+.dgrid .dgrid-column-0-2 {
+    padding: 3px !important;
+}
+
+.dgrid .dgrid-column-0-3 {
+    padding: 3px !important;
+}
+
+.dgrid .dijitSelect {
+    width: 100%;
+}
