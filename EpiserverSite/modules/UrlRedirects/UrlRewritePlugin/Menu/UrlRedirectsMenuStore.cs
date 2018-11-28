@@ -64,6 +64,14 @@ namespace EpiserverSite.UrlRewritePlugin.Menu
             var store = dynamicDataStoreFactory.CreateStore(typeof(UrlRewriteModel));
             var guidId = new Guid(id);
 
+            var redirectAlredyExist = store.Items<UrlRewriteModel>()
+                .FirstOrDefault(x => x.OldUrl == urlRewriteModel.OldUrl && x.Id.ExternalId != guidId);
+
+            if (redirectAlredyExist != null)
+            {
+                return Rest(false);
+            }
+
             store.Save(urlRewriteModel, guidId);
 
             return Rest(urlRewriteModel);

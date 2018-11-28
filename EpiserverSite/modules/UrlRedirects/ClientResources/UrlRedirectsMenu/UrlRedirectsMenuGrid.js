@@ -2,7 +2,8 @@
     "dojo/_base/declare",
     "dojo/when",
 
-    "dojo/aspect",
+    'dojo/mouse',
+    "dojo/on",
 
     "dgrid/Keyboard",
     "dgrid/Selection",
@@ -22,7 +23,8 @@
         declare,
         when,
 
-        aspect,
+        mouse,
+        on,
 
         Keyboard,
         Selection,

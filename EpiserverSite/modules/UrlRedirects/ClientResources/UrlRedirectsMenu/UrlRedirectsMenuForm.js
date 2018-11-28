@@ -8,6 +8,7 @@
     "dijit/_WidgetsInTemplateMixin",
     "dijit/form/TextBox",
     "dijit/form/Button",
+    "dijit/form/ValidationTextBox"
 ],
 
     function (
@@ -19,7 +20,8 @@
         _TemplatedMixin,
         _WidgetsInTemplateMixin,
         TextBox,
-        Button
+        Button,
+        ValidationTextBox
     ) {
 
         return declare([_WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin], {
@@ -30,10 +32,18 @@
                 this.contentIdTextBox.set("disabled", true);
                 this.typeTextBox.set("disabled", true);
                 on(this.saveButton, "click", () => this.onSaveClick(this._getModel()));
+                on(this.oldUrlTextBox, "change", () => this._isFormValid());
+                on(this.newUrlTextBox, "change", () => this._isFormValid());
+            },
+
+            _isFormValid: function () {
+                this.saveButton.set("disabled", !this.newUrlTextBox.isValid() || !this.oldUrlTextBox.isValid());
             },
 
             updateView: function (model, mode) {
                 this.id = model.id;
+                this.duplicateAlert.hidden = true;
+
                 if (mode === "edit") {
                     this._updateEditMode(model);
                 }
@@ -44,7 +54,6 @@
 
             _updateEditMode: function (model) {
                 var isCustomType = model.type === "custom";
-                this.titleForm.innerText = "Edit Url Redirect";
 
                 this.oldUrlTextBox.set("disabled", !isCustomType);
                 this.newUrlTextBox.set("disabled", !isCustomType);
@@ -58,7 +67,6 @@
             },
 
             _updateAddMode: function () {
-                this.titleForm.innerText = "Add new Url Redirect";
                 this.typeTextBox.set("value", "custom");
 
                 this.oldUrlTextBox.set("value", "");
@@ -67,7 +75,7 @@
 
                 this.oldUrlTextBox.set("disabled", false);
                 this.newUrlTextBox.set("disabled", false);
-                this.saveButton.set("disabled", false);
+                this.saveButton.set("disabled", true);
             },
 
             _getModel: function () {
@@ -84,6 +92,13 @@
 
             onSaveClick(model) {
 
+            },
+
+            showDuplicateMessage() {
+                this.duplicateAlert.hidden = false;
+                this.oldUrlTextBox.focus();
+                this.oldUrlTextBox.set("state", "Error");
+                this.oldUrlTextBox.displayMessage("Invalid value");
             }
         });
     });

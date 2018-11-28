@@ -1,4 +1,9 @@
-﻿.dgrid .dgrid-row-table {
+﻿
+.dgrid {
+    height: 100%;
+}
+
+.dgrid .dgrid-row-table {
     background-color: inherit;
     margin: 0;
 }
@@ -40,6 +45,12 @@
     padding: 3px !important;
 }
 
+.dgrid .dgrid-column-0-4 {
+    width: 50px;
+}
+
 .dgrid .dijitSelect {
     width: 100%;
 }
+
+

@@ -8,6 +8,18 @@
     return declare([Stateful], {
         store: null,
 
+        dialogTitle: "",
+
+        _dialogTitleGetter() {
+            if (this.mode === "edit") {
+                return "Edit Url Redirect";
+            }
+
+            if (this.mode === "add") {
+                return "Add new Url Redirect";
+            }
+        },
+
         mode: "",
 
         _modeGetter: function () {

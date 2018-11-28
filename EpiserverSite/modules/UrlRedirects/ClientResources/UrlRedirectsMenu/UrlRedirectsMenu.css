@@ -1,12 +1,21 @@
 ﻿.menu-container {
     display: flex;
+    height:70vh;
 }
 
-.subcontainer {
-    width: 50%;
+.grid-container {
+    width: 70%;
     padding: 10px;
 }
 
 .url-text-box {
     width: 300px
+}
+
+.alert-danger {
+    padding: 10px;
+    border-radius: 5px;
+    color: #a94442;
+    background-color: #f2dede;
+    border-color: #ebccd1;
 }

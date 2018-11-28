@@ -1,18 +1,21 @@
 ﻿<div>
-    <h2 data-dojo-attach-point="titleForm"></h2>
     <div class="epi-formArea">
         <div class="epi-size10">
             <div class="epi-form-container__section__row">
                 <label for="oldUrl">Old Url:</label>
                 <input class="url-text-box" type="text" name="oldUrl"
-                       data-dojo-type="dijit/form/TextBox"
+                       required="true"
+                       data-dojo-props="intermediateChanges:true"
+                       data-dojo-type="dijit/form/ValidationTextBox"
                        data-dojo-attach-point="oldUrlTextBox" id="oldUrl" />
             </div>
 
             <div class="epi-form-container__section__row">
                 <label for="newUrl">New Url:</label>
                 <input class="url-text-box" type="text" name="newUrl"
-                       data-dojo-type="dijit/form/TextBox"
+                       required="true"
+                       data-dojo-props="intermediateChanges:true"
+                       data-dojo-type="dijit/form/ValidationTextBox"
                        data-dojo-attach-point="newUrlTextBox" id="newUrl" />
             </div>
 
@@ -30,8 +33,12 @@
                        data-dojo-attach-point="contentIdTextBox" id="contentId" />
             </div>
 
+            <div data-dojo-attach-point="duplicateAlert" class="alert-danger">
+                <span>Unable to save because of duplicate old url</span>
+            </div>
+
         </div>
-        <div class="epi-padding">
+        <div class="epi-buttonContainer">
             <button data-dojo-type="dijit/form/Button" data-dojo-attach-point="saveButton" type="button">Save</button>
         </div>
     </div>
