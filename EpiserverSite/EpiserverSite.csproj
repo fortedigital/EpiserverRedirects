@@ -320,10 +320,13 @@
     <Compile Include="Helpers\CategorizableExtensions.cs" />
     <Compile Include="Helpers\HtmlHelpers.cs" />
     <Compile Include="Helpers\UrlHelpers.cs" />
+    <Compile Include="modules\UrlRedirects\UrlRewritePlugin\Menu\UrlRedirectsMenuRestController.cs" />
     <Compile Include="modules\UrlRedirects\UrlRewritePlugin\Menu\UrlRedirectsMenuStore.cs" />
     <Compile Include="modules\UrlRedirects\UrlRewritePlugin\Menu\UrlRedirectsMenuController.cs" />
     <Compile Include="modules\UrlRedirects\UrlRewritePlugin\Component\UrlRedirectsComponent.cs" />
     <Compile Include="modules\UrlRedirects\UrlRewritePlugin\Menu\UrlRedirectsMenuView.cs" />
+    <Compile Include="modules\UrlRedirects\UrlRewritePlugin\Menu\UrlRedirectsMenuViewModel.cs" />
+    <Compile Include="modules\UrlRedirects\UrlRewritePlugin\Menu\UrlRedirectsModelMapper.cs" />
     <Compile Include="modules\UrlRedirects\UrlRewritePlugin\UrlRewriteMiddleware.cs" />
     <Compile Include="modules\UrlRedirects\UrlRewritePlugin\Component\UrlRedirectsComponentStore.cs" />
     <Compile Include="modules\UrlRedirects\UrlRewritePlugin\UrlRewriteModule.cs" />

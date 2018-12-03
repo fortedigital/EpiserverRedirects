@@ -1,11 +1,10 @@
-﻿using EPiServer;
-using EPiServer.Core;
+﻿using EPiServer.Core;
 using EPiServer.Data.Dynamic;
 using EPiServer.ServiceLocation;
 using EPiServer.Web.Routing;
 using Geta.EPi.Extensions;
-using System;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace EpiserverSite.UrlRewritePlugin
 {
@@ -21,7 +20,27 @@ namespace EpiserverSite.UrlRewritePlugin
         {
             var store = DynamicDataStoreFactory.Instance.CreateStore(typeof(UrlRewriteModel));
 
-            return store.Items<UrlRewriteModel>().FirstOrDefault(x => x.OldUrl == oldUrl);
+            var urlRewriteModel = store.Items<UrlRewriteModel>().GetRedirectModel(oldUrl);
+
+            if (urlRewriteModel == null)
+            {
+                urlRewriteModel = store.Items<UrlRewriteModel>().GetManualWildcardTypeRedirectModel(oldUrl);
+            }
+
+            return urlRewriteModel;
+        }
+
+        private static UrlRewriteModel GetRedirectModel(this IOrderedQueryable<UrlRewriteModel> urlRewriteStore, string oldUrl)
+        {
+            return urlRewriteStore.FirstOrDefault(x => x.OldUrl == oldUrl);
+        }
+
+        private static UrlRewriteModel GetManualWildcardTypeRedirectModel(this IOrderedQueryable<UrlRewriteModel> urlRewriteStore, string oldUrl)
+        {
+            return urlRewriteStore.Where(x => x.Type == "manual-wildcard")
+                .OrderBy(urlRewriteModel => urlRewriteModel.Priority)
+                .AsEnumerable()
+                .FirstOrDefault(urlRewriteModel => Regex.IsMatch(oldUrl, urlRewriteModel.OldUrl));
         }
 
         public static string GetRedirectUrl(int contentId)
@@ -33,13 +52,27 @@ namespace EpiserverSite.UrlRewritePlugin
             return virtualPathData?.VirtualPath.NormalizePath();
         }
 
+        public static string GetRedirectUrl(string oldUrl, UrlRewriteModel urlRewriteModel)
+        {
+            var regexMatch = Regex.Match(oldUrl, urlRewriteModel.OldUrl);
+            string redirectUrl = urlRewriteModel.NewUrl;
+
+            for (int i = 1; i < regexMatch.Groups.Count; i++)
+            {
+                redirectUrl = redirectUrl.Replace("{$" + i + "}", regexMatch.Groups[i].ToString());
+            }
+
+            return redirectUrl;
+        }
+
         private static void AddRedirectsToDDS(string oldUrl, int contentId)
         {
             var urlRewriteModel = new UrlRewriteModel
             {
                 OldUrl = oldUrl.NormalizePath(),
                 ContentId = contentId,
-                Type = "system"
+                Type = "system",
+                Priority = 1
             };
 
             AddRedirectsToDDS(urlRewriteModel);

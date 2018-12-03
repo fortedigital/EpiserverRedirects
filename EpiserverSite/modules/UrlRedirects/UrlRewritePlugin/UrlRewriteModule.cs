@@ -2,6 +2,7 @@
 using System.Web.Mvc;
 using EPiServer;
 using EPiServer.Core;
+using EPiServer.DataAbstraction;
 using EPiServer.Framework;
 using EPiServer.Framework.Initialization;
 using EPiServer.Globalization;
@@ -54,20 +55,23 @@ namespace EpiserverSite.UrlRewritePlugin
 
             var originalParent = (e as MoveContentEventArgs)?.OriginalParent;
             var contentRepository = ServiceLocator.Current.GetInstance<IContentRepository>();
-
-            if (!(contentRepository.Get<IContentData>(e.ContentLink) is PageData pageData)) return;
-            
+            var languageBranchRepository = ServiceLocator.Current.GetInstance<ILanguageBranchRepository>();
             var virtualPathArguments = new VirtualPathArguments
             {
                 ValidateTemplate = false
             };
 
-            var oldUrl = 
-                UrlResolver.Current.GetUrl(originalParent, 
-                    ContentLanguage.PreferredCulture.Name, virtualPathArguments)
-                + pageData.URLSegment;
+            foreach (var language in languageBranchRepository.ListEnabled())
+            {
+                if (!(contentRepository.Get<IContentData>(e.ContentLink, language.Culture) is PageData pageData)) return;
 
-            RedirectHelper.AddRedirects(pageData, oldUrl);
+                var oldUrl =
+                    UrlResolver.Current.GetUrl(originalParent,
+                        language.Culture.Name, virtualPathArguments)
+                    + pageData.URLSegment;
+
+                RedirectHelper.AddRedirects(pageData, oldUrl);
+            }
         }
     }
 }

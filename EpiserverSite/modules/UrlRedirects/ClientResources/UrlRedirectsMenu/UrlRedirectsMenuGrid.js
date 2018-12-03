@@ -1,9 +1,5 @@
 ﻿define("urlRedirectsMenu/UrlRedirectsMenuGrid", [
     "dojo/_base/declare",
-    "dojo/when",
-
-    'dojo/mouse',
-    "dojo/on",
 
     "dgrid/Keyboard",
     "dgrid/Selection",
@@ -21,10 +17,6 @@
 
     function (
         declare,
-        when,
-
-        mouse,
-        on,
 
         Keyboard,
         Selection,
@@ -45,7 +37,7 @@
             oldUrlSearch: null,
             newUrlSearch: null,
             typeSearch: null,
-            contentIdSearch: null,
+            prioritySearch: null,
 
             buildRendering: function () {
                 this.inherited(arguments);
@@ -55,7 +47,7 @@
                 this.oldUrlSearch = new SearchBox();
                 this.newUrlSearch = new SearchBox();
                 this.typeSearch = this.createTypeSelect();
-                this.contentIdSearch = new SearchBox();
+                this.prioritySearch = new SearchBox();
 
                 this.grid = new this._gridClass({
                     columns: [
@@ -85,10 +77,10 @@
                         },
                         {
                             renderHeaderCell: (node) => {
-                                return this.contentIdSearch.domNode;
+                                return this.prioritySearch.domNode;
                             },
                             children: [
-                                { field: 'contentId', label: 'Content Id' }
+                                { field: 'priority', label: 'Priority' }
                             ]
                         }
                     ],
@@ -98,7 +90,7 @@
                     pagingLinks: 1,
                     pagingTextBox: true,
                     firstLastArrows: true,
-                    pageSizeOptions: [15, 25, 50]
+                    pageSizeOptions: [10, 25, 50]
                 }, this.domNode);
 
                 this.grid.set("queryOptions", { sort: [{ attribute: "oldUrl", descending: false }] });
@@ -121,8 +113,9 @@
                     name: "typeSelect",
                     options: [
                         { label: "all", value: "" },
-                        { label: "custom", value: "custom" },
-                        { label: "system", value: "system" }
+                        { label: "system", value: "system" },
+                        { label: "manual", value: "manual" },
+                        { label: "manual-wildcard", value: "manual-wildcard" }
                     ]
                 });
             }

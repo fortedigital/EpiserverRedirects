@@ -1,8 +1,10 @@
 ﻿using EPiServer.Data.Dynamic;
 using EPiServer.Shell.Services.Rest;
+using EpiserverSite.modules.UrlRedirects.UrlRewritePlugin.Menu;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Web.Mvc;
 
 namespace EpiserverSite.UrlRewritePlugin.Menu
@@ -18,7 +20,7 @@ namespace EpiserverSite.UrlRewritePlugin.Menu
         }
 
         [HttpGet]
-        public ActionResult Get(string oldUrlSearch, string newUrlSearch, string typeSearch, int? contentIdSearch, IEnumerable<SortColumn> sortColumns, ItemRange range)
+        public ActionResult Get(string oldUrlSearch, string newUrlSearch, string typeSearch, int? prioritySearch, IEnumerable<SortColumn> sortColumns, ItemRange range)
         {
             var store = dynamicDataStoreFactory.CreateStore(typeof(UrlRewriteModel));
             var urlRewriteStore = store.Items<UrlRewriteModel>().AsQueryable();
@@ -35,59 +37,55 @@ namespace EpiserverSite.UrlRewritePlugin.Menu
 
             if (!string.IsNullOrEmpty(typeSearch))
             {
-                urlRewriteStore = urlRewriteStore.Where(item => item.Type.Contains(typeSearch));
+                urlRewriteStore = urlRewriteStore.Where(item => item.Type == typeSearch);
             }
 
-            if (contentIdSearch != null)
+            if (prioritySearch != null)
             {
-                urlRewriteStore = urlRewriteStore.Where(item => item.ContentId == contentIdSearch.Value);
+                urlRewriteStore = urlRewriteStore.Where(item => item.Priority == prioritySearch.Value);
             }
 
-            var sortedResults = urlRewriteStore
+            var results = urlRewriteStore
                 .OrderBy(sortColumns)
-                .Select(item => new
-                {
-                    Id = item.Id.ExternalId,
-                    item.OldUrl,
-                    item.NewUrl,
-                    item.Type,
-                    item.ContentId
-                });
+                .ApplyRange(range)
+                .Items.AsEnumerable()
+                .Select(item => item.MapToUrlRedirectsMenuViewModel());
 
-            HttpContext.Response.Headers.Add("Content-Range", $"0/{sortedResults.Count()}");
-            return Rest(sortedResults.ApplyRange(range).Items.ToList());
+            HttpContext.Response.Headers.Add("Content-Range", $"0/{urlRewriteStore.Count()}");
+            return Rest(results);
         }
 
         [HttpPut]
-        public ActionResult Put(UrlRewriteModel urlRewriteModel, string id)
+        public ActionResult Put(UrlRedirectsMenuViewModel urlRedirectsMenuViewModel)
         {
             var store = dynamicDataStoreFactory.CreateStore(typeof(UrlRewriteModel));
-            var guidId = new Guid(id);
+            var urlRewriteModel = urlRedirectsMenuViewModel.MapToUrlRewriteModel();
 
             var redirectAlredyExist = store.Items<UrlRewriteModel>()
-                .FirstOrDefault(x => x.OldUrl == urlRewriteModel.OldUrl && x.Id.ExternalId != guidId);
+                .FirstOrDefault(x => x.OldUrl == urlRewriteModel.OldUrl && x.Id.ExternalId != urlRedirectsMenuViewModel.Id);
 
             if (redirectAlredyExist != null)
             {
-                return Rest(false);
+                return new RestStatusCodeResult(HttpStatusCode.Conflict);
             }
 
-            store.Save(urlRewriteModel, guidId);
+            store.Save(urlRewriteModel, urlRedirectsMenuViewModel.Id);
 
             return Rest(urlRewriteModel);
         }
 
         [HttpPost]
-        public ActionResult Post(UrlRewriteModel urlRewriteModel)
+        public ActionResult Post(UrlRedirectsMenuViewModel urlRedirectsMenuViewModel)
         {
             var store = dynamicDataStoreFactory.CreateStore(typeof(UrlRewriteModel));
+            var urlRewriteModel = urlRedirectsMenuViewModel.MapToUrlRewriteModel();
 
             var redirectAlredyExist = store.Items<UrlRewriteModel>()
                 .FirstOrDefault(x => x.OldUrl == urlRewriteModel.OldUrl);
 
             if (redirectAlredyExist != null)
             {
-                return Rest(false);
+                return new RestStatusCodeResult(HttpStatusCode.Conflict);
             }
 
             store.Save(urlRewriteModel);
@@ -96,12 +94,11 @@ namespace EpiserverSite.UrlRewritePlugin.Menu
         }
 
         [HttpDelete]
-        public ActionResult Delete(string id)
+        public ActionResult Delete(Guid id)
         {
             var store = dynamicDataStoreFactory.CreateStore(typeof(UrlRewriteModel));
 
-            var guidId = new Guid(id);
-            store.Delete(guidId);
+            store.Delete(id);
 
             return Rest(true);
         }

@@ -18,7 +18,10 @@ namespace EpiserverSite.UrlRewritePlugin
 
                 if (urlRewriteModel != null)
                 {
-                    var redirectUrl = RedirectHelper.GetRedirectUrl(urlRewriteModel.ContentId);
+                    var redirectUrl = urlRewriteModel.Type == "system" ?
+                        RedirectHelper.GetRedirectUrl(urlRewriteModel.ContentId) :
+                        RedirectHelper.GetRedirectUrl(url, urlRewriteModel);
+
                     context.Response.Redirect(redirectUrl);
                 }
             }

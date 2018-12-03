@@ -8,7 +8,9 @@
     "dijit/_WidgetsInTemplateMixin",
     "dijit/form/TextBox",
     "dijit/form/Button",
-    "dijit/form/ValidationTextBox"
+    "dijit/form/ValidationTextBox",
+    "dijit/form/NumberTextBox",
+    "dijit/form/Select",
 ],
 
     function (
@@ -21,7 +23,9 @@
         _WidgetsInTemplateMixin,
         TextBox,
         Button,
-        ValidationTextBox
+        ValidationTextBox,
+        NumberTextBox,
+        Select,
     ) {
 
         return declare([_WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin], {
@@ -29,15 +33,16 @@
             id: "",
 
             postCreate: function () {
-                this.contentIdTextBox.set("disabled", true);
-                this.typeTextBox.set("disabled", true);
                 on(this.saveButton, "click", () => this.onSaveClick(this._getModel()));
+                on(this.cancelButton, "click", () => this.onCancelClick());
+                on(this.deleteButton, "click", () => this.onDeleteClick());
                 on(this.oldUrlTextBox, "change", () => this._isFormValid());
                 on(this.newUrlTextBox, "change", () => this._isFormValid());
+                on(this.priorityNumberTextBox, "change", () => this._isFormValid());
             },
 
             _isFormValid: function () {
-                this.saveButton.set("disabled", !this.newUrlTextBox.isValid() || !this.oldUrlTextBox.isValid());
+                this.saveButton.set("disabled", !this.newUrlTextBox.isValid() || !this.oldUrlTextBox.isValid() || !this.priorityNumberTextBox.isValid());
             },
 
             updateView: function (model, mode) {
@@ -53,28 +58,20 @@
             },
 
             _updateEditMode: function (model) {
-                var isCustomType = model.type === "custom";
-
-                this.oldUrlTextBox.set("disabled", !isCustomType);
-                this.newUrlTextBox.set("disabled", !isCustomType);
-                this.saveButton.set("disabled", !isCustomType);
-
                 this.oldUrlTextBox.set("value", model.oldUrl);
                 this.newUrlTextBox.set("value", model.newUrl);
-                this.contentIdTextBox.set("value", model.contentId);
-                this.typeTextBox.set("value", model.type);
+                this.priorityNumberTextBox.set("value", model.priority);
+                this.typeSelect.set("value", model.type);
 
+                this.deleteButton.set("disabled", false);
             },
 
             _updateAddMode: function () {
-                this.typeTextBox.set("value", "custom");
-
                 this.oldUrlTextBox.set("value", "");
                 this.newUrlTextBox.set("value", "");
-                this.contentIdTextBox.set("value", "");
+                this.priorityNumberTextBox.set("value", 1);
 
-                this.oldUrlTextBox.set("disabled", false);
-                this.newUrlTextBox.set("disabled", false);
+                this.deleteButton.set("disabled", true);
                 this.saveButton.set("disabled", true);
             },
 
@@ -82,17 +79,19 @@
                 var model = {
                     oldUrl: this.oldUrlTextBox.get("value"),
                     newUrl: this.newUrlTextBox.get("value"),
-                    contentId: this.contentIdTextBox.get("value"),
-                    type: this.typeTextBox.get("value"),
+                    priority: this.priorityNumberTextBox.get("value"),
+                    type: this.typeSelect.get("value"),
                     id: this.id
                 };
 
                 return model;
             },
 
-            onSaveClick(model) {
+            onSaveClick(model) { },
 
-            },
+            onDeleteClick() { },
+
+            onCancelClick() { },
 
             showDuplicateMessage() {
                 this.duplicateAlert.hidden = false;

@@ -30,7 +30,7 @@
             this.mode = value;
         },
 
-        searchQueryModel: { oldUrlSearch: "", newUrlSearch: "", typeSearch: "", contentIdSearch: "" },
+        searchQueryModel: { oldUrlSearch: "", newUrlSearch: "", typeSearch: "", prioritySearch: "" },
 
         _searchQueryModelGetter: function () {
             return this.searchQueryModel;
@@ -54,7 +54,7 @@
         },
 
         updateUrlRewrite: function (model) {
-            return this.store.put(model, { id: model.id});
+            return this.store.put(model);
         },
 
         deleteUrlRewrite: function (id) {
