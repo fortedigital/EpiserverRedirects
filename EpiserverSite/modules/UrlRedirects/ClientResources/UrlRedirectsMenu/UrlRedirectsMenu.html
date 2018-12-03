@@ -17,13 +17,17 @@
                     <button data-dojo-type="dijit/form/Button" data-dojo-attach-point="addButton" type="button">Add new</button>
                     <button data-dojo-type="dijit/form/Button" data-dojo-attach-point="editButton" type="button">Edit</button>
                     <button data-dojo-type="dijit/form/Button" data-dojo-attach-point="deleteButton" type="button">Delete</button>
-                    <div data-dojo-type="urlRedirectsMenu/UrlRedirectsMenuGrid" data-dojo-attach-point="urlRedirectsMenuGrid">
+                    <div data-dojo-type="urlRedirectsMenu-grid/UrlRedirectsMenuGrid" data-dojo-attach-point="urlRedirectsMenuGrid">
+                    </div>
+                </div>
+                <div class="wildcard-test-container">
+                    <div data-dojo-type="urlRedirectsMenu-wildCardTest/UrlRedirectsMenuWildcardTest" data-dojo-attach-point="urlRedirectsMenuWildcardTest">
                     </div>
                 </div>
 
             </div>
             <div data-dojo-type="dijit/Dialog" data-dojo-attach-point="urlRedirectsMenuFormDialog">
-                <div class="epi-formContainer" data-dojo-type="urlRedirectsMenu/UrlRedirectsMenuForm" data-dojo-attach-point="urlRedirectsMenuForm">
+                <div class="epi-formContainer" data-dojo-type="urlRedirectsMenu-form/UrlRedirectsMenuForm" data-dojo-attach-point="urlRedirectsMenuForm">
                 </div>
             </div>
         </div>

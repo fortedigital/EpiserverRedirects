@@ -1,4 +1,4 @@
-﻿define("urlRedirectsMenu/UrlRedirectsMenuForm", [
+﻿define("urlRedirectsMenu-form/UrlRedirectsMenuForm", [
     "dojo/_base/declare",
     "dojo/text!./UrlRedirectsMenuForm.html",
     "dojo/on",

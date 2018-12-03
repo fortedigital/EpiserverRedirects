@@ -10,8 +10,9 @@ define("urlRedirectsMenu/UrlRedirectsMenu", [
     "dijit/Dialog",
 
     "urlRedirectsMenu/UrlRedirectsMenuViewModel",
-    "urlRedirectsMenu/UrlRedirectsMenuGrid",
-    "urlRedirectsMenu/UrlRedirectsMenuForm",
+    "urlRedirectsMenu-grid/UrlRedirectsMenuGrid",
+    "urlRedirectsMenu-form/UrlRedirectsMenuForm",
+    "urlRedirectsMenu-wildCardTest/UrlRedirectsMenuWildcardTest",
 
     "xstyle/css!./UrlRedirectsMenu.css"
 ], function (
@@ -27,7 +28,8 @@ define("urlRedirectsMenu/UrlRedirectsMenu", [
 
     UrlRedirectsMenuViewModel,
     UrlRedirectsMenuGrid,
-    UrlRedirectsMenuForm
+    UrlRedirectsMenuForm,
+    UrlRedirectsMenuWildcardTest
 ) {
         return declare([_WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin], {
             templateString: template,

@@ -1,4 +1,4 @@
-﻿define("urlRedirectsMenu/UrlRedirectsMenuGrid", [
+﻿define("urlRedirectsMenu-grid/UrlRedirectsMenuGrid", [
     "dojo/_base/declare",
 
     "dgrid/Keyboard",
