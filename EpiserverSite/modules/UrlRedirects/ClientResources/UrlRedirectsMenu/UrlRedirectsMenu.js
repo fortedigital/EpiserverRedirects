@@ -48,7 +48,7 @@ define("urlRedirectsMenu/UrlRedirectsMenu", [
                 on(this.addButton, "click", this._onAddNewClick.bind(this));
                 on(this.editButton, "click", this._onEditClick.bind(this));
                 on(this.deleteButton, "click", this._onDeleteClick.bind(this));
-                on(this.refreshButton, "click", () => this._updateGrid());
+                on(this.refreshButton, "click", () => this._refreshView());
                 this.deleteButton.set('disabled', true);
                 this.editButton.set('disabled', true);
 
@@ -95,7 +95,7 @@ define("urlRedirectsMenu/UrlRedirectsMenu", [
 
             _onDeleteClick: function () {
                 this.urlRedirectsMenuViewModel.set("mode", "");
-                this.urlRedirectsMenuViewModel.deleteUrlRewrite(this.selectedModel.id).then((response) => this._handleResponse(response));
+                this.urlRedirectsMenuViewModel.deleteUrlRewrite(this.selectedModel.id).then((response) => this._refreshView());
             },
 
             _onEditClick: function () {
@@ -117,14 +117,14 @@ define("urlRedirectsMenu/UrlRedirectsMenu", [
 
                 if (mode === "edit") {
                     this.urlRedirectsMenuViewModel.updateUrlRewrite(model)
-                        .then(response => this._handleResponse(response), error => this._handleError(error));
+                        .then(response => this._refreshView(), error => this._handleError(error));
                 } else if (mode === "add") {
                     this.urlRedirectsMenuViewModel.addUrlRewrite(model)
-                        .then(response => this._handleResponse(response), error => this._handleError(error));
+                        .then(response => this._refreshView(), error => this._handleError(error));
                 }
             },
 
-            _handleResponse: function (reponse) {
+            _refreshView: function () {
                 this._updateGrid();
                 this.urlRedirectsMenuViewModel.set("mode", "");
                 this.urlRedirectsMenuGrid.clearSelection();
