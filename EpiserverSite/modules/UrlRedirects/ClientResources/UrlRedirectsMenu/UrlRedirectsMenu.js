@@ -28,7 +28,7 @@ define("urlRedirectsMenu/UrlRedirectsMenu", [
     UrlRedirectsMenuViewModel,
     UrlRedirectsMenuGrid,
     UrlRedirectsMenuForm,
-) {
+    ) {
         return declare([_WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin], {
             templateString: template,
             urlRedirectsMenuViewModel: null,
@@ -40,7 +40,7 @@ define("urlRedirectsMenu/UrlRedirectsMenu", [
 
             postCreate: function () {
                 this.urlRedirectsMenuViewModel = new UrlRedirectsMenuViewModel();
-                
+
                 this._initializeGrid();
                 this._initializeForm();
 
@@ -48,6 +48,7 @@ define("urlRedirectsMenu/UrlRedirectsMenu", [
                 on(this.addButton, "click", this._onAddNewClick.bind(this));
                 on(this.editButton, "click", this._onEditClick.bind(this));
                 on(this.deleteButton, "click", this._onDeleteClick.bind(this));
+                on(this.refreshButton, "click", () => this._updateGrid());
                 this.deleteButton.set('disabled', true);
                 this.editButton.set('disabled', true);
 
@@ -136,7 +137,7 @@ define("urlRedirectsMenu/UrlRedirectsMenu", [
                 this.urlRedirectsMenuForm.showDuplicateMessage();
             },
 
-            _onCancelFormClick: function() {
+            _onCancelFormClick: function () {
                 this.urlRedirectsMenuViewModel.set("mode", "");
             },
 
