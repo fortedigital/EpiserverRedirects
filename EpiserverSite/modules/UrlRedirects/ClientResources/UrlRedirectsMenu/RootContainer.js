@@ -11,7 +11,7 @@
     function (declare, _WidgetBase, _Container, UrlRedirectsMenu) {
         return declare([_WidgetBase, _Container], {
             buildRendering: function () {
-               
+
                 this.inherited(arguments);
 
                 var urlRedirectsMenu = new UrlRedirectsMenu(); 

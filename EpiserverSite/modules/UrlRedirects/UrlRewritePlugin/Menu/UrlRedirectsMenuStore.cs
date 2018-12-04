@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Text.RegularExpressions;
 using System.Web.Mvc;
 
 namespace EpiserverSite.UrlRewritePlugin.Menu
@@ -20,7 +21,7 @@ namespace EpiserverSite.UrlRewritePlugin.Menu
         }
 
         [HttpGet]
-        public ActionResult Get(string oldUrlSearch, string newUrlSearch, string typeSearch, int? prioritySearch, IEnumerable<SortColumn> sortColumns, ItemRange range)
+        public ActionResult Get(string oldUrlSearch, string newUrlSearch, string typeSearch, int? prioritySearch, string urlRedirect, IEnumerable<SortColumn> sortColumns, ItemRange range)
         {
             var store = dynamicDataStoreFactory.CreateStore(typeof(UrlRewriteModel));
             var urlRewriteStore = store.Items<UrlRewriteModel>().AsQueryable();
@@ -43,6 +44,14 @@ namespace EpiserverSite.UrlRewritePlugin.Menu
             if (prioritySearch != null)
             {
                 urlRewriteStore = urlRewriteStore.Where(item => item.Priority == prioritySearch.Value);
+            }
+
+            if(!string.IsNullOrEmpty(urlRedirect))
+            {
+                urlRewriteStore = urlRewriteStore
+                    .AsEnumerable()
+                    .Where(urlRewriteModel => Regex.IsMatch(urlRedirect, urlRewriteModel.OldUrl))
+                    .AsQueryable();
             }
 
             var results = urlRewriteStore

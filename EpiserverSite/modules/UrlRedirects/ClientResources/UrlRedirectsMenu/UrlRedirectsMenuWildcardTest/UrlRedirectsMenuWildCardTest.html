@@ -1,0 +1,26 @@
+﻿<div>
+    <div class="epi-formArea">
+        <h2>Wildcard Test</h2>
+        <div class="epi-size10">
+            <div class="epi-form-container__section__row">
+                <label for="testUrl">Url to test:</label>
+                <input class="form-input" type="text" name="testUrl"
+                       data-dojo-props="intermediateChanges:true"
+                       data-dojo-type="dijit/form/ValidationTextBox"
+                       data-dojo-attach-point="testUrlTextBox" id="testUrl" />
+            </div>
+
+            <div class="epi-form-container__section__row">
+                <label for="result">Result:</label>
+                <input class="form-input" type="text" name="result"
+                       disabled="true"
+                       data-dojo-type="dijit/form/TextBox"
+                       data-dojo-attach-point="resultTextBox" id="result" />
+            </div>
+
+        </div>
+        <div class="epi-buttonContainer">
+            <button class="Salt" data-dojo-type="dijit/form/Button" data-dojo-attach-point="testWildcardButton" type="button">Test wildcard</button>
+        </div>
+    </div>
+</div>

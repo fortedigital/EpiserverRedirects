@@ -46,6 +46,8 @@ define("urlRedirectsMenu/UrlRedirectsMenu", [
                 this._initializeGrid();
                 this._initializeForm();
 
+                this.urlRedirectsMenuWildcardTest.set("hidden", true);
+
                 on(this.addButton, "click", this._onAddNewClick.bind(this));
                 on(this.editButton, "click", this._onEditClick.bind(this));
                 on(this.deleteButton, "click", this._onDeleteClick.bind(this));
@@ -55,6 +57,8 @@ define("urlRedirectsMenu/UrlRedirectsMenu", [
                 this.urlRedirectsMenuViewModel.watch("mode", (name, oldValue, value) => {
                     !value ? this.urlRedirectsMenuFormDialog.hide() : this.urlRedirectsMenuFormDialog.show();
                     this.urlRedirectsMenuFormDialog.set("title", this.urlRedirectsMenuViewModel.get("dialogTitle"));
+                    this.urlRedirectsMenuWildcardTest.set("hidden", !value);
+                    this.deleteButton.set('disabled', !value);
                 });
 
                 this.urlRedirectsMenuViewModel.watch("searchQueryModel", (name, oldValue, value) => {
@@ -98,16 +102,19 @@ define("urlRedirectsMenu/UrlRedirectsMenu", [
             },
 
             _onEditClick: function () {
+                if (this.selectedModel.type === "system") return;
+
                 this.urlRedirectsMenuViewModel.set("mode", "edit");
                 this.urlRedirectsMenuForm.updateView(this.selectedModel, this.urlRedirectsMenuViewModel.get("mode"));
             },
 
             _onSelectedItemChange: function (event) {
                 this.selectedModel = event.rows[0].data;
-                var isSystemType = this.selectedModel.type === "system";
 
                 this.deleteButton.set('disabled', !this.selectedModel);
-                this.editButton.set('disabled', isSystemType);
+                this.editButton.set('disabled', this.selectedModel.type === "system");
+                this.urlRedirectsMenuWildcardTest.set("hidden", this.selectedModel.type !== "manual-wildcard");
+                this.urlRedirectsMenuWildcardTest.setUrlRedirect(this.selectedModel);
             },
 
             _onSaveForm: function (model) {
@@ -127,8 +134,8 @@ define("urlRedirectsMenu/UrlRedirectsMenu", [
                 this.urlRedirectsMenuViewModel.set("mode", "");
                 this.urlRedirectsMenuGrid.clearSelection();
                 this.selectedModel = null;
-                this.deleteButton.set('disabled', !this.selectedModel);
-                this.editButton.set('disabled', !this.selectedModel);
+                this.deleteButton.set("disabled", !this.selectedModel);
+                this.editButton.set("disabled", !this.selectedModel);
             },
 
             _handleError: function (error) {

@@ -54,15 +54,7 @@ namespace EpiserverSite.UrlRewritePlugin
 
         public static string GetRedirectUrl(string oldUrl, UrlRewriteModel urlRewriteModel)
         {
-            var regexMatch = Regex.Match(oldUrl, urlRewriteModel.OldUrl);
-            string redirectUrl = urlRewriteModel.NewUrl;
-
-            for (int i = 1; i < regexMatch.Groups.Count; i++)
-            {
-                redirectUrl = redirectUrl.Replace("{$" + i + "}", regexMatch.Groups[i].ToString());
-            }
-
-            return redirectUrl;
+            return Regex.Replace(oldUrl, urlRewriteModel.OldUrl, urlRewriteModel.NewUrl);
         }
 
         private static void AddRedirectsToDDS(string oldUrl, int contentId)

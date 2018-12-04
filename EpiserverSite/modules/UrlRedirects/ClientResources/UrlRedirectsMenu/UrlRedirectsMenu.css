@@ -4,8 +4,13 @@
 }
 
 .grid-container {
-    width: 70%;
+    width: 75%;
     padding: 10px;
+}
+
+.wildcard-test-container {
+    padding: 10px;
+    width: 25%;
 }
 
 .epi-formArea .form-input {
