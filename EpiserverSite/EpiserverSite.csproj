@@ -394,8 +394,6 @@
     <Content Include="modules\UrlRedirects\ClientResources\UrlRedirectsMenu\UrlRedirectsMenu.js" />
     <Content Include="modules\UrlRedirects\ClientResources\UrlRedirectsMenu\UrlRedirectsMenuGrid\UrlRedirectsMenuGrid.js" />
     <Content Include="modules\UrlRedirects\ClientResources\UrlRedirectsMenu\UrlRedirectsMenuViewModel.js" />
-    <Content Include="modules\UrlRedirects\ClientResources\UrlRedirectsMenu\UrlRedirectsMenuWildcardTest\UrlRedirectsMenuWildcardTest.html" />
-    <Content Include="modules\UrlRedirects\ClientResources\UrlRedirectsMenu\UrlRedirectsMenuWildcardTest\UrlRedirectsMenuWildcardTest.js" />
     <Content Include="modules\UrlRedirects\ClientResources\UrlRedirectsModuleInitializer.js" />
     <Content Include="ClientResources\Styles\LayoutIcons.css" />
     <Content Include="ClientResources\Styles\Styles.css" />

@@ -12,7 +12,6 @@ define("urlRedirectsMenu/UrlRedirectsMenu", [
     "urlRedirectsMenu/UrlRedirectsMenuViewModel",
     "urlRedirectsMenu-grid/UrlRedirectsMenuGrid",
     "urlRedirectsMenu-form/UrlRedirectsMenuForm",
-    "urlRedirectsMenu-wildCardTest/UrlRedirectsMenuWildcardTest",
 
     "xstyle/css!./UrlRedirectsMenu.css"
 ], function (
@@ -29,7 +28,6 @@ define("urlRedirectsMenu/UrlRedirectsMenu", [
     UrlRedirectsMenuViewModel,
     UrlRedirectsMenuGrid,
     UrlRedirectsMenuForm,
-    UrlRedirectsMenuWildcardTest
 ) {
         return declare([_WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin], {
             templateString: template,
@@ -46,7 +44,6 @@ define("urlRedirectsMenu/UrlRedirectsMenu", [
                 this._initializeGrid();
                 this._initializeForm();
 
-                this.urlRedirectsMenuWildcardTest.set("hidden", true);
 
                 on(this.addButton, "click", this._onAddNewClick.bind(this));
                 on(this.editButton, "click", this._onEditClick.bind(this));
@@ -57,7 +54,6 @@ define("urlRedirectsMenu/UrlRedirectsMenu", [
                 this.urlRedirectsMenuViewModel.watch("mode", (name, oldValue, value) => {
                     !value ? this.urlRedirectsMenuFormDialog.hide() : this.urlRedirectsMenuFormDialog.show();
                     this.urlRedirectsMenuFormDialog.set("title", this.urlRedirectsMenuViewModel.get("dialogTitle"));
-                    this.urlRedirectsMenuWildcardTest.set("hidden", !value);
                     this.deleteButton.set('disabled', !value);
                 });
 
@@ -113,8 +109,6 @@ define("urlRedirectsMenu/UrlRedirectsMenu", [
 
                 this.deleteButton.set('disabled', !this.selectedModel);
                 this.editButton.set('disabled', this.selectedModel.type === "system");
-                this.urlRedirectsMenuWildcardTest.set("hidden", this.selectedModel.type !== "manual-wildcard");
-                this.urlRedirectsMenuWildcardTest.setUrlRedirect(this.selectedModel);
             },
 
             _onSaveForm: function (model) {
