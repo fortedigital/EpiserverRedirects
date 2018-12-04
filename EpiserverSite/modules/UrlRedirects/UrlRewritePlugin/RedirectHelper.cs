@@ -1,8 +1,10 @@
-﻿using EPiServer.Core;
+﻿using EPiServer;
+using EPiServer.Core;
 using EPiServer.Data.Dynamic;
 using EPiServer.ServiceLocation;
 using EPiServer.Web.Routing;
 using Geta.EPi.Extensions;
+using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
 
@@ -10,10 +12,10 @@ namespace EpiserverSite.UrlRewritePlugin
 {
     public static class RedirectHelper
     {
-        public static void AddRedirects(PageData pageData, string oldUrl)
+        public static void AddRedirects(PageData pageData, string oldUrl, CultureInfo cultureInfo)
         {
-            AddRedirectsToDDS(oldUrl, pageData.ContentLink.ID);
-            HandleChildren(pageData, oldUrl);
+            AddRedirectsToDDS(pageData, oldUrl);
+            HandleChildren(pageData, oldUrl, cultureInfo);
         }
 
         public static UrlRewriteModel GetRedirectModel(string oldUrl)
@@ -57,12 +59,14 @@ namespace EpiserverSite.UrlRewritePlugin
             return Regex.Replace(oldUrl, urlRewriteModel.OldUrl, urlRewriteModel.NewUrl);
         }
 
-        private static void AddRedirectsToDDS(string oldUrl, int contentId)
+        private static void AddRedirectsToDDS(PageData pageData, string oldUrl)
         {
+            if (!(pageData.Status == VersionStatus.PreviouslyPublished || pageData.Status == VersionStatus.Published)) return;
+            
             var urlRewriteModel = new UrlRewriteModel
             {
                 OldUrl = oldUrl.NormalizePath(),
-                ContentId = contentId,
+                ContentId = pageData.ContentLink.ID,
                 Type = "system",
                 Priority = 1
             };
@@ -85,15 +89,16 @@ namespace EpiserverSite.UrlRewritePlugin
             store.Save(urlRewriteModel);
         }
 
-        private static void HandleChildren(PageData data, string oldUrl)
+        private static void HandleChildren(PageData data, string oldUrl, CultureInfo cultureInfo)
         {
-            var pageDataCollection = data.GetChildren();
+            var languageSelector = new LanguageSelector(cultureInfo.Name);
+            var pageDataCollection = DataFactory.Instance.GetChildren(data.PageLink, languageSelector);
 
             foreach (var pageData in pageDataCollection)
             {
                 var oldChildUrl = Combine(oldUrl, pageData.URLSegment);
-                AddRedirectsToDDS(oldChildUrl, pageData.ContentLink.ID);
-                HandleChildren(pageData, oldChildUrl);
+                AddRedirectsToDDS(pageData, oldChildUrl);
+                HandleChildren(pageData, oldChildUrl, cultureInfo);
             }
         }
 

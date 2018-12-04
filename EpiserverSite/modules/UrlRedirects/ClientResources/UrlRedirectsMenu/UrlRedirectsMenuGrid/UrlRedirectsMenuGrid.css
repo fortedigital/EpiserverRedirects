@@ -25,6 +25,10 @@
     width: 100%;
 }
 
+.dgrid .dijitSelect {
+    margin: 0;
+}
+
 .dgrid .dgrid-selected {
     background: #c7d500 !important;
 }
