@@ -45,6 +45,10 @@
     padding: 3px !important;
 }
 
+.url-redirect-grid-container .dgrid .dgrid-column-0-4 {
+    padding: 3px !important;
+}
+
 .url-redirect-grid-container .dgrid .dijitSelect {
     width: 100%;
     margin: 0;

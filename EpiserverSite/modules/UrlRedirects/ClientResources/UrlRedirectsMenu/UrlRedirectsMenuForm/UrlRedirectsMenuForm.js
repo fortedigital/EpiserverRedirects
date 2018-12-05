@@ -62,6 +62,7 @@
                 this.newUrlTextBox.set("value", model.newUrl);
                 this.priorityNumberTextBox.set("value", model.priority);
                 this.typeSelect.set("value", model.type);
+                this.redirectStatusCodeSelect.set("value", model.redirectStatusCode);
 
                 this.deleteButton.set("disabled", false);
             },
@@ -81,6 +82,7 @@
                     newUrl: this.newUrlTextBox.get("value"),
                     priority: this.priorityNumberTextBox.get("value"),
                     type: this.typeSelect.get("value"),
+                    redirectStatusCode: this.redirectStatusCodeSelect.get("value"),
                     id: this.id
                 };
 

@@ -16,5 +16,7 @@ namespace EpiserverSite.modules.UrlRedirects.UrlRewritePlugin.Menu
         public string Type { get; set; }
 
         public int Priority { get; set; }
+
+        public int RedirectStatusCode { get; set; }
     }
 }

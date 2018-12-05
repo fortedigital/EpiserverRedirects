@@ -77,6 +77,7 @@ define("urlRedirectsMenu/UrlRedirectsMenu", [
                 this.urlRedirectsMenuGrid.oldUrlSearch.onSearchBoxChange = (newValue) => this._onSearchChange({ oldUrlSearch: newValue });
                 this.urlRedirectsMenuGrid.newUrlSearch.onSearchBoxChange = (newValue) => this._onSearchChange({ newUrlSearch: newValue });
                 on(this.urlRedirectsMenuGrid.typeSearch, "change", (newValue) => this._onSearchChange({ typeSearch: newValue }));
+                on(this.urlRedirectsMenuGrid.redirectStatusCodeSearch, "change", (newValue) => this._onSearchChange({ redirectStatusCodeSearch: newValue }));
                 this.urlRedirectsMenuGrid.prioritySearch.onSearchBoxChange = (newValue) => this._onSearchChange({ prioritySearch: newValue });
             },
 

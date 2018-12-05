@@ -22,7 +22,8 @@ namespace EpiserverSite.UrlRewritePlugin
                         RedirectHelper.GetRedirectUrl(urlRewriteModel.ContentId) :
                         RedirectHelper.GetRedirectUrl(url, urlRewriteModel);
 
-                    context.Response.Redirect(redirectUrl);
+                    context.Response.StatusCode = urlRewriteModel.RedirectStatusCode;
+                    context.Response.Headers.Set("Location", redirectUrl);
                 }
             }
 

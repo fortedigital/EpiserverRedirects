@@ -4,6 +4,7 @@ using System;
 
 namespace EpiserverSite.UrlRewritePlugin
 {
+    [EPiServerDataStore(AutomaticallyRemapStore = true)]
     public class UrlRewriteModel : IDynamicData
     {
         public Identity Id { get; set; }
@@ -17,5 +18,7 @@ namespace EpiserverSite.UrlRewritePlugin
         public string Type { get; set; }
 
         public int Priority { get; set; }
+
+        public int RedirectStatusCode { get; set; }
     }
 }

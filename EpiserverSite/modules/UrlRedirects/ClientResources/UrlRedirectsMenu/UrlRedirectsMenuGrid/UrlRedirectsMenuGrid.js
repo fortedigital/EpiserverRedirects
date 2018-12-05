@@ -39,6 +39,7 @@
             oldUrlSearch: null,
             newUrlSearch: null,
             typeSearch: null,
+            redirectStatusCodeSearch: null,
             prioritySearch: null,
 
             buildRendering: function () {
@@ -48,14 +49,15 @@
             init: function (store) {
                 this.oldUrlSearch = new SearchBox();
                 this.newUrlSearch = new SearchBox();
-                this.typeSearch = this.createTypeSelect();
+                this.typeSearch = this._createTypeSelect();
+                this.redirectStatusCodeSearch = this._createRedirectStatusCodeSelect();
                 this.prioritySearch = new SearchBox();
 
                 this.grid = new this._gridClass({
                     columns: [
                         {
                             renderHeaderCell: (node) => {
-                                return this.getSearchDomNode(this.oldUrlSearch);
+                                return this._getSearchDomNode(this.oldUrlSearch);
                             },
                             children: [
                                 { field: 'oldUrl', label: 'Old Url' }
@@ -63,7 +65,7 @@
                         },
                         {
                             renderHeaderCell: (node) => {
-                                return this.getSearchDomNode(this.newUrlSearch);
+                                return this._getSearchDomNode(this.newUrlSearch);
                             },
                             children: [
                                 { field: 'newUrl', label: 'New Url' }
@@ -79,10 +81,18 @@
                         },
                         {
                             renderHeaderCell: (node) => {
-                                return this.getSearchDomNode(this.prioritySearch);
+                                return this._getSearchDomNode(this.prioritySearch);
                             },
                             children: [
                                 { field: 'priority', label: 'Priority' }
+                            ]
+                        },
+                        {
+                            renderHeaderCell: (node) => {
+                                return this.redirectStatusCodeSearch.domNode;
+                            },
+                            children: [
+                                { field: 'redirectStatusCode', label: 'Redirect Type', renderCell: (object, value, node) => node.append(this._getRedirectStatusCodeText(value)) }
                             ]
                         }
                     ],
@@ -110,7 +120,7 @@
                 this.grid.set("query", searchQueryModel);
             },
 
-            createTypeSelect: function() {
+            _createTypeSelect: function() {
                 return new Select({
                     name: "typeSelect",
                     options: [
@@ -122,11 +132,33 @@
                 });
             },
 
-            getSearchDomNode: function (searchBox) {
+            _createRedirectStatusCodeSelect: function () {
+                return new Select({
+                    name: "redirectStatusCodeSelect",
+                    options: [
+                        { label: "all", value: "" },
+                        { label: "Permanent", value: 301 },
+                        { label: "Temporary", value: 302 }
+                    ]
+                });
+            },
+
+            _getSearchDomNode: function (searchBox) {
                 var searchContainer = domConstruct.create("div", { "class": "epi-gadgetInnerToolbar" });
                 searchContainer.appendChild(searchBox.domNode);
 
                 return searchContainer;
+            },
+
+            _getRedirectStatusCodeText: function (statusCode) {
+                switch (statusCode) {
+                    case 301:
+                        return "Permanent";
+                    case 302:
+                        return "Temporary";
+                    default:
+                        return statusCode;
+                }
             }
         });
     });

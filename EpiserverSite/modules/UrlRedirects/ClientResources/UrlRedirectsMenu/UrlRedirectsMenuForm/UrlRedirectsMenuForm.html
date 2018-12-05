@@ -30,11 +30,21 @@
             </div>
 
             <div class="epi-form-container__section__row">
+                <label for="type">Redirect Type:</label>
+                <select class="form-input" name="redirectStatusCodeSelect"
+                        data-dojo-attach-point="redirectStatusCodeSelect"
+                        data-dojo-type="dijit/form/Select">
+                    <option value="301" selected="selected">Permanent</option>
+                    <option value="302">Temporary</option>
+                </select>
+            </div>
+
+            <div class="epi-form-container__section__row">
                 <label for="priority">Priority:</label>
                 <input class="form-input" type="text" name="priority"
                        required="true"
                        data-dojo-props="
-                           intermediateChanges:true,     
+                           intermediateChanges:true,
                            constraints:{min:1,places:0},
                            invalidMessage:'Please enter a numeric value.',
                            rangeMessage:'Invalid elevation.'"

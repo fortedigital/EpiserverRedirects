@@ -68,7 +68,8 @@ namespace EpiserverSite.UrlRewritePlugin
                 OldUrl = oldUrl.NormalizePath(),
                 ContentId = pageData.ContentLink.ID,
                 Type = "system",
-                Priority = 1
+                Priority = 1,
+                RedirectStatusCode = 301
             };
 
             AddRedirectsToDDS(urlRewriteModel);

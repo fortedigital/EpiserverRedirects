@@ -30,7 +30,7 @@
             this.mode = value;
         },
 
-        searchQueryModel: { oldUrlSearch: "", newUrlSearch: "", typeSearch: "", prioritySearch: "" },
+        searchQueryModel: { oldUrlSearch: "", newUrlSearch: "", typeSearch: "", prioritySearch: "", redirectStatusCodeSearch: "" },
 
         _searchQueryModelGetter: function () {
             return this.searchQueryModel;

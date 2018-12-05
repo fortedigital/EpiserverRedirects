@@ -16,7 +16,8 @@ namespace EpiserverSite.modules.UrlRedirects.UrlRewritePlugin.Menu
                 OldUrl = urlRewriteModel.OldUrl,
                 NewUrl = urlRewriteModel.NewUrl ?? RedirectHelper.GetRedirectUrl(urlRewriteModel.ContentId),
                 Type = urlRewriteModel.Type,
-                Priority = urlRewriteModel.Priority
+                Priority = urlRewriteModel.Priority,
+                RedirectStatusCode = urlRewriteModel.RedirectStatusCode
             };
         }
 
@@ -27,7 +28,8 @@ namespace EpiserverSite.modules.UrlRedirects.UrlRewritePlugin.Menu
                 OldUrl = urlRedirectsMenuViewModel.OldUrl,
                 NewUrl = urlRedirectsMenuViewModel.NewUrl,
                 Type = urlRedirectsMenuViewModel.Type,
-                Priority = urlRedirectsMenuViewModel.Priority
+                Priority = urlRedirectsMenuViewModel.Priority,
+                RedirectStatusCode = urlRedirectsMenuViewModel.RedirectStatusCode
             };
         }
     }

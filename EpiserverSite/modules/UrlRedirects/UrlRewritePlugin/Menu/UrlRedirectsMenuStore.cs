@@ -21,7 +21,15 @@ namespace EpiserverSite.UrlRewritePlugin.Menu
         }
 
         [HttpGet]
-        public ActionResult Get(string oldUrlSearch, string newUrlSearch, string typeSearch, int? prioritySearch, string simulatedOldUrl, IEnumerable<SortColumn> sortColumns, ItemRange range)
+        public ActionResult Get(
+            string oldUrlSearch,
+            string newUrlSearch,
+            string typeSearch, 
+            int? prioritySearch, 
+            string simulatedOldUrl, 
+            int? redirectStatusCodeSearch,
+            IEnumerable<SortColumn> sortColumns,
+            ItemRange range)
         {
             var store = dynamicDataStoreFactory.CreateStore(typeof(UrlRewriteModel));
             var urlRewriteStore = store.Items<UrlRewriteModel>().AsQueryable();
@@ -46,7 +54,12 @@ namespace EpiserverSite.UrlRewritePlugin.Menu
                 urlRewriteStore = urlRewriteStore.Where(item => item.Priority == prioritySearch.Value);
             }
 
-            if(!string.IsNullOrEmpty(simulatedOldUrl))
+            if (redirectStatusCodeSearch != null)
+            {
+                urlRewriteStore = urlRewriteStore.Where(item => item.RedirectStatusCode == redirectStatusCodeSearch.Value);
+            }
+
+            if (!string.IsNullOrEmpty(simulatedOldUrl))
             {
                 urlRewriteStore = urlRewriteStore
                     .Where(urlRewriteModel => urlRewriteModel.Type == "manual-wildcard")
