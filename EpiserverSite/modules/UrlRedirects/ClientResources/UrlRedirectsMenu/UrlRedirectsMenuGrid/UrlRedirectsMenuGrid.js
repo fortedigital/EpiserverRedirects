@@ -1,5 +1,6 @@
 ﻿define("urlRedirectsMenu-grid/UrlRedirectsMenuGrid", [
     "dojo/_base/declare",
+    "dojo/dom-construct",
 
     "dgrid/Keyboard",
     "dgrid/Selection",
@@ -17,6 +18,7 @@
 
     function (
         declare,
+        domConstruct,
 
         Keyboard,
         Selection,
@@ -53,7 +55,7 @@
                     columns: [
                         {
                             renderHeaderCell: (node) => {
-                                return this.oldUrlSearch.domNode;
+                                return this.getSearchDomNode(this.oldUrlSearch);
                             },
                             children: [
                                 { field: 'oldUrl', label: 'Old Url' }
@@ -61,7 +63,7 @@
                         },
                         {
                             renderHeaderCell: (node) => {
-                                return this.newUrlSearch.domNode;
+                                return this.getSearchDomNode(this.newUrlSearch);
                             },
                             children: [
                                 { field: 'newUrl', label: 'New Url' }
@@ -77,7 +79,7 @@
                         },
                         {
                             renderHeaderCell: (node) => {
-                                return this.prioritySearch.domNode;
+                                return this.getSearchDomNode(this.prioritySearch);
                             },
                             children: [
                                 { field: 'priority', label: 'Priority' }
@@ -118,6 +120,12 @@
                         { label: "manual-wildcard", value: "manual-wildcard" }
                     ]
                 });
+            },
+
+            getSearchDomNode: function (searchBox) {
+                var searchContainer = domConstruct.create("div", { "class": "epi-gadgetInnerToolbar " });
+                searchContainer.appendChild(searchBox.domNode);
+                return searchContainer;
             }
         });
     });

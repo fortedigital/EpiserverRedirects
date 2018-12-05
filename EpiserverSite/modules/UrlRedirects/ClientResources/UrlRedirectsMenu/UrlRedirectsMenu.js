@@ -8,6 +8,7 @@ define("urlRedirectsMenu/UrlRedirectsMenu", [
     "dijit/_WidgetsInTemplateMixin",
     "dijit/form/Button",
     "dijit/Dialog",
+    "dijit/form/TextBox",
 
     "urlRedirectsMenu/UrlRedirectsMenuViewModel",
     "urlRedirectsMenu-grid/UrlRedirectsMenuGrid",
@@ -24,6 +25,7 @@ define("urlRedirectsMenu/UrlRedirectsMenu", [
     _WidgetsInTemplateMixin,
     Button,
     Dialog,
+    TextBox,
 
     UrlRedirectsMenuViewModel,
     UrlRedirectsMenuGrid,
@@ -44,11 +46,12 @@ define("urlRedirectsMenu/UrlRedirectsMenu", [
                 this._initializeGrid();
                 this._initializeForm();
 
-
                 on(this.addButton, "click", this._onAddNewClick.bind(this));
                 on(this.editButton, "click", this._onEditClick.bind(this));
                 on(this.deleteButton, "click", this._onDeleteClick.bind(this));
-                on(this.refreshButton, "click", () => this._refreshView());
+                on(this.refreshButton, "click", this._refreshView.bind(this));
+                on(this.simulatedFindButton, "click", this._onSimulatedFindClick.bind(this));
+                on(this.simulatedResetButton, "click", this._onSimulatedResetClick.bind(this));
                 this.deleteButton.set('disabled', true);
                 this.editButton.set('disabled', true);
 
@@ -146,6 +149,15 @@ define("urlRedirectsMenu/UrlRedirectsMenu", [
                 var newSearchQueryModel = Object.assign(searchQueryModel, newValue);
 
                 this.urlRedirectsMenuViewModel.set("searchQueryModel", newSearchQueryModel);
+            },
+
+            _onSimulatedFindClick: function () {
+                this._onSearchChange({ simulatedOldUrl: this.simulatedOldUrlTextBox.get("value")});
+            },
+
+            _onSimulatedResetClick: function () {
+                this.simulatedOldUrlTextBox.set("value", "");
+                this._onSearchChange({ simulatedOldUrl: ""});
             }
         });
     });

@@ -21,7 +21,7 @@ namespace EpiserverSite.UrlRewritePlugin.Menu
         }
 
         [HttpGet]
-        public ActionResult Get(string oldUrlSearch, string newUrlSearch, string typeSearch, int? prioritySearch, string urlRedirect, IEnumerable<SortColumn> sortColumns, ItemRange range)
+        public ActionResult Get(string oldUrlSearch, string newUrlSearch, string typeSearch, int? prioritySearch, string simulatedOldUrl, IEnumerable<SortColumn> sortColumns, ItemRange range)
         {
             var store = dynamicDataStoreFactory.CreateStore(typeof(UrlRewriteModel));
             var urlRewriteStore = store.Items<UrlRewriteModel>().AsQueryable();
@@ -46,11 +46,12 @@ namespace EpiserverSite.UrlRewritePlugin.Menu
                 urlRewriteStore = urlRewriteStore.Where(item => item.Priority == prioritySearch.Value);
             }
 
-            if(!string.IsNullOrEmpty(urlRedirect))
+            if(!string.IsNullOrEmpty(simulatedOldUrl))
             {
                 urlRewriteStore = urlRewriteStore
+                    .Where(urlRewriteModel => urlRewriteModel.Type == "manual-wildcard")
                     .AsEnumerable()
-                    .Where(urlRewriteModel => Regex.IsMatch(urlRedirect, urlRewriteModel.OldUrl))
+                    .Where(urlRewriteModel => Regex.IsMatch(simulatedOldUrl, urlRewriteModel.OldUrl))
                     .AsQueryable();
             }
 
@@ -60,7 +61,7 @@ namespace EpiserverSite.UrlRewritePlugin.Menu
                 .Items.AsEnumerable()
                 .Select(item => item.MapToUrlRedirectsMenuViewModel());
 
-            HttpContext.Response.Headers.Add("Content-Range", $"0/{urlRewriteStore.Count()}");
+            HttpContext.Response.Headers.Add("Content-Range", $"0/{store.Items<UrlRewriteModel>().Count()}");
             return Rest(results);
         }
 

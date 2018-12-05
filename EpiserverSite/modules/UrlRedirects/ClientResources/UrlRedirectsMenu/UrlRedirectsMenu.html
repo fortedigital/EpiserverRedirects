@@ -13,12 +13,22 @@
             </p>
 
             <div class="menu-container">
-                <div class="grid-container">
+                <div class="url-redirect-grid-container">
                     <button data-dojo-type="dijit/form/Button" data-dojo-attach-point="addButton" type="button">Add new</button>
                     <button data-dojo-type="dijit/form/Button" data-dojo-attach-point="editButton" type="button">Edit</button>
                     <button data-dojo-type="dijit/form/Button" data-dojo-attach-point="deleteButton" type="button">Delete</button>
                     <button data-dojo-type="dijit/form/Button" data-dojo-attach-point="refreshButton" type="button">Refresh</button>
-                    <div data-dojo-type="urlRedirectsMenu-grid/UrlRedirectsMenuGrid" data-dojo-attach-point="urlRedirectsMenuGrid">
+                    <div class="epi-formArea">
+                        <label>Simulate Wildcard redirect:</label>
+                        <input class="form-input" type="text" name="simulatedOldUrl"
+                               data-dojo-props="intermediateChanges:true"
+                               data-dojo-type="dijit/form/TextBox"
+                               placeHolder="Old Url"
+                               data-dojo-attach-point="simulatedOldUrlTextBox" id="simulateOldUrl" />
+                        <button data-dojo-type="dijit/form/Button" data-dojo-attach-point="simulatedFindButton" type="button">Find</button>
+                        <button data-dojo-type="dijit/form/Button" data-dojo-attach-point="simulatedResetButton" type="button">Reset</button>
+                    </div>
+                    <div class="url-redirect-grid" data-dojo-type="urlRedirectsMenu-grid/UrlRedirectsMenuGrid" data-dojo-attach-point="urlRedirectsMenuGrid">
                     </div>
                 </div>
             </div>
