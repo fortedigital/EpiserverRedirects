@@ -123,8 +123,9 @@
             },
 
             getSearchDomNode: function (searchBox) {
-                var searchContainer = domConstruct.create("div", { "class": "epi-gadgetInnerToolbar " });
+                var searchContainer = domConstruct.create("div", { "class": "epi-gadgetInnerToolbar" });
                 searchContainer.appendChild(searchBox.domNode);
+
                 return searchContainer;
             }
         });

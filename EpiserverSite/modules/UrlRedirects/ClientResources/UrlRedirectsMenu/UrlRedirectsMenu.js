@@ -50,8 +50,8 @@ define("urlRedirectsMenu/UrlRedirectsMenu", [
                 on(this.editButton, "click", this._onEditClick.bind(this));
                 on(this.deleteButton, "click", this._onDeleteClick.bind(this));
                 on(this.refreshButton, "click", this._refreshView.bind(this));
-                on(this.simulatedFindButton, "click", this._onSimulatedFindClick.bind(this));
-                on(this.simulatedResetButton, "click", this._onSimulatedResetClick.bind(this));
+                on(this.simulateFindButton, "click", this._onSimulateFindClick.bind(this));
+                on(this.simulateResetButton, "click", this._onSimulateResetClick.bind(this));
                 this.deleteButton.set('disabled', true);
                 this.editButton.set('disabled', true);
 
@@ -69,7 +69,7 @@ define("urlRedirectsMenu/UrlRedirectsMenu", [
             _initializeGrid: function () {
                 this.urlRedirectsMenuGrid.init(this.urlRedirectsMenuViewModel.store);
                 this.urlRedirectsMenuGrid.on('dgrid-select', this._onSelectedItemChange.bind(this));
-                this.urlRedirectsMenuGrid.on('.dgrid-content .dgrid-row:dblclick', (event) => this._onEditClick());
+                this.urlRedirectsMenuGrid.on('.dgrid-content .dgrid-row:dblclick', this._onEditClick.bind(this));
 
                 var searchQueryModel = this.urlRedirectsMenuViewModel.get("searchQueryModel");
                 this.urlRedirectsMenuGrid.setQuery(searchQueryModel);
@@ -151,12 +151,12 @@ define("urlRedirectsMenu/UrlRedirectsMenu", [
                 this.urlRedirectsMenuViewModel.set("searchQueryModel", newSearchQueryModel);
             },
 
-            _onSimulatedFindClick: function () {
-                this._onSearchChange({ simulatedOldUrl: this.simulatedOldUrlTextBox.get("value")});
+            _onSimulateFindClick: function () {
+                this._onSearchChange({ simulatedOldUrl: this.simulateOldUrlTextBox.get("value")});
             },
 
-            _onSimulatedResetClick: function () {
-                this.simulatedOldUrlTextBox.set("value", "");
+            _onSimulateResetClick: function () {
+                this.simulateOldUrlTextBox.set("value", "");
                 this._onSearchChange({ simulatedOldUrl: ""});
             }
         });

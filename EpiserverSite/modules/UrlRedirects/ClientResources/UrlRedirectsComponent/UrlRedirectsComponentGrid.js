@@ -1,33 +1,27 @@
 ﻿define("urlRedirectsComponent/UrlRedirectsComponentGrid", [
     "dojo/_base/declare",
-    "dojo/when",
-
-    "dojo/aspect",
-
 
     "dgrid/Grid",
     "dgrid/Keyboard",
     "dgrid/Selection",
+    'dgrid/OnDemandGrid',
 
     "dijit/layout/_LayoutWidget"
 ],
 
     function (
         declare,
-        when,
-
-        aspect,
 
         Grid,
         Keyboard,
         Selection,
-
+        OnDemandGrid,
 
         _LayoutWidget
     ) {
 
         return declare([_LayoutWidget], {
-            _gridClass: declare([Grid, Selection, Keyboard]),
+            _gridClass: declare([Grid, Selection, Keyboard, OnDemandGrid]),
             grid: null,
 
             postMixInProperties: function () {
@@ -36,17 +30,16 @@
 
             buildRendering: function () {
                 this.inherited(arguments);
-
-                this._setupGrid();
             },
 
-            _setupGrid: function () {
+            init: function (store) {
                 this.grid = new this._gridClass({
                     columns: {
                         oldUrl: "Old Url"
                     },
                     selectionMode: 'single',
-                    cellNavigation: false
+                    cellNavigation: false,
+                    store: store
                 }, this.domNode);
                 this.grid.set("showHeader", false);
             },
@@ -54,6 +47,10 @@
             setData: function (data) {
                 this.grid.refresh();
                 this.grid.renderArray(data);
-            }
+            },
+
+            setQuery: function (searchQueryModel) {
+                this.grid.set("query", searchQueryModel);
+            },
         });
     });

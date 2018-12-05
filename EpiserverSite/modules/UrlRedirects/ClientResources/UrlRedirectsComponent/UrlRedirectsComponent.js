@@ -2,7 +2,6 @@
 define([
     "dojo/_base/declare",
     "dojo/text!./UrlRedirectsComponent.html",
-    "dojo/on",
 
     "dijit/_WidgetBase",
     "dijit/_TemplatedMixin",
@@ -17,7 +16,6 @@ define([
     function (
         declare,
         template,
-        on,
 
         _WidgetBase,
         _TemplatedMixin,
@@ -44,14 +42,14 @@ define([
 
                 var registry = dependency.resolve("epi.storeregistry");
                 this.store = this.store || registry.get("urlRedirectsComponent.urlRedirectsStore");
+
+                this.urlRedirectsComponentGrid.init(this.store);
             },
 
             _getResults: function () {
-                this.store.query({
+                this.urlRedirectsComponentGrid.setQuery({
                     contentId: this.currentContentId,
                     filter: this.searchText
-                }).then(result => {
-                    this.urlRedirectsComponentGrid.setData(result);
                 });
             },
 

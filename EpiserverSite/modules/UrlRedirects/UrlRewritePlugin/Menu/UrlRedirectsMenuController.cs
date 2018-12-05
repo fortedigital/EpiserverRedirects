@@ -9,7 +9,6 @@ using System.Web.Mvc;
 
 namespace EpiserverSite.UrlRewritePlugin.Menu
 {
-
     [Authorize(Roles = "CmsEditors, CmsAdmins")]
     public class UrlRedirectsMenuController: Controller
     {
