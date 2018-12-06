@@ -1,0 +1,26 @@
+﻿.menu-container {
+    display: flex;
+    height:70vh;
+}
+
+.url-redirect-grid-container {
+    width: 75%;
+    padding: 10px;
+}
+
+.wildcard-test-container {
+    padding: 10px;
+    width: 25%;
+}
+
+.epi-formArea .form-input {
+    width: 300px
+}
+
+.alert-danger {
+    padding: 10px;
+    border-radius: 5px;
+    color: #a94442;
+    background-color: #f2dede;
+    border-color: #ebccd1;
+}

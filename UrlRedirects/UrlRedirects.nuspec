@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>UrlRedirects</id>
+    <version>1.0.0</version>
+    <title>UrlRedirects</title>
+    <authors>Forte_ Digital</authors>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Episerver plugin to manage redirects</description>
+    <dependencies>
+      <dependency id="EPiServer.CMS.Core" version="[11.1.0,12)" />
+      <dependency id="EPiServer.Framework" version="[11.1.0,12)" />
+      <dependency id="EPiServer.CMS.UI.Core" version="[11.1.0,12)" />
+      <dependency id="Microsoft.Owin" version="[3.0.1, 4]" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="bin/UrlRedirects.dll" target="lib\net45" />
+    <file src="ClientResources/**/*.*" target="content\modules\_protected\UrlRedirects" />
+    <file src="module.config" target="content\modules\_protected\UrlRedirects" />
+  </files>
+</package>

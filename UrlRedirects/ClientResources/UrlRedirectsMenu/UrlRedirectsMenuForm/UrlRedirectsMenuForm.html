@@ -1,0 +1,66 @@
+﻿<div>
+    <div class="epi-formArea">
+        <div class="epi-size10">
+            <div class="epi-form-container__section__row">
+                <label for="oldUrl">Old Url:</label>
+                <input class="form-input" type="text" name="oldUrl"
+                       required="true"
+                       data-dojo-props="intermediateChanges:true"
+                       data-dojo-type="dijit/form/ValidationTextBox"
+                       data-dojo-attach-point="oldUrlTextBox" id="oldUrl" />
+            </div>
+
+            <div class="epi-form-container__section__row">
+                <label for="newUrl">New Url:</label>
+                <input class="form-input" type="text" name="newUrl"
+                       required="true"
+                       data-dojo-props="intermediateChanges:true"
+                       data-dojo-type="dijit/form/ValidationTextBox"
+                       data-dojo-attach-point="newUrlTextBox" id="newUrl" />
+            </div>
+
+            <div class="epi-form-container__section__row">
+                <label for="type">Type:</label>
+                <select class="form-input" name="typeSelect"
+                        data-dojo-attach-point="typeSelect"
+                        data-dojo-type="dijit/form/Select">
+                    <option value="manual" selected="selected">manual</option>
+                    <option value="manual-wildcard">manual-wildcard</option>
+                </select>
+            </div>
+
+            <div class="epi-form-container__section__row">
+                <label for="type">Redirect Type:</label>
+                <select class="form-input" name="redirectStatusCodeSelect"
+                        data-dojo-attach-point="redirectStatusCodeSelect"
+                        data-dojo-type="dijit/form/Select">
+                    <option value="301" selected="selected">Permanent</option>
+                    <option value="302">Temporary</option>
+                </select>
+            </div>
+
+            <div class="epi-form-container__section__row">
+                <label for="priority">Priority:</label>
+                <input class="form-input" type="text" name="priority"
+                       required="true"
+                       data-dojo-props="
+                           intermediateChanges:true,
+                           constraints:{min:1,places:0},
+                           invalidMessage:'Please enter a numeric value.',
+                           rangeMessage:'Invalid elevation.'"
+                       data-dojo-type="dijit/form/NumberTextBox"
+                       data-dojo-attach-point="priorityNumberTextBox" id="" />
+            </div>
+
+            <div data-dojo-attach-point="duplicateAlert" class="alert-danger">
+                <span>Unable to save because of duplicate old url</span>
+            </div>
+
+        </div>
+        <div class="epi-buttonContainer">
+            <button class="Salt" data-dojo-type="dijit/form/Button" data-dojo-attach-point="saveButton" type="button">Save</button>
+            <button data-dojo-type="dijit/form/Button" data-dojo-attach-point="deleteButton" type="button">Delete</button>
+            <button data-dojo-type="dijit/form/Button" data-dojo-attach-point="cancelButton" type="button">Cancel</button>
+        </div>
+    </div>
+</div>
