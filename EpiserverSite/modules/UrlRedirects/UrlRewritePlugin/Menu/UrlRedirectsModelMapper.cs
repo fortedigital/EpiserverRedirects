@@ -1,10 +1,10 @@
-﻿using EpiserverSite.UrlRewritePlugin;
+﻿using UrlRedirects.UrlRewritePlugin;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace EpiserverSite.modules.UrlRedirects.UrlRewritePlugin.Menu
+namespace UrlRedirects.UrlRewritePlugin.Menu
 {
     public static class UrlRedirectsModelMapper
     {

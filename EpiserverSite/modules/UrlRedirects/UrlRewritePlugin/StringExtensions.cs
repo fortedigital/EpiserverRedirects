@@ -1,4 +1,4 @@
-﻿namespace EpiserverSite.UrlRewritePlugin
+﻿namespace UrlRedirects.UrlRewritePlugin
 {
     public static class StringExtensions
     {

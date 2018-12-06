@@ -1,7 +1,7 @@
 ﻿using Microsoft.Owin;
 using System.Threading.Tasks;
 
-namespace EpiserverSite.UrlRewritePlugin
+namespace UrlRedirects.UrlRewritePlugin
 {
     public class UrlRewriteMiddleware : OwinMiddleware
     {

@@ -3,12 +3,11 @@ using EPiServer.Core;
 using EPiServer.Data.Dynamic;
 using EPiServer.ServiceLocation;
 using EPiServer.Web.Routing;
-using Geta.EPi.Extensions;
 using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
 
-namespace EpiserverSite.UrlRewritePlugin
+namespace UrlRedirects.UrlRewritePlugin
 {
     public static class RedirectHelper
     {

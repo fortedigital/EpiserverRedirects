@@ -2,7 +2,7 @@
 using EPiServer.Data.Dynamic;
 using System;
 
-namespace EpiserverSite.UrlRewritePlugin
+namespace UrlRedirects.UrlRewritePlugin
 {
     [EPiServerDataStore(AutomaticallyRemapStore = true)]
     public class UrlRewriteModel : IDynamicData

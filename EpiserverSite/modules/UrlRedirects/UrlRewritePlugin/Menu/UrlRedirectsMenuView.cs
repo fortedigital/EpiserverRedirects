@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace EpiserverSite.UrlRewritePlugin.Menu
+namespace UrlRedirects.UrlRewritePlugin.Menu
 {
     [CompositeView]
     public class UrlRedirectsMenuView : ICompositeView

@@ -7,7 +7,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
-namespace EpiserverSite.UrlRewritePlugin.Menu
+namespace UrlRedirects.UrlRewritePlugin.Menu
 {
     [Authorize(Roles = "CmsEditors, CmsAdmins")]
     public class UrlRedirectsMenuController: Controller

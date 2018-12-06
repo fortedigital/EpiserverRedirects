@@ -1,7 +1,7 @@
 ﻿using EPiServer.Shell;
 using EPiServer.Shell.ViewComposition;
 
-namespace EpiserverSite.UrlRewritePlugin.Component
+namespace UrlRedirects.UrlRewritePlugin.Component
 {
      [Component(
          Title = "Url redirects",

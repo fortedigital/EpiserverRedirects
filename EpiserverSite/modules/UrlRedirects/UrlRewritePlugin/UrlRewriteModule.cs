@@ -12,7 +12,7 @@ using EPiServer.ServiceLocation;
 using EPiServer.Web.Mvc.Html;
 using EPiServer.Web.Routing;
 
-namespace EpiserverSite.UrlRewritePlugin
+namespace UrlRedirects.UrlRewritePlugin
 {
     [InitializableModule]
     [ModuleDependency(typeof(EPiServer.Web.InitializationModule))]

@@ -1,6 +1,6 @@
 ﻿using EPiServer.Data.Dynamic;
 using EPiServer.Shell.Services.Rest;
-using EpiserverSite.modules.UrlRedirects.UrlRewritePlugin.Menu;
+using UrlRedirects.UrlRewritePlugin.Menu;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +8,7 @@ using System.Net;
 using System.Text.RegularExpressions;
 using System.Web.Mvc;
 
-namespace EpiserverSite.UrlRewritePlugin.Menu
+namespace UrlRedirects.UrlRewritePlugin.Menu
 {
     [RestStore("UrlRedirectsMenuStore")]
     public class UrlRedirectsMenuStore : RestControllerBase
