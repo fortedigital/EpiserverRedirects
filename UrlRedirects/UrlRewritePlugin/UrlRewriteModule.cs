@@ -18,7 +18,7 @@ namespace UrlRedirects.UrlRewritePlugin
     [ModuleDependency(typeof(EPiServer.Web.InitializationModule))]
     public class UrlRewriteModule : IInitializableModule
     {
-        private static Dictionary<int, string> _lastVersionContentIdToUrl = new Dictionary<int, string>();
+        private const string _oldUrlKey = "OLD_URL";
 
         public void Initialize(InitializationEngine context)
         {
@@ -93,17 +93,18 @@ namespace UrlRedirects.UrlRewritePlugin
             var urlHelper = ServiceLocator.Current.GetInstance<UrlHelper>();
             var oldUrl = urlHelper.ContentUrl(e.ContentLink);
 
-            _lastVersionContentIdToUrl.Add(e.ContentLink.ID, oldUrl);
+            e.Items.Add(_oldUrlKey, oldUrl);
         }
 
         private static void EventsSavedContent(object sender, ContentEventArgs e)
         {
-            if(_lastVersionContentIdToUrl.TryGetValue(e.ContentLink.ID, out var oldUrl))
+            var oldUrl = e.Items[_oldUrlKey]?.ToString();
+            if (oldUrl != null)
             {
                 var urlHelper = ServiceLocator.Current.GetInstance<UrlHelper>();
                 var newUrl = urlHelper.ContentUrl(e.ContentLink);
 
-                if(newUrl != oldUrl)
+                if (newUrl != oldUrl)
                 {
                     var contentRepository = ServiceLocator.Current.GetInstance<IContentRepository>();
                     var pageData = contentRepository.Get<IContentData>(e.ContentLink) as PageData;
@@ -111,7 +112,7 @@ namespace UrlRedirects.UrlRewritePlugin
                     RedirectHelper.AddRedirects(pageData, oldUrl, GetCultureInfo(e));
                 }
 
-                _lastVersionContentIdToUrl.Remove(e.ContentLink.ID);
+                e.Items.Remove(_oldUrlKey);
             }
         }
 

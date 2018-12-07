@@ -74,7 +74,7 @@ namespace UrlRedirects.UrlRewritePlugin
             AddRedirectsToDDS(urlRewriteModel);
         }
 
-        private static void AddRedirectsToDDS(UrlRewriteModel urlRewriteModel)
+        public static void AddRedirectsToDDS(UrlRewriteModel urlRewriteModel)
         {
             var store = DynamicDataStoreFactory.Instance.CreateStore(typeof(UrlRewriteModel));
 
