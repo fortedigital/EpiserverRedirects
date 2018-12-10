@@ -1,5 +1,6 @@
 ﻿using Microsoft.Owin;
 using System.Threading.Tasks;
+using UrlRedirects.UrlRewritePlugin.Menu;
 
 namespace UrlRedirects.UrlRewritePlugin
 {
@@ -18,11 +19,11 @@ namespace UrlRedirects.UrlRewritePlugin
 
                 if (urlRewriteModel != null)
                 {
-                    var redirectUrl = urlRewriteModel.Type == "system" ?
-                        RedirectHelper.GetRedirectUrl(urlRewriteModel.ContentId) :
+                    var redirectUrl = urlRewriteModel.Type == UrlRedirectsType.System ?
+                        urlRewriteModel.NewUrl :
                         RedirectHelper.GetRedirectUrl(url, urlRewriteModel);
 
-                    context.Response.StatusCode = urlRewriteModel.RedirectStatusCode;
+                    context.Response.StatusCode = (int)urlRewriteModel.RedirectStatusCode;
                     context.Response.Headers.Set("Location", redirectUrl);
                 }
             }
