@@ -2,7 +2,7 @@
 
 Basic installation scenario
 ------------
-1. ```Install-Package ...```
+1. ```Install-Package ...``` The package can be found in ...
 2. Configure module in web.config
 
 ```xml
