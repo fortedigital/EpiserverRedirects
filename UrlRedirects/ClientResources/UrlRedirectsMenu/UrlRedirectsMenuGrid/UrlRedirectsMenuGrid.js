@@ -124,10 +124,10 @@
                 return new Select({
                     name: "typeSelect",
                     options: [
-                        { label: "all", value: "" },
-                        { label: "system", value: "system" },
-                        { label: "manual", value: "manual" },
-                        { label: "manual-wildcard", value: "manual-wildcard" }
+                        { label: "All", value: "" },
+                        { label: "System", value: "System" },
+                        { label: "Manual", value: "Manual" },
+                        { label: "ManualWildcard", value: "ManualWildcard" }
                     ]
                 });
             },
@@ -136,7 +136,7 @@
                 return new Select({
                     name: "redirectStatusCodeSelect",
                     options: [
-                        { label: "all", value: "" },
+                        { label: "All", value: "" },
                         { label: "Permanent", value: 301 },
                         { label: "Temporary", value: 302 }
                     ]

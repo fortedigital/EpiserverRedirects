@@ -8,9 +8,9 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Episerver plugin to manage redirects</description>
     <dependencies>
-      <dependency id="EPiServer.CMS.Core" version="[11.1.0,12)" />
-      <dependency id="EPiServer.Framework" version="[11.1.0,12)" />
-      <dependency id="EPiServer.CMS.UI.Core" version="[11.1.0,12)" />
+      <dependency id="EPiServer.CMS.Core" version="[11.11.0,12)" />
+      <dependency id="EPiServer.Framework" version="[11.11.0,12)" />
+      <dependency id="EPiServer.CMS.UI.Core" version="[11.13.1,12)" />
       <dependency id="Microsoft.Owin" version="[3.0.1, 4]" />
     </dependencies>
   </metadata>

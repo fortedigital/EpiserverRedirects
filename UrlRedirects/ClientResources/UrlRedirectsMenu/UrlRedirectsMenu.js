@@ -103,7 +103,7 @@ define("urlRedirectsMenu/UrlRedirectsMenu", [
             },
 
             _onEditClick: function () {
-                if (this.selectedModel.type === "system") return;
+                if (this.selectedModel.type === "System") return;
 
                 this.urlRedirectsMenuViewModel.set("mode", "edit");
                 this.urlRedirectsMenuForm.updateView(this.selectedModel, this.urlRedirectsMenuViewModel.get("mode"));
@@ -113,7 +113,7 @@ define("urlRedirectsMenu/UrlRedirectsMenu", [
                 this.selectedModel = event.rows[0].data;
 
                 this.deleteButton.set('disabled', !this.selectedModel);
-                this.editButton.set('disabled', this.selectedModel.type === "system");
+                this.editButton.set('disabled', this.selectedModel.type === "System");
             },
 
             _onSaveForm: function (model) {

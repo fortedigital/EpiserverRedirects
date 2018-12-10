@@ -104,7 +104,7 @@ namespace UrlRedirects.UrlRewritePlugin
                 var urlHelper = ServiceLocator.Current.GetInstance<UrlHelper>();
                 var newUrl = urlHelper.ContentUrl(e.ContentLink);
 
-                if (newUrl != oldUrl)
+                if(newUrl != oldUrl)
                 {
                     var contentRepository = ServiceLocator.Current.GetInstance<IContentRepository>();
                     var pageData = contentRepository.Get<IContentData>(e.ContentLink) as PageData;

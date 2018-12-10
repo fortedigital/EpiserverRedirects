@@ -3,9 +3,11 @@ using EPiServer.Core;
 using EPiServer.Data.Dynamic;
 using EPiServer.ServiceLocation;
 using EPiServer.Web.Routing;
+using System;
 using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
+using Test.modules.UrlRedirects.UrlRewritePlugin;
 
 namespace UrlRedirects.UrlRewritePlugin
 {
@@ -17,28 +19,24 @@ namespace UrlRedirects.UrlRewritePlugin
             HandleChildren(pageData, oldUrl, cultureInfo);
         }
 
-        public static UrlRewriteModel GetRedirectModel(string oldUrl)
+        public static UrlRedirectsDto GetRedirectModel(string oldUrl)
         {
-            var store = DynamicDataStoreFactory.Instance.CreateStore(typeof(UrlRewriteModel));
+            var urlRedirectsService = ServiceLocator.Current.GetInstance<IUrlRedirectsService>();
+            var urlRewriteModels = urlRedirectsService.GetAll();
+            var urlRewriteModel = urlRewriteModels.GetRedirectModel(oldUrl) ?? urlRewriteModels.GetManualWildcardTypeRedirectModel(oldUrl);
 
-            var urlRewriteModel = store.Items<UrlRewriteModel>().GetRedirectModel(oldUrl);
-
-            if (urlRewriteModel == null)
-            {
-                urlRewriteModel = store.Items<UrlRewriteModel>().GetManualWildcardTypeRedirectModel(oldUrl);
-            }
-
-            return urlRewriteModel;
+            return urlRewriteModel.MapToUrlRedirectsDtoModel();
         }
 
-        private static UrlRewriteModel GetRedirectModel(this IOrderedQueryable<UrlRewriteModel> urlRewriteStore, string oldUrl)
+        private static UrlRewriteModel GetRedirectModel(this IQueryable<UrlRewriteModel> urlRewriteStore, string oldUrl)
         {
-            return urlRewriteStore.FirstOrDefault(x => x.OldUrl == oldUrl);
+            return urlRewriteStore
+                .FirstOrDefault(x => x.OldUrl == oldUrl);
         }
 
-        private static UrlRewriteModel GetManualWildcardTypeRedirectModel(this IOrderedQueryable<UrlRewriteModel> urlRewriteStore, string oldUrl)
+        private static UrlRewriteModel GetManualWildcardTypeRedirectModel(this IQueryable<UrlRewriteModel> urlRewriteStore, string oldUrl)
         {
-            return urlRewriteStore.Where(x => x.Type == "manual-wildcard")
+            return urlRewriteStore.Where(x => x.Type == UrlRedirectsType.ManualWildcard.ToString())
                 .OrderBy(urlRewriteModel => urlRewriteModel.Priority)
                 .AsEnumerable()
                 .FirstOrDefault(urlRewriteModel => Regex.IsMatch(oldUrl, urlRewriteModel.OldUrl));
@@ -53,7 +51,7 @@ namespace UrlRedirects.UrlRewritePlugin
             return virtualPathData?.VirtualPath.NormalizePath();
         }
 
-        public static string GetRedirectUrl(string oldUrl, UrlRewriteModel urlRewriteModel)
+        public static string GetRedirectUrl(string oldUrl, UrlRedirectsDto urlRewriteModel)
         {
             return Regex.Replace(oldUrl, urlRewriteModel.OldUrl, urlRewriteModel.NewUrl);
         }
@@ -62,31 +60,25 @@ namespace UrlRedirects.UrlRewritePlugin
         {
             if (!(pageData.Status == VersionStatus.PreviouslyPublished || pageData.Status == VersionStatus.Published)) return;
             
-            var urlRewriteModel = new UrlRewriteModel
+            var urlRedirectsDto = new UrlRedirectsDto
             {
                 OldUrl = oldUrl.NormalizePath(),
                 ContentId = pageData.ContentLink.ID,
-                Type = "system",
+                Type = UrlRedirectsType.System,
                 Priority = 1,
-                RedirectStatusCode = 301
+                RedirectStatusCode = RedirectStatusCode.Permanent
             };
 
-            AddRedirectsToDDS(urlRewriteModel);
-        }
+            var urlRedirectsService = ServiceLocator.Current.GetInstance<IUrlRedirectsService>();
 
-        public static void AddRedirectsToDDS(UrlRewriteModel urlRewriteModel)
-        {
-            var store = DynamicDataStoreFactory.Instance.CreateStore(typeof(UrlRewriteModel));
-
-            var redirectAlredyExist = store.Items<UrlRewriteModel>()
-                .FirstOrDefault(x => x.OldUrl == urlRewriteModel.OldUrl);
-
-            if (redirectAlredyExist != null)
+            try
+            {
+                urlRedirectsService.Post(urlRedirectsDto);
+            }
+            catch (ApplicationException)
             {
                 return;
             }
-
-            store.Save(urlRewriteModel);
         }
 
         private static void HandleChildren(PageData data, string oldUrl, CultureInfo cultureInfo)

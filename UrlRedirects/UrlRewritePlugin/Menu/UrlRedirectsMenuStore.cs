@@ -1,38 +1,37 @@
 ﻿using EPiServer.Data.Dynamic;
 using EPiServer.Shell.Services.Rest;
-using UrlRedirects.UrlRewritePlugin.Menu;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Text.RegularExpressions;
 using System.Web.Mvc;
+using Test.modules.UrlRedirects.UrlRewritePlugin;
 
 namespace UrlRedirects.UrlRewritePlugin.Menu
 {
     [RestStore("UrlRedirectsMenuStore")]
     public class UrlRedirectsMenuStore : RestControllerBase
     {
-        private readonly DynamicDataStoreFactory dynamicDataStoreFactory;
+        private readonly IUrlRedirectsService urlRedirectsService;
 
-        public UrlRedirectsMenuStore(DynamicDataStoreFactory dynamicDataStoreFactory)
+        public UrlRedirectsMenuStore(IUrlRedirectsService urlRedirectsService)
         {
-            this.dynamicDataStoreFactory = dynamicDataStoreFactory;
+            this.urlRedirectsService = urlRedirectsService;
         }
 
         [HttpGet]
         public ActionResult Get(
             string oldUrlSearch,
             string newUrlSearch,
-            string typeSearch, 
-            int? prioritySearch, 
-            string simulatedOldUrl, 
+            string typeSearch,
+            int? prioritySearch,
+            string simulatedOldUrl,
             int? redirectStatusCodeSearch,
             IEnumerable<SortColumn> sortColumns,
             ItemRange range)
         {
-            var store = dynamicDataStoreFactory.CreateStore(typeof(UrlRewriteModel));
-            var urlRewriteStore = store.Items<UrlRewriteModel>().AsQueryable();
+            var urlRewriteStore = urlRedirectsService.GetAll();
 
             if (!string.IsNullOrEmpty(oldUrlSearch))
             {
@@ -62,7 +61,7 @@ namespace UrlRedirects.UrlRewritePlugin.Menu
             if (!string.IsNullOrEmpty(simulatedOldUrl))
             {
                 urlRewriteStore = urlRewriteStore
-                    .Where(urlRewriteModel => urlRewriteModel.Type == "manual-wildcard")
+                    .Where(urlRewriteModel => urlRewriteModel.Type == UrlRedirectsType.ManualWildcard.ToString())
                     .AsEnumerable()
                     .Where(urlRewriteModel => Regex.IsMatch(simulatedOldUrl, urlRewriteModel.OldUrl))
                     .AsQueryable();
@@ -72,58 +71,48 @@ namespace UrlRedirects.UrlRewritePlugin.Menu
                 .OrderBy(sortColumns)
                 .ApplyRange(range)
                 .Items.AsEnumerable()
-                .Select(item => item.MapToUrlRedirectsMenuViewModel());
+                .Select(item => item.MapToUrlRedirectsDtoModel());
 
-            HttpContext.Response.Headers.Add("Content-Range", $"0/{store.Items<UrlRewriteModel>().Count()}");
+            HttpContext.Response.Headers.Add("Content-Range", $"0/{urlRedirectsService.GetAll().Count()}");
             return Rest(results);
         }
 
         [HttpPut]
-        public ActionResult Put(UrlRedirectsMenuViewModel urlRedirectsMenuViewModel)
+        public ActionResult Put(UrlRedirectsDto urlRedirectsDto)
         {
-            var store = dynamicDataStoreFactory.CreateStore(typeof(UrlRewriteModel));
-            var urlRewriteModel = urlRedirectsMenuViewModel.MapToUrlRewriteModel();
+            try
+            {
+                var urlRewriteModel = urlRedirectsService.Put(urlRedirectsDto);
 
-            var redirectAlredyExist = store.Items<UrlRewriteModel>()
-                .FirstOrDefault(x => x.OldUrl == urlRewriteModel.OldUrl && x.Id.ExternalId != urlRedirectsMenuViewModel.Id);
-
-            if (redirectAlredyExist != null)
+                return Rest(urlRewriteModel);
+            }
+            catch (ApplicationException)
             {
                 return new RestStatusCodeResult(HttpStatusCode.Conflict);
             }
-
-            store.Save(urlRewriteModel, urlRedirectsMenuViewModel.Id);
-
-            return Rest(urlRewriteModel);
         }
 
         [HttpPost]
-        public ActionResult Post(UrlRedirectsMenuViewModel urlRedirectsMenuViewModel)
+        public ActionResult Post(UrlRedirectsDto urlRedirectsDto)
         {
-            var store = dynamicDataStoreFactory.CreateStore(typeof(UrlRewriteModel));
-            var urlRewriteModel = urlRedirectsMenuViewModel.MapToUrlRewriteModel();
+            try
+            {
+                var urlRewriteModel = urlRedirectsService.Post(urlRedirectsDto);
 
-            var redirectAlredyExist = store.Items<UrlRewriteModel>()
-                .FirstOrDefault(x => x.OldUrl == urlRewriteModel.OldUrl);
-
-            if (redirectAlredyExist != null)
+                return Rest(urlRewriteModel);
+            }
+            catch (ApplicationException)
             {
                 return new RestStatusCodeResult(HttpStatusCode.Conflict);
             }
-
-            store.Save(urlRewriteModel);
-
-            return Rest(urlRewriteModel);
         }
 
         [HttpDelete]
         public ActionResult Delete(Guid id)
         {
-            var store = dynamicDataStoreFactory.CreateStore(typeof(UrlRewriteModel));
+            urlRedirectsService.Delete(id);
 
-            store.Delete(id);
-
-            return Rest(true);
+            return Rest(HttpStatusCode.OK);
         }
     }
 }
