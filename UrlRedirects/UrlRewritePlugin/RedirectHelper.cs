@@ -3,6 +3,7 @@ using EPiServer.Core;
 using EPiServer.Data.Dynamic;
 using EPiServer.ServiceLocation;
 using EPiServer.Web.Routing;
+using System;
 using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -70,7 +71,14 @@ namespace UrlRedirects.UrlRewritePlugin
 
             var urlRedirectsService = ServiceLocator.Current.GetInstance<IUrlRedirectsService>();
 
-            urlRedirectsService.Post(urlRedirectsDto);
+            try
+            {
+                urlRedirectsService.Post(urlRedirectsDto);
+            }
+            catch (ApplicationException)
+            {
+                return;
+            }
         }
 
         private static void HandleChildren(PageData data, string oldUrl, CultureInfo cultureInfo)
