@@ -23,7 +23,7 @@ Basic installation scenario
   app.Use(typeof(UrlRewriteMiddleware));
 ```
 
-Manage Rediractions
+Manage Redirections
 ------------
 There are two ways to manage rediractions:
 1. Using ```IUrlRedirectsService```
