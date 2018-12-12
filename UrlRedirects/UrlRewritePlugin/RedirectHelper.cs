@@ -25,7 +25,7 @@ namespace UrlRedirects.UrlRewritePlugin
             var urlRewriteModels = urlRedirectsService.GetAll();
             var urlRewriteModel = urlRewriteModels.GetRedirectModel(oldUrl) ?? urlRewriteModels.GetManualWildcardTypeRedirectModel(oldUrl);
 
-            return urlRewriteModel.MapToUrlRedirectsDtoModel();
+            return urlRewriteModel?.MapToUrlRedirectsDtoModel();
         }
 
         private static UrlRewriteModel GetRedirectModel(this IQueryable<UrlRewriteModel> urlRewriteStore, string oldUrl)
