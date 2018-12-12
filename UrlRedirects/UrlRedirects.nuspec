@@ -1,12 +1,13 @@
 <?xml version="1.0"?>
 <package >
   <metadata>
-    <id>UrlRedirects</id>
-    <version>1.0.0</version>
-    <title>UrlRedirects</title>
+    <id>Forte.UrlRedirects</id>
+    <version>$version$</version>
+    <title>Forte.UrlRedirects</title>
     <authors>Forte_ Digital</authors>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Episerver plugin to manage redirects</description>
+    <projectUrl>https://github.com/fortedigital/EPiAutoAlias</projectUrl>
     <dependencies>
       <dependency id="EPiServer.CMS.Core" version="[11.11.0,12)" />
       <dependency id="EPiServer.Framework" version="[11.11.0,12)" />
