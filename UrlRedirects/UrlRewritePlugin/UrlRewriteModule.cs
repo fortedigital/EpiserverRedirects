@@ -1,18 +1,14 @@
-﻿using System.Collections.Generic;
-using System.Globalization;
+﻿using System.Globalization;
 using System.Linq;
-using System.Web.Mvc;
 using EPiServer;
 using EPiServer.Core;
 using EPiServer.DataAbstraction;
 using EPiServer.Framework;
 using EPiServer.Framework.Initialization;
-using EPiServer.Globalization;
 using EPiServer.ServiceLocation;
-using EPiServer.Web.Mvc.Html;
 using EPiServer.Web.Routing;
 
-namespace UrlRedirects.UrlRewritePlugin
+namespace ForteDigital.UrlRedirects.UrlRewritePlugin
 {
     [InitializableModule]
     [ModuleDependency(typeof(EPiServer.Web.InitializationModule))]

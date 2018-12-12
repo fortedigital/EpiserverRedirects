@@ -1,15 +1,13 @@
-﻿using EPiServer;
-using EPiServer.Core;
-using EPiServer.Data.Dynamic;
-using EPiServer.ServiceLocation;
-using EPiServer.Web.Routing;
-using System;
+﻿using System;
 using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
-using Test.modules.UrlRedirects.UrlRewritePlugin;
+using EPiServer;
+using EPiServer.Core;
+using EPiServer.ServiceLocation;
+using EPiServer.Web.Routing;
 
-namespace UrlRedirects.UrlRewritePlugin
+namespace ForteDigital.UrlRedirects.UrlRewritePlugin
 {
     public static class RedirectHelper
     {

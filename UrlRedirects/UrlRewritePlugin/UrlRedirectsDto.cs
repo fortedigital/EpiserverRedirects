@@ -1,11 +1,8 @@
-﻿using Newtonsoft.Json;
+﻿using System;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
-namespace UrlRedirects.UrlRewritePlugin
+namespace Forte.UrlRedirects.UrlRewritePlugin
 {
     public enum UrlRedirectsType
     {

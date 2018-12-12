@@ -1,14 +1,12 @@
-﻿using EPiServer.Data.Dynamic;
-using EPiServer.Shell.Services.Rest;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Text.RegularExpressions;
 using System.Web.Mvc;
-using Test.modules.UrlRedirects.UrlRewritePlugin;
+using EPiServer.Shell.Services.Rest;
 
-namespace UrlRedirects.UrlRewritePlugin.Menu
+namespace Forte.UrlRedirects.UrlRewritePlugin.Menu
 {
     [RestStore("UrlRedirectsMenuStore")]
     public class UrlRedirectsMenuStore : RestControllerBase

@@ -1,12 +1,9 @@
-﻿using EPiServer.Data.Dynamic;
-using EPiServer.ServiceLocation;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Linq;
-using System.Web;
-using UrlRedirects.UrlRewritePlugin;
+using EPiServer.Data.Dynamic;
+using EPiServer.ServiceLocation;
 
-namespace Test.modules.UrlRedirects.UrlRewritePlugin
+namespace ForteDigital.UrlRedirects.UrlRewritePlugin
 {
     [ServiceConfiguration(ServiceType = typeof(IUrlRedirectsService))]
     public class UrlRedirectsService : IUrlRedirectsService

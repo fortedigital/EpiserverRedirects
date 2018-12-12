@@ -1,8 +1,7 @@
-﻿using Microsoft.Owin;
-using System.Threading.Tasks;
-using UrlRedirects.UrlRewritePlugin.Menu;
+﻿using System.Threading.Tasks;
+using Microsoft.Owin;
 
-namespace UrlRedirects.UrlRewritePlugin
+namespace ForteDigital.UrlRedirects.UrlRewritePlugin
 {
     public class UrlRewriteMiddleware : OwinMiddleware
     {
