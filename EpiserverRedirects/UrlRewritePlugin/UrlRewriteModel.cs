@@ -1,7 +1,7 @@
 ﻿using EPiServer.Data;
 using EPiServer.Data.Dynamic;
 
-namespace ForteDigital.UrlRedirects.UrlRewritePlugin
+namespace Forte.EpiserverRedirects.UrlRewritePlugin
 {
     [EPiServerDataStore(AutomaticallyRemapStore = true)]
     public class UrlRewriteModel : IDynamicData

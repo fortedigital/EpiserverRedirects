@@ -1,7 +1,7 @@
 ﻿using EPiServer.Shell.ViewComposition;
 using EPiServer.Shell.ViewComposition.Containers;
 
-namespace Forte.UrlRedirects.UrlRewritePlugin.Menu
+namespace Forte.EpiserverRedirects.UrlRewritePlugin.Menu
 {
     [CompositeView]
     public class UrlRedirectsMenuView : ICompositeView

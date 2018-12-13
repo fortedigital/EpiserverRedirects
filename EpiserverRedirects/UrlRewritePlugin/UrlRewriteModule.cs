@@ -8,7 +8,7 @@ using EPiServer.Framework.Initialization;
 using EPiServer.ServiceLocation;
 using EPiServer.Web.Routing;
 
-namespace ForteDigital.UrlRedirects.UrlRewritePlugin
+namespace Forte.EpiserverRedirects.UrlRewritePlugin
 {
     [InitializableModule]
     [ModuleDependency(typeof(EPiServer.Web.InitializationModule))]

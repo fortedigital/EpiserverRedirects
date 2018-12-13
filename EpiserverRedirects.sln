@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28010.2036
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UrlRedirects", "UrlRedirects\UrlRedirects.csproj", "{4E0AE2DE-6A25-4B65-BB52-D75F2EB0ABDE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EpiserverRedirects", "EpiserverRedirects\EpiserverRedirects.csproj", "{4E0AE2DE-6A25-4B65-BB52-D75F2EB0ABDE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

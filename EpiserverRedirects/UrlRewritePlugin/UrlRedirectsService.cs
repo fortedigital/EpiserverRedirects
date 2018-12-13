@@ -3,7 +3,7 @@ using System.Linq;
 using EPiServer.Data.Dynamic;
 using EPiServer.ServiceLocation;
 
-namespace ForteDigital.UrlRedirects.UrlRewritePlugin
+namespace Forte.EpiserverRedirects.UrlRewritePlugin
 {
     [ServiceConfiguration(ServiceType = typeof(IUrlRedirectsService))]
     public class UrlRedirectsService : IUrlRedirectsService

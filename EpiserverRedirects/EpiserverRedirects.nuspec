@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <package >
   <metadata>
-    <id>Forte.UrlRedirects</id>
+    <id>Forte.EpiserverRedirects</id>
     <version>$version$</version>
-    <title>Forte.UrlRedirects</title>
+    <title>Forte.EpiserverRedirects</title>
     <authors>Forte_ Digital</authors>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Episerver plugin to manage redirects</description>
@@ -16,8 +16,8 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="bin/UrlRedirects.dll" target="lib\net45" />
-    <file src="ClientResources/**/*.*" target="content\modules\_protected\UrlRedirects" />
-    <file src="module.config" target="content\modules\_protected\UrlRedirects" />
+    <file src="bin/Forte.EpiserverRedirects.dll" target="lib\net45" />
+    <file src="ClientResources/**/*.*" target="content\modules\_protected\EpiserverRedirects" />
+    <file src="module.config" target="content\modules\_protected\EpiserverRedirects" />
   </files>
 </package>

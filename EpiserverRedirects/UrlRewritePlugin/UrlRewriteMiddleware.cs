@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.Owin;
 
-namespace ForteDigital.UrlRedirects.UrlRewritePlugin
+namespace Forte.EpiserverRedirects.UrlRewritePlugin
 {
     public class UrlRewriteMiddleware : OwinMiddleware
     {
