@@ -6,7 +6,7 @@ using System.Text.RegularExpressions;
 using System.Web.Mvc;
 using EPiServer.Shell.Services.Rest;
 
-namespace Forte.EpiserverRedirects.UrlRewritePlugin.Menu
+namespace Forte.UrlRedirects.UrlRewritePlugin.Menu
 {
     [RestStore("UrlRedirectsMenuStore")]
     public class UrlRedirectsMenuStore : RestControllerBase

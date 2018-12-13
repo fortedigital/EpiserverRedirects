@@ -2,7 +2,7 @@
 using System.Web.Mvc;
 using EPiServer.Shell.Services.Rest;
 
-namespace Forte.EpiserverRedirects.UrlRewritePlugin.Component
+namespace Forte.UrlRedirects.UrlRewritePlugin.Component
 {
     [RestStore("UrlRedirectsComponentStore")]
     public class UrlRedirectsComponentStore : RestControllerBase

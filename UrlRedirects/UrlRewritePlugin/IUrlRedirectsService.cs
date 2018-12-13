@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 
-namespace Forte.EpiserverRedirects.UrlRewritePlugin
+namespace Forte.UrlRedirects.UrlRewritePlugin
 {
     public interface IUrlRedirectsService
     {

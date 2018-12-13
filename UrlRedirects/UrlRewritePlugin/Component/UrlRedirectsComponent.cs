@@ -1,6 +1,6 @@
 ﻿using EPiServer.Shell.ViewComposition;
 
-namespace Forte.EpiserverRedirects.UrlRewritePlugin.Component
+namespace Forte.UrlRedirects.UrlRewritePlugin.Component
 {
      [Component(
          Title = "Url redirects",

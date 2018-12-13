@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Forte.EpiserverRedirects.UrlRewritePlugin
+namespace Forte.UrlRedirects.UrlRewritePlugin
 {
     public static class UrlRedirectsModelMapper
     {

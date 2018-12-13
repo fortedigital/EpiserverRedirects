@@ -2,7 +2,7 @@
 using EPiServer.Shell.Navigation;
 using EPiServer.Shell.Web.Mvc;
 
-namespace Forte.EpiserverRedirects.UrlRewritePlugin.Menu
+namespace Forte.UrlRedirects.UrlRewritePlugin.Menu
 {
     [Authorize(Roles = "CmsEditors, CmsAdmins")]
     public class UrlRedirectsMenuController: Controller
