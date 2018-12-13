@@ -3,7 +3,7 @@
 Basic installation scenario
 ------------
 1. The package can be found in official NuGet repository.
-```Install-Package Forte.UrlRedirects``` 
+```Install-Package Forte.EpiserverRedirects``` 
 
 2. Configure module in web.config
 
