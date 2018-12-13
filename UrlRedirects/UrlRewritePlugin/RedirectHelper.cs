@@ -1,15 +1,13 @@
-﻿using EPiServer;
-using EPiServer.Core;
-using EPiServer.Data.Dynamic;
-using EPiServer.ServiceLocation;
-using EPiServer.Web.Routing;
-using System;
+﻿using System;
 using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
-using Test.modules.UrlRedirects.UrlRewritePlugin;
+using EPiServer;
+using EPiServer.Core;
+using EPiServer.ServiceLocation;
+using EPiServer.Web.Routing;
 
-namespace UrlRedirects.UrlRewritePlugin
+namespace Forte.UrlRedirects.UrlRewritePlugin
 {
     public static class RedirectHelper
     {
@@ -25,7 +23,7 @@ namespace UrlRedirects.UrlRewritePlugin
             var urlRewriteModels = urlRedirectsService.GetAll();
             var urlRewriteModel = urlRewriteModels.GetRedirectModel(oldUrl) ?? urlRewriteModels.GetManualWildcardTypeRedirectModel(oldUrl);
 
-            return urlRewriteModel.MapToUrlRedirectsDtoModel();
+            return urlRewriteModel?.MapToUrlRedirectsDtoModel();
         }
 
         private static UrlRewriteModel GetRedirectModel(this IQueryable<UrlRewriteModel> urlRewriteStore, string oldUrl)

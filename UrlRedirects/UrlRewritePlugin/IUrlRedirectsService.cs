@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UrlRedirects.UrlRewritePlugin;
 
-namespace Test.modules.UrlRedirects.UrlRewritePlugin
+namespace Forte.UrlRedirects.UrlRewritePlugin
 {
     public interface IUrlRedirectsService
     {

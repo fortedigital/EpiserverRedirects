@@ -2,7 +2,9 @@
 
 Basic installation scenario
 ------------
-1. ```Install-Package ...``` The package can be found in ...
+1. The package can be found in official NuGet repository.
+```Install-Package Forte.EpiserverRedirects``` 
+
 2. Configure module in web.config
 
 ```xml

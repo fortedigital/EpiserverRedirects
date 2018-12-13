@@ -1,4 +1,4 @@
-﻿namespace UrlRedirects.UrlRewritePlugin
+﻿namespace Forte.UrlRedirects.UrlRewritePlugin
 {
     public static class StringExtensions
     {

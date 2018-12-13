@@ -1,7 +1,6 @@
-﻿using EPiServer.Shell;
-using EPiServer.Shell.ViewComposition;
+﻿using EPiServer.Shell.ViewComposition;
 
-namespace UrlRedirects.UrlRewritePlugin.Component
+namespace Forte.UrlRedirects.UrlRewritePlugin.Component
 {
      [Component(
          Title = "Url redirects",

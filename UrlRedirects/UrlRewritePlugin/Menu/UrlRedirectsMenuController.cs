@@ -1,13 +1,8 @@
-﻿using EPiServer.Shell.Navigation;
-using EPiServer.Shell.Web;
+﻿using System.Web.Mvc;
+using EPiServer.Shell.Navigation;
 using EPiServer.Shell.Web.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
 
-namespace UrlRedirects.UrlRewritePlugin.Menu
+namespace Forte.UrlRedirects.UrlRewritePlugin.Menu
 {
     [Authorize(Roles = "CmsEditors, CmsAdmins")]
     public class UrlRedirectsMenuController: Controller

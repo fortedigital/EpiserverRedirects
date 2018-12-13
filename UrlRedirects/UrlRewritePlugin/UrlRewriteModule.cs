@@ -1,18 +1,14 @@
-﻿using System.Collections.Generic;
-using System.Globalization;
+﻿using System.Globalization;
 using System.Linq;
-using System.Web.Mvc;
 using EPiServer;
 using EPiServer.Core;
 using EPiServer.DataAbstraction;
 using EPiServer.Framework;
 using EPiServer.Framework.Initialization;
-using EPiServer.Globalization;
 using EPiServer.ServiceLocation;
-using EPiServer.Web.Mvc.Html;
 using EPiServer.Web.Routing;
 
-namespace UrlRedirects.UrlRewritePlugin
+namespace Forte.UrlRedirects.UrlRewritePlugin
 {
     [InitializableModule]
     [ModuleDependency(typeof(EPiServer.Web.InitializationModule))]
@@ -31,7 +27,7 @@ namespace UrlRedirects.UrlRewritePlugin
 
         private static void EventsPublishedContent(object sender, ContentEventArgs e)
         {
-            var urlHelper = ServiceLocator.Current.GetInstance<UrlHelper>();
+            var urlHelper = ServiceLocator.Current.GetInstance<IUrlResolver>();
             var cvr = ServiceLocator.Current.GetInstance<IContentVersionRepository>();
             var lastVersion = cvr
                 .List(e.ContentLink)
@@ -40,7 +36,7 @@ namespace UrlRedirects.UrlRewritePlugin
                 .FirstOrDefault();
 
             if (lastVersion == null) return;
-            var oldUrl = urlHelper.ContentUrl(lastVersion.ContentLink);
+            var oldUrl = urlHelper.GetUrl(lastVersion.ContentLink);
 
             var contentRepository = ServiceLocator.Current.GetInstance<IContentRepository>();
             var pageData = contentRepository.Get<IContentData>(lastVersion.ContentLink) as PageData;
@@ -90,8 +86,8 @@ namespace UrlRedirects.UrlRewritePlugin
             var cvr = ServiceLocator.Current.GetInstance<IContentVersionRepository>();
             if (cvr.List(e.ContentLink).Any(p => p.Status == VersionStatus.Published || p.Status == VersionStatus.PreviouslyPublished)) return;
 
-            var urlHelper = ServiceLocator.Current.GetInstance<UrlHelper>();
-            var oldUrl = urlHelper.ContentUrl(e.ContentLink);
+            var urlHelper = ServiceLocator.Current.GetInstance<IUrlResolver>();
+            var oldUrl = urlHelper.GetUrl(e.ContentLink);
 
             e.Items.Add(_oldUrlKey, oldUrl);
         }
@@ -101,8 +97,8 @@ namespace UrlRedirects.UrlRewritePlugin
             var oldUrl = e.Items[_oldUrlKey]?.ToString();
             if (oldUrl != null)
             {
-                var urlHelper = ServiceLocator.Current.GetInstance<UrlHelper>();
-                var newUrl = urlHelper.ContentUrl(e.ContentLink);
+                var urlHelper = ServiceLocator.Current.GetInstance<IUrlResolver>();
+                var newUrl = urlHelper.GetUrl(e.ContentLink);
 
                 if(newUrl != oldUrl)
                 {
