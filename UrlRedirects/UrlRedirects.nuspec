@@ -16,7 +16,7 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="bin/UrlRedirects.dll" target="lib\net45" />
+    <file src="bin/Forte.UrlRedirects.dll" target="lib\net45" />
     <file src="ClientResources/**/*.*" target="content\modules\_protected\UrlRedirects" />
     <file src="module.config" target="content\modules\_protected\UrlRedirects" />
   </files>
