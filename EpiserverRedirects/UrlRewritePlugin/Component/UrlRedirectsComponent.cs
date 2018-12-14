@@ -3,7 +3,7 @@
 namespace Forte.EpiserverRedirects.UrlRewritePlugin.Component
 {
      [Component(
-         Title = "Episerver redirects",
+         Title = "Redirects",
          Categories = "cms",
          WidgetType = "episerverRedirectsComponent/UrlRedirectsComponent"
      )]

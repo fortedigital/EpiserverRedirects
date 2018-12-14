@@ -287,6 +287,29 @@
       </FlavorProperties>
     </VisualStudio>
   </ProjectExtensions>
+  <PropertyGroup>
+    <ProjectDir Condition="'$(ProjectDir)' == ''">$(MSBuildProjectDirectory)</ProjectDir>
+    <SolutionDir Condition="'$(SolutionDir)' == ''">$(ProjectDir)</SolutionDir>
+    <!-- NOTE! This is different between cms versions, the zip file needs to be named the same in the package -->
+    <OutDir>$(OutputPath)</OutDir>
+    <zipFile>$(OutDir)\EpiserverRedirects.zip</zipFile>
+  </PropertyGroup>
+  <Target Name="CreateNugetPackage" AfterTargets="Build;Rebuild" Condition="'$(Configuration)' == 'Release' ">
+    <Message Text="Creating Nuget Package" />
+    <!-- Create the Versioned out dir for the client resources-->
+    <!-- Copy -->
+    <ItemGroup>
+      <ClientResources Include="$(ProjectDir)\ClientResources\**\*" />
+    </ItemGroup>
+    <Copy SourceFiles="$(ProjectDir)\module.config" DestinationFolder="$(TmpOutDir)\content" />
+    <Copy SourceFiles="@(ClientResources)" DestinationFiles="@(ClientResources -> '$(TmpOutDir)\content\ClientResources\%(RecursiveDir)%(Filename)%(Extension)')" />
+    <!-- Delete old Zip file -->
+    <Delete Files="$(zipFile)" />
+    <!-- Create the Zip file -->
+    <ZipDirectory SourceDirectory="$(TmpOutDir)\content" DestinationFile="$(zipFile)" Overwrite="true" />
+    <!-- Cleanup -->
+    <RemoveDir Directories="$(TmpOutDir)" />
+  </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

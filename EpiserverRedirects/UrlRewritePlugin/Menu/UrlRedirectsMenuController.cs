@@ -14,9 +14,9 @@ namespace Forte.EpiserverRedirects.UrlRewritePlugin.Menu
             _bootstrapper = bootstrapper;
         }
 
-        [MenuItem(MenuPaths.Global + "/episerverRedirects",
+        [MenuItem(MenuPaths.Global + "/redirects",
            SortIndex = SortIndex.Last + 20,
-           Text = "Episerver Redirects")]
+           Text = "Redirects")]
         public ActionResult Index()
         {
             var viewModel = _bootstrapper.CreateViewModel("UrlRedirectsMenu", ControllerContext, "EpiserverRedirects");
