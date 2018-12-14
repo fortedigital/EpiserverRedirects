@@ -10,9 +10,9 @@ Basic installation scenario
 ```xml
   <episerver.shell>
     <protectedModules rootPath="~/EPiServer/">
-      <add name="UrlRedirects">
+      <add name="EpiserverRedirects">
         <assemblies>
-          <add assembly="UrlRedirects" />
+          <add assembly="Forte.EpiserverRedirects" />
         </assemblies>
       </add>
     </protectedModules>
