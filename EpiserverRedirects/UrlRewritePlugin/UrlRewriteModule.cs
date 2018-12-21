@@ -15,6 +15,11 @@ namespace Forte.EpiserverRedirects.UrlRewritePlugin
     public class UrlRewriteModule : IInitializableModule
     {
         private const string _oldUrlKey = "OLD_URL";
+        
+        private Injected<UrlResolver> UrlResolver { get; set; }
+        private Injected<IContentVersionRepository> ContentVersionRepository { get; set; }
+        private Injected<IContentRepository> ContentRepository { get; set; }
+        private Injected<ILanguageBranchRepository> LanguageBranchRepository { get; set; }
 
         public void Initialize(InitializationEngine context)
         {
@@ -25,23 +30,31 @@ namespace Forte.EpiserverRedirects.UrlRewritePlugin
             events.SavedContent += EventsSavedContent;
         }
 
-        private static void EventsPublishedContent(object sender, ContentEventArgs e)
+        private void EventsPublishedContent(object sender, ContentEventArgs e)
         {
-            var urlHelper = ServiceLocator.Current.GetInstance<IUrlResolver>();
-            var cvr = ServiceLocator.Current.GetInstance<IContentVersionRepository>();
-            var lastVersion = cvr
+            var lastVersion = ContentVersionRepository.Service
                 .List(e.ContentLink)
                 .Where(p => p.Status == VersionStatus.PreviouslyPublished)
                 .OrderByDescending(p => p.Saved)
                 .FirstOrDefault();
-
+            
             if (lastVersion == null) return;
-            var oldUrl = urlHelper.GetUrl(lastVersion.ContentLink);
 
-            var contentRepository = ServiceLocator.Current.GetInstance<IContentRepository>();
-            var pageData = contentRepository.Get<IContentData>(lastVersion.ContentLink) as PageData;
+            var oldUrl = GetContentUrl(lastVersion.ContentLink, lastVersion.LanguageBranch);
+            if (oldUrl == null)
+            {
+                return;
+            }
+            
+            var pageData = ContentRepository.Service.Get<IContentData>(lastVersion.ContentLink) as PageData;
 
             RedirectHelper.AddRedirects(pageData, oldUrl, GetCultureInfo(e));
+        }
+
+        private string GetContentUrl(ContentReference contentReference, string language, bool validateTemplate = true)
+        {
+            var arguments = new VirtualPathArguments {ValidateTemplate = validateTemplate};
+            return UrlResolver.Service.GetUrl(contentReference, language, arguments);
         }
 
         public void Uninitialize(InitializationEngine context)
@@ -53,57 +66,48 @@ namespace Forte.EpiserverRedirects.UrlRewritePlugin
             events.SavedContent -= EventsSavedContent;
         }
 
-        private static void EventsMovedContent(object sender, ContentEventArgs e)
+        private void EventsMovedContent(object sender, ContentEventArgs e)
         {
             if (!(e.Content is IChangeTrackable)) return;
 
             var originalParent = (e as MoveContentEventArgs)?.OriginalParent;
-            var contentRepository = ServiceLocator.Current.GetInstance<IContentRepository>();
-            var languageBranchRepository = ServiceLocator.Current.GetInstance<ILanguageBranchRepository>();
-            var virtualPathArguments = new VirtualPathArguments
+            
+            foreach (var language in LanguageBranchRepository.Service.ListEnabled())
             {
-                ValidateTemplate = false
-            };
+                if (!(ContentRepository.Service.Get<IContentData>(e.ContentLink, language.Culture) is PageData pageData)) return;
 
-            foreach (var language in languageBranchRepository.ListEnabled())
-            {
-                if (!(contentRepository.Get<IContentData>(e.ContentLink, language.Culture) is PageData pageData)) return;
+                var oldUrl = GetContentUrl(originalParent, language.Culture.Name);
+                if (oldUrl == null)
+                {
+                    continue;                    
+                }
 
-                var oldUrl =
-                    UrlResolver.Current.GetUrl(originalParent,
-                        language.Culture.Name, virtualPathArguments)
-                    + pageData.URLSegment;
-
-                RedirectHelper.AddRedirects(pageData, oldUrl, language.Culture);
+                RedirectHelper.AddRedirects(pageData, oldUrl + pageData.URLSegment, language.Culture);
             }
         }
 
-        private static void EventsSavingContent(object sender, ContentEventArgs e)
+        private void EventsSavingContent(object sender, ContentEventArgs e)
         {
             var transition = (e as SaveContentEventArgs)?.Transition;
             if (transition.Value.CurrentStatus == VersionStatus.NotCreated) return;
 
-            var cvr = ServiceLocator.Current.GetInstance<IContentVersionRepository>();
-            if (cvr.List(e.ContentLink).Any(p => p.Status == VersionStatus.Published || p.Status == VersionStatus.PreviouslyPublished)) return;
+            if (ContentVersionRepository.Service.List(e.ContentLink).Any(p => p.Status == VersionStatus.Published || p.Status == VersionStatus.PreviouslyPublished)) return;
 
-            var urlHelper = ServiceLocator.Current.GetInstance<IUrlResolver>();
-            var oldUrl = urlHelper.GetUrl(e.ContentLink);
+            var oldUrl = UrlResolver.Service.GetUrl(e.ContentLink);
 
             e.Items.Add(_oldUrlKey, oldUrl);
         }
 
-        private static void EventsSavedContent(object sender, ContentEventArgs e)
+        private void EventsSavedContent(object sender, ContentEventArgs e)
         {
             var oldUrl = e.Items[_oldUrlKey]?.ToString();
             if (oldUrl != null)
             {
-                var urlHelper = ServiceLocator.Current.GetInstance<IUrlResolver>();
-                var newUrl = urlHelper.GetUrl(e.ContentLink);
+                var newUrl = UrlResolver.Service.GetUrl(e.ContentLink);
 
                 if(newUrl != oldUrl)
                 {
-                    var contentRepository = ServiceLocator.Current.GetInstance<IContentRepository>();
-                    var pageData = contentRepository.Get<IContentData>(e.ContentLink) as PageData;
+                    var pageData = ContentRepository.Service.Get<IContentData>(e.ContentLink) as PageData;
 
                     RedirectHelper.AddRedirects(pageData, oldUrl, GetCultureInfo(e));
                 }
