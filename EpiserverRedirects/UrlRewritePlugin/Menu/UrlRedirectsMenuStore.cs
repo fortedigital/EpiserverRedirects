@@ -31,7 +31,7 @@ namespace Forte.EpiserverRedirects.UrlRewritePlugin.Menu
         {
             var urlRewriteStore = urlRedirectsService.GetAll();
 
-            if (!string.IsNullOrEmpty(oldUrlSearch))
+           if (!string.IsNullOrEmpty(oldUrlSearch))
             {
                 urlRewriteStore = urlRewriteStore.Where(item => item.OldUrl.Contains(oldUrlSearch));
             }
@@ -71,7 +71,7 @@ namespace Forte.EpiserverRedirects.UrlRewritePlugin.Menu
                 .Items.AsEnumerable()
                 .Select(item => item.MapToUrlRedirectsDtoModel());
 
-            HttpContext.Response.Headers.Add("Content-Range", $"0/{urlRedirectsService.GetAll().Count()}");
+            HttpContext.Response.Headers.Add("Content-Range", $"0/{urlRewriteStore.Count()}");
             return Rest(results);
         }
 
