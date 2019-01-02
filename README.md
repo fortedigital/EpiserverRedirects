@@ -41,4 +41,8 @@ There are two ways to manage rediractions:
 ```
 2. Using user interface 
 
+Configuration
+-------------
+
+There is possibility to disable adding redirects to moved content automatically. To do this, set `Forte.EpiserverRedirects.UrlRewritePlugin.Configuration.AddAutomaticRedirects` flag to `false`.
 
