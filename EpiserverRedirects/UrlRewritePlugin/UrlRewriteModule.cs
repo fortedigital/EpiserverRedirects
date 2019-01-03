@@ -32,6 +32,9 @@ namespace Forte.EpiserverRedirects.UrlRewritePlugin
 
         private void EventsPublishedContent(object sender, ContentEventArgs e)
         {
+            if (Configuration.AddAutomaticRedirects == false)
+                return;
+            
             var lastVersion = ContentVersionRepository.Service
                 .List(e.ContentLink)
                 .Where(p => p.Status == VersionStatus.PreviouslyPublished)
@@ -68,6 +71,9 @@ namespace Forte.EpiserverRedirects.UrlRewritePlugin
 
         private void EventsMovedContent(object sender, ContentEventArgs e)
         {
+            if (Configuration.AddAutomaticRedirects == false)
+                return;
+            
             if (!(e.Content is IChangeTrackable)) return;
 
             var originalParent = (e as MoveContentEventArgs)?.OriginalParent;
@@ -88,6 +94,9 @@ namespace Forte.EpiserverRedirects.UrlRewritePlugin
 
         private void EventsSavingContent(object sender, ContentEventArgs e)
         {
+            if (Configuration.AddAutomaticRedirects == false)
+                return;
+            
             var transition = (e as SaveContentEventArgs)?.Transition;
             if (transition.Value.CurrentStatus == VersionStatus.NotCreated) return;
 
@@ -100,6 +109,9 @@ namespace Forte.EpiserverRedirects.UrlRewritePlugin
 
         private void EventsSavedContent(object sender, ContentEventArgs e)
         {
+            if (Configuration.AddAutomaticRedirects == false)
+                return;
+            
             var oldUrl = e.Items[_oldUrlKey]?.ToString();
             if (oldUrl != null)
             {
