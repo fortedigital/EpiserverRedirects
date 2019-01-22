@@ -33,15 +33,21 @@ namespace Forte.EpiserverRedirects.UrlRewritePlugin
         private void EventsPublishedContent(object sender, ContentEventArgs e)
         {
             if (Configuration.AddAutomaticRedirects == false)
+            {
                 return;
+            }
+                
             
             var lastVersion = ContentVersionRepository.Service
                 .List(e.ContentLink)
                 .Where(p => p.Status == VersionStatus.PreviouslyPublished)
                 .OrderByDescending(p => p.Saved)
                 .FirstOrDefault();
-            
-            if (lastVersion == null) return;
+
+            if (lastVersion == null)
+            {
+                return;
+            }
 
             var oldUrl = GetContentUrl(lastVersion.ContentLink, lastVersion.LanguageBranch);
             if (oldUrl == null)
@@ -49,9 +55,13 @@ namespace Forte.EpiserverRedirects.UrlRewritePlugin
                 return;
             }
             
-            var pageData = ContentRepository.Service.Get<IContentData>(lastVersion.ContentLink) as PageData;
+            var lastVersionPageData = ContentRepository.Service.Get<IContentData>(lastVersion.ContentLink) as PageData;
+            if (lastVersionPageData == null)
+            {
+                return;
+            }
 
-            RedirectHelper.AddRedirects(pageData, oldUrl, GetCultureInfo(e));
+            RedirectHelper.AddRedirects(lastVersionPageData, oldUrl, GetCultureInfo(e));
         }
 
         private string GetContentUrl(ContentReference contentReference, string language, bool validateTemplate = true)
