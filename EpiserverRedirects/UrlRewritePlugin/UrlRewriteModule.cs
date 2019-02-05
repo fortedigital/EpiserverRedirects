@@ -1,6 +1,7 @@
 ﻿using System.Globalization;
 using System.Linq;
 using EPiServer;
+using EPiServer.Cms.Shell;
 using EPiServer.Core;
 using EPiServer.DataAbstraction;
 using EPiServer.Framework;
@@ -37,7 +38,6 @@ namespace Forte.EpiserverRedirects.UrlRewritePlugin
                 return;
             }
                 
-            
             var lastVersion = ContentVersionRepository.Service
                 .List(e.ContentLink)
                 .Where(p => p.Status == VersionStatus.PreviouslyPublished)
@@ -50,7 +50,14 @@ namespace Forte.EpiserverRedirects.UrlRewritePlugin
             }
 
             var oldUrl = GetContentUrl(lastVersion.ContentLink, lastVersion.LanguageBranch);
+            
             if (oldUrl == null)
+            {
+                return;
+            }
+
+            var newUrl = GetContentUrl(e.ContentLink, e.Content.LanguageBranch());
+            if (oldUrl == newUrl)
             {
                 return;
             }
@@ -110,6 +117,8 @@ namespace Forte.EpiserverRedirects.UrlRewritePlugin
             var transition = (e as SaveContentEventArgs)?.Transition;
             if (transition.Value.CurrentStatus == VersionStatus.NotCreated) return;
 
+            // create redirects only if page is unpublished
+            // because child objects may have been already published so their URL changes
             if (ContentVersionRepository.Service.List(e.ContentLink).Any(p => p.Status == VersionStatus.Published || p.Status == VersionStatus.PreviouslyPublished)) return;
 
             var oldUrl = UrlResolver.Service.GetUrl(e.ContentLink);
