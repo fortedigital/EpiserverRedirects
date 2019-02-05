@@ -132,19 +132,21 @@ namespace Forte.EpiserverRedirects.UrlRewritePlugin
                 return;
             
             var oldUrl = e.Items[_oldUrlKey]?.ToString();
-            if (oldUrl != null)
+            if (oldUrl == null)
             {
-                var newUrl = UrlResolver.Service.GetUrl(e.ContentLink);
-
-                if(newUrl != oldUrl)
-                {
-                    var pageData = ContentRepository.Service.Get<IContentData>(e.ContentLink) as PageData;
-
-                    RedirectHelper.AddRedirects(pageData, oldUrl, GetCultureInfo(e));
-                }
-
-                e.Items.Remove(_oldUrlKey);
+                return;
             }
+            
+            var newUrl = UrlResolver.Service.GetUrl(e.ContentLink);
+
+            if(newUrl != oldUrl)
+            {
+                var pageData = ContentRepository.Service.Get<IContentData>(e.ContentLink) as PageData;
+
+                RedirectHelper.AddRedirects(pageData, oldUrl, GetCultureInfo(e));
+            }
+
+            e.Items.Remove(_oldUrlKey);
         }
 
         private static CultureInfo GetCultureInfo(ContentEventArgs e)
