@@ -94,6 +94,14 @@ namespace Forte.EpiserverRedirects.UrlRewritePlugin
             if (!(e.Content is IChangeTrackable)) return;
 
             var originalParent = (e as MoveContentEventArgs)?.OriginalParent;
+            var targetParent = e.TargetLink;
+
+            if (originalParent == ContentReference.WasteBasket)
+            {
+                // do not create when restoring, cause not need to do redirects from waste basket.
+                // however, DO redirect when moving to waste basket, because restore may be to another place 
+                return;
+            }
             
             foreach (var language in LanguageBranchRepository.Service.ListEnabled())
             {
