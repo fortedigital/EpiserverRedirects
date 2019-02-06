@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -71,6 +72,22 @@ namespace Forte.EpiserverRedirects.UrlRewritePlugin
             catch (ApplicationException)
             {
                 return;
+            }
+        }
+        
+        public static void DeleteRedirects(ContentReference deletedContent, IEnumerable<ContentReference> deletedDescendants)
+        {
+            var urlRedirectsService = ServiceLocator.Current.GetInstance<IUrlRedirectsService>();
+
+            var redirectsToDelete = urlRedirectsService.GetAll()
+                .ToList()
+                .Where(x => deletedContent.ID == x.ContentId || deletedDescendants.Contains(new ContentReference(x.ContentId)))
+                .Select(x => x.Id.ExternalId)
+                .ToList();
+
+            foreach (var redirect in redirectsToDelete)
+            {
+                urlRedirectsService.Delete(redirect);
             }
         }
 
