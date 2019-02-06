@@ -79,9 +79,10 @@ namespace Forte.EpiserverRedirects.UrlRewritePlugin
         {
             var urlRedirectsService = ServiceLocator.Current.GetInstance<IUrlRedirectsService>();
 
+            var deletedDescendantsIds = deletedDescendants.Select(x => x.ID).ToList();
+            
             var redirectsToDelete = urlRedirectsService.GetAll()
-                .ToList()
-                .Where(x => deletedContent.ID == x.ContentId || deletedDescendants.Contains(new ContentReference(x.ContentId)))
+                .Where(x => deletedContent.ID == x.ContentId || deletedDescendantsIds.Contains(x.ContentId))
                 .Select(x => x.Id.ExternalId)
                 .ToList();
 
