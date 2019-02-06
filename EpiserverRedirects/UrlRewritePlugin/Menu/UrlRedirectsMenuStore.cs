@@ -69,7 +69,7 @@ namespace Forte.EpiserverRedirects.UrlRewritePlugin.Menu
                 .OrderBy(sortColumns)
                 .ApplyRange(range)
                 .Items.AsEnumerable()
-                .Select(item => item.MapToUrlRedirectsDtoModel());
+                .Select(item => item.MapToUrlRedirectsDto());
 
             HttpContext.Response.Headers.Add("Content-Range", $"0/{urlRewriteStore.Count()}");
             return Rest(results);

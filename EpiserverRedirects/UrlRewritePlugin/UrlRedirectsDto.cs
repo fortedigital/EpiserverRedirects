@@ -19,19 +19,48 @@ namespace Forte.EpiserverRedirects.UrlRewritePlugin
 
     public class UrlRedirectsDto
     {
-        public Guid Id { get; set; }
+        public Guid Id { get; }
 
-        public string OldUrl { get; set; }
+        public string OldUrl { get; }
 
-        public string NewUrl { get; set; }
+        public string NewUrl { get; }
 
-        public int ContentId { get; set; }
+        public int ContentId { get; }
 
         [JsonConverter(typeof(StringEnumConverter))]
-        public UrlRedirectsType Type { get; set; }
+        public UrlRedirectsType Type { get; }
 
-        public int Priority { get; set; }
+        public int Priority { get; }
 
-        public RedirectStatusCode RedirectStatusCode { get; set; }
+        public RedirectStatusCode RedirectStatusCode { get; }
+
+        internal UrlRedirectsDto(Guid id, string oldUrl, string newUrl, int contentId, UrlRedirectsType type, int priority, RedirectStatusCode redirectStatusCode)
+        {
+            Id = id;
+            OldUrl = oldUrl;
+            NewUrl = newUrl;
+            ContentId = contentId;
+            Type = type;
+            Priority = priority;
+            RedirectStatusCode = redirectStatusCode;
+        }
+
+        public UrlRedirectsDto(string oldUrl, int contentId, UrlRedirectsType type, int priority, RedirectStatusCode redirectStatusCode)
+        {
+            OldUrl = oldUrl;
+            ContentId = contentId;
+            Type = type;
+            Priority = priority;
+            RedirectStatusCode = redirectStatusCode;
+        }
+        
+        public UrlRedirectsDto(string oldUrl, string newUrl, UrlRedirectsType type, int priority, RedirectStatusCode redirectStatusCode)
+        {
+            OldUrl = oldUrl;
+            NewUrl = newUrl;
+            Type = type;
+            Priority = priority;
+            RedirectStatusCode = redirectStatusCode;
+        }
     }
 }

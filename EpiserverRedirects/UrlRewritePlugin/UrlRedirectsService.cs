@@ -46,7 +46,7 @@ namespace Forte.EpiserverRedirects.UrlRewritePlugin
 
             urlRewriteModel.Id = identity;
 
-            return urlRewriteModel.MapToUrlRedirectsDtoModel();
+            return urlRewriteModel.MapToUrlRedirectsDto();
         }
 
         public UrlRedirectsDto Put(UrlRedirectsDto urlRedirectsDto)
@@ -54,17 +54,13 @@ namespace Forte.EpiserverRedirects.UrlRewritePlugin
             var store = dynamicDataStoreFactory.CreateStore(typeof(UrlRewriteModel));
             var urlRewriteModel = urlRedirectsDto.MapToUrlRewriteModel();
 
-            var redirectAlreadyExist = store.Items<UrlRewriteModel>()
-                .FirstOrDefault(x => x.OldUrl == urlRewriteModel.OldUrl && x.Id.ExternalId != urlRedirectsDto.Id);
+            var existingRedirect = store.Items<UrlRewriteModel>()
+                .FirstOrDefault(x => x.OldUrl == urlRewriteModel.OldUrl);
 
-            if (redirectAlreadyExist != null)
-            {
-                throw new ApplicationException($"Redirect with this oldUrl: {urlRedirectsDto.OldUrl} already exist");
-            }
-
-            store.Save(urlRewriteModel, urlRedirectsDto.Id);
-
-            return urlRewriteModel.MapToUrlRedirectsDtoModel();
+            var newIdentity = store.Save(urlRewriteModel, existingRedirect?.Id);
+            urlRewriteModel.Id = newIdentity.ExternalId;
+            
+            return urlRewriteModel.MapToUrlRedirectsDto();
         }
     }
 }

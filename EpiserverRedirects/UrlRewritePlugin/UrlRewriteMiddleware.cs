@@ -35,7 +35,6 @@ namespace Forte.EpiserverRedirects.UrlRewritePlugin
                     context.Response.Headers.Set("Location", redirectUrl);
                 }
             }
-
         }
 
         private static bool IsContentDeleted(int contentId)

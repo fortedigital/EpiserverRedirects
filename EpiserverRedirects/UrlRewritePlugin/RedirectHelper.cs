@@ -23,7 +23,7 @@ namespace Forte.EpiserverRedirects.UrlRewritePlugin
             var urlRewriteModels = urlRedirectsService.GetAll();
             var urlRewriteModel = urlRewriteModels.GetRedirectModel(oldUrl) ?? urlRewriteModels.GetManualWildcardTypeRedirectModel(oldUrl);
 
-            return urlRewriteModel?.MapToUrlRedirectsDtoModel();
+            return urlRewriteModel?.MapToUrlRedirectsDto();
         }
 
         private static UrlRewriteModel GetRedirectModel(this IQueryable<UrlRewriteModel> urlRewriteStore, string oldUrl)
@@ -57,21 +57,16 @@ namespace Forte.EpiserverRedirects.UrlRewritePlugin
         private static void AddRedirectsToDDS(PageData pageData, string oldUrl)
         {
             if (!(pageData.Status == VersionStatus.PreviouslyPublished || pageData.Status == VersionStatus.Published)) return;
-            
-            var urlRedirectsDto = new UrlRedirectsDto
-            {
-                OldUrl = oldUrl.NormalizePath(),
-                ContentId = pageData.ContentLink.ID,
-                Type = UrlRedirectsType.System,
-                Priority = 1,
-                RedirectStatusCode = RedirectStatusCode.Permanent
-            };
+
+            var urlRedirectsDto = new UrlRedirectsDto(
+                oldUrl.NormalizePath(), pageData.ContentLink.ID, UrlRedirectsType.System, 1,
+                RedirectStatusCode.Permanent);
 
             var urlRedirectsService = ServiceLocator.Current.GetInstance<IUrlRedirectsService>();
 
             try
             {
-                urlRedirectsService.Post(urlRedirectsDto);
+                urlRedirectsService.Put(urlRedirectsDto);
             }
             catch (ApplicationException)
             {
