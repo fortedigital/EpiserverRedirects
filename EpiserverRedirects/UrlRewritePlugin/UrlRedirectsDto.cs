@@ -4,34 +4,45 @@ using Newtonsoft.Json.Converters;
 
 namespace Forte.EpiserverRedirects.UrlRewritePlugin
 {
-    public enum UrlRedirectsType
-    {
-        System,
-        Manual,
-        ManualWildcard
-    }
-
-    public enum RedirectStatusCode
-    {
-        Permanent = 301,
-        Temporary = 302
-    }
-
     public class UrlRedirectsDto
     {
-        public Guid Id { get; set; }
+        /// <summary>
+        ///     Meant to be used ONLY when mapping from redirect model. When adding redirects, other ctors should be used
+        ///     (not providing the id)
+        /// </summary>
+        internal UrlRedirectsDto(Guid id, string oldUrl, string newUrl, int contentId, UrlRedirectsType type,
+            int priority, RedirectStatusCode redirectStatusCode)
+        {
+            Id = id;
+            OldUrl = oldUrl;
+            NewUrl = newUrl;
+            ContentId = contentId;
+            Type = type;
+            Priority = priority;
+            RedirectStatusCode = redirectStatusCode;
+        }
 
-        public string OldUrl { get; set; }
+        public UrlRedirectsDto(string oldUrl, int contentId, UrlRedirectsType type, int priority,
+            RedirectStatusCode redirectStatusCode) : this(Guid.Empty, oldUrl, null, contentId, type, priority,
+            redirectStatusCode)
+        {
+        }
 
-        public string NewUrl { get; set; }
+        public UrlRedirectsDto(string oldUrl, string newUrl, UrlRedirectsType type, int priority,
+            RedirectStatusCode redirectStatusCode) : this(Guid.Empty, oldUrl, newUrl, 0, type, priority,
+            redirectStatusCode)
+        {
+        }
 
-        public int ContentId { get; set; }
+        public Guid Id { get; }
+        public string OldUrl { get; }
+        public string NewUrl { get; }
+        public int ContentId { get; }
 
         [JsonConverter(typeof(StringEnumConverter))]
-        public UrlRedirectsType Type { get; set; }
+        public UrlRedirectsType Type { get; }
 
-        public int Priority { get; set; }
-
-        public RedirectStatusCode RedirectStatusCode { get; set; }
+        public int Priority { get; }
+        public RedirectStatusCode RedirectStatusCode { get; }
     }
 }

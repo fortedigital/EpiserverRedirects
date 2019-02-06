@@ -1,6 +1,8 @@
 ﻿using System.Globalization;
 using System.Linq;
+using System.Web.UI.WebControls;
 using EPiServer;
+using EPiServer.Cms.Shell;
 using EPiServer.Core;
 using EPiServer.DataAbstraction;
 using EPiServer.Framework;
@@ -24,20 +26,20 @@ namespace Forte.EpiserverRedirects.UrlRewritePlugin
         public void Initialize(InitializationEngine context)
         {
             var events = context.Locate.ContentEvents();
-            events.MovedContent += EventsMovedContent;
-            events.PublishedContent += EventsPublishedContent;
-            events.SavingContent += EventsSavingContent;
-            events.SavedContent += EventsSavedContent;
+            events.MovedContent += MovedContentHandler;
+            events.PublishedContent += PublishedConentHandler;
+            events.SavingContent += SavingContentHandler;
+            events.SavedContent += SavedContentHandler;
+            events.DeletedContent += DeletedContentHandler;
         }
 
-        private void EventsPublishedContent(object sender, ContentEventArgs e)
+        private void PublishedConentHandler(object sender, ContentEventArgs e)
         {
             if (Configuration.AddAutomaticRedirects == false)
             {
                 return;
             }
                 
-            
             var lastVersion = ContentVersionRepository.Service
                 .List(e.ContentLink)
                 .Where(p => p.Status == VersionStatus.PreviouslyPublished)
@@ -50,7 +52,14 @@ namespace Forte.EpiserverRedirects.UrlRewritePlugin
             }
 
             var oldUrl = GetContentUrl(lastVersion.ContentLink, lastVersion.LanguageBranch);
+            
             if (oldUrl == null)
+            {
+                return;
+            }
+
+            var newUrl = GetContentUrl(e.ContentLink, e.Content.LanguageBranch());
+            if (oldUrl == newUrl)
             {
                 return;
             }
@@ -73,13 +82,14 @@ namespace Forte.EpiserverRedirects.UrlRewritePlugin
         public void Uninitialize(InitializationEngine context)
         {
             var events = context.Locate.ContentEvents();
-            events.MovedContent -= EventsMovedContent;
-            events.PublishedContent -= EventsPublishedContent;
-            events.SavingContent -= EventsSavingContent;
-            events.SavedContent -= EventsSavedContent;
+            events.MovedContent -= MovedContentHandler;
+            events.PublishedContent -= PublishedConentHandler;
+            events.SavingContent -= SavingContentHandler;
+            events.SavedContent -= SavedContentHandler;
+            events.DeletedContent -= DeletedContentHandler;
         }
 
-        private void EventsMovedContent(object sender, ContentEventArgs e)
+        private void MovedContentHandler(object sender, ContentEventArgs e)
         {
             if (Configuration.AddAutomaticRedirects == false)
                 return;
@@ -87,6 +97,13 @@ namespace Forte.EpiserverRedirects.UrlRewritePlugin
             if (!(e.Content is IChangeTrackable)) return;
 
             var originalParent = (e as MoveContentEventArgs)?.OriginalParent;
+
+            if (originalParent == ContentReference.WasteBasket)
+            {
+                // do not create when restoring, cause not need to do redirects from waste basket.
+                // however, DO redirect when moving to waste basket, because restore may be to another place 
+                return;
+            }
             
             foreach (var language in LanguageBranchRepository.Service.ListEnabled())
             {
@@ -102,7 +119,7 @@ namespace Forte.EpiserverRedirects.UrlRewritePlugin
             }
         }
 
-        private void EventsSavingContent(object sender, ContentEventArgs e)
+        private void SavingContentHandler(object sender, ContentEventArgs e)
         {
             if (Configuration.AddAutomaticRedirects == false)
                 return;
@@ -110,6 +127,8 @@ namespace Forte.EpiserverRedirects.UrlRewritePlugin
             var transition = (e as SaveContentEventArgs)?.Transition;
             if (transition.Value.CurrentStatus == VersionStatus.NotCreated) return;
 
+            // create redirects only if page is unpublished
+            // because child objects may have been already published so their URL changes
             if (ContentVersionRepository.Service.List(e.ContentLink).Any(p => p.Status == VersionStatus.Published || p.Status == VersionStatus.PreviouslyPublished)) return;
 
             var oldUrl = UrlResolver.Service.GetUrl(e.ContentLink);
@@ -117,25 +136,32 @@ namespace Forte.EpiserverRedirects.UrlRewritePlugin
             e.Items.Add(_oldUrlKey, oldUrl);
         }
 
-        private void EventsSavedContent(object sender, ContentEventArgs e)
+        private void SavedContentHandler(object sender, ContentEventArgs e)
         {
             if (Configuration.AddAutomaticRedirects == false)
                 return;
             
             var oldUrl = e.Items[_oldUrlKey]?.ToString();
-            if (oldUrl != null)
+            if (oldUrl == null)
             {
-                var newUrl = UrlResolver.Service.GetUrl(e.ContentLink);
-
-                if(newUrl != oldUrl)
-                {
-                    var pageData = ContentRepository.Service.Get<IContentData>(e.ContentLink) as PageData;
-
-                    RedirectHelper.AddRedirects(pageData, oldUrl, GetCultureInfo(e));
-                }
-
-                e.Items.Remove(_oldUrlKey);
+                return;
             }
+            
+            var newUrl = UrlResolver.Service.GetUrl(e.ContentLink);
+
+            if(newUrl != oldUrl)
+            {
+                var pageData = ContentRepository.Service.Get<IContentData>(e.ContentLink) as PageData;
+
+                RedirectHelper.AddRedirects(pageData, oldUrl, GetCultureInfo(e));
+            }
+
+            e.Items.Remove(_oldUrlKey);
+        }
+
+        private void DeletedContentHandler(object sender, ContentEventArgs e)
+        {
+            RedirectHelper.DeleteRedirects(e.ContentLink, ((DeleteContentEventArgs) e).DeletedDescendents);
         }
 
         private static CultureInfo GetCultureInfo(ContentEventArgs e)

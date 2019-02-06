@@ -2,27 +2,22 @@
 
 namespace Forte.EpiserverRedirects.UrlRewritePlugin
 {
-    public static class UrlRedirectsModelMapper
+    internal static class UrlRedirectsModelMapper
     {
-        public static UrlRedirectsDto MapToUrlRedirectsDtoModel(this UrlRewriteModel urlRewriteModel)
+        public static UrlRedirectsDto MapToUrlRedirectsDto(this UrlRewriteModel urlRewriteModel)
         {
             if(!Enum.TryParse(urlRewriteModel.Type, out UrlRedirectsType urlRedirectsType)) { throw new ArgumentException("Invalid UrlRedirects Type"); }
 
-            return new UrlRedirectsDto()
-            {
-                Id = urlRewriteModel.Id.ExternalId,
-                OldUrl = urlRewriteModel.OldUrl,
-                NewUrl = urlRewriteModel.NewUrl ?? RedirectHelper.GetRedirectUrl(urlRewriteModel.ContentId),
-                ContentId = urlRewriteModel.ContentId,
-                Type = urlRedirectsType,
-                Priority = urlRewriteModel.Priority,
-                RedirectStatusCode = (RedirectStatusCode)urlRewriteModel.RedirectStatusCode
-            };
+            return new UrlRedirectsDto(
+                urlRewriteModel.Id.ExternalId, urlRewriteModel.OldUrl,
+                urlRewriteModel.NewUrl ?? RedirectHelper.GetRedirectUrl(urlRewriteModel.ContentId),
+                urlRewriteModel.ContentId, urlRedirectsType, urlRewriteModel.Priority,
+                (RedirectStatusCode) urlRewriteModel.RedirectStatusCode);
         }
 
         public static UrlRewriteModel MapToUrlRewriteModel(this UrlRedirectsDto urlRedirectsDtoModel)
         {
-            var urlRewriteModel = new UrlRewriteModel()
+            var urlRewriteModel = new UrlRewriteModel
             {
                 OldUrl = urlRedirectsDtoModel.OldUrl,
                 NewUrl = urlRedirectsDtoModel.NewUrl,

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -23,7 +24,7 @@ namespace Forte.EpiserverRedirects.UrlRewritePlugin
             var urlRewriteModels = urlRedirectsService.GetAll();
             var urlRewriteModel = urlRewriteModels.GetRedirectModel(oldUrl) ?? urlRewriteModels.GetManualWildcardTypeRedirectModel(oldUrl);
 
-            return urlRewriteModel?.MapToUrlRedirectsDtoModel();
+            return urlRewriteModel?.MapToUrlRedirectsDto();
         }
 
         private static UrlRewriteModel GetRedirectModel(this IQueryable<UrlRewriteModel> urlRewriteStore, string oldUrl)
@@ -57,25 +58,37 @@ namespace Forte.EpiserverRedirects.UrlRewritePlugin
         private static void AddRedirectsToDDS(PageData pageData, string oldUrl)
         {
             if (!(pageData.Status == VersionStatus.PreviouslyPublished || pageData.Status == VersionStatus.Published)) return;
-            
-            var urlRedirectsDto = new UrlRedirectsDto
-            {
-                OldUrl = oldUrl.NormalizePath(),
-                ContentId = pageData.ContentLink.ID,
-                Type = UrlRedirectsType.System,
-                Priority = 1,
-                RedirectStatusCode = RedirectStatusCode.Permanent
-            };
+
+            var urlRedirectsDto = new UrlRedirectsDto(
+                oldUrl.NormalizePath(), pageData.ContentLink.ID, UrlRedirectsType.System, 1,
+                RedirectStatusCode.Permanent);
 
             var urlRedirectsService = ServiceLocator.Current.GetInstance<IUrlRedirectsService>();
 
             try
             {
-                urlRedirectsService.Post(urlRedirectsDto);
+                urlRedirectsService.Put(urlRedirectsDto);
             }
             catch (ApplicationException)
             {
                 return;
+            }
+        }
+        
+        public static void DeleteRedirects(ContentReference deletedContent, IEnumerable<ContentReference> deletedDescendants)
+        {
+            var urlRedirectsService = ServiceLocator.Current.GetInstance<IUrlRedirectsService>();
+
+            var deletedDescendantsIds = deletedDescendants.Select(x => x.ID).ToList();
+            
+            var redirectsToDelete = urlRedirectsService.GetAll()
+                .Where(x => deletedContent.ID == x.ContentId || deletedDescendantsIds.Contains(x.ContentId))
+                .Select(x => x.Id.ExternalId)
+                .ToList();
+
+            foreach (var redirect in redirectsToDelete)
+            {
+                urlRedirectsService.Delete(redirect);
             }
         }
 
