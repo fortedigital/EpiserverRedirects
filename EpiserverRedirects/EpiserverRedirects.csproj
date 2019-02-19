@@ -64,6 +64,7 @@
     <Compile Include="UrlRewritePlugin\RedirectStatusCode.cs" />
     <Compile Include="UrlRewritePlugin\StringExtensions.cs" />
     <Compile Include="UrlRewritePlugin\UrlRedirectsDto.cs" />
+    <Compile Include="UrlRewritePlugin\UrlRedirectsDtoModelBinder.cs" />
     <Compile Include="UrlRewritePlugin\UrlRedirectsModelMapper.cs" />
     <Compile Include="UrlRewritePlugin\UrlRedirectsService.cs" />
     <Compile Include="UrlRewritePlugin\UrlRedirectsType.cs" />
