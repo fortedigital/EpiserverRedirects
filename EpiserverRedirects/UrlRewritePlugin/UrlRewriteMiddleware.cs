@@ -39,6 +39,11 @@ namespace Forte.EpiserverRedirects.UrlRewritePlugin
 
         private static bool IsContentDeleted(int contentId)
         {
+            if(contentId == 0)
+            {
+                return false;
+            }
+
             var contentLoader = ServiceLocator.Current.GetInstance<IContentLoader>();
             return contentLoader.TryGet<IContent>(new ContentReference(contentId), out var content) == false ||
                    contentLoader.GetAncestors(content.ContentLink)
