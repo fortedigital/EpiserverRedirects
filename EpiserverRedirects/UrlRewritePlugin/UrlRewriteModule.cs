@@ -109,7 +109,7 @@ namespace Forte.EpiserverRedirects.UrlRewritePlugin
             {
                 if (!(ContentRepository.Service.Get<IContentData>(e.ContentLink, language.Culture) is PageData pageData)) continue;
 
-                var oldUrl = GetContentUrl(originalParent, language.Culture.Name);
+                var oldUrl = GetContentUrl(originalParent, language.Culture.Name, false);
                 if (oldUrl == null)
                 {
                     continue;                    
