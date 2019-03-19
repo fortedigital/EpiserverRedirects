@@ -167,7 +167,6 @@ define("episerverRedirectsMenu/UrlRedirectsMenu", [
             },
 
             _onUploaderChange: function(fileArray) {
-                console.log(fileArray);
                 this.importStatus.innerText = fileArray && fileArray.length 
                     ? fileArray[0].name  
                     :"Select a file";
@@ -195,7 +194,6 @@ define("episerverRedirectsMenu/UrlRedirectsMenu", [
                     statusLabel.innerText = "Uploading file...";
                         var xhrRequest = xhr.post("/EpiserverRedirects/Import", xhrArgs)
                             .then(function(data) {
-                                console.log(data);
                                 var date = new Date(data.TimeStamp);
                                 statusLabel.innerText = date.toLocaleString()+" - Imported redirects: " + data.ImportedCount;
                             })
