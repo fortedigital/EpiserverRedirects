@@ -2,6 +2,7 @@ define("episerverRedirectsMenu/UrlRedirectsMenu", [
     "dojo/_base/declare",
     "dojo/text!./UrlRedirectsMenu.html",
     "dojo/on",
+    "dojo/request/xhr",
 
     "dijit/_WidgetBase",
     "dijit/_TemplatedMixin",
@@ -14,11 +15,12 @@ define("episerverRedirectsMenu/UrlRedirectsMenu", [
     "episerverRedirectsMenu-grid/UrlRedirectsMenuGrid",
     "episerverRedirectsMenu-form/UrlRedirectsMenuForm",
 
-    "xstyle/css!./UrlRedirectsMenu.css"
+    "xstyle/css!./UrlRedirectsMenu.css",
 ], function (
     declare,
     template,
     on,
+    xhr,
 
     _WidgetBase,
     _TemplatedMixin,
@@ -29,7 +31,7 @@ define("episerverRedirectsMenu/UrlRedirectsMenu", [
 
     UrlRedirectsMenuViewModel,
     UrlRedirectsMenuGrid,
-    UrlRedirectsMenuForm,
+    UrlRedirectsMenuForm
     ) {
         return declare([_WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin], {
             templateString: template,
@@ -52,6 +54,9 @@ define("episerverRedirectsMenu/UrlRedirectsMenu", [
                 on(this.refreshButton, "click", this._refreshView.bind(this));
                 on(this.simulateFindButton, "click", this._onSimulateFindClick.bind(this));
                 on(this.simulateResetButton, "click", this._onSimulateResetClick.bind(this));
+                on(this.uploadFormSubmit, "click", this._onImportSubmit.bind(this));
+                on(this.fileUploader, "change", this._onUploaderChange.bind(this));
+                
                 this.deleteButton.set('disabled', true);
                 this.editButton.set('disabled', true);
 
@@ -159,6 +164,46 @@ define("episerverRedirectsMenu/UrlRedirectsMenu", [
             _onSimulateResetClick: function () {
                 this.simulateOldUrlTextBox.set("value", "");
                 this._onSearchChange({ simulatedOldUrl: ""});
+            },
+
+            _onUploaderChange: function(fileArray) {
+                console.log(fileArray);
+                this.importStatus.innerText = fileArray && fileArray.length 
+                    ? fileArray[0].name  
+                    :"Select a file";
+            },
+
+            _onImportSubmit: function(event) {
+                {
+                    var statusLabel = this.importStatus;
+                    if(!this.fileUploader._files || !this.fileUploader._files.length) {
+                        statusLabel.innerText = "Select a file";
+                        return;
+                    }
+                    
+                        var formData = new FormData();
+                        formData.append('uploadedFile', this.fileUploader._files[0]);
+                        
+                        var xhrArgs = {
+                            data: formData,
+                            headers: {
+                                'Content-Type': false
+                            },
+
+                            handleAs: "json"
+                        };
+                    statusLabel.innerText = "Uploading file...";
+                        var xhrRequest = xhr.post("/EpiserverRedirects/Import", xhrArgs)
+                            .then(function(data) {
+                                console.log(data);
+                                var date = new Date(data.TimeStamp);
+                                statusLabel.innerText = date.toLocaleString()+" - Imported redirects: " + data.ImportedCount;
+                            })
+                            .otherwise(function(error) {
+                                statusLabel.innerText = "Temporary server error or file is in invalid format"
+                            });
+                        
+                }
             }
         });
     });

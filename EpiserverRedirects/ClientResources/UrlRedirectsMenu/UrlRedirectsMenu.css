@@ -1,6 +1,21 @@
-﻿.menu-container {
+﻿.redirects-container {
+    overflow-y: scroll;
+}
+
+.redirect-importer {
+    margin: 0 10px;
+    padding: 15px 10px;
+    background: #ddd;
+    display: inline-block;
+}
+
+.redirect-importer .redirect-importer-header {
+    font-size: 14px;
+}
+
+.menu-container {
     display: flex;
-    height:70vh;
+    height:60vh;
 }
 
 .url-redirect-grid-container {

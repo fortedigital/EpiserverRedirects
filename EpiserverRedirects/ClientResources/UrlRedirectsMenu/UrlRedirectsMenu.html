@@ -1,5 +1,5 @@
 ﻿
-<div class="epi-padding ">
+<div class="epi-padding redirects-container">
     <div class="epi-fullWidth">
         <div class="epi-contentArea">
             <h1 class="EP-prefix">
@@ -7,10 +7,21 @@
             </h1>
             <p>
                 <span class="EP-systemInfo">
-                    Url Redirects are used to manage redirects.
+                    Manage URL redirects
                 </span>
             </p>
 
+            <div class="redirect-importer">
+                <h2 class="redirect-importer-header">Import redirects from CSV file</h2>
+                <p class="redirect-importer-description">Select a file, and click "upload". File shoud be in CSV format 
+                    and consist of two columns: old url and new url.
+                </p>
+                    <input name="uploadedFile" multiple="false" type="file" data-dojo-type="dojox/form/Uploader"
+                           data-dojo-attach-point="fileUploader" label="Select CSV file" id="redirectsUploader" />
+                    <input type="button" label="Submit" data-dojo-type="dijit/form/Button" data-dojo-attach-point="uploadFormSubmit" />
+                <span name="importStatus" value="" data-dojo-attach-point="importStatus">Select a file</span>
+            </div>
+                     
             <div class="menu-container">
                 <div class="url-redirect-grid-container">
                     <button data-dojo-type="dijit/form/Button" data-dojo-attach-point="addButton" type="button">Add new</button>
