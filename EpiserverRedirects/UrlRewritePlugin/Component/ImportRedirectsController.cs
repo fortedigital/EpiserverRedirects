@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Forte.EpiserverRedirects.UrlRewritePlugin.Component.ImportRedirects;
@@ -19,13 +20,26 @@ namespace Forte.EpiserverRedirects.UrlRewritePlugin.Component
         [HttpPost]
         public ActionResult Import(HttpPostedFileBase uploadedFile)
         {
-            var redirectDefinitions = _redirectDefinitionsLoader.Load(uploadedFile);
-            _redirectsImporter.ImportRedirects(redirectDefinitions);
-            return Json(new
+            if (uploadedFile == null)
             {
-                TimeStamp = DateTime.Now.ToString("O"),
-                ImportedCount = redirectDefinitions.Count
-            });
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "No file specified");
+            }
+            
+            try
+            {
+                var redirectDefinitions = _redirectDefinitionsLoader.Load(uploadedFile);
+
+                _redirectsImporter.ImportRedirects(redirectDefinitions);
+                return Json(new
+                {
+                    TimeStamp = DateTime.Now.ToString("O"),
+                    ImportedCount = redirectDefinitions.Count
+                });
+            }
+            catch (Exception e) when (e is MissingFieldException)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "File is in invalid format");
+            }
         }
     }
 }
