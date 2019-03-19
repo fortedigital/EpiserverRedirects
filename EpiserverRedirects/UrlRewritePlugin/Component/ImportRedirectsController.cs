@@ -1,4 +1,5 @@
-﻿using System.Web;
+﻿using System;
+using System.Web;
 using System.Web.Mvc;
 using Forte.EpiserverRedirects.UrlRewritePlugin.Component.ImportRedirects;
 
@@ -20,7 +21,11 @@ namespace Forte.EpiserverRedirects.UrlRewritePlugin.Component
         {
             var redirectDefinitions = _redirectDefinitionsLoader.Load(uploadedFile);
             _redirectsImporter.ImportRedirects(redirectDefinitions);
-            return Json(new {ImportedCount = redirectDefinitions.Count});
+            return Json(new
+            {
+                TimeStamp = DateTime.Now.ToString("O"),
+                ImportedCount = redirectDefinitions.Count
+            });
         }
     }
 }
