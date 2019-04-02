@@ -61,7 +61,7 @@ namespace Forte.EpiserverRedirects.UrlRewritePlugin.Menu
                 urlRewriteStore = urlRewriteStore
                     .Where(urlRewriteModel => urlRewriteModel.Type == UrlRedirectsType.ManualWildcard.ToString())
                     .AsEnumerable()
-                    .Where(urlRewriteModel => Regex.IsMatch(simulatedOldUrl, urlRewriteModel.OldUrl))
+                    .Where(urlRewriteModel => Regex.IsMatch(simulatedOldUrl, urlRewriteModel.OldUrl, RegexOptions.IgnoreCase))
                     .AsQueryable();
             }
 
