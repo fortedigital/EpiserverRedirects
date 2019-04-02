@@ -38,7 +38,7 @@ namespace Forte.EpiserverRedirects.UrlRewritePlugin
             return urlRewriteStore.Where(x => x.Type == UrlRedirectsType.ManualWildcard.ToString())
                 .OrderBy(urlRewriteModel => urlRewriteModel.Priority)
                 .AsEnumerable()
-                .FirstOrDefault(urlRewriteModel => Regex.IsMatch(oldUrl, urlRewriteModel.OldUrl));
+                .FirstOrDefault(urlRewriteModel => Regex.IsMatch(oldUrl, urlRewriteModel.OldUrl, RegexOptions.IgnoreCase));
         }
 
         public static string GetRedirectUrl(int contentId)
@@ -50,9 +50,9 @@ namespace Forte.EpiserverRedirects.UrlRewritePlugin
             return virtualPathData?.VirtualPath.NormalizePath();
         }
 
-        public static string GetRedirectUrl(string oldUrl, UrlRedirectsDto urlRewriteModel)
+        public static string GetRedirectUrl(string requestUrl, UrlRedirectsDto urlRewriteModel)
         {
-            return Regex.Replace(oldUrl, urlRewriteModel.OldUrl, urlRewriteModel.NewUrl, RegexOptions.IgnoreCase);
+            return Regex.Replace(requestUrl, urlRewriteModel.OldUrl, urlRewriteModel.NewUrl, RegexOptions.IgnoreCase);
         }
 
         private static void AddRedirectsToDDS(PageData pageData, string oldUrl)
@@ -74,13 +74,13 @@ namespace Forte.EpiserverRedirects.UrlRewritePlugin
                 return;
             }
         }
-        
+
         public static void DeleteRedirects(ContentReference deletedContent, IEnumerable<ContentReference> deletedDescendants)
         {
             var urlRedirectsService = ServiceLocator.Current.GetInstance<IUrlRedirectsService>();
 
             var deletedDescendantsIds = deletedDescendants.Select(x => x.ID).ToList();
-            
+
             var redirectsToDelete = urlRedirectsService.GetAll()
                 .Where(x => deletedContent.ID == x.ContentId || deletedDescendantsIds.Contains(x.ContentId))
                 .Select(x => x.Id.ExternalId)

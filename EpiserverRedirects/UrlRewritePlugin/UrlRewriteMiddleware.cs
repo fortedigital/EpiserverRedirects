@@ -17,14 +17,14 @@ namespace Forte.EpiserverRedirects.UrlRewritePlugin
 
             if (context.Response.StatusCode == 404)
             {
-                var url = context.Request.Path.ToString().NormalizePath();
-                var urlRewriteModel = RedirectHelper.GetRedirectModel(url);
+                var requestUrl = context.Request.Path.ToString().NormalizePath();
+                var urlRewriteModel = RedirectHelper.GetRedirectModel(requestUrl);
 
                 if (urlRewriteModel != null)
                 {
                     var redirectUrl = urlRewriteModel.Type == UrlRedirectsType.System ?
                         urlRewriteModel.NewUrl :
-                        RedirectHelper.GetRedirectUrl(url, urlRewriteModel);
+                        RedirectHelper.GetRedirectUrl(requestUrl, urlRewriteModel);
 
                     if (IsContentDeleted(urlRewriteModel.ContentId))
                     {
