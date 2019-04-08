@@ -17,24 +17,30 @@ namespace Forte.EpiserverRedirects.UrlRewritePlugin
 
             if (context.Response.StatusCode == 404)
             {
-                var requestUrl = context.Request.Path.ToString().NormalizePath();
+                var requestUrl = context.Request.Uri.AbsolutePath.NormalizePath();
                 var urlRewriteModel = RedirectHelper.GetRedirectModel(requestUrl);
 
                 if (urlRewriteModel != null)
                 {
-                    var redirectUrl = urlRewriteModel.Type == UrlRedirectsType.System ?
-                        urlRewriteModel.NewUrl :
-                        RedirectHelper.GetRedirectUrl(requestUrl, urlRewriteModel);
+                    var redirectUrl = GetRedirectUrl(context, urlRewriteModel, requestUrl);
 
                     if (IsContentDeleted(urlRewriteModel.ContentId))
                     {
                         return;
                     }                    
-
+                    
                     context.Response.StatusCode = (int)urlRewriteModel.RedirectStatusCode;
                     context.Response.Headers.Set("Location", redirectUrl);
                 }
             }
+        }
+
+        private static string GetRedirectUrl(IOwinContext context, UrlRedirectsDto urlRewriteModel, string requestUrl)
+        {
+            var newPath = urlRewriteModel.Type == UrlRedirectsType.System
+                ? urlRewriteModel.NewUrl
+                : RedirectHelper.GetRedirectUrl(requestUrl, urlRewriteModel);
+            return newPath + context.Request.Uri.Query;
         }
 
         private static bool IsContentDeleted(int contentId)

@@ -52,7 +52,9 @@ namespace Forte.EpiserverRedirects.UrlRewritePlugin
 
         public static string GetRedirectUrl(string requestUrl, UrlRedirectsDto urlRewriteModel)
         {
-            return Regex.Replace(requestUrl, urlRewriteModel.OldUrl, urlRewriteModel.NewUrl, RegexOptions.IgnoreCase);
+            return urlRewriteModel.Type == UrlRedirectsType.ManualWildcard
+                ? Regex.Replace(requestUrl, urlRewriteModel.OldUrl, urlRewriteModel.NewUrl, RegexOptions.IgnoreCase)
+                : urlRewriteModel.NewUrl;
         }
 
         private static void AddRedirectsToDDS(PageData pageData, string oldUrl)
