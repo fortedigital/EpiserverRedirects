@@ -76,7 +76,7 @@ namespace Forte.EpiserverRedirects.UrlRewritePlugin
         private string GetContentUrl(ContentReference contentReference, string language, bool validateTemplate = true)
         {
             var arguments = new VirtualPathArguments {ValidateTemplate = validateTemplate};
-            return UrlResolver.Service.GetUrl(contentReference, language, arguments);
+            return UrlResolver.Service.GetVirtualPath(contentReference, language, arguments)?.VirtualPath;
         }
 
         public void Uninitialize(InitializationEngine context)
