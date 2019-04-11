@@ -1,9 +1,12 @@
 using System;
 using System.Linq;
 using EPiServer.Data.Dynamic;
+using EPiServer.ServiceLocation;
+using Forte.RedirectMiddleware.Model;
 
-namespace Redirects.Repository
+namespace Forte.RedirectMiddleware.Repository
 {
+    [ServiceConfiguration(ServiceType = typeof(IRepository))]
     public class DynamicDataStoreRepository : Repository
     {
         private readonly DynamicDataStoreFactory _dynamicDataStoreFactory;
@@ -59,13 +62,12 @@ namespace Redirects.Repository
             try
             {
                 _dynamicDataStore.Delete(id);
+                return true;
             }
             catch
             {
                 return false;
             }
-
-            return true;
         }
     }
 }

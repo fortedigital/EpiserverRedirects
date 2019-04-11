@@ -2,10 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using EPiServer.Data;
+using Forte.RedirectMiddleware.Model;
 
-namespace Redirects.Repository
+namespace Forte.RedirectMiddleware.Repository
 {
-    public class TestRepository : Repository
+    public class TestRepository : Forte.RedirectMiddleware.Repository.Repository
     {
         private readonly Dictionary<Guid, RedirectModel> _redirectsDictionary;
 

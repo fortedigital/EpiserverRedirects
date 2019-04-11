@@ -1,32 +1,32 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using EPiServer.Data;
+using Forte.RedirectMiddleware.Model;
+using Forte.RedirectMiddleware.Repository;
+using Forte.RedirectMiddleware.Service;
 using Xunit;
-using Redirects;
-using Redirects.Repository;
 
 namespace RedirectTests
 {
     public class Tests
     {
-        private static Guid GuidForTestData;
-        private static int GuidAccessCount = 0;
+        private static Guid _guidForTestData;
+        private static int _guidAccessCount = 0;
         private static Guid GetSameGuidTwice()
         {
-            if (GuidAccessCount%2 == 0)
-                GuidForTestData = Guid.NewGuid();
+            if (_guidAccessCount%2 == 0)
+                _guidForTestData = Guid.NewGuid();
 
-            GuidAccessCount++;
-            return GuidForTestData;
+            _guidAccessCount++;
+            return _guidForTestData;
         }
         private static readonly Dictionary<Guid, RedirectModel> RedirectsData = new Dictionary<Guid, RedirectModel>
         {  
-            {GetSameGuidTwice(), new RedirectModel(GetSameGuidTwice(), "/oldPath1", "/newPath1")},
-            {GetSameGuidTwice(), new RedirectModel(GetSameGuidTwice(), "/oldPath2", "/newPath2")},
-            {GetSameGuidTwice(), new RedirectModel(GetSameGuidTwice(), "/oldPath3", "/newPath3")},
-            {GetSameGuidTwice(), new RedirectModel(GetSameGuidTwice(), "/oldPath4", "/newPath4")},
-            {GetSameGuidTwice(), new RedirectModel(GetSameGuidTwice(), "/oldPath5", "/newPath1")},
+            {GetSameGuidTwice(), new RedirectModel(GetSameGuidTwice(), "/oldPath1", "/newUrl", StatusCode.Found)},
+            {GetSameGuidTwice(), new RedirectModel(GetSameGuidTwice(), "/oldPath2", "/newUrl2", StatusCode.Found)},
+            {GetSameGuidTwice(), new RedirectModel(GetSameGuidTwice(), "/oldPath3", "/newUrl3", StatusCode.Found)},
+            {GetSameGuidTwice(), new RedirectModel(GetSameGuidTwice(), "/oldPath4", "/newUrl4", StatusCode.Found)},
+            {GetSameGuidTwice(), new RedirectModel(GetSameGuidTwice(), "/oldPath5", "/newUrl1", StatusCode.Found)},
         };
         
 
@@ -50,7 +50,7 @@ namespace RedirectTests
         public static IEnumerable<object[]> ExistingRedirectTestCase =>
             new[]
             {
-                new object[] { "/oldPath2", RedirectsData, "/newPath2" }
+                new object[] { "/oldPath2", RedirectsData, "/newUrl2" }
             };
         [Theory]
         [MemberData(nameof(ExistingRedirectTestCase))]
@@ -61,7 +61,7 @@ namespace RedirectTests
             
             var redirect = redirectService.GetRedirect(oldPath);
             
-            Assert.Equal(expectedNewPath, redirect.NewPath);
+            Assert.Equal(expectedNewPath, redirect.NewUrl);
         }
 
         public static IEnumerable<object[]> ExistingRedirectsTestCase =>
@@ -115,11 +115,11 @@ namespace RedirectTests
             var randomIndex = new Random().Next(existingRedirects.Count);
             var randomRedirect = redirectService.GetAllRedirects().Skip(randomIndex).FirstOrDefault();
             
-            var redirectVM = new RedirectModel(randomRedirect.Id, randomRedirect.OldPath, newPath);
+            var redirectVM = new RedirectModel(randomRedirect.Id, randomRedirect.OldPath, newPath, randomRedirect.StatusCode);
             redirectService.UpdateRedirect(redirectVM);
             var updatedRedirect = redirectService.GetRedirect(randomRedirect.OldPath);
             
-            Assert.Equal(newPath, updatedRedirect.NewPath);
+            Assert.Equal(newPath, updatedRedirect.NewUrl);
         }
         
         [Theory]
@@ -129,7 +129,7 @@ namespace RedirectTests
             var repository = new TestRepository(existingRedirects);
             var redirectService = new RedirectService(repository);
             
-            var redirectVM = new RedirectModel(Guid.NewGuid());
+            var redirectVM = new RedirectModel(Guid.NewGuid(),"/oldPath", "newUrl", StatusCode.Found);
                      
             Assert.Throws<KeyNotFoundException>(()=>redirectService.UpdateRedirect(redirectVM));
         }

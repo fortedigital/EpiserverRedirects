@@ -1,7 +1,8 @@
 using System;
 using System.Linq;
+using Forte.RedirectMiddleware.Model;
 
-namespace Redirects.Repository
+namespace Forte.RedirectMiddleware.Repository
 {
     public interface IRepository
     {
@@ -22,8 +23,10 @@ namespace Redirects.Repository
         
         protected static void MapViewModelToRedirect(RedirectModel redirectVM, RedirectModel redirect)
         {
-            redirect.NewPath = redirectVM.NewPath;
-            redirect.OldPath = redirectVM.OldPath;
+            redirect.NewUrl = redirectVM.NewUrl;
+            redirect.OldPath = RedirectModel.NormalizePath(redirectVM.OldPath);
+            redirect.StatusCode = redirectVM.StatusCode;
+            redirect.IsActive = redirectVM.IsActive;
         }
     }
 }
