@@ -1,4 +1,8 @@
-﻿namespace Redirects
+﻿using System;
+using System.Linq;
+using Redirects.Repository;
+
+namespace Redirects
 {
     public class RedirectService
     {
@@ -8,11 +12,30 @@
             _repository = repository;
         }
 
-        public string FindRedirect(string oldPath)
+        public RedirectModel GetRedirect(string oldPath)
         {
-            var newPath = _repository.FindNewPath(oldPath);
-
-            return newPath;
+            return _repository.GetRedirect(oldPath);
         }
+        
+        public IQueryable<RedirectModel> GetAllRedirects()
+        {
+            return _repository.GetAllRedirects();
+        }
+
+        public RedirectModel CreateRedirect(RedirectModel redirectVM)
+        {
+            return _repository.CreateRedirect(redirectVM);
+        }
+        
+        public RedirectModel UpdateRedirect(RedirectModel redirectVM)
+        {
+            return _repository.UpdateRedirect(redirectVM);
+        }
+        
+        public bool DeleteRedirect(Guid id)
+        {
+            return _repository.DeleteRedirect(id);
+        }
+        
     }
 }
