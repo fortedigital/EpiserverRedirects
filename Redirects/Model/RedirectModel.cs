@@ -63,6 +63,14 @@ namespace Forte.RedirectMiddleware.Model
 
             return path;
         }
+        
+        public void MapFromViewModel(RedirectModel redirectVM)
+        {
+            NewUrl = redirectVM.NewUrl;
+            OldPath = RedirectModel.NormalizePath(redirectVM.OldPath);
+            StatusCode = redirectVM.StatusCode;
+            IsActive = redirectVM.IsActive;
+        }
 
     }
 

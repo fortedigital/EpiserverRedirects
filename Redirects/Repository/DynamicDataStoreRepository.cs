@@ -36,7 +36,7 @@ namespace Forte.RedirectMiddleware.Repository
         public override RedirectModel CreateRedirect(RedirectModel redirectVM)
         {
             var newRedirect = new RedirectModel();
-            MapViewModelToRedirect(redirectVM, newRedirect);
+            newRedirect.MapFromViewModel(redirectVM);
             
             var newRedirectIdentity = _dynamicDataStore.Save(newRedirect);
 
@@ -50,7 +50,8 @@ namespace Forte.RedirectMiddleware.Repository
             
             if(existingRedirect==null)
                 throw new Exception("No existing redirect with this GUID");
-            MapViewModelToRedirect(redirectVM, existingRedirect);
+            
+            existingRedirect.MapFromViewModel(redirectVM);
             
             _dynamicDataStore.Save(existingRedirect);
 

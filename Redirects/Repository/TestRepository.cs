@@ -39,7 +39,7 @@ namespace Forte.RedirectMiddleware.Repository
             if(existingRedirect==null)
                 throw new KeyNotFoundException("No existing redirect with this GUID");
             
-            MapViewModelToRedirect(redirectVM, existingRedirect);
+            existingRedirect.MapFromViewModel(redirectVM);
             return existingRedirect;
         }
 

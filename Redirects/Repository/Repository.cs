@@ -20,13 +20,5 @@ namespace Forte.RedirectMiddleware.Repository
         public abstract RedirectModel CreateRedirect(RedirectModel redirectVM);
         public abstract RedirectModel UpdateRedirect(RedirectModel redirectVM);
         public abstract bool DeleteRedirect(Guid id);
-        
-        protected static void MapViewModelToRedirect(RedirectModel redirectVM, RedirectModel redirect)
-        {
-            redirect.NewUrl = redirectVM.NewUrl;
-            redirect.OldPath = RedirectModel.NormalizePath(redirectVM.OldPath);
-            redirect.StatusCode = redirectVM.StatusCode;
-            redirect.IsActive = redirectVM.IsActive;
-        }
     }
 }
