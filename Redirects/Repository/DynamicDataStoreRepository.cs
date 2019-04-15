@@ -1,18 +1,19 @@
 using System;
 using System.Linq;
 using EPiServer.Data.Dynamic;
+using EPiServer.Security;
 using EPiServer.ServiceLocation;
 using Forte.RedirectMiddleware.Model;
 
 namespace Forte.RedirectMiddleware.Repository
 {
-    [ServiceConfiguration(ServiceType = typeof(IRepository))]
-    public class DynamicDataStoreRepository : Repository
+    [ServiceConfiguration(ServiceType = typeof(IRedirectRuleRepository))]
+    public class DynamicDataStoreRedirectRuleRepository : RedirectRuleRepository
     {
         private readonly DynamicDataStoreFactory _dynamicDataStoreFactory;
         private readonly DynamicDataStore _dynamicDataStore;
 
-        public DynamicDataStoreRepository(DynamicDataStoreFactory dynamicDataStoreFactory)
+        public DynamicDataStoreRedirectRuleRepository(DynamicDataStoreFactory dynamicDataStoreFactory)
         {
             _dynamicDataStoreFactory = dynamicDataStoreFactory;
             _dynamicDataStore = CreateStore();
@@ -20,42 +21,44 @@ namespace Forte.RedirectMiddleware.Repository
         
         private DynamicDataStore CreateStore()
         {
-            return _dynamicDataStoreFactory.CreateStore(typeof(RedirectModel));
+            return _dynamicDataStoreFactory.CreateStore(typeof(RedirectRule));
         }
         
-        public override RedirectModel GetRedirect(string oldPath)
+        public override RedirectRuleDto GetRedirect(UrlPath oldPath)
         {
-            return _dynamicDataStore.Items<RedirectModel>().FirstOrDefault(r => r.OldPath == oldPath);
+            var redirect = _dynamicDataStore.Items<RedirectRule>().FirstOrDefault(r => r.OldPath == oldPath);
+            var redirectDto = RedirectRuleMapper.ModelToDto(redirect);
+            return redirectDto;
         }
 
-        public override IQueryable<RedirectModel> GetAllRedirects()
+        public override IQueryable<RedirectRuleDto> GetAllRedirects()
         {
-            return _dynamicDataStore.Items<RedirectModel>().AsQueryable();
+            //TODO: betterMapping
+            return _dynamicDataStore.Items<RedirectRule>().Select(r=>RedirectRuleMapper.ModelToDto(r)).AsQueryable();
         }
 
-        public override RedirectModel CreateRedirect(RedirectModel redirectVM)
+        public override RedirectRuleDto CreateRedirect(RedirectRuleDto redirectRuleDTO)
         {
-            var newRedirect = new RedirectModel();
-            newRedirect.MapFromViewModel(redirectVM);
+            var redirect = RedirectRuleMapper.DtoToModel(redirectRuleDTO);
             
-            var newRedirectIdentity = _dynamicDataStore.Save(newRedirect);
+            var newRedirectIdentity = _dynamicDataStore.Save(redirect);
 
-            redirectVM.Id = newRedirectIdentity;
-            return redirectVM;
+            redirectRuleDTO.Id = newRedirectIdentity;
+            return redirectRuleDTO;
         }
 
-        public override RedirectModel UpdateRedirect(RedirectModel redirectVM)
+        public override RedirectRuleDto UpdateRedirect(RedirectRuleDto redirectRuleDTO)
         {
-            var existingRedirect = _dynamicDataStore.Items<RedirectModel>().FirstOrDefault(r => r.Id == redirectVM.Id);
+            var redirect = _dynamicDataStore.Items<RedirectRule>().FirstOrDefault(r => r.Id == redirectRuleDTO.Id);
             
-            if(existingRedirect==null)
+            if(redirect==null)
                 throw new Exception("No existing redirect with this GUID");
             
-            existingRedirect.MapFromViewModel(redirectVM);
+            RedirectRuleMapper.DtoToModel(redirectRuleDTO, redirect);
             
-            _dynamicDataStore.Save(existingRedirect);
+            _dynamicDataStore.Save(redirect);
 
-            return redirectVM;
+            return redirectRuleDTO;
         }
 
         public override bool DeleteRedirect(Guid id)

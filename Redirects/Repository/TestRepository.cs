@@ -6,41 +6,50 @@ using Forte.RedirectMiddleware.Model;
 
 namespace Forte.RedirectMiddleware.Repository
 {
-    public class TestRepository : Forte.RedirectMiddleware.Repository.Repository
+    public class TestRedirectRuleRepository : Forte.RedirectMiddleware.Repository.RedirectRuleRepository
     {
-        private readonly Dictionary<Guid, RedirectModel> _redirectsDictionary;
+        private readonly Dictionary<Guid, RedirectRule> _redirectsDictionary;
 
-        public TestRepository(Dictionary<Guid, RedirectModel> redirectsCollection)
+        public TestRedirectRuleRepository(Dictionary<Guid, RedirectRule> redirectsCollection)
         {
             _redirectsDictionary = redirectsCollection;
         }
 
-        public override RedirectModel GetRedirect(string oldPath)
+        public override RedirectRuleDto GetRedirect(UrlPath oldPath)
         {
-            return _redirectsDictionary.FirstOrDefault(r => r.Value.OldPath == oldPath).Value;
+            var redirect = _redirectsDictionary.FirstOrDefault(r => r.Value.OldPath == oldPath).Value;
+
+            var redirectDto = redirect != null
+                ? RedirectRuleMapper.ModelToDto(redirect)
+                : null;
+            return redirectDto;
         }
 
-        public override IQueryable<RedirectModel> GetAllRedirects()
+        public override IQueryable<RedirectRuleDto> GetAllRedirects()
         {
-            return _redirectsDictionary.Select(r=>r.Value).AsQueryable();
+            return _redirectsDictionary.Select(r=>RedirectRuleMapper.ModelToDto(r.Value)).AsQueryable();
         }
 
-        public override RedirectModel CreateRedirect(RedirectModel redirectVM)
+        public override RedirectRuleDto CreateRedirect(RedirectRuleDto redirectRuleDTO)
         {
-            redirectVM.Id = Identity.NewIdentity();
-            _redirectsDictionary.Add(redirectVM.Id.ExternalId, redirectVM);
-            return redirectVM;
-        }
-
-        public override RedirectModel UpdateRedirect(RedirectModel redirectVM)
-        {
-            _redirectsDictionary.TryGetValue(redirectVM.Id.ExternalId, out var existingRedirect);
+            var redirect = RedirectRuleMapper.DtoToModel(redirectRuleDTO);
             
-            if(existingRedirect==null)
+            redirect.Id = Identity.NewIdentity();
+            _redirectsDictionary.Add(redirect.Id.ExternalId, redirect);
+
+            redirectRuleDTO.Id = redirect.Id;
+            return redirectRuleDTO;
+        }
+
+        public override RedirectRuleDto UpdateRedirect(RedirectRuleDto redirectRuleDTO)
+        {
+            _redirectsDictionary.TryGetValue(redirectRuleDTO.Id.ExternalId, out var redirect);
+            
+            if(redirect==null)
                 throw new KeyNotFoundException("No existing redirect with this GUID");
             
-            existingRedirect.MapFromViewModel(redirectVM);
-            return existingRedirect;
+            RedirectRuleMapper.DtoToModel(redirectRuleDTO, redirect);
+            return redirectRuleDTO;
         }
 
         public override bool DeleteRedirect(Guid id)

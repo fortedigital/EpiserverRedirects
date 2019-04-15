@@ -2,6 +2,7 @@
 using System.Linq;
 using EPiServer.ServiceLocation;
 using Forte.RedirectMiddleware.Model;
+using Forte.RedirectMiddleware.Model.RedirectType;
 using Forte.RedirectMiddleware.Repository;
 
 namespace Forte.RedirectMiddleware.Service
@@ -9,50 +10,51 @@ namespace Forte.RedirectMiddleware.Service
     [ServiceConfiguration(ServiceType = typeof(IRedirectService))]
     public class RedirectService : IRedirectService
     {
-        private readonly IRepository _repository;
-        public RedirectService(IRepository repository)
+        private readonly IRedirectRuleRepository _redirectRuleRepository;
+        private readonly IRedirectTypeMapper _redirectTypeMapper;
+        public RedirectService(IRedirectRuleRepository redirectRuleRepository)
         {
-            _repository = repository;
+            _redirectRuleRepository = redirectRuleRepository;
         }
 
-        public RedirectModel GetRedirect(string oldPath)
+        public RedirectRuleDto GetRedirect(string oldPath)
         {
-            oldPath = RedirectModel.NormalizePath(oldPath);
-            return _repository.GetRedirect(oldPath);
+            var urlPath = new UrlPath(oldPath);
+            return _redirectRuleRepository.GetRedirect(urlPath);
         }
         
-        public IQueryable<RedirectModel> GetAllRedirects()
+        public IQueryable<RedirectRuleDto> GetAllRedirects()
         {
-            return _repository.GetAllRedirects();
+            return _redirectRuleRepository.GetAllRedirects();
         }
 
-        public RedirectModel CreateRedirect(RedirectModel redirectVM)
+        public RedirectRuleDto CreateRedirect(RedirectRuleDto redirectRuleDTO)
         {
-            return redirectVM.Validate()
-                ? _repository.CreateRedirect(redirectVM)
+            return RedirectRuleValidator.ValidateDto(redirectRuleDTO)
+                ? _redirectRuleRepository.CreateRedirect(redirectRuleDTO)
                 : null;
         }
 
-        public RedirectModel UpdateRedirect(RedirectModel redirectVM)
+        public RedirectRuleDto UpdateRedirect(RedirectRuleDto redirectRuleDTO)
         {
-            return redirectVM.Validate()
-                ? _repository.UpdateRedirect(redirectVM)
+            return RedirectRuleValidator.ValidateDto(redirectRuleDTO)
+                ? _redirectRuleRepository.UpdateRedirect(redirectRuleDTO)
                 : null;
         }
         
         public bool DeleteRedirect(Guid id)
         {
-            return _repository.DeleteRedirect(id);
+            return _redirectRuleRepository.DeleteRedirect(id);
         }
         
     }
 
     public interface IRedirectService
     {
-        RedirectModel GetRedirect(string oldPath);
-        IQueryable<RedirectModel> GetAllRedirects();
-        RedirectModel CreateRedirect(RedirectModel redirectVM);
-        RedirectModel UpdateRedirect(RedirectModel redirectVM);
+        RedirectRuleDto GetRedirect(string oldPath);
+        IQueryable<RedirectRuleDto> GetAllRedirects();
+        RedirectRuleDto CreateRedirect(RedirectRuleDto redirectVM);
+        RedirectRuleDto UpdateRedirect(RedirectRuleDto redirectVM);
         bool DeleteRedirect(Guid id);
     }
 }

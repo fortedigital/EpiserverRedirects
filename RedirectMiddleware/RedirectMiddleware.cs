@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using EPiServer.ServiceLocation;
 using Forte.RedirectMiddleware.Model;
+using Forte.RedirectMiddleware.Model.RedirectType;
 using Forte.RedirectMiddleware.Service;
 using Microsoft.Owin;
 
@@ -20,17 +21,17 @@ namespace Forte.RedirectMiddleware
             if (context.Response.StatusCode == NotFoundStatusCode)
             {
                 var originalRequestPath = context.Request.Uri.AbsolutePath;
-                var redirectModel = RedirectService.Service.GetRedirect(originalRequestPath);
+                var redirectRuleDto = RedirectService.Service.GetRedirect(originalRequestPath);
 
-                if (redirectModel != null)
-                    RedirectResponse(context, redirectModel);
+                if (redirectRuleDto != null)
+                    RedirectResponse(context, redirectRuleDto);
             }
         }
 
-        private static void RedirectResponse(IOwinContext context, RedirectModel redirectModel)
+        private static void RedirectResponse(IOwinContext context, RedirectRuleDto redirectRuleDto)
         {
-            context.Response.StatusCode = (int) redirectModel.StatusCode;
-            context.Response.Headers.Set(LocationHeader, redirectModel.NewUrl);
+            context.Response.StatusCode = Http_1_0_RedirectTypeMapper.MapToHttpResponseCode(redirectRuleDto.RedirectType);
+            context.Response.Headers.Set(LocationHeader, redirectRuleDto.NewUrl);
         }
     }
 }

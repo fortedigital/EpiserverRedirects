@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using Forte.RedirectMiddleware.Model;
+using Forte.RedirectMiddleware.Model.RedirectType;
 using Forte.RedirectMiddleware.Repository;
 using Forte.RedirectMiddleware.Service;
 using Xunit;
 
 namespace RedirectTests
 {
-    public class Tests
+    public class RedirectServiceTests
     {
         private static Guid _guidForTestData;
         private static int _guidAccessCount = 0;
@@ -20,13 +21,13 @@ namespace RedirectTests
             _guidAccessCount++;
             return _guidForTestData;
         }
-        private static readonly Dictionary<Guid, RedirectModel> RedirectsData = new Dictionary<Guid, RedirectModel>
+        private static readonly Dictionary<Guid, RedirectRule> RedirectsData = new Dictionary<Guid, RedirectRule>
         {  
-            {GetSameGuidTwice(), new RedirectModel(GetSameGuidTwice(), "/oldPath1", "/newUrl", StatusCode.Found)},
-            {GetSameGuidTwice(), new RedirectModel(GetSameGuidTwice(), "/oldPath2", "/newUrl2", StatusCode.Found)},
-            {GetSameGuidTwice(), new RedirectModel(GetSameGuidTwice(), "/oldPath3", "/newUrl3", StatusCode.Found)},
-            {GetSameGuidTwice(), new RedirectModel(GetSameGuidTwice(), "/oldPath4", "/newUrl4", StatusCode.Found)},
-            {GetSameGuidTwice(), new RedirectModel(GetSameGuidTwice(), "/oldPath5", "/newUrl1", StatusCode.Found)},
+            {GetSameGuidTwice(), new RedirectRule(GetSameGuidTwice(), "/oldPath1", "/newUrl", RedirectType.Temporary)},
+            {GetSameGuidTwice(), new RedirectRule(GetSameGuidTwice(), "/oldPath2", "/newUrl2", RedirectType.Temporary)},
+            {GetSameGuidTwice(), new RedirectRule(GetSameGuidTwice(), "/oldPath3", "/newUrl3", RedirectType.Temporary)},
+            {GetSameGuidTwice(), new RedirectRule(GetSameGuidTwice(), "/oldPath4", "/newUrl4", RedirectType.Temporary)},
+            {GetSameGuidTwice(), new RedirectRule(GetSameGuidTwice(), "/oldPath5", "/newUrl1", RedirectType.Temporary)},
         };
         
 
@@ -37,9 +38,9 @@ namespace RedirectTests
             };
         [Theory]
         [MemberData(nameof(NoExistingRedirectTestCase))]
-        public void Redirect_NoExistingRedirect_ReturnsNull(string oldPath, Dictionary<Guid, RedirectModel> existingRedirects)
+        public void Redirect_NoExistingRedirect_ReturnsNull(string oldPath, Dictionary<Guid, RedirectRule> existingRedirects)
         {
-            var repository = new TestRepository(existingRedirects);
+            var repository = new TestRedirectRuleRepository(existingRedirects);
             var redirectService = new RedirectService(repository);
             
             var redirect = redirectService.GetRedirect(oldPath);
@@ -54,9 +55,9 @@ namespace RedirectTests
             };
         [Theory]
         [MemberData(nameof(ExistingRedirectTestCase))]
-        public void Redirect_ExistingRedirect_ReturnsNewPath(string oldPath, Dictionary<Guid, RedirectModel> existingRedirects, string expectedNewPath)
+        public void Redirect_ExistingRedirect_ReturnsNewPath(string oldPath, Dictionary<Guid, RedirectRule> existingRedirects, string expectedNewPath)
         {
-            var repository = new TestRepository(existingRedirects);
+            var repository = new TestRedirectRuleRepository(existingRedirects);
             var redirectService = new RedirectService(repository);
             
             var redirect = redirectService.GetRedirect(oldPath);
@@ -71,9 +72,9 @@ namespace RedirectTests
             };
         [Theory]
         [MemberData(nameof(ExistingRedirectsTestCase))]
-        public void Redirect_ExistingRedirects_ReturnsAllRedirects(int redirectsCount, Dictionary<Guid, RedirectModel> existingRedirects)
+        public void Redirect_ExistingRedirects_ReturnsAllRedirects(int redirectsCount, Dictionary<Guid, RedirectRule> existingRedirects)
         {
-            var repository = new TestRepository(existingRedirects);
+            var repository = new TestRedirectRuleRepository(existingRedirects);
             var redirectService = new RedirectService(repository);
 
             var redirects = redirectService.GetAllRedirects();
@@ -88,13 +89,13 @@ namespace RedirectTests
             };
         [Theory]
         [MemberData(nameof(CreateRedirectTestCase))]
-        public void Redirect_CreateRedirect_CreatesNewRedirect(Dictionary<Guid, RedirectModel> existingRedirects)
+        public void Redirect_CreateRedirect_CreatesNewRedirect(Dictionary<Guid, RedirectRule> existingRedirects)
         {
-            var repository = new TestRepository(existingRedirects);
+            var repository = new TestRedirectRuleRepository(existingRedirects);
             var redirectService = new RedirectService(repository);
 
-            var redirectVM = new RedirectModel("randomOldPath", "randomNewPath");
-            var newRedirect = redirectService.CreateRedirect(redirectVM);
+            var redirectDto = new RedirectRuleDto("randomOldPath", "randomNewPath");
+            var newRedirect = redirectService.CreateRedirect(redirectDto);
             var allRedirects = redirectService.GetAllRedirects();
             
             Assert.True(allRedirects.Any(r=>r.Id == newRedirect.Id));
@@ -107,31 +108,30 @@ namespace RedirectTests
             };
         [Theory]
         [MemberData(nameof(UpdateRedirectTestCase))]
-        public void Redirect_UpdateRedirect_UpdatesRedirect(string newPath, Dictionary<Guid, RedirectModel> existingRedirects)
+        public void Redirect_UpdateRedirect_UpdatesRedirect(string newUrl, Dictionary<Guid, RedirectRule> existingRedirects)
         {
-            var repository = new TestRepository(existingRedirects);
+            var repository = new TestRedirectRuleRepository(existingRedirects);
             var redirectService = new RedirectService(repository);
 
             var randomIndex = new Random().Next(existingRedirects.Count);
-            var randomRedirect = redirectService.GetAllRedirects().Skip(randomIndex).FirstOrDefault();
+            var randomRedirectDto = redirectService.GetAllRedirects().Skip(randomIndex).FirstOrDefault();
+            randomRedirectDto.NewUrl = newUrl;
+            redirectService.UpdateRedirect(randomRedirectDto);
+            var updatedRedirect = redirectService.GetRedirect(randomRedirectDto.OldPath);
             
-            var redirectVM = new RedirectModel(randomRedirect.Id, randomRedirect.OldPath, newPath, randomRedirect.StatusCode);
-            redirectService.UpdateRedirect(redirectVM);
-            var updatedRedirect = redirectService.GetRedirect(randomRedirect.OldPath);
-            
-            Assert.Equal(newPath, updatedRedirect.NewUrl);
+            Assert.Equal(newUrl, updatedRedirect.NewUrl);
         }
         
         [Theory]
         [MemberData(nameof(UpdateRedirectTestCase))]
-        public void Redirect_UpdateRedirect_ThrowsExceptionRedirectNotFound(string newPath, Dictionary<Guid, RedirectModel> existingRedirects)
+        public void Redirect_UpdateRedirect_ThrowsExceptionRedirectNotFound(string newPath, Dictionary<Guid, RedirectRule> existingRedirects)
         {
-            var repository = new TestRepository(existingRedirects);
+            var repository = new TestRedirectRuleRepository(existingRedirects);
             var redirectService = new RedirectService(repository);
             
-            var redirectVM = new RedirectModel(Guid.NewGuid(),"/oldPath", "newUrl", StatusCode.Found);
+            var redirectDto = new RedirectRuleDto(Guid.NewGuid(),"/oldPath", "newUrl", RedirectType.Temporary);
                      
-            Assert.Throws<KeyNotFoundException>(()=>redirectService.UpdateRedirect(redirectVM));
+            Assert.Throws<KeyNotFoundException>(()=>redirectService.UpdateRedirect(redirectDto));
         }
         
         public static IEnumerable<object[]> DeleteRedirectTestCase =>
@@ -142,9 +142,9 @@ namespace RedirectTests
             };
         [Theory]
         [MemberData(nameof(DeleteRedirectTestCase))]
-        public void Redirect_DeleteRedirect_ReturnsTrueIfSuccessful(bool doesExists, Dictionary<Guid, RedirectModel> existingRedirects)
+        public void Redirect_DeleteRedirect_ReturnsTrueIfSuccessful(bool doesExists, Dictionary<Guid, RedirectRule> existingRedirects)
         {
-            var repository = new TestRepository(existingRedirects);
+            var repository = new TestRedirectRuleRepository(existingRedirects);
             var redirectService = new RedirectService(repository);
 
             bool deleteResult;
