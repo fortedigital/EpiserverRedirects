@@ -10,6 +10,10 @@ namespace Forte.RedirectMiddleware.Repository
     {
         private readonly Dictionary<Guid, RedirectRule> _redirectsDictionary;
 
+        public TestRedirectRuleRepository()
+        {
+            _redirectsDictionary = new Dictionary<Guid, RedirectRule>();
+        }
         public TestRedirectRuleRepository(Dictionary<Guid, RedirectRule> redirectsCollection)
         {
             _redirectsDictionary = redirectsCollection;

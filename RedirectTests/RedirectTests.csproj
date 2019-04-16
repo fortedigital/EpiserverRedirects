@@ -114,6 +114,9 @@
         </Reference>
     </ItemGroup>
     <ItemGroup>
+        <Compile Include="Data\RedirectRuleTestDataBuilder.cs" />
+        <Compile Include="Data\RandomDataGenerator.cs" />
+        <Compile Include="RedirectRuleResolver.cs" />
         <Compile Include="RedirectServiceTests.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
     </ItemGroup>
