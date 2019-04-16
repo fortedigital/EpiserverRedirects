@@ -19,11 +19,12 @@ namespace Forte.RedirectMiddleware.Model
             return destination;
         }
         
+        //TODO: zwracac boolean z TryCreate lub opakowac w try catche
         public static void DtoToModel(RedirectRuleDto source, RedirectRule destination)
         {
             destination.Id = source.Id;
             destination.NewUrl = source.NewUrl;
-            destination.OldPath = new UrlPath(source.OldPath);
+            destination.OldPath = UrlPath.Create(source.OldPath);
             destination.RedirectType = source.RedirectType;
             destination.IsActive = source.IsActive;
             destination.Notes = source.Notes;

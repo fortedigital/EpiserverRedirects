@@ -6,8 +6,8 @@ namespace Forte.RedirectMiddleware.Repository
 {
     public interface IRedirectRuleRepository
     {
-        RedirectRuleDto GetRedirect(UrlPath oldPath);
-        IQueryable<RedirectRuleDto> GetAllRedirects();
+        RedirectRule GetRedirectRule(UrlPath oldPath);
+        IQueryable<RedirectRule> GetAllRedirectRules();
         RedirectRuleDto CreateRedirect(RedirectRuleDto redirectVM);
         RedirectRuleDto UpdateRedirect(RedirectRuleDto redirectVM);
         bool DeleteRedirect(Guid id);
@@ -15,8 +15,8 @@ namespace Forte.RedirectMiddleware.Repository
 
     public abstract class RedirectRuleRepository : IRedirectRuleRepository
     {
-        public abstract RedirectRuleDto GetRedirect(UrlPath oldPath);
-        public abstract IQueryable<RedirectRuleDto> GetAllRedirects();
+        public abstract RedirectRule GetRedirectRule(UrlPath oldPath);
+        public abstract IQueryable<RedirectRule> GetAllRedirectRules();
 
         public abstract RedirectRuleDto CreateRedirect(RedirectRuleDto redirectRuleDTO);
         public abstract RedirectRuleDto UpdateRedirect(RedirectRuleDto redirectRuleDTO);

@@ -11,8 +11,18 @@ namespace Forte.RedirectMiddleware
     {
         private const int NotFoundStatusCode = 404;
         private const string LocationHeader = "Location";
-        private Injected<IRedirectService> RedirectService  { get; set; }
-        public RedirectMiddleware(OwinMiddleware next) : base(next) {}
+        private IRedirectService RedirectService  { get; set; }
+        private IResponseStatusCodeResolver ResponseStatusCodeResolver  { get; set; }
+
+        public RedirectMiddleware(OwinMiddleware next, IRedirectService redirectService, IResponseStatusCodeResolver responseStatusCodeResolver) : base(next)
+        {
+            RedirectService = redirectService;
+        }
+
+        public RedirectMiddleware(OwinMiddleware next) : base(next)
+        {
+            RedirectService = ServiceLocator.Current.GetInstance<IRedirectService>();
+        }
 
         public override async Task Invoke(IOwinContext context)
         {
@@ -21,17 +31,17 @@ namespace Forte.RedirectMiddleware
             if (context.Response.StatusCode == NotFoundStatusCode)
             {
                 var originalRequestPath = context.Request.Uri.AbsolutePath;
-                var redirectRuleDto = RedirectService.Service.GetRedirect(originalRequestPath);
+                var redirectRule = RedirectService.GetRedirectRule(originalRequestPath);
 
-                if (redirectRuleDto != null)
-                    RedirectResponse(context, redirectRuleDto);
+                if (redirectRule != null)
+                    RedirectResponse(context, redirectRule);
             }
         }
 
-        private static void RedirectResponse(IOwinContext context, RedirectRuleDto redirectRuleDto)
+        private void RedirectResponse(IOwinContext context, RedirectRule redirectRule)
         {
-            context.Response.StatusCode = Http_1_0_RedirectTypeMapper.MapToHttpResponseCode(redirectRuleDto.RedirectType);
-            context.Response.Headers.Set(LocationHeader, redirectRuleDto.NewUrl);
+            context.Response.StatusCode = ResponseStatusCodeResolver.GetHttpResponseStatusCode(redirectRule);
+            context.Response.Headers.Set(LocationHeader, redirectRule.NewUrl);
         }
     }
 }

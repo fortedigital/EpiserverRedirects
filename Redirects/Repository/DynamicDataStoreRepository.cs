@@ -24,17 +24,16 @@ namespace Forte.RedirectMiddleware.Repository
             return _dynamicDataStoreFactory.CreateStore(typeof(RedirectRule));
         }
         
-        public override RedirectRuleDto GetRedirect(UrlPath oldPath)
+        public override RedirectRule GetRedirectRule(UrlPath oldPath)
         {
             var redirect = _dynamicDataStore.Items<RedirectRule>().FirstOrDefault(r => r.OldPath == oldPath);
-            var redirectDto = RedirectRuleMapper.ModelToDto(redirect);
-            return redirectDto;
+
+            return redirect;
         }
 
-        public override IQueryable<RedirectRuleDto> GetAllRedirects()
+        public override IQueryable<RedirectRule> GetAllRedirectRules()
         {
-            //TODO: betterMapping
-            return _dynamicDataStore.Items<RedirectRule>().Select(r=>RedirectRuleMapper.ModelToDto(r)).AsQueryable();
+            return _dynamicDataStore.Items<RedirectRule>().AsQueryable();
         }
 
         public override RedirectRuleDto CreateRedirect(RedirectRuleDto redirectRuleDTO)

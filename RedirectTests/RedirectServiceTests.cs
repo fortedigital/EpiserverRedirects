@@ -43,7 +43,7 @@ namespace RedirectTests
             var repository = new TestRedirectRuleRepository(existingRedirects);
             var redirectService = new RedirectService(repository);
             
-            var redirect = redirectService.GetRedirect(oldPath);
+            var redirect = redirectService.GetRedirectRule(oldPath);
             
             Assert.Null(redirect);
         }
@@ -60,7 +60,7 @@ namespace RedirectTests
             var repository = new TestRedirectRuleRepository(existingRedirects);
             var redirectService = new RedirectService(repository);
             
-            var redirect = redirectService.GetRedirect(oldPath);
+            var redirect = redirectService.GetRedirectRule(oldPath);
             
             Assert.Equal(expectedNewPath, redirect.NewUrl);
         }
@@ -77,7 +77,7 @@ namespace RedirectTests
             var repository = new TestRedirectRuleRepository(existingRedirects);
             var redirectService = new RedirectService(repository);
 
-            var redirects = redirectService.GetAllRedirects();
+            var redirects = redirectService.GetAllRedirectRules();
             
             Assert.Equal(redirectsCount, redirects.Count());
         }
@@ -96,7 +96,7 @@ namespace RedirectTests
 
             var redirectDto = new RedirectRuleDto("randomOldPath", "randomNewPath");
             var newRedirect = redirectService.CreateRedirect(redirectDto);
-            var allRedirects = redirectService.GetAllRedirects();
+            var allRedirects = redirectService.GetAllRedirectRules();
             
             Assert.True(allRedirects.Any(r=>r.Id == newRedirect.Id));
         }
@@ -114,10 +114,13 @@ namespace RedirectTests
             var redirectService = new RedirectService(repository);
 
             var randomIndex = new Random().Next(existingRedirects.Count);
-            var randomRedirectDto = redirectService.GetAllRedirects().Skip(randomIndex).FirstOrDefault();
+            var randomRedirect = redirectService.GetAllRedirectRules().Skip(randomIndex).FirstOrDefault();
+
+            var randomRedirectDto = RedirectRuleMapper.ModelToDto(randomRedirect);
             randomRedirectDto.NewUrl = newUrl;
+            
             redirectService.UpdateRedirect(randomRedirectDto);
-            var updatedRedirect = redirectService.GetRedirect(randomRedirectDto.OldPath);
+            var updatedRedirect = redirectService.GetRedirectRule(randomRedirectDto.OldPath);
             
             Assert.Equal(newUrl, updatedRedirect.NewUrl);
         }
@@ -151,7 +154,7 @@ namespace RedirectTests
             if (doesExists)
             {
                 var randomIndex = new Random().Next(existingRedirects.Count);
-                var randomRedirect = redirectService.GetAllRedirects().Skip(randomIndex).FirstOrDefault();
+                var randomRedirect = redirectService.GetAllRedirectRules().Skip(randomIndex).FirstOrDefault();
                 deleteResult = redirectService.DeleteRedirect(randomRedirect.Id.ExternalId);
             }
             else

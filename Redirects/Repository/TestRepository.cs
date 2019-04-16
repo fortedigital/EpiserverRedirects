@@ -15,19 +15,16 @@ namespace Forte.RedirectMiddleware.Repository
             _redirectsDictionary = redirectsCollection;
         }
 
-        public override RedirectRuleDto GetRedirect(UrlPath oldPath)
+        public override RedirectRule GetRedirectRule(UrlPath oldPath)
         {
             var redirect = _redirectsDictionary.FirstOrDefault(r => r.Value.OldPath == oldPath).Value;
 
-            var redirectDto = redirect != null
-                ? RedirectRuleMapper.ModelToDto(redirect)
-                : null;
-            return redirectDto;
+            return redirect;
         }
 
-        public override IQueryable<RedirectRuleDto> GetAllRedirects()
+        public override IQueryable<RedirectRule> GetAllRedirectRules()
         {
-            return _redirectsDictionary.Select(r=>RedirectRuleMapper.ModelToDto(r.Value)).AsQueryable();
+            return _redirectsDictionary.Select(r=>r.Value).AsQueryable();
         }
 
         public override RedirectRuleDto CreateRedirect(RedirectRuleDto redirectRuleDTO)

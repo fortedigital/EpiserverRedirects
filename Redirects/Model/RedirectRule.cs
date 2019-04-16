@@ -19,13 +19,13 @@ namespace Forte.RedirectMiddleware.Model
         
         public RedirectRule(string oldPath, string newUrl)
         {
-            OldPath = new UrlPath(oldPath);
+            OldPath = UrlPath.Create(oldPath);
             NewUrl = newUrl;
         }
         public RedirectRule(Identity id, string oldPath, string newUrl, RedirectType.RedirectType redirectType)
         {
             Id = id;
-            OldPath = new UrlPath(oldPath);
+            OldPath = UrlPath.Create(oldPath);
             NewUrl = newUrl;
         }
         public Identity Id { get; set; }

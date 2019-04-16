@@ -11,21 +11,21 @@ namespace Forte.RedirectMiddleware.Service
     public class RedirectService : IRedirectService
     {
         private readonly IRedirectRuleRepository _redirectRuleRepository;
-        private readonly IRedirectTypeMapper _redirectTypeMapper;
+
         public RedirectService(IRedirectRuleRepository redirectRuleRepository)
         {
             _redirectRuleRepository = redirectRuleRepository;
         }
 
-        public RedirectRuleDto GetRedirect(string oldPath)
+        public RedirectRule GetRedirectRule(string oldPath)
         {
-            var urlPath = new UrlPath(oldPath);
-            return _redirectRuleRepository.GetRedirect(urlPath);
+            var urlPath = UrlPath.Create(oldPath);
+            return _redirectRuleRepository.GetRedirectRule(urlPath);
         }
         
-        public IQueryable<RedirectRuleDto> GetAllRedirects()
+        public IQueryable<RedirectRule> GetAllRedirectRules()
         {
-            return _redirectRuleRepository.GetAllRedirects();
+            return _redirectRuleRepository.GetAllRedirectRules();
         }
 
         public RedirectRuleDto CreateRedirect(RedirectRuleDto redirectRuleDTO)
@@ -51,10 +51,10 @@ namespace Forte.RedirectMiddleware.Service
 
     public interface IRedirectService
     {
-        RedirectRuleDto GetRedirect(string oldPath);
-        IQueryable<RedirectRuleDto> GetAllRedirects();
-        RedirectRuleDto CreateRedirect(RedirectRuleDto redirectVM);
-        RedirectRuleDto UpdateRedirect(RedirectRuleDto redirectVM);
+        RedirectRule GetRedirectRule(string oldPath);
+        IQueryable<RedirectRule> GetAllRedirectRules();
+        RedirectRuleDto CreateRedirect(RedirectRuleDto redirectRuleDto);
+        RedirectRuleDto UpdateRedirect(RedirectRuleDto redirectRuleDto);
         bool DeleteRedirect(Guid id);
     }
 }
