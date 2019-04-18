@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Forte.RedirectMiddleware.Model;
 
@@ -7,19 +8,31 @@ namespace Forte.RedirectMiddleware.Repository
     public interface IRedirectRuleRepository
     {
         RedirectRule GetRedirectRule(UrlPath oldPath);
-        IQueryable<RedirectRule> GetAllRedirectRules();
-        RedirectRuleDto CreateRedirect(RedirectRuleDto redirectVM);
-        RedirectRuleDto UpdateRedirect(RedirectRuleDto redirectVM);
+        IEnumerable<RedirectRule> GetAllRedirectRules();
+        RedirectRule GetRedirectRule(Guid id);
+        RedirectRule CreateRedirect(RedirectRule redirectRule);
+        RedirectRule UpdateRedirect(RedirectRule redirectRule);
         bool DeleteRedirect(Guid id);
     }
 
     public abstract class RedirectRuleRepository : IRedirectRuleRepository
     {
         public abstract RedirectRule GetRedirectRule(UrlPath oldPath);
-        public abstract IQueryable<RedirectRule> GetAllRedirectRules();
+        public abstract IEnumerable<RedirectRule> GetAllRedirectRules();
+        public abstract RedirectRule GetRedirectRule(Guid id);
 
-        public abstract RedirectRuleDto CreateRedirect(RedirectRuleDto redirectRuleDTO);
-        public abstract RedirectRuleDto UpdateRedirect(RedirectRuleDto redirectRuleDTO);
+        public abstract RedirectRule CreateRedirect(RedirectRule redirectRule);
+        public abstract RedirectRule UpdateRedirect(RedirectRule redirectRule);
         public abstract bool DeleteRedirect(Guid id);
+
+        protected static void WriteToModel(RedirectRule redirectRule, RedirectRule redirectToUpdate)
+        {
+            redirectToUpdate.Id = redirectRule.Id;
+            redirectToUpdate.NewUrl = redirectRule.NewUrl;
+            redirectToUpdate.OldPath = redirectRule.OldPath;
+            redirectToUpdate.RedirectType = redirectRule.RedirectType;
+            redirectToUpdate.IsActive = redirectRule.IsActive;
+            redirectToUpdate.Notes = redirectRule.Notes;
+        }
     }
 }

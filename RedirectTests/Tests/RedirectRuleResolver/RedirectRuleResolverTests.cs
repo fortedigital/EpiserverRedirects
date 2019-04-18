@@ -5,10 +5,7 @@ namespace RedirectTests.Tests.RedirectRuleResolver
 {
     public class RedirectRuleResolverTests
     {
-        private static RedirectRuleResolverBuilder RedirectRuleResolver()
-        {
-            return new RedirectRuleResolverBuilder();
-        }
+        private static RedirectRuleResolverBuilder RedirectRuleResolver() => new RedirectRuleResolverBuilder();
 
         [Fact]
         public void Given_NoExistingRules_Resolve_ReturnsNull()
