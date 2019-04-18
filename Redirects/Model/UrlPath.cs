@@ -5,14 +5,23 @@ namespace Forte.RedirectMiddleware.Model
 {
     public class UrlPath : IEquatable<UrlPath>
     {
-        public string NormalizedPath { get; }
+        private const string InvalidRelativePathExceptionMessage = "Entered path is not a valid relative path.";
+        public Uri Path { get; }
 
         public static UrlPath Create(string oldPath)
         {
-            var trimmedOldPath = oldPath.Trim();
-            ValidatePath(trimmedOldPath);
-            var urlPath = new UrlPath(trimmedOldPath);
-            return urlPath;
+            try
+            {
+                NormalizePath(oldPath);
+                var urlPath = new UrlPath(oldPath);
+                return urlPath;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw new ArgumentException(InvalidRelativePathExceptionMessage, e);
+            }
+
         }
         public static bool TryCreate(string oldPath, out UrlPath urlPath)
         {
@@ -23,18 +32,19 @@ namespace Forte.RedirectMiddleware.Model
             }
             catch (Exception e)
             {
-                Console.WriteLine("Entered path is not a valid relative path: " + e);
+                Console.WriteLine(InvalidRelativePathExceptionMessage + e);
                 urlPath = null;
                 return false;
             }
         }
         private UrlPath(string oldPath)
         {
-            NormalizedPath = NormalizePath(oldPath);
+            Path = new Uri(oldPath, UriKind.Relative);
         }
 
         private static string NormalizePath(string path)
-        {            
+        {
+            path = path.Trim();
             path = path[0] == '/'
                 ? path
                 : '/' + path;
@@ -43,11 +53,6 @@ namespace Forte.RedirectMiddleware.Model
                 path = path.TrimEnd('/');
 
             return path;
-        }
-        
-        private static void ValidatePath(string oldPath)
-        {
-            new Uri(oldPath, UriKind.Relative);
         }
 
         public static bool operator ==(UrlPath a, UrlPath b)
@@ -60,15 +65,24 @@ namespace Forte.RedirectMiddleware.Model
             return !(a == b);
         }
 
+        private bool Equals(UrlPath other, StringComparison stringComparison)
+        {
+            if (ReferenceEquals(null, other)) return false;
+
+            if (ReferenceEquals(this, other)) return true;
+
+            return string.Equals(Path.OriginalString, other.Path.OriginalString, stringComparison);
+        }
+
         public bool Equals(UrlPath other)
         {
             if (ReferenceEquals(null, other)) return false;
 
             if (ReferenceEquals(this, other)) return true;
 
-            return string.Equals(NormalizedPath, other.NormalizedPath, StringComparison.CurrentCulture);
+            return string.Equals(Path.OriginalString, other.Path.OriginalString, StringComparison.Ordinal);
         }
-        
+
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj)) return false;
@@ -77,10 +91,9 @@ namespace Forte.RedirectMiddleware.Model
             return Equals((UrlPath) obj);
         }
         
-        //Adjust to the same StringComparison type as Equals?
         public override int GetHashCode()
-        {
-            return (NormalizedPath != null ? NormalizedPath.GetHashCode() : 0);
+        {    
+            return (Path?.OriginalString != null ? Path.OriginalString.GetHashCode() : 0);
         }
     }
 }

@@ -33,8 +33,32 @@
         <WarningLevel>4</WarningLevel>
     </PropertyGroup>
     <ItemGroup>
+        <Reference Include="Castle.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc">
+          <HintPath>..\packages\Castle.Core.4.2.1\lib\net45\Castle.Core.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
+        <Reference Include="Castle.Windsor, Version=4.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc">
+          <HintPath>..\packages\Castle.Windsor.4.1.0\lib\net45\Castle.Windsor.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
+        <Reference Include="EPiServer, Version=11.11.0.0, Culture=neutral, PublicKeyToken=8fe83dea738b45b7">
+          <HintPath>..\packages\EPiServer.CMS.Core.11.11.0\lib\net461\EPiServer.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
         <Reference Include="EPiServer.ApplicationModules, Version=11.11.0.0, Culture=neutral, PublicKeyToken=8fe83dea738b45b7">
           <HintPath>..\packages\EPiServer.Framework.11.11.0\lib\net461\EPiServer.ApplicationModules.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
+        <Reference Include="EPiServer.Cms.AspNet, Version=11.11.0.0, Culture=neutral, PublicKeyToken=8fe83dea738b45b7">
+          <HintPath>..\packages\EPiServer.CMS.AspNet.11.11.0\lib\net461\EPiServer.Cms.AspNet.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
+        <Reference Include="EPiServer.Cms.Shell.UI, Version=11.13.1.0, Culture=neutral, PublicKeyToken=8fe83dea738b45b7">
+          <HintPath>..\packages\EPiServer.CMS.UI.Core.11.13.1\lib\net461\EPiServer.Cms.Shell.UI.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
+        <Reference Include="EPiServer.Configuration, Version=11.11.0.0, Culture=neutral, PublicKeyToken=8fe83dea738b45b7">
+          <HintPath>..\packages\EPiServer.CMS.AspNet.11.11.0\lib\net461\EPiServer.Configuration.dll</HintPath>
           <Private>True</Private>
         </Reference>
         <Reference Include="EPiServer.Data, Version=11.11.0.0, Culture=neutral, PublicKeyToken=8fe83dea738b45b7">
@@ -45,6 +69,10 @@
           <HintPath>..\packages\EPiServer.Framework.11.11.0\lib\net461\EPiServer.Data.Cache.dll</HintPath>
           <Private>True</Private>
         </Reference>
+        <Reference Include="EPiServer.Enterprise, Version=11.11.0.0, Culture=neutral, PublicKeyToken=8fe83dea738b45b7">
+          <HintPath>..\packages\EPiServer.CMS.Core.11.11.0\lib\net461\EPiServer.Enterprise.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
         <Reference Include="EPiServer.Events, Version=11.11.0.0, Culture=neutral, PublicKeyToken=8fe83dea738b45b7">
           <HintPath>..\packages\EPiServer.Framework.11.11.0\lib\net461\EPiServer.Events.dll</HintPath>
           <Private>True</Private>
@@ -53,8 +81,40 @@
           <HintPath>..\packages\EPiServer.Framework.11.11.0\lib\net461\EPiServer.Framework.dll</HintPath>
           <Private>True</Private>
         </Reference>
+        <Reference Include="EPiServer.Framework.AspNet, Version=11.11.0.0, Culture=neutral, PublicKeyToken=8fe83dea738b45b7">
+          <HintPath>..\packages\EPiServer.Framework.AspNet.11.11.0\lib\net461\EPiServer.Framework.AspNet.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
+        <Reference Include="EPiServer.ImageLibrary, Version=11.11.0.0, Culture=neutral, PublicKeyToken=8fe83dea738b45b7">
+          <HintPath>..\packages\EPiServer.CMS.AspNet.11.11.0\lib\net461\EPiServer.ImageLibrary.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
         <Reference Include="EPiServer.Licensing, Version=11.11.0.0, Culture=neutral, PublicKeyToken=8fe83dea738b45b7">
           <HintPath>..\packages\EPiServer.Framework.11.11.0\lib\net461\EPiServer.Licensing.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
+        <Reference Include="EPiServer.LinkAnalyzer, Version=11.11.0.0, Culture=neutral, PublicKeyToken=8fe83dea738b45b7">
+          <HintPath>..\packages\EPiServer.CMS.Core.11.11.0\lib\net461\EPiServer.LinkAnalyzer.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
+        <Reference Include="EPiServer.Shell, Version=11.13.1.0, Culture=neutral, PublicKeyToken=8fe83dea738b45b7">
+          <HintPath>..\packages\EPiServer.CMS.UI.Core.11.13.1\lib\net461\EPiServer.Shell.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
+        <Reference Include="EPiServer.Shell.UI, Version=11.13.1.0, Culture=neutral, PublicKeyToken=8fe83dea738b45b7">
+          <HintPath>..\packages\EPiServer.CMS.UI.Core.11.13.1\lib\net461\EPiServer.Shell.UI.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
+        <Reference Include="EPiServer.UI, Version=11.13.1.0, Culture=neutral, PublicKeyToken=8fe83dea738b45b7">
+          <HintPath>..\packages\EPiServer.CMS.UI.Core.11.13.1\lib\net461\EPiServer.UI.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
+        <Reference Include="EPiServer.Web.WebControls, Version=11.11.0.0, Culture=neutral, PublicKeyToken=8fe83dea738b45b7">
+          <HintPath>..\packages\EPiServer.CMS.AspNet.11.11.0\lib\net461\EPiServer.Web.WebControls.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
+        <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+          <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
           <Private>True</Private>
         </Reference>
         <Reference Include="mscorlib" />
@@ -68,6 +128,7 @@
           <Private>True</Private>
         </Reference>
         <Reference Include="System.ComponentModel.DataAnnotations" />
+        <Reference Include="System.Configuration" />
         <Reference Include="System.Core" />
         <Reference Include="System.Data" />
         <Reference Include="System.Data.OracleClient" />
@@ -77,6 +138,7 @@
         </Reference>
         <Reference Include="System.Drawing" />
         <Reference Include="System.Net" />
+        <Reference Include="System.Runtime.Remoting" />
         <Reference Include="System.Security" />
         <Reference Include="System.Security.AccessControl, Version=4.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
           <HintPath>..\packages\System.Security.AccessControl.4.4.0\lib\net461\System.Security.AccessControl.dll</HintPath>
@@ -98,7 +160,36 @@
           <HintPath>..\packages\System.Threading.AccessControl.4.4.0\lib\net461\System.Threading.AccessControl.dll</HintPath>
           <Private>True</Private>
         </Reference>
+        <Reference Include="System.Threading.Tasks.Dataflow, Version=4.5.24.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+          <HintPath>..\packages\Microsoft.Tpl.Dataflow.4.5.24\lib\portable-net45+win8+wpa81\System.Threading.Tasks.Dataflow.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
         <Reference Include="System.Transactions" />
+        <Reference Include="System.Web" />
+        <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+          <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.Helpers.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
+        <Reference Include="System.Web.Mvc, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+          <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.3\lib\net45\System.Web.Mvc.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
+        <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+          <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.3\lib\net45\System.Web.Razor.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
+        <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+          <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
+        <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+          <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
+        <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+          <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
         <Reference Include="System.Xml" />
         <Reference Include="xunit.abstractions, Version=2.0.0.0, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c">
             <HintPath>..\packages\xunit.abstractions.2.0.0\lib\net35\xunit.abstractions.dll</HintPath>
@@ -116,8 +207,11 @@
     <ItemGroup>
         <Compile Include="Data\RedirectRuleTestDataBuilder.cs" />
         <Compile Include="Data\RandomDataGenerator.cs" />
-        <Compile Include="RedirectRuleResolver.cs" />
-        <Compile Include="RedirectServiceTests.cs" />
+        <Compile Include="Tests\BaseBuilder.cs" />
+        <Compile Include="Tests\RedirectRuleResolver\RedirectRuleResolverBuilder.cs" />
+        <Compile Include="Tests\RedirectRuleResolver\RedirectRuleResolverTests.cs" />
+        <Compile Include="Tests\REST\RedirectRuleControllerBuilder.cs" />
+        <Compile Include="Tests\REST\RedirectRuleControllerTests.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
     </ItemGroup>
     <ItemGroup>

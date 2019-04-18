@@ -6,7 +6,7 @@ using Forte.RedirectMiddleware.Model;
 
 namespace Forte.RedirectMiddleware.Repository
 {
-    public class TestRedirectRuleRepository : Forte.RedirectMiddleware.Repository.RedirectRuleRepository
+    public class TestRedirectRuleRepository : RedirectRuleRepository
     {
         private readonly Dictionary<Guid, RedirectRule> _redirectsDictionary;
 

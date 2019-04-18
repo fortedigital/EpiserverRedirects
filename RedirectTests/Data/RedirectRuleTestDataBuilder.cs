@@ -8,55 +8,65 @@ namespace RedirectTests.Data
 {
     public class RedirectRuleTestDataBuilder
     {
-        private const int DefaultRedirectRulesNumber = 5;
-        private readonly Dictionary<Guid, RedirectRule> _redirectsRuleDataDictionary = new Dictionary<Guid, RedirectRule>();
+        private Dictionary<Guid, RedirectRule> _redirectsRuleDataDictionary = new Dictionary<Guid, RedirectRule>();
+        private readonly HashSet<Guid> _alreadyChangedRedirectRulesGuids = new HashSet<Guid>();
 
-        public static RedirectRuleTestDataBuilder Start(int redirectRulesNumber = DefaultRedirectRulesNumber)
+        public static RedirectRuleTestDataBuilder Start()
         {
-            var objectMother = new RedirectRuleTestDataBuilder();
-            objectMother.InitializeData(redirectRulesNumber);
-            return objectMother;
+            var testDataBuilder = new RedirectRuleTestDataBuilder();
+            return testDataBuilder;
         }
 
-        private void InitializeData(int redirectRulesNumber)
+        public void InitializeWithRandomData(int redirectRulesNumber)
         {
             for (var i = 0; i < redirectRulesNumber; i++)
             {
                 var redirectRule = RandomDataGenerator.CreateRandomRedirectRule();
                 _redirectsRuleDataDictionary.Add(redirectRule.Id.ExternalId, redirectRule);
             }
-        }     
-        
-        public RedirectRuleTestDataBuilder WithOldPath(string oldPath, int numberOfRedirectRulesToChange = 1)
-        {
-            ChangeData(r=>r.OldPath = UrlPath.Create(oldPath), numberOfRedirectRulesToChange);
-            return this;
         }
         
-        public RedirectRuleTestDataBuilder WithOldPathAndNewUrl(string oldPath, string newUrl, int numberOfRedirectRulesToChange = 1)
+        public void InitializeData(Dictionary<Guid, RedirectRule> initializationData)
         {
-            ChangeData(r=>
+            _redirectsRuleDataDictionary = initializationData;
+        }  
+        
+        public RedirectRule WithOldPath(string oldPath)
+        {
+            var redirectRule = ChangeData(r=>r.OldPath = UrlPath.Create(oldPath));
+            return redirectRule;
+        }
+        
+        public RedirectRule WithOldPathAndNewUrl(string oldPath, string newUrl)
+        {
+            var redirectRule = ChangeData(r=>
             {
                 r.OldPath = UrlPath.Create(oldPath);
                 r.NewUrl = newUrl;
-            }, numberOfRedirectRulesToChange);
-            return this;
-        }      
-        
-        private void ChangeData(Action<RedirectRule> changeDataAction, int numberOfRedirectRulesToChange)
-        {
-            var alreadyChangedRedirectRulesGuids = new HashSet<Guid>();
+            });
+            return redirectRule;
+        }
 
-            while (alreadyChangedRedirectRulesGuids.Count < numberOfRedirectRulesToChange)
+        private RedirectRule ChangeData(Action<RedirectRule> changeDataAction)
+        {
+            RedirectRule changedRedirectRule;
+
+
+            while (true)
             {
                 var randomRedirectRule = GetRandomRedirectRuleFromData();
 
-                if (alreadyChangedRedirectRulesGuids.Contains(randomRedirectRule.Id.ExternalId))
+                if (_alreadyChangedRedirectRulesGuids.Contains(randomRedirectRule.Id.ExternalId))
                     continue;
 
                 changeDataAction.Invoke(randomRedirectRule);
-                alreadyChangedRedirectRulesGuids.Add(randomRedirectRule.Id.ExternalId);
+                _alreadyChangedRedirectRulesGuids.Add(randomRedirectRule.Id.ExternalId);
+                
+                changedRedirectRule = randomRedirectRule;
+                break;
             }
+
+            return changedRedirectRule;
         }
 
         private RedirectRule GetRandomRedirectRuleFromData()

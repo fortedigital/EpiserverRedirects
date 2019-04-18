@@ -1,26 +1,18 @@
-﻿using System;
+using System;
 using System.Linq;
-using EPiServer.ServiceLocation;
+using EPiServer.Shell.Services.Rest;
 using Forte.RedirectMiddleware.Model;
-using Forte.RedirectMiddleware.Model.RedirectType;
 using Forte.RedirectMiddleware.Repository;
 
-namespace Forte.RedirectMiddleware.Service
+namespace Forte.RedirectMiddleware.REST
 {
-    [ServiceConfiguration(ServiceType = typeof(IRedirectService))]
-    public class RedirectService : IRedirectService
+    public class RedirectRuleController : RestControllerBase
     {
         private readonly IRedirectRuleRepository _redirectRuleRepository;
 
-        public RedirectService(IRedirectRuleRepository redirectRuleRepository)
+        public RedirectRuleController(IRedirectRuleRepository redirectRuleRepository)
         {
             _redirectRuleRepository = redirectRuleRepository;
-        }
-
-        public RedirectRule GetRedirectRule(string oldPath)
-        {
-            var urlPath = UrlPath.Create(oldPath);
-            return _redirectRuleRepository.GetRedirectRule(urlPath);
         }
         
         public IQueryable<RedirectRule> GetAllRedirectRules()
@@ -46,15 +38,5 @@ namespace Forte.RedirectMiddleware.Service
         {
             return _redirectRuleRepository.DeleteRedirect(id);
         }
-        
-    }
-
-    public interface IRedirectService
-    {
-        RedirectRule GetRedirectRule(string oldPath);
-        IQueryable<RedirectRule> GetAllRedirectRules();
-        RedirectRuleDto CreateRedirect(RedirectRuleDto redirectRuleDto);
-        RedirectRuleDto UpdateRedirect(RedirectRuleDto redirectRuleDto);
-        bool DeleteRedirect(Guid id);
     }
 }

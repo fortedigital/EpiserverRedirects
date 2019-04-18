@@ -6,7 +6,7 @@ namespace Forte.RedirectMiddleware.Model
         {
             destination.Id = source.Id;
             destination.NewUrl = source.NewUrl;
-            destination.OldPath = source.OldPath.NormalizedPath;
+            destination.OldPath = source.OldPath.Path.OriginalString;
             destination.RedirectType = source.RedirectType;
             destination.IsActive = source.IsActive;
             destination.Notes = source.Notes;
