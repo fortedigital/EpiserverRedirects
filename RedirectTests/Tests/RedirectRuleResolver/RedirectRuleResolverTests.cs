@@ -1,4 +1,6 @@
 ﻿using Forte.RedirectMiddleware.Model;
+using Forte.RedirectMiddleware.Model.Mapper;
+using RedirectTests.Data;
 using Xunit;
 
 namespace RedirectTests.Tests.RedirectRuleResolver
@@ -44,7 +46,7 @@ namespace RedirectTests.Tests.RedirectRuleResolver
         }
            
         /// <summary>
-        /// /
+        /// przeniesc do testow repo lub usunac?
         /// </summary>
         [Fact]
         public void Given_MatchingRule_Resolve_ReturnsRuleWithCorrectPath()
@@ -57,6 +59,38 @@ namespace RedirectTests.Tests.RedirectRuleResolver
             var resolvedRule = resolver.ResolveRedirectRule(expectedRule.OldPath);
             
             Assert.Equal(expectedRule.NewUrl, resolvedRule.NewUrl);
+        }
+        
+        [Fact]
+        public void Given_RedirectRuleDTO_Map_ReturnsRedirectRule()
+        {
+            var mapper = new RedirectRuleMapper();
+            var redirectRuleDto = RandomDataGenerator.CreateRandomRedirectRuleDto();
+            var redirectRule = mapper.DtoToModel(redirectRuleDto);
+            
+            Assert.Equal(redirectRuleDto.Id, redirectRule.Id);
+            Assert.Equal(redirectRuleDto.OldPath, redirectRule.OldPath.Path.OriginalString);
+            Assert.Equal(redirectRuleDto.NewUrl, redirectRule.NewUrl);
+            Assert.Equal(redirectRuleDto.Notes, redirectRule.Notes);
+            Assert.Equal(redirectRuleDto.IsActive, redirectRule.IsActive);
+            Assert.Equal(redirectRuleDto.CreatedOn, redirectRule.CreatedOn);
+            Assert.Equal(redirectRuleDto.RedirectType, redirectRule.RedirectType);
+        }
+        
+        [Fact]
+        public void Given_RedirectRule_Map_ReturnsRedirectRuleDto()
+        {
+            var mapper = new RedirectRuleMapper();
+            var redirectRule = RandomDataGenerator.CreateRandomRedirectRule();
+            var redirectRuleDto = mapper.ModelToDto(redirectRule);
+            
+            Assert.Equal(redirectRule.Id, redirectRuleDto.Id);
+            Assert.Equal(redirectRule.OldPath.Path.OriginalString, redirectRuleDto.OldPath);
+            Assert.Equal(redirectRule.NewUrl, redirectRuleDto.NewUrl);
+            Assert.Equal(redirectRule.Notes, redirectRuleDto.Notes);
+            Assert.Equal(redirectRule.IsActive, redirectRuleDto.IsActive);
+            Assert.Equal(redirectRule.CreatedOn, redirectRuleDto.CreatedOn);
+            Assert.Equal(redirectRule.RedirectType, redirectRuleDto.RedirectType);
         }
         
     }

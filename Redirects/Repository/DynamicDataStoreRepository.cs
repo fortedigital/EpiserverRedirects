@@ -44,7 +44,7 @@ namespace Forte.RedirectMiddleware.Repository
 
         public override RedirectRule CreateRedirect(RedirectRule redirectRule)
         {     
-            var newRedirectIdentity = _dynamicDataStore.Save(redirectRule);
+            _dynamicDataStore.Save(redirectRule);
             return redirectRule;
         }
 

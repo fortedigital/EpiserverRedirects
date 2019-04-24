@@ -7,7 +7,7 @@ namespace Forte.RedirectMiddleware.Model
     {
         private const string InvalidRelativePathExceptionMessage = "Entered path is not a valid relative path.";
         public Uri Path { get; }
-
+           
         public static UrlPath Create(string oldPath)
         {
             try
@@ -21,7 +21,6 @@ namespace Forte.RedirectMiddleware.Model
                 Console.WriteLine(e);
                 throw new ArgumentException(InvalidRelativePathExceptionMessage, e);
             }
-
         }
         public static bool TryCreate(string oldPath, out UrlPath urlPath)
         {
@@ -37,12 +36,44 @@ namespace Forte.RedirectMiddleware.Model
                 return false;
             }
         }
+        
+        public static UrlPath Create(Uri oldAbsoluteUri)
+        {
+            try
+            {
+                var localPath = oldAbsoluteUri.LocalPath;
+                NormalizePath(localPath);
+                var urlPath = new UrlPath(localPath);
+
+                return urlPath;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw new ArgumentException(InvalidRelativePathExceptionMessage, e);
+            }
+        }
+        public static bool TryCreate(Uri oldAbsoluteUri, out UrlPath urlPath)
+        {
+            try
+            {             
+                urlPath = Create(oldAbsoluteUri);
+                return true;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(InvalidRelativePathExceptionMessage + e);
+                urlPath = null;
+                return false;
+            }
+        }
+        
         private UrlPath(string oldPath)
         {
             Path = new Uri(oldPath, UriKind.Relative);
         }
 
-        private static string NormalizePath(string path)
+        private static void NormalizePath(string path)
         {
             path = path.Trim();
             path = path[0] == '/'
@@ -51,8 +82,6 @@ namespace Forte.RedirectMiddleware.Model
 
             if (path.Length > 1)
                 path = path.TrimEnd('/');
-
-            return path;
         }
 
         public static bool operator ==(UrlPath a, UrlPath b)

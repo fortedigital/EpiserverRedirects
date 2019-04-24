@@ -32,8 +32,8 @@ namespace Forte.RedirectMiddleware
 
             if (context.Response.StatusCode == NotFoundStatusCode)
             {
-                var originalRequestPath = context.Request.Uri.AbsolutePath;
-                var redirectRule = RedirectService.ResolveRedirectRule(UrlPath.Create(originalRequestPath));
+                var originalRequestAbsoluteUri = context.Request.Uri;
+                var redirectRule = RedirectService.ResolveRedirectRule(UrlPath.Create(originalRequestAbsoluteUri));
 
                 if (redirectRule != null)
                     RedirectResponse(context, redirectRule);

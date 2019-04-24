@@ -27,6 +27,20 @@ namespace RedirectTests.Data
             };
         }
         
+        public static RedirectRuleDto CreateRandomRedirectRuleDto()
+        {
+            return new RedirectRuleDto()
+            {
+                Id = Guid.NewGuid(),
+                OldPath = GetRandomPath(),
+                NewUrl = GetRandomPath(),
+                IsActive = true,
+                Notes = "some notes",
+                CreatedOn = DateTime.Now,
+                RedirectType = RedirectType.Temporary
+            };
+        }
+        
         private static string GetRandomPath()
         {
             var directoriesNumber = RandomGenerator.Next(1, MaxNumberOfDirectories);

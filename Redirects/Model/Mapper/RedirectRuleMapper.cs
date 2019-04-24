@@ -13,6 +13,7 @@ namespace Forte.RedirectMiddleware.Model.Mapper
             destination.RedirectType = source.RedirectType;
             destination.IsActive = source.IsActive;
             destination.Notes = source.Notes;
+            destination.CreatedOn = source.CreatedOn;
         }
         
         public RedirectRuleDto ModelToDto(RedirectRule source)
@@ -36,6 +37,7 @@ namespace Forte.RedirectMiddleware.Model.Mapper
             destination.RedirectType = source.RedirectType;
             destination.IsActive = source.IsActive;
             destination.Notes = source.Notes;
+            destination.CreatedOn = source.CreatedOn;
         }
 
         public RedirectRule DtoToModel(RedirectRuleDto source)
