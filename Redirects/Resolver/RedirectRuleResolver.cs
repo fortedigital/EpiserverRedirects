@@ -1,7 +1,7 @@
-﻿using EPiServer.ServiceLocation;
+﻿using System.Linq;
+using EPiServer.ServiceLocation;
 using Forte.RedirectMiddleware.Model.RedirectRule;
 using Forte.RedirectMiddleware.Model.UrlPath;
-using Forte.RedirectMiddleware.Repository.ResolverRepository;
 
 namespace Forte.RedirectMiddleware.Resolver
 {
@@ -13,16 +13,16 @@ namespace Forte.RedirectMiddleware.Resolver
     [ServiceConfiguration(ServiceType = typeof(IRedirectRuleResolver))]
     public class RedirectRuleResolver : IRedirectRuleResolver
     {
-        private readonly IRedirectRuleResolverRepository _redirectRuleControllerRepository;
+        private readonly IQueryable<RedirectRule> _redirectRuleResolverRepository;
 
-        public RedirectRuleResolver(IRedirectRuleResolverRepository redirectRuleControllerRepository)
+        public RedirectRuleResolver(IQueryable<RedirectRule> redirectRuleResolverRepository)
         {
-            _redirectRuleControllerRepository = redirectRuleControllerRepository;
+            _redirectRuleResolverRepository = redirectRuleResolverRepository;
         }
 
         public RedirectRule ResolveRedirectRule(UrlPath oldPath)
         {
-            return _redirectRuleControllerRepository.FindByOldPath(oldPath);
+            return _redirectRuleResolverRepository.FirstOrDefault(r=>r.OldPath == oldPath);
         }
         
     }

@@ -3,23 +3,20 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using Forte.RedirectMiddleware.Model;
 using Forte.RedirectMiddleware.Model.RedirectRule;
 
-namespace Forte.RedirectMiddleware.Repository.ControllerRepository
+namespace Forte.RedirectMiddleware.Repository
 {
-    public interface IRedirectRuleControllerRepository
+    public interface IRedirectRuleControllerRepository : IQueryable<RedirectRule>
     {
-        IQueryable<RedirectRule> Get();
         RedirectRule GetById(Guid id);
         RedirectRule Add(RedirectRule redirectRule);
         RedirectRule Update(RedirectRule redirectRule);
         bool Delete(Guid id);
     }
 
-    public abstract class RedirectRuleControllerRepository : IRedirectRuleControllerRepository
+    public abstract class RedirectRuleRepository : IRedirectRuleControllerRepository
     {
-        public abstract IQueryable<RedirectRule> Get();
         public abstract RedirectRule GetById(Guid id);
 
         public abstract RedirectRule Add(RedirectRule redirectRule);
@@ -34,6 +31,27 @@ namespace Forte.RedirectMiddleware.Repository.ControllerRepository
             redirectToUpdate.RedirectType = redirectRule.RedirectType;
             redirectToUpdate.IsActive = redirectRule.IsActive;
             redirectToUpdate.Notes = redirectRule.Notes;
+        }
+
+        public abstract IEnumerator<RedirectRule> GetEnumerator();
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+
+        public Expression Expression => _expression;
+        private Expression _expression;
+
+        public Type ElementType => _elementType;
+        private Type _elementType;
+        public IQueryProvider Provider => _provider;
+        private IQueryProvider _provider;
+
+        protected void InitQueryable(IQueryable queryable)
+        {
+            _expression = queryable.Expression;
+            _elementType = queryable.ElementType;
+            _provider = queryable.Provider;
         }
     }
 }

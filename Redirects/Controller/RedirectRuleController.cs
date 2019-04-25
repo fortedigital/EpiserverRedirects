@@ -1,10 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using EPiServer.Shell.Services.Rest;
 using Forte.RedirectMiddleware.Model.Mapper;
 using Forte.RedirectMiddleware.Model.RedirectRule;
-using Forte.RedirectMiddleware.Repository.ControllerRepository;
+using Forte.RedirectMiddleware.Repository;
 
 namespace Forte.RedirectMiddleware.Controller
 {
@@ -22,18 +23,22 @@ namespace Forte.RedirectMiddleware.Controller
         public RedirectRuleDto GetRedirect(Guid id)
         {
             var redirect = _redirectRuleControllerRepository.GetById(id);
+
+            if (redirect == null)
+                return null;
+            
             return _redirectRuleMapper.ModelToDto(redirect);
         }
         public IEnumerable<RedirectRuleDto> GetAllRedirects()
         {
-            var redirects = _redirectRuleControllerRepository.Get();
-            return redirects.AsEnumerable().Select(_redirectRuleMapper.ModelToDto);
+            return _redirectRuleControllerRepository.AsEnumerable().Select(_redirectRuleMapper.ModelToDto);
         }
 
         public RedirectRuleDto Add(RedirectRuleDto dto)
         {
-            //tryMap
-            //ViewData.ModelState.IsValid
+            if (!ViewData.ModelState.IsValid)
+                return null;
+            
             var newRedirectRule = _redirectRuleMapper.DtoToModel(dto);
             newRedirectRule = _redirectRuleControllerRepository.Add(newRedirectRule);
 
@@ -43,6 +48,9 @@ namespace Forte.RedirectMiddleware.Controller
 
         public RedirectRuleDto Update(RedirectRuleDto dto)
         {
+            if (!ViewData.ModelState.IsValid)
+                return null;
+            
             var updatedRedirectRule = _redirectRuleMapper.DtoToModel(dto);
             updatedRedirectRule = _redirectRuleControllerRepository.Update(updatedRedirectRule);
             

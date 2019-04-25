@@ -20,10 +20,10 @@ namespace RedirectTests.Tests.REST
             var rule1 = RandomDataGenerator.CreateRandomRedirectRule();
             var rule2 = RandomDataGenerator.CreateRandomRedirectRule();
             
-            var existingRules = new Dictionary<Guid, RedirectRule>
+            var existingRules = new HashSet<RedirectRule>()
             {
-                {rule1.Id.ExternalId, rule1},
-                {rule2.Id.ExternalId, rule2}
+                rule1,
+                rule2
             };
             var dto1 = new RedirectRuleDto();
             var dto2 = new RedirectRuleDto();

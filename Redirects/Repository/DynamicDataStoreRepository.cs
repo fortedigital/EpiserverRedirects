@@ -1,32 +1,35 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using EPiServer.Data.Dynamic;
 using EPiServer.ServiceLocation;
-using Forte.RedirectMiddleware.Model;
 using Forte.RedirectMiddleware.Model.RedirectRule;
 
-namespace Forte.RedirectMiddleware.Repository.ControllerRepository
+namespace Forte.RedirectMiddleware.Repository
 {
     [ServiceConfiguration(ServiceType = typeof(IRedirectRuleControllerRepository))]
-    public class DynamicDataStoreRedirectRuleControllerRepository : RedirectRuleControllerRepository
+    public class DynamicDataStoreRepository : RedirectRuleRepository
     {
         private readonly DynamicDataStoreFactory _dynamicDataStoreFactory;
         private readonly DynamicDataStore _dynamicDataStore;
 
-        public DynamicDataStoreRedirectRuleControllerRepository(DynamicDataStoreFactory dynamicDataStoreFactory)
+        private void InitQueryable()
+        {
+            var queryable = _dynamicDataStore.Items<RedirectRule>();
+            base.InitQueryable(queryable);
+        }
+        
+        public DynamicDataStoreRepository(DynamicDataStoreFactory dynamicDataStoreFactory)
         {
             _dynamicDataStoreFactory = dynamicDataStoreFactory;
             _dynamicDataStore = CreateStore();
+            InitQueryable();
         }
         
         private DynamicDataStore CreateStore()
         {
             return _dynamicDataStoreFactory.CreateStore(typeof(RedirectRule));
-        }
-
-        public override IQueryable<RedirectRule> Get()
-        {
-            return _dynamicDataStore.Items<RedirectRule>();
         }
 
         public override RedirectRule GetById(Guid id)
@@ -66,5 +69,12 @@ namespace Forte.RedirectMiddleware.Repository.ControllerRepository
                 return false;
             }
         }
+
+        public override IEnumerator<RedirectRule> GetEnumerator()
+        {
+            return _dynamicDataStore.Items<RedirectRule>().GetEnumerator();
+        }
+
+
     }
 }

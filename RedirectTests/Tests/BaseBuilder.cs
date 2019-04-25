@@ -1,9 +1,8 @@
 using System;
 using System.Collections.Generic;
-using Forte.RedirectMiddleware.Model;
+using System.Linq;
 using Forte.RedirectMiddleware.Model.RedirectRule;
-using Forte.RedirectMiddleware.Repository.ControllerRepository;
-using Forte.RedirectMiddleware.Repository.ResolverRepository;
+using Forte.RedirectMiddleware.Repository;
 using RedirectTests.Data;
 
 namespace RedirectTests.Tests
@@ -11,8 +10,8 @@ namespace RedirectTests.Tests
     public abstract class BaseBuilder<T>
     {
         private const int DefaultRedirectRulesNumber = 5;
-        protected IRedirectRuleResolverRepository RedirectRuleResolverRepository = new TestRedirectRuleResolverRepository();
-        protected IRedirectRuleControllerRepository RedirectRuleControllerRepository = new TestRedirectRuleControllerRepository();
+        protected IQueryable<RedirectRule> RedirectRuleResolverRepository = new TestRepository();
+        protected IRedirectRuleControllerRepository RedirectRuleControllerRepository = new TestRepository();
         protected readonly RedirectRuleTestDataBuilder RedirectRuleTestDataBuilder = RedirectRuleTestDataBuilder.Start();
 
         internal BaseBuilder() { }
@@ -23,7 +22,7 @@ namespace RedirectTests.Tests
             return this;
         }
 
-        public BaseBuilder<T> WithExplicitExistingRules(Dictionary<Guid, RedirectRule> existingRedirects)
+        public BaseBuilder<T> WithExplicitExistingRules(HashSet<RedirectRule> existingRedirects)
         {
             RedirectRuleTestDataBuilder.InitializeData(existingRedirects);
             return this;

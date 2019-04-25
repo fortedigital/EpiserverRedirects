@@ -10,7 +10,7 @@ namespace RedirectTests.Data
 {
     public class RedirectRuleTestDataBuilder
     {
-        private Dictionary<Guid, RedirectRule> _redirectsRuleDataDictionary = new Dictionary<Guid, RedirectRule>();
+        private HashSet<RedirectRule> _redirectsHashSet = new HashSet<RedirectRule>();
         private readonly HashSet<Guid> _alreadyChangedRedirectRulesGuids = new HashSet<Guid>();
 
         public static RedirectRuleTestDataBuilder Start()
@@ -24,13 +24,13 @@ namespace RedirectTests.Data
             for (var i = 0; i < redirectRulesNumber; i++)
             {
                 var redirectRule = RandomDataGenerator.CreateRandomRedirectRule();
-                _redirectsRuleDataDictionary.Add(redirectRule.Id.ExternalId, redirectRule);
+                _redirectsHashSet.Add(redirectRule);
             }
         }
         
-        public void InitializeData(Dictionary<Guid, RedirectRule> initializationData)
+        public void InitializeData(HashSet<RedirectRule> initializationData)
         {
-            _redirectsRuleDataDictionary = initializationData;
+            _redirectsHashSet = initializationData;
         }  
         
         public RedirectRule WithOldPath(string oldPath)
@@ -73,13 +73,13 @@ namespace RedirectTests.Data
 
         private RedirectRule GetRandomRedirectRuleFromData()
         {
-            var randomIndex = new Random().Next(_redirectsRuleDataDictionary.Count);
-            return _redirectsRuleDataDictionary.ElementAt(randomIndex).Value;
+            var randomIndex = new Random().Next(_redirectsHashSet.Count);
+            return _redirectsHashSet.ElementAt(randomIndex);
         }
 
-        public Dictionary<Guid, RedirectRule> GetData()
+        public HashSet<RedirectRule> GetData()
         {
-            return _redirectsRuleDataDictionary;
+            return _redirectsHashSet;
         }
 
     }

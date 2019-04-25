@@ -4,7 +4,6 @@ using Forte.RedirectMiddleware.Model;
 using Forte.RedirectMiddleware.Model.Mapper;
 using Forte.RedirectMiddleware.Model.RedirectRule;
 using Forte.RedirectMiddleware.Repository;
-using Forte.RedirectMiddleware.Repository.ControllerRepository;
 
 namespace RedirectTests.Tests.REST
 {
@@ -21,7 +20,7 @@ namespace RedirectTests.Tests.REST
         public override RedirectRuleController Create()
         {
             var existingRules = RedirectRuleTestDataBuilder.GetData();
-            RedirectRuleControllerRepository = new TestRedirectRuleControllerRepository(existingRules);
+            RedirectRuleControllerRepository = new TestRepository(existingRules);
             return new RedirectRuleController(RedirectRuleControllerRepository, _redirectRuleMapper);
         }
     }
