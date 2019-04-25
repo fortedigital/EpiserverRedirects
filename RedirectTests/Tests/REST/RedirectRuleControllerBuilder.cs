@@ -1,7 +1,10 @@
+using System;
+using Forte.RedirectMiddleware.Controller;
 using Forte.RedirectMiddleware.Model;
 using Forte.RedirectMiddleware.Model.Mapper;
+using Forte.RedirectMiddleware.Model.RedirectRule;
 using Forte.RedirectMiddleware.Repository;
-using Forte.RedirectMiddleware.REST;
+using Forte.RedirectMiddleware.Repository.ControllerRepository;
 
 namespace RedirectTests.Tests.REST
 {
@@ -9,23 +12,17 @@ namespace RedirectTests.Tests.REST
     {
         private IRedirectRuleMapper _redirectRuleMapper = new RedirectRuleMapper();
             
-        public RedirectRuleControllerBuilder WithTestMapping()
+        public RedirectRuleControllerBuilder WithMapper(Func<RedirectRule, RedirectRuleDto> mapper)
         {
-            _redirectRuleMapper = new RedirectRuleTestMapper();
-            return this;
-        }
-        
-        public RedirectRuleControllerBuilder WithOrdinaryMapping()
-        {
-            _redirectRuleMapper = new RedirectRuleMapper();
+            _redirectRuleMapper = new RedirectRuleTestMapper(mapper);
             return this;
         }
         
         public override RedirectRuleController Create()
         {
             var existingRules = RedirectRuleTestDataBuilder.GetData();
-            RedirectRuleRepository = new TestRedirectRuleRepository(existingRules);
-            return new RedirectRuleController(RedirectRuleRepository, _redirectRuleMapper);
+            RedirectRuleControllerRepository = new TestRedirectRuleControllerRepository(existingRules);
+            return new RedirectRuleController(RedirectRuleControllerRepository, _redirectRuleMapper);
         }
     }
 }

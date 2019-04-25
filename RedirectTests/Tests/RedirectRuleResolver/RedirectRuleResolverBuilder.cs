@@ -1,14 +1,16 @@
 using Forte.RedirectMiddleware.Repository;
+using Forte.RedirectMiddleware.Repository.ControllerRepository;
+using Forte.RedirectMiddleware.Repository.ResolverRepository;
 
 namespace RedirectTests.Tests.RedirectRuleResolver
 {
-    public class RedirectRuleResolverBuilder : BaseBuilder<Forte.RedirectMiddleware.Service.RedirectRuleResolver>
+    public class RedirectRuleResolverBuilder : BaseBuilder<Forte.RedirectMiddleware.Resolver.RedirectRuleResolver>
     {
-        public override Forte.RedirectMiddleware.Service.RedirectRuleResolver Create()
+        public override Forte.RedirectMiddleware.Resolver.RedirectRuleResolver Create()
         {
             var existingRules = RedirectRuleTestDataBuilder.GetData();
-            RedirectRuleRepository = new TestRedirectRuleRepository(existingRules);
-            return new Forte.RedirectMiddleware.Service.RedirectRuleResolver(RedirectRuleRepository);
+            RedirectRuleResolverRepository = new TestRedirectRuleResolverRepository(existingRules);
+            return new Forte.RedirectMiddleware.Resolver.RedirectRuleResolver(RedirectRuleResolverRepository);
         }
     }
 }

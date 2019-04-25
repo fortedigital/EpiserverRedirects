@@ -1,20 +1,19 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using EPiServer.Data.Dynamic;
 using EPiServer.ServiceLocation;
 using Forte.RedirectMiddleware.Model;
-using Forte.RedirectMiddleware.Model.Mapper;
+using Forte.RedirectMiddleware.Model.RedirectRule;
 
-namespace Forte.RedirectMiddleware.Repository
+namespace Forte.RedirectMiddleware.Repository.ControllerRepository
 {
-    [ServiceConfiguration(ServiceType = typeof(IRedirectRuleRepository))]
-    public class DynamicDataStoreRedirectRuleRepository : RedirectRuleRepository
+    [ServiceConfiguration(ServiceType = typeof(IRedirectRuleControllerRepository))]
+    public class DynamicDataStoreRedirectRuleControllerRepository : RedirectRuleControllerRepository
     {
         private readonly DynamicDataStoreFactory _dynamicDataStoreFactory;
         private readonly DynamicDataStore _dynamicDataStore;
 
-        public DynamicDataStoreRedirectRuleRepository(DynamicDataStoreFactory dynamicDataStoreFactory)
+        public DynamicDataStoreRedirectRuleControllerRepository(DynamicDataStoreFactory dynamicDataStoreFactory)
         {
             _dynamicDataStoreFactory = dynamicDataStoreFactory;
             _dynamicDataStore = CreateStore();
@@ -24,33 +23,26 @@ namespace Forte.RedirectMiddleware.Repository
         {
             return _dynamicDataStoreFactory.CreateStore(typeof(RedirectRule));
         }
-        
-        public override RedirectRule GetRedirectRule(UrlPath oldPath)
-        {
-            var redirect = _dynamicDataStore.Items<RedirectRule>().FirstOrDefault(r => r.OldPath == oldPath);
 
-            return redirect;
+        public override IQueryable<RedirectRule> Get()
+        {
+            return _dynamicDataStore.Items<RedirectRule>();
         }
 
-        public override IEnumerable<RedirectRule> GetAllRedirectRules()
-        {
-            return _dynamicDataStore.Items<RedirectRule>().AsEnumerable();
-        }
-
-        public override RedirectRule GetRedirectRule(Guid id)
+        public override RedirectRule GetById(Guid id)
         {
             return _dynamicDataStore.Items<RedirectRule>().FirstOrDefault(r => r.Id.ExternalId == id);
         }
 
-        public override RedirectRule CreateRedirect(RedirectRule redirectRule)
+        public override RedirectRule Add(RedirectRule redirectRule)
         {     
             _dynamicDataStore.Save(redirectRule);
             return redirectRule;
         }
 
-        public override RedirectRule UpdateRedirect(RedirectRule redirectRule)
+        public override RedirectRule Update(RedirectRule redirectRule)
         {
-            var redirectToUpdate = GetRedirectRule(redirectRule.Id.ExternalId);
+            var redirectToUpdate = GetById(redirectRule.Id.ExternalId);
             
             if(redirectToUpdate==null)
                 throw new Exception("No existing redirect with this GUID");
@@ -62,7 +54,7 @@ namespace Forte.RedirectMiddleware.Repository
             return redirectToUpdate;
         }
 
-        public override bool DeleteRedirect(Guid id)
+        public override bool Delete(Guid id)
         {
             try
             {

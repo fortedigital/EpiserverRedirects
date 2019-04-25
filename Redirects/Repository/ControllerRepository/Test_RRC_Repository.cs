@@ -3,42 +3,35 @@ using System.Collections.Generic;
 using System.Linq;
 using EPiServer.Data;
 using Forte.RedirectMiddleware.Model;
-using Forte.RedirectMiddleware.Model.Mapper;
+using Forte.RedirectMiddleware.Model.RedirectRule;
 
-namespace Forte.RedirectMiddleware.Repository
+namespace Forte.RedirectMiddleware.Repository.ControllerRepository
 {
-    public class TestRedirectRuleRepository : RedirectRuleRepository
+    public class TestRedirectRuleControllerRepository : RedirectRuleControllerRepository
     {
         private readonly Dictionary<Guid, RedirectRule> _redirectsDictionary;
 
-        public TestRedirectRuleRepository()
+        public TestRedirectRuleControllerRepository()
         {
             _redirectsDictionary = new Dictionary<Guid, RedirectRule>();
         }
-        public TestRedirectRuleRepository(Dictionary<Guid, RedirectRule> redirectsCollection)
+        public TestRedirectRuleControllerRepository(Dictionary<Guid, RedirectRule> redirectsCollection)
         {
             _redirectsDictionary = redirectsCollection;
         }
 
-        public override RedirectRule GetRedirectRule(UrlPath oldPath)
+        public override IQueryable<RedirectRule> Get()
         {
-            var redirect = _redirectsDictionary.FirstOrDefault(r => r.Value.OldPath == oldPath).Value;
-
-            return redirect;
+            return _redirectsDictionary.Select(r=>r.Value).AsQueryable();
         }
 
-        public override IEnumerable<RedirectRule> GetAllRedirectRules()
-        {
-            return _redirectsDictionary.Select(r=>r.Value);
-        }
-
-        public override RedirectRule GetRedirectRule(Guid id)
+        public override RedirectRule GetById(Guid id)
         {
             _redirectsDictionary.TryGetValue(id, out var redirectRule);
             return redirectRule;
         }
 
-        public override RedirectRule CreateRedirect(RedirectRule redirectRule)
+        public override RedirectRule Add(RedirectRule redirectRule)
         {            
             redirectRule.Id = Identity.NewIdentity();
             _redirectsDictionary.Add(redirectRule.Id.ExternalId, redirectRule);
@@ -46,7 +39,7 @@ namespace Forte.RedirectMiddleware.Repository
             return redirectRule;
         }
 
-        public override RedirectRule UpdateRedirect(RedirectRule redirectRule)
+        public override RedirectRule Update(RedirectRule redirectRule)
         {
             _redirectsDictionary.TryGetValue(redirectRule.Id.ExternalId, out var redirectToUpdate);
             
@@ -57,7 +50,7 @@ namespace Forte.RedirectMiddleware.Repository
             return redirectRule;
         }
 
-        public override bool DeleteRedirect(Guid id)
+        public override bool Delete(Guid id)
         {
             return _redirectsDictionary.Remove(id);
         }

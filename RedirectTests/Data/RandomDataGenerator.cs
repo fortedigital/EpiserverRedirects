@@ -2,7 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Forte.RedirectMiddleware.Model;
+using Forte.RedirectMiddleware.Model.RedirectRule;
 using Forte.RedirectMiddleware.Model.RedirectType;
+using Forte.RedirectMiddleware.Model.UrlPath;
 
 namespace RedirectTests.Data
 {
@@ -18,7 +20,7 @@ namespace RedirectTests.Data
             return new RedirectRule
             {
                 Id = Guid.NewGuid(),
-                OldPath = UrlPath.Create(GetRandomPath()),
+                OldPath = UrlPath.Parse(GetRandomPath()),
                 NewUrl = GetRandomPath(),
                 IsActive = true,
                 Notes = "some notes",

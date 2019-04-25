@@ -1,5 +1,6 @@
 ﻿using Forte.RedirectMiddleware.Model;
 using Forte.RedirectMiddleware.Model.Mapper;
+using Forte.RedirectMiddleware.Model.UrlPath;
 using RedirectTests.Data;
 using Xunit;
 
@@ -15,7 +16,7 @@ namespace RedirectTests.Tests.RedirectRuleResolver
             var resolver = RedirectRuleResolver()
                 .Create();
             
-            var resolvedRule = resolver.ResolveRedirectRule(UrlPath.Create("/dummyPath"));
+            var resolvedRule = resolver.ResolveRedirectRule(UrlPath.Parse("/dummyPath"));
             
             Assert.Null(resolvedRule);
         }
@@ -27,7 +28,7 @@ namespace RedirectTests.Tests.RedirectRuleResolver
                 .WithRandomExistingRules(10)
                 .Create();
             
-            var resolvedRule = resolver.ResolveRedirectRule(UrlPath.Create("/dummyPath"));
+            var resolvedRule = resolver.ResolveRedirectRule(UrlPath.Parse("/dummyPath"));
             
             Assert.Null(resolvedRule);
         }

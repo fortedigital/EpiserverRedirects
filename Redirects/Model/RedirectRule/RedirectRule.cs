@@ -1,9 +1,8 @@
 using System;
-using System.Net;
 using EPiServer.Data;
 using EPiServer.Data.Dynamic;
 
-namespace Forte.RedirectMiddleware.Model
+namespace Forte.RedirectMiddleware.Model.RedirectRule
 {
     [EPiServerDataStore(AutomaticallyRemapStore = true)]
     public class RedirectRule : IDynamicData
@@ -19,17 +18,17 @@ namespace Forte.RedirectMiddleware.Model
         
         public RedirectRule(string oldPath, string newUrl)
         {
-            OldPath = UrlPath.Create(oldPath);
+            OldPath = UrlPath.UrlPath.Parse(oldPath);
             NewUrl = newUrl;
         }
         public RedirectRule(Identity id, string oldPath, string newUrl, RedirectType.RedirectType redirectType)
         {
             Id = id;
-            OldPath = UrlPath.Create(oldPath);
+            OldPath = UrlPath.UrlPath.Parse(oldPath);
             NewUrl = newUrl;
         }
         public Identity Id { get; set; }
-        public UrlPath OldPath { get; set; }
+        public UrlPath.UrlPath OldPath { get; set; }
         public string NewUrl { get; set; }
         
         public RedirectType.RedirectType RedirectType { get; set; }

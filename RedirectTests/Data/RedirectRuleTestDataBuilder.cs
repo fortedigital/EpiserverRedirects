@@ -2,7 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Forte.RedirectMiddleware.Model;
+using Forte.RedirectMiddleware.Model.RedirectRule;
 using Forte.RedirectMiddleware.Model.RedirectType;
+using Forte.RedirectMiddleware.Model.UrlPath;
 
 namespace RedirectTests.Data
 {
@@ -33,7 +35,7 @@ namespace RedirectTests.Data
         
         public RedirectRule WithOldPath(string oldPath)
         {
-            var redirectRule = ChangeData(r=>r.OldPath = UrlPath.Create(oldPath));
+            var redirectRule = ChangeData(r=>r.OldPath = UrlPath.Parse(oldPath));
             return redirectRule;
         }
         
@@ -41,7 +43,7 @@ namespace RedirectTests.Data
         {
             var redirectRule = ChangeData(r=>
             {
-                r.OldPath = UrlPath.Create(oldPath);
+                r.OldPath = UrlPath.Parse(oldPath);
                 r.NewUrl = newUrl;
             });
             return redirectRule;

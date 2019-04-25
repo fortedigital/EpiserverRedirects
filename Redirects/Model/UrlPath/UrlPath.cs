@@ -1,14 +1,13 @@
 using System;
-using System.Collections.Generic;
 
-namespace Forte.RedirectMiddleware.Model
+namespace Forte.RedirectMiddleware.Model.UrlPath
 {
     public class UrlPath : IEquatable<UrlPath>
     {
         private const string InvalidRelativePathExceptionMessage = "Entered path is not a valid relative path.";
         public Uri Path { get; }
            
-        public static UrlPath Create(string oldPath)
+        public static UrlPath Parse(string oldPath)
         {
             try
             {
@@ -22,11 +21,11 @@ namespace Forte.RedirectMiddleware.Model
                 throw new ArgumentException(InvalidRelativePathExceptionMessage, e);
             }
         }
-        public static bool TryCreate(string oldPath, out UrlPath urlPath)
+        public static bool TryParse(string oldPath, out UrlPath urlPath)
         {
             try
             {             
-                urlPath = Create(oldPath);
+                urlPath = Parse(oldPath);
                 return true;
             }
             catch (Exception e)
@@ -37,11 +36,12 @@ namespace Forte.RedirectMiddleware.Model
             }
         }
         
-        public static UrlPath Create(Uri oldAbsoluteUri)
+        public static UrlPath FromUri(Uri uri)
         {
             try
             {
-                var localPath = oldAbsoluteUri.LocalPath;
+                //condition isRelative ?
+                var localPath = uri.LocalPath;
                 NormalizePath(localPath);
                 var urlPath = new UrlPath(localPath);
 
@@ -51,20 +51,6 @@ namespace Forte.RedirectMiddleware.Model
             {
                 Console.WriteLine(e);
                 throw new ArgumentException(InvalidRelativePathExceptionMessage, e);
-            }
-        }
-        public static bool TryCreate(Uri oldAbsoluteUri, out UrlPath urlPath)
-        {
-            try
-            {             
-                urlPath = Create(oldAbsoluteUri);
-                return true;
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(InvalidRelativePathExceptionMessage + e);
-                urlPath = null;
-                return false;
             }
         }
         
