@@ -40,7 +40,6 @@ namespace Forte.RedirectMiddleware.Model.UrlPath
         {
             try
             {
-                //condition isRelative ?
                 var localPath = uri.LocalPath;
                 NormalizePath(localPath);
                 var urlPath = new UrlPath(localPath);

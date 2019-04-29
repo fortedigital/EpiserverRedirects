@@ -7,7 +7,7 @@ using Forte.RedirectMiddleware.Model.RedirectRule;
 
 namespace Forte.RedirectMiddleware.Repository
 {
-    public interface IRedirectRuleControllerRepository : IQueryable<RedirectRule>
+    public interface IRedirectRuleRepository : IQueryable<RedirectRule>
     {
         RedirectRule GetById(Guid id);
         RedirectRule Add(RedirectRule redirectRule);
@@ -15,7 +15,7 @@ namespace Forte.RedirectMiddleware.Repository
         bool Delete(Guid id);
     }
 
-    public abstract class RedirectRuleRepository : IRedirectRuleControllerRepository
+    public abstract class RedirectRuleRepository : IRedirectRuleRepository
     {
         public abstract RedirectRule GetById(Guid id);
 

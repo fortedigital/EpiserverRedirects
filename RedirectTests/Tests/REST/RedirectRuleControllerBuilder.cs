@@ -20,8 +20,8 @@ namespace RedirectTests.Tests.REST
         public override RedirectRuleController Create()
         {
             var existingRules = RedirectRuleTestDataBuilder.GetData();
-            RedirectRuleControllerRepository = new TestRepository(existingRules);
-            return new RedirectRuleController(RedirectRuleControllerRepository, _redirectRuleMapper);
+            RedirectRuleRepository = new TestRepository(existingRules);
+            return new RedirectRuleController(RedirectRuleRepository, _redirectRuleMapper);
         }
     }
 }

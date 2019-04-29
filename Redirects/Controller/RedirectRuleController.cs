@@ -11,18 +11,18 @@ namespace Forte.RedirectMiddleware.Controller
 {
     public class RedirectRuleController : RestControllerBase
     {
-        private readonly IRedirectRuleControllerRepository _redirectRuleControllerRepository;
+        private readonly IRedirectRuleRepository _redirectRuleRepository;
         private readonly IRedirectRuleMapper _redirectRuleMapper;
 
-        public RedirectRuleController(IRedirectRuleControllerRepository redirectRuleControllerRepository, IRedirectRuleMapper redirectRuleMapper)
+        public RedirectRuleController(IRedirectRuleRepository redirectRuleRepository, IRedirectRuleMapper redirectRuleMapper)
         {
-            _redirectRuleControllerRepository = redirectRuleControllerRepository;
+            _redirectRuleRepository = redirectRuleRepository;
             _redirectRuleMapper = redirectRuleMapper;
         }
 
         public RedirectRuleDto GetRedirect(Guid id)
         {
-            var redirect = _redirectRuleControllerRepository.GetById(id);
+            var redirect = _redirectRuleRepository.GetById(id);
 
             if (redirect == null)
                 return null;
@@ -31,7 +31,7 @@ namespace Forte.RedirectMiddleware.Controller
         }
         public IEnumerable<RedirectRuleDto> GetAllRedirects()
         {
-            return _redirectRuleControllerRepository.AsEnumerable().Select(_redirectRuleMapper.ModelToDto);
+            return _redirectRuleRepository.AsEnumerable().Select(_redirectRuleMapper.ModelToDto);
         }
 
         public RedirectRuleDto Add(RedirectRuleDto dto)
@@ -40,7 +40,7 @@ namespace Forte.RedirectMiddleware.Controller
                 return null;
             
             var newRedirectRule = _redirectRuleMapper.DtoToModel(dto);
-            newRedirectRule = _redirectRuleControllerRepository.Add(newRedirectRule);
+            newRedirectRule = _redirectRuleRepository.Add(newRedirectRule);
 
             var newRedirectRuleDto = _redirectRuleMapper.ModelToDto(newRedirectRule);
             return newRedirectRuleDto;
@@ -52,7 +52,7 @@ namespace Forte.RedirectMiddleware.Controller
                 return null;
             
             var updatedRedirectRule = _redirectRuleMapper.DtoToModel(dto);
-            updatedRedirectRule = _redirectRuleControllerRepository.Update(updatedRedirectRule);
+            updatedRedirectRule = _redirectRuleRepository.Update(updatedRedirectRule);
             
             var updatedRedirectRuleDto = _redirectRuleMapper.ModelToDto(updatedRedirectRule);
             return updatedRedirectRuleDto;
@@ -60,7 +60,7 @@ namespace Forte.RedirectMiddleware.Controller
         
         public bool Delete(Guid id)
         {
-            return _redirectRuleControllerRepository.Delete(id);
+            return _redirectRuleRepository.Delete(id);
         }
     }
 

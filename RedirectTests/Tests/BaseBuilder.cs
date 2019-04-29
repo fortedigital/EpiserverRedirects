@@ -11,7 +11,7 @@ namespace RedirectTests.Tests
     {
         private const int DefaultRedirectRulesNumber = 5;
         protected IQueryable<RedirectRule> RedirectRuleResolverRepository = new TestRepository();
-        protected IRedirectRuleControllerRepository RedirectRuleControllerRepository = new TestRepository();
+        protected IRedirectRuleRepository RedirectRuleRepository = new TestRepository();
         protected readonly RedirectRuleTestDataBuilder RedirectRuleTestDataBuilder = RedirectRuleTestDataBuilder.Start();
 
         internal BaseBuilder() { }

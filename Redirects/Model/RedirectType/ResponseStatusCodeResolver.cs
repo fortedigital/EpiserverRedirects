@@ -1,3 +1,6 @@
+using EPiServer.ServiceLocation;
+using Forte.RedirectMiddleware.Repository;
+
 namespace Forte.RedirectMiddleware.Model.RedirectType {
     public enum RedirectType {Permanent, Temporary}
 
@@ -22,6 +25,7 @@ namespace Forte.RedirectMiddleware.Model.RedirectType {
         }
     }
     
+    [ServiceConfiguration(ServiceType = typeof(IResponseStatusCodeResolver))]
     public class Http_1_1_ResponseStatusCodeResolver : IResponseStatusCodeResolver
     {
         public int GetHttpResponseStatusCode(RedirectRule.RedirectRule redirectRule)

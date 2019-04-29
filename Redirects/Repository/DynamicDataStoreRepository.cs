@@ -8,7 +8,7 @@ using Forte.RedirectMiddleware.Model.RedirectRule;
 
 namespace Forte.RedirectMiddleware.Repository
 {
-    [ServiceConfiguration(ServiceType = typeof(IRedirectRuleControllerRepository))]
+    [ServiceConfiguration(ServiceType = typeof(IRedirectRuleRepository))]
     public class DynamicDataStoreRepository : RedirectRuleRepository
     {
         private readonly DynamicDataStoreFactory _dynamicDataStoreFactory;
@@ -74,7 +74,5 @@ namespace Forte.RedirectMiddleware.Repository
         {
             return _dynamicDataStore.Items<RedirectRule>().GetEnumerator();
         }
-
-
     }
 }

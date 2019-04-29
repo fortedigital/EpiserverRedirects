@@ -10,7 +10,7 @@ namespace Forte.RedirectMiddleware.Repository
     public class TestRepository : RedirectRuleRepository
     {
         private readonly HashSet<RedirectRule> _redirectsHashSet;
-
+//metoda fabryczna aby ogarnac inicjalizacje? czy DI wtedy zadziala dla prywatnych konstruktorow(powinna bo refleksja)
         private void InitQueryable()
         {
             var queryable = _redirectsHashSet.AsQueryable();
