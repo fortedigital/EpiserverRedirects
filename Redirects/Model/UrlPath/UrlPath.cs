@@ -11,8 +11,8 @@ namespace Forte.RedirectMiddleware.Model.UrlPath
         {
             try
             {
-                NormalizePath(oldPath);
-                var urlPath = new UrlPath(oldPath);
+                var normalizedPath = NormalizePath(oldPath);
+                var urlPath = new UrlPath(normalizedPath);
                 return urlPath;
             }
             catch (Exception e)
@@ -41,8 +41,8 @@ namespace Forte.RedirectMiddleware.Model.UrlPath
             try
             {
                 var localPath = uri.LocalPath;
-                NormalizePath(localPath);
-                var urlPath = new UrlPath(localPath);
+                var normalizedPath = NormalizePath(localPath);
+                var urlPath = new UrlPath(normalizedPath);
 
                 return urlPath;
             }
@@ -58,7 +58,7 @@ namespace Forte.RedirectMiddleware.Model.UrlPath
             Path = new Uri(oldPath, UriKind.Relative);
         }
 
-        private static void NormalizePath(string path)
+        private static string NormalizePath(string path)
         {
             path = path.Trim();
             path = path[0] == '/'
@@ -67,6 +67,8 @@ namespace Forte.RedirectMiddleware.Model.UrlPath
 
             if (path.Length > 1)
                 path = path.TrimEnd('/');
+
+            return path;
         }
 
         public static bool operator ==(UrlPath a, UrlPath b)
@@ -108,6 +110,11 @@ namespace Forte.RedirectMiddleware.Model.UrlPath
         public override int GetHashCode()
         {    
             return (Path?.OriginalString != null ? Path.OriginalString.GetHashCode() : 0);
+        }
+
+        public override string ToString()
+        {
+            return Path.OriginalString;
         }
     }
 }

@@ -36,6 +36,7 @@ namespace Forte.RedirectMiddleware.Job
         public override string Execute()
         {
             var redirectRulesRepository = ServiceLocator.Current.GetInstance<IRedirectRuleRepository>();
+            
             var urlRewriteStore = DynamicDataStoreFactory.Instance.CreateStore(typeof(UrlRewriteModel));
 
             var urlRewrites = urlRewriteStore
@@ -82,7 +83,8 @@ namespace Forte.RedirectMiddleware.Job
                 NewUrl = urlRewriteModel.NewUrl,
                 RedirectType = MapStatusCodeToRedirectType(urlRewriteModel.RedirectStatusCode),
                 CreatedOn = DateTime.Now,
-                IsActive = IsMigratedRedirectRuleActive(urlRewriteModel.ContentId)
+                IsActive = IsMigratedRedirectRuleActive(urlRewriteModel.ContentId),
+                TestUri = new Uri("localhost:35325235/test1/test2.html")
             };
 
             return redirectRule;

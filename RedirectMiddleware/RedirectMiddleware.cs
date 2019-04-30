@@ -1,11 +1,11 @@
 using System;
 using System.Threading.Tasks;
+using EPiServer.Data.Dynamic;
 using EPiServer.ServiceLocation;
-using Forte.RedirectMiddleware.Model;
+using EPiServer.Web.Internal;
 using Forte.RedirectMiddleware.Model.RedirectRule;
 using Forte.RedirectMiddleware.Model.RedirectType;
 using Forte.RedirectMiddleware.Model.UrlPath;
-using Forte.RedirectMiddleware.Repository;
 using Forte.RedirectMiddleware.Resolver;
 using Microsoft.Owin;
 
@@ -36,6 +36,21 @@ namespace Forte.RedirectMiddleware
             if (context.Response.StatusCode == NotFoundStatusCode)
             {
                 var requestPath = UrlPath.FromUri(context.Request.Uri);
+                
+                try
+                {
+                    if(!GlobalTypeHandlers.Instance.ContainsKey(typeof(UrlPath)))
+                        GlobalTypeHandlers.Instance.Add(typeof(UrlPath), new UrlPathTypeHandler());
+                    
+                    //if(!GlobalTypeHandlers.Instance.ContainsKey(typeof(Uri)))
+                    //    GlobalTypeHandlers.Instance.Add(typeof(Uri), new CustomUriTypeHandler());
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                    throw;
+                }
+                
                 var redirectRule = RedirectRuleResolver.ResolveRedirectRule(requestPath);
 
                 if (redirectRule != null)

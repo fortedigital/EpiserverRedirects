@@ -4,7 +4,9 @@ using System.Linq;
 using System.Linq.Expressions;
 using EPiServer.Data.Dynamic;
 using EPiServer.ServiceLocation;
+using EPiServer.Web.Internal;
 using Forte.RedirectMiddleware.Model.RedirectRule;
+using Forte.RedirectMiddleware.Model.UrlPath;
 
 namespace Forte.RedirectMiddleware.Repository
 {
@@ -12,34 +14,28 @@ namespace Forte.RedirectMiddleware.Repository
     public class DynamicDataStoreRepository : RedirectRuleRepository
     {
         private readonly DynamicDataStoreFactory _dynamicDataStoreFactory;
-        private readonly DynamicDataStore _dynamicDataStore;
+        private DynamicDataStore DynamicDataStore =>_dynamicDataStoreFactory.CreateStore(typeof(RedirectRule));
 
-        private void InitQueryable()
+        protected sealed override void InitQueryable()
         {
-            var queryable = _dynamicDataStore.Items<RedirectRule>();
+            var queryable = DynamicDataStore.Items<RedirectRule>();
             base.InitQueryable(queryable);
         }
         
         public DynamicDataStoreRepository(DynamicDataStoreFactory dynamicDataStoreFactory)
         {
             _dynamicDataStoreFactory = dynamicDataStoreFactory;
-            _dynamicDataStore = CreateStore();
             InitQueryable();
-        }
-        
-        private DynamicDataStore CreateStore()
-        {
-            return _dynamicDataStoreFactory.CreateStore(typeof(RedirectRule));
         }
 
         public override RedirectRule GetById(Guid id)
         {
-            return _dynamicDataStore.Items<RedirectRule>().FirstOrDefault(r => r.Id.ExternalId == id);
+            return DynamicDataStore.Items<RedirectRule>().FirstOrDefault(r => r.Id.ExternalId == id);
         }
 
         public override RedirectRule Add(RedirectRule redirectRule)
         {     
-            _dynamicDataStore.Save(redirectRule);
+            DynamicDataStore.Save(redirectRule);
             return redirectRule;
         }
 
@@ -52,7 +48,7 @@ namespace Forte.RedirectMiddleware.Repository
             
             WriteToModel(redirectRule, redirectToUpdate);
             
-            _dynamicDataStore.Save(redirectToUpdate);
+            DynamicDataStore.Save(redirectToUpdate);
 
             return redirectToUpdate;
         }
@@ -61,7 +57,7 @@ namespace Forte.RedirectMiddleware.Repository
         {
             try
             {
-                _dynamicDataStore.Delete(id);
+                DynamicDataStore.Delete(id);
                 return true;
             }
             catch
@@ -72,7 +68,7 @@ namespace Forte.RedirectMiddleware.Repository
 
         public override IEnumerator<RedirectRule> GetEnumerator()
         {
-            return _dynamicDataStore.Items<RedirectRule>().GetEnumerator();
+            return DynamicDataStore.Items<RedirectRule>().GetEnumerator();
         }
     }
 }

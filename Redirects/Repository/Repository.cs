@@ -40,12 +40,24 @@ namespace Forte.RedirectMiddleware.Repository
         }
 
         public Expression Expression => _expression;
+
         private Expression _expression;
 
         public Type ElementType => _elementType;
+
         private Type _elementType;
-        public IQueryProvider Provider => _provider;
+        public IQueryProvider Provider
+        {
+            get
+            {
+                InitQueryable();
+                return _provider;
+            }
+        }
+
         private IQueryProvider _provider;
+
+        protected abstract void InitQueryable();
 
         protected void InitQueryable(IQueryable queryable)
         {
