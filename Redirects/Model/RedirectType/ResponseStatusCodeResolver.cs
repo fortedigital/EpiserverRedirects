@@ -6,12 +6,12 @@ namespace Forte.RedirectMiddleware.Model.RedirectType {
 
     public interface IResponseStatusCodeResolver
     {
-        int GetHttpResponseStatusCode(RedirectRule.RedirectRule redirectRule);
+        int GetHttpResponseStatusCode(RedirectResult.RedirectResult redirectRule);
     }
 
     public class Http_1_0_ResponseStatusCodeResolver : IResponseStatusCodeResolver
     {
-        public int GetHttpResponseStatusCode(RedirectRule.RedirectRule redirectRule)
+        public int GetHttpResponseStatusCode(RedirectResult.RedirectResult redirectRule)
         {
             switch (redirectRule.RedirectType)
             {
@@ -28,7 +28,7 @@ namespace Forte.RedirectMiddleware.Model.RedirectType {
     [ServiceConfiguration(ServiceType = typeof(IResponseStatusCodeResolver))]
     public class Http_1_1_ResponseStatusCodeResolver : IResponseStatusCodeResolver
     {
-        public int GetHttpResponseStatusCode(RedirectRule.RedirectRule redirectRule)
+        public int GetHttpResponseStatusCode(RedirectResult.RedirectResult redirectRule)
         {
             switch (redirectRule.RedirectType)
             {

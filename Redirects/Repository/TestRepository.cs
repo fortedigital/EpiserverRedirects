@@ -10,21 +10,21 @@ namespace Forte.RedirectMiddleware.Repository
     public class TestRepository : RedirectRuleRepository
     {
         private readonly HashSet<RedirectRule> _redirectsHashSet;
-
-        protected sealed override void InitQueryable()
-        {
-            var queryable = _redirectsHashSet.AsQueryable();
-            base.InitQueryable(queryable);
-        }
+        
         public TestRepository()
         {
             _redirectsHashSet = new HashSet<RedirectRule>();
-            InitQueryable();
+            InitItems();
         }
         public TestRepository(HashSet<RedirectRule> redirectsCollection)
         {
             _redirectsHashSet = redirectsCollection;
-            InitQueryable();
+            InitItems();
+        }
+
+        private void InitItems()
+        {
+            Items = _redirectsHashSet.AsQueryable();
         }
 
         public override RedirectRule GetById(Guid id)
@@ -59,11 +59,6 @@ namespace Forte.RedirectMiddleware.Repository
             var redirectRule = _redirectsHashSet.FirstOrDefault(r => r.Id.ExternalId == id);
             
             return redirectRule != null && _redirectsHashSet.Remove(redirectRule);
-        }
-
-        public override IEnumerator<RedirectRule> GetEnumerator()
-        {
-            return _redirectsHashSet.GetEnumerator();
         }
     }
 }

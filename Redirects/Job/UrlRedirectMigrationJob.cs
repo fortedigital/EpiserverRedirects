@@ -80,11 +80,10 @@ namespace Forte.RedirectMiddleware.Job
             var redirectRule = new RedirectRule
             {
                 OldPath   = UrlPath.Parse(urlRewriteModel.OldUrl),
-                NewUrl = urlRewriteModel.NewUrl,
+                NewPattern = urlRewriteModel.NewUrl,
                 RedirectType = MapStatusCodeToRedirectType(urlRewriteModel.RedirectStatusCode),
                 CreatedOn = DateTime.Now,
-                IsActive = IsMigratedRedirectRuleActive(urlRewriteModel.ContentId),
-                TestUri = new Uri("localhost:35325235/test1/test2.html")
+                IsActive = IsMigratedRedirectRuleActive(urlRewriteModel.ContentId)
             };
 
             return redirectRule;

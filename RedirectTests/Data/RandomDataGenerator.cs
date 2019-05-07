@@ -21,25 +21,29 @@ namespace RedirectTests.Data
             {
                 Id = Guid.NewGuid(),
                 OldPath = UrlPath.Parse(GetRandomPath()),
-                NewUrl = GetRandomPath(),
+                NewPattern = GetRandomPath(),
                 IsActive = true,
                 Notes = "some notes",
                 CreatedOn = DateTime.Now,
-                RedirectType = RedirectType.Temporary
+                RedirectType = RedirectType.Temporary,
+                CreatedBy = "user",
+                RedirectRuleType = RedirectRuleType.ExactMatch,
             };
         }
         
         public static RedirectRuleDto CreateRandomRedirectRuleDto()
         {
-            return new RedirectRuleDto()
+            return new RedirectRuleDto
             {
                 Id = Guid.NewGuid(),
-                OldPath = GetRandomPath(),
+                Pattern = GetRandomPath(),
                 NewUrl = GetRandomPath(),
                 IsActive = true,
                 Notes = "some notes",
                 CreatedOn = DateTime.Now,
-                RedirectType = RedirectType.Temporary
+                RedirectType = RedirectType.Temporary,
+                CreatedBy = "user",
+                RedirectRuleType = RedirectRuleType.ExactMatch,
             };
         }
         
@@ -55,6 +59,7 @@ namespace RedirectTests.Data
                 directories.Add(directory);
             }
             var randomPath = string.Join("/", directories);
+            
             return randomPath;
         }
         

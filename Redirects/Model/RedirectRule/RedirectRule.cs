@@ -4,6 +4,8 @@ using EPiServer.Data.Dynamic;
 
 namespace Forte.RedirectMiddleware.Model.RedirectRule
 {
+    public enum RedirectRuleType { ExactMatch, Regex, Wildcard}
+    
     [EPiServerDataStore(AutomaticallyRemapStore = true)]
     public class RedirectRule : IDynamicData
     {
@@ -16,26 +18,29 @@ namespace Forte.RedirectMiddleware.Model.RedirectRule
             Id = id;
         }
         
-        public RedirectRule(string oldPath, string newUrl)
+        public RedirectRule(string oldPath, string newPattern)
         {
             OldPath = UrlPath.UrlPath.Parse(oldPath);
-            NewUrl = newUrl;
+            NewPattern = newPattern;
         }
-        public RedirectRule(Identity id, string oldPath, string newUrl, RedirectType.RedirectType redirectType)
+        public RedirectRule(Identity id, string oldPath, string newPattern, RedirectType.RedirectType redirectType)
         {
             Id = id;
             OldPath = UrlPath.UrlPath.Parse(oldPath);
-            NewUrl = newUrl;
+            NewPattern = newPattern;
         }
         public Identity Id { get; set; }
         public UrlPath.UrlPath OldPath { get; set; }
-        public string NewUrl { get; set; }
+        
+        public string OldPattern{ get; set; }
+        public string NewPattern { get; set; }
         
         public RedirectType.RedirectType RedirectType { get; set; }
-        public DateTime CreatedOn { get; set; }
+        public DateTimeOffset CreatedOn { get; set; }
         public bool IsActive { get; set; }
         public string Notes { get; set; }
-        
-        public Uri TestUri { get; set; }
+        public string CreatedBy { get; set; }
+        public RedirectRuleType RedirectRuleType { get; set; }
     }
+
 }

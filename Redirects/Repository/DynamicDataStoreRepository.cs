@@ -10,22 +10,21 @@ using Forte.RedirectMiddleware.Model.UrlPath;
 
 namespace Forte.RedirectMiddleware.Repository
 {
-    [ServiceConfiguration(ServiceType = typeof(IRedirectRuleRepository))]
+//    [ServiceConfiguration(ServiceType = typeof(IRedirectRuleRepository))]
     public class DynamicDataStoreRepository : RedirectRuleRepository
     {
         private readonly DynamicDataStoreFactory _dynamicDataStoreFactory;
-        private DynamicDataStore DynamicDataStore =>_dynamicDataStoreFactory.CreateStore(typeof(RedirectRule));
+        private DynamicDataStore DynamicDataStore => _dynamicDataStoreFactory.CreateStore(typeof(RedirectRule));
 
-        protected sealed override void InitQueryable()
+        private void InitItems()
         {
-            var queryable = DynamicDataStore.Items<RedirectRule>();
-            base.InitQueryable(queryable);
+            Items = DynamicDataStore.Items<RedirectRule>();
         }
         
         public DynamicDataStoreRepository(DynamicDataStoreFactory dynamicDataStoreFactory)
         {
             _dynamicDataStoreFactory = dynamicDataStoreFactory;
-            InitQueryable();
+            InitItems();
         }
 
         public override RedirectRule GetById(Guid id)
@@ -64,11 +63,6 @@ namespace Forte.RedirectMiddleware.Repository
             {
                 return false;
             }
-        }
-
-        public override IEnumerator<RedirectRule> GetEnumerator()
-        {
-            return DynamicDataStore.Items<RedirectRule>().GetEnumerator();
         }
     }
 }

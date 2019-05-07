@@ -10,7 +10,6 @@ namespace RedirectTests.Tests
     public abstract class BaseBuilder<T>
     {
         private const int DefaultRedirectRulesNumber = 5;
-        protected IQueryable<RedirectRule> RedirectRuleResolverRepository = new TestRepository();
         protected IRedirectRuleRepository RedirectRuleRepository = new TestRepository();
         protected readonly RedirectRuleTestDataBuilder RedirectRuleTestDataBuilder = RedirectRuleTestDataBuilder.Start();
 

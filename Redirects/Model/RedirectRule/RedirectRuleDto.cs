@@ -9,7 +9,7 @@ namespace Forte.RedirectMiddleware.Model.RedirectRule
         public Identity Id { get; set; }
         
         [Required]
-        public string OldPath { get; set; }
+        public string Pattern { get; set; }
         
         [Required]
         public string NewUrl { get; set; }
@@ -18,26 +18,31 @@ namespace Forte.RedirectMiddleware.Model.RedirectRule
         public RedirectType.RedirectType RedirectType { get; set; }
         
         [Required]
-        public DateTime CreatedOn { get; set; }
+        public DateTimeOffset CreatedOn { get; set; }
         
         [Required]
         public bool IsActive { get; set; }
         public string Notes { get; set; }
+        
+        public string CreatedBy { get; set; }
+        
+        [Required]
+        public RedirectRuleType RedirectRuleType { get; set; }
 
         public RedirectRuleDto()
         {
             
         }
-        public RedirectRuleDto(string oldPath, string newUrl)
+        public RedirectRuleDto(string pattern, string newUrl)
         {
-            OldPath = oldPath;
+            Pattern = pattern;
             NewUrl = newUrl;
         }
         
-        public RedirectRuleDto(Guid guid, string oldPath, string newUrl, RedirectType.RedirectType redirectType)
+        public RedirectRuleDto(Guid guid, string pattern, string newUrl, RedirectType.RedirectType redirectType)
         {
             Id = guid;
-            OldPath = oldPath;
+            Pattern = pattern;
             NewUrl = newUrl;
         }
     }

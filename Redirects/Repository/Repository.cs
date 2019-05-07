@@ -17,53 +17,40 @@ namespace Forte.RedirectMiddleware.Repository
 
     public abstract class RedirectRuleRepository : IRedirectRuleRepository
     {
+        protected IQueryable<RedirectRule> Items { private get; set; }
+
         public abstract RedirectRule GetById(Guid id);
 
         public abstract RedirectRule Add(RedirectRule redirectRule);
+
         public abstract RedirectRule Update(RedirectRule redirectRule);
+
         public abstract bool Delete(Guid id);
 
         protected static void WriteToModel(RedirectRule redirectRule, RedirectRule redirectToUpdate)
         {
             redirectToUpdate.Id = redirectRule.Id;
-            redirectToUpdate.NewUrl = redirectRule.NewUrl;
+            redirectToUpdate.NewPattern = redirectRule.NewPattern;
             redirectToUpdate.OldPath = redirectRule.OldPath;
             redirectToUpdate.RedirectType = redirectRule.RedirectType;
             redirectToUpdate.IsActive = redirectRule.IsActive;
             redirectToUpdate.Notes = redirectRule.Notes;
         }
 
-        public abstract IEnumerator<RedirectRule> GetEnumerator();
+        public IEnumerator<RedirectRule> GetEnumerator()
+        {
+            return Items.GetEnumerator();
+        }
+
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return GetEnumerator();
+            return ((IEnumerable) Items).GetEnumerator();
         }
 
-        public Expression Expression => _expression;
+        public Expression Expression => Items.Expression;
 
-        private Expression _expression;
+        public Type ElementType => Items.ElementType;
 
-        public Type ElementType => _elementType;
-
-        private Type _elementType;
-        public IQueryProvider Provider
-        {
-            get
-            {
-                InitQueryable();
-                return _provider;
-            }
-        }
-
-        private IQueryProvider _provider;
-
-        protected abstract void InitQueryable();
-
-        protected void InitQueryable(IQueryable queryable)
-        {
-            _expression = queryable.Expression;
-            _elementType = queryable.ElementType;
-            _provider = queryable.Provider;
-        }
+        public IQueryProvider Provider => Items.Provider;
     }
 }

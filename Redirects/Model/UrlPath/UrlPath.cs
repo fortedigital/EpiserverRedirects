@@ -58,7 +58,7 @@ namespace Forte.RedirectMiddleware.Model.UrlPath
             Path = new Uri(oldPath, UriKind.Relative);
         }
 
-        private static string NormalizePath(string path)
+        public static string NormalizePath(string path)
         {
             path = path.Trim();
             path = path[0] == '/'

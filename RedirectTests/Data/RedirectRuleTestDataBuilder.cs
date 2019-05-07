@@ -44,7 +44,7 @@ namespace RedirectTests.Data
             var redirectRule = ChangeData(r=>
             {
                 r.OldPath = UrlPath.Parse(oldPath);
-                r.NewUrl = newUrl;
+                r.NewPattern = newUrl;
             });
             return redirectRule;
         }
