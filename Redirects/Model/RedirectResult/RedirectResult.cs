@@ -1,6 +1,4 @@
-using System.Runtime.CompilerServices;
 using EPiServer.Core;
-using EPiServer.ServiceLocation;
 using EPiServer.Web.Routing;
 
 namespace Forte.RedirectMiddleware.Model.RedirectResult

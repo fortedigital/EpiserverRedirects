@@ -207,11 +207,16 @@
     <ItemGroup>
         <Compile Include="Data\RedirectRuleTestDataBuilder.cs" />
         <Compile Include="Data\RandomDataGenerator.cs" />
-        <Compile Include="Tests\BaseBuilder.cs" />
-        <Compile Include="Tests\RedirectRuleResolver\RedirectRuleResolverBuilder.cs" />
-        <Compile Include="Tests\RedirectRuleResolver\RedirectRuleResolverTests.cs" />
-        <Compile Include="Tests\REST\RedirectRuleControllerBuilder.cs" />
-        <Compile Include="Tests\REST\RedirectRuleControllerTests.cs" />
+        <Compile Include="Tests\Builder\BaseBuilder.cs" />
+        <Compile Include="Tests\Builder\ControllerBuilder.cs" />
+        <Compile Include="Tests\Builder\Resolver\ExactMatchResolverBuilder.cs" />
+        <Compile Include="Tests\Builder\Resolver\RegexResolverBuilder.cs" />
+        <Compile Include="Tests\Builder\Resolver\WildcardResolverBuilder.cs" />
+        <Compile Include="Tests\Mapper\MapperTests.cs" />
+        <Compile Include="Tests\RedirectRuleResolver\ExactMatchTests.cs" />
+        <Compile Include="Tests\RedirectRuleResolver\RegexTests.cs" />
+        <Compile Include="Tests\RedirectRuleResolver\WildcardTests.cs" />
+        <Compile Include="Tests\REST\ControllerTests.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
     </ItemGroup>
     <ItemGroup>

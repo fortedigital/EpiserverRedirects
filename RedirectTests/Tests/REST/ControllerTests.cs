@@ -6,13 +6,14 @@ using Forte.RedirectMiddleware.Model.Mapper;
 using Forte.RedirectMiddleware.Model.RedirectRule;
 using Forte.RedirectMiddleware.Model.RedirectType;
 using RedirectTests.Data;
+using RedirectTests.Tests.Builder;
 using Xunit;
 
 namespace RedirectTests.Tests.REST
 {
-    public class RedirectRuleControllerTests
+    public class ControllerTests
     {
-        private static RedirectRuleControllerBuilder RedirectRuleController() => new RedirectRuleControllerBuilder();
+        private static ControllerBuilder RedirectRuleController() => new ControllerBuilder();
                 
         [Fact]
         public void Given_ExistingRedirects_Controller_ReturnsAllRedirects()
@@ -28,9 +29,9 @@ namespace RedirectTests.Tests.REST
             var dto1 = new RedirectRuleDto();
             var dto2 = new RedirectRuleDto();
             
-            var restController = RedirectRuleController()             
-                .WithMapper(r => r == rule1 ? dto1 : r == rule2 ? dto2 : null)
+            var restController = RedirectRuleController()     
                 .WithExplicitExistingRules(existingRules)
+                .WithMapper(r => r == rule1 ? dto1 : r == rule2 ? dto2 : null)
                 .Create();
 
             var resolvedRules = restController.GetAllRedirects();
