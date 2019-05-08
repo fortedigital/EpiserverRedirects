@@ -9,12 +9,10 @@ namespace Forte.RedirectMiddleware.Resolver
     // ReSharper disable once ClassNeverInstantiated.Global
     public class CompositeResolver : IRedirectRuleResolver
     {
-        private readonly ICollection<IRedirectRuleResolver> _resolvers = new List<IRedirectRuleResolver>();
-        public CompositeResolver(IRedirectRuleResolver exactMatchResolver, IRedirectRuleResolver regexResolver, IRedirectRuleResolver wildcardResolver)
+        private readonly List<IRedirectRuleResolver> _resolvers = new List<IRedirectRuleResolver>();
+        public CompositeResolver(params IRedirectRuleResolver[] resolvers)
         {
-            _resolvers.Add(exactMatchResolver);
-            _resolvers.Add(regexResolver);
-            _resolvers.Add(wildcardResolver);
+            _resolvers.AddRange(resolvers);
         }
 
         public async Task<RedirectRule> ResolveRedirectRule(UrlPath oldPath)

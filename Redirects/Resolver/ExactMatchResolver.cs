@@ -12,7 +12,7 @@ namespace Forte.RedirectMiddleware.Resolver
     {
         private readonly IQueryable<RedirectRule> _redirectRuleResolverRepository;
 
-        public ExactMatchResolver(IRedirectRuleRepository redirectRuleResolverRepository)
+        public ExactMatchResolver(IQueryable<RedirectRule> redirectRuleResolverRepository)
         {
             _redirectRuleResolverRepository = redirectRuleResolverRepository;
         }

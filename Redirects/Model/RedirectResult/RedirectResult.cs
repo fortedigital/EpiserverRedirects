@@ -1,4 +1,7 @@
 using System.Runtime.CompilerServices;
+using EPiServer.Core;
+using EPiServer.ServiceLocation;
+using EPiServer.Web.Routing;
 
 namespace Forte.RedirectMiddleware.Model.RedirectResult
 {
@@ -10,14 +13,27 @@ namespace Forte.RedirectMiddleware.Model.RedirectResult
     
     public static class RedirectRuleExtensions
     {
-        public static RedirectResult ToRedirectResult(this RedirectRule.RedirectRule redirectRule)
+        public static RedirectResult ToRedirectResult(this RedirectRule.RedirectRule redirectRule, IUrlResolver contentUrlResolver)
         {
             if (redirectRule == null)
                 return null;
-            
+
+            string newUrl;
+
+            if (redirectRule.ContentId == null)
+                newUrl = redirectRule.NewPattern;
+
+            else
+            {
+                var contentReference = new ContentReference(redirectRule.ContentId.Value);
+                var virtualPathData = contentUrlResolver.GetUrl(contentReference, null);
+
+                newUrl = virtualPathData;
+            }
+
             return new RedirectResult
             {
-                NewUrl = redirectRule.NewPattern,
+                NewUrl = newUrl,
                 RedirectType = redirectRule.RedirectType
             };
         }

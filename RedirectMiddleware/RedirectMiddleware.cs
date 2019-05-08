@@ -2,7 +2,7 @@ using System;
 using System.Threading.Tasks;
 using EPiServer.ServiceLocation;
 using Forte.RedirectMiddleware.Request;
-using Forte.RedirectMiddleware.Request.ContextAdapter;
+using Forte.RedirectMiddleware.Request.HttpContext;
 using Microsoft.Owin;
 
 namespace Forte.RedirectMiddleware
@@ -29,7 +29,7 @@ namespace Forte.RedirectMiddleware
             if (context.Response.StatusCode == NotFoundStatusCode)
             {
                 var handler = _requestHandlerFactory();
-                var requestContext = new OwinContextAdapter(context);
+                var requestContext = new OwinHttpContext(context);
                 await handler.Invoke(requestContext);
             }
         }

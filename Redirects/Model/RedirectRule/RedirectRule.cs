@@ -32,6 +32,7 @@ namespace Forte.RedirectMiddleware.Model.RedirectRule
         public Identity Id { get; set; }
         public UrlPath.UrlPath OldPath { get; set; }
         
+        public int? ContentId { get; set; }
         public string OldPattern{ get; set; }
         public string NewPattern { get; set; }
         
