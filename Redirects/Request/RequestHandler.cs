@@ -5,6 +5,7 @@ using Forte.RedirectMiddleware.Model.RedirectType;
 using Forte.RedirectMiddleware.Model.UrlPath;
 using Forte.RedirectMiddleware.Request.HttpContext;
 using Forte.RedirectMiddleware.Resolver;
+using Forte.RedirectMiddleware.Result;
 
 namespace Forte.RedirectMiddleware.Request
 {
@@ -31,7 +32,7 @@ namespace Forte.RedirectMiddleware.Request
 
             if (redirectRule != null)
             {
-                var redirectResult = redirectRule.ToRedirectResult(_urlResolver);
+                var redirectResult = redirectRule.ToRedirectResult(requestPath.ToString(), _urlResolver);
                 RedirectResponse(httpContext, redirectResult);
             }
         }
@@ -39,7 +40,7 @@ namespace Forte.RedirectMiddleware.Request
         private void RedirectResponse(IHttpContext httpContext, RedirectResult redirectResult)
         {
             var location = redirectResult.NewUrl;
-            var statusCode = _responseStatusCodeResolver.GetHttpResponseStatusCode(redirectResult);
+            var statusCode = _responseStatusCodeResolver.GetHttpResponseStatusCode(redirectResult.RedirectType);
 
             httpContext.ResponseRedirect(location, statusCode);
         }

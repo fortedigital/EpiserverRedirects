@@ -27,9 +27,6 @@ namespace Forte.RedirectMiddleware.Resolver
             if (redirectRule == null)
                 return null;
 
-            redirectRule.NewPattern = Regex.Replace(oldPath.ToString(), redirectRule.OldPath.ToString(),
-                redirectRule.NewPattern, RegexOptions.IgnoreCase);
-
             return await Task.FromResult(redirectRule);
         }
         

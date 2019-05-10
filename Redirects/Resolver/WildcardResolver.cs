@@ -1,8 +1,5 @@
 ﻿using System.Linq;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using EPiServer.ServiceLocation;
-using Forte.RedirectMiddleware.Model.RedirectResult;
 using Forte.RedirectMiddleware.Model.RedirectRule;
 using Forte.RedirectMiddleware.Model.UrlPath;
 

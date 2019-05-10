@@ -15,7 +15,8 @@ namespace RedirectTests.Tests.RedirectRuleResolver
             var resolver = WildcardResolver()
                 .Create();
             
-            throw new NotImplementedException();
+            var resolvedRule = await resolver.ResolveRedirectRule(UrlPath.Parse("/dummyPath"));
+            Assert.Null(resolvedRule);
         }
     }
 }

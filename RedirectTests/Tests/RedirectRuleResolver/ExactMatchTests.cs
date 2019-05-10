@@ -1,5 +1,4 @@
 ﻿using Forte.RedirectMiddleware.Model.UrlPath;
-using RedirectTests.Tests.Builder;
 using RedirectTests.Tests.Builder.Resolver;
 using Xunit;
 
@@ -32,7 +31,6 @@ namespace RedirectTests.Tests.RedirectRuleResolver
             Assert.Null(resolvedRule);
         }
         
-        
         [Fact]
         public async void Given_MatchingRule_Resolve_ReturnsTheRule()
         {
@@ -44,22 +42,6 @@ namespace RedirectTests.Tests.RedirectRuleResolver
             var resolvedRule = await resolver.ResolveRedirectRule(expectedRule.OldPath);
             
             Assert.Equal(expectedRule.Id, resolvedRule.Id);
-        }
-           
-        /// <summary>
-        /// przeniesc do testow repo lub usunac?
-        /// </summary>
-        [Fact]
-        public async void Given_MatchingRule_Resolve_ReturnsRuleWithCorrectPath()
-        {
-            var resolver = RedirectRuleResolver()
-                .WithRandomExistingRules()
-                .WithRule(r=>r.WithOldPathAndNewUrl("/oldPath2", "/newUrl2"), out var expectedRule)
-                .Create();
-            
-            var resolvedRule = await resolver.ResolveRedirectRule(expectedRule.OldPath);
-            
-            Assert.Equal(expectedRule.NewPattern, resolvedRule.NewPattern);
         }
     }
 }
