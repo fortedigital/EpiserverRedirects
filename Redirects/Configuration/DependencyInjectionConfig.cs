@@ -7,6 +7,11 @@ using Forte.RedirectMiddleware.Model.RedirectType;
 using Forte.RedirectMiddleware.Repository;
 using Forte.RedirectMiddleware.Request;
 using Forte.RedirectMiddleware.Resolver;
+using Forte.RedirectMiddleware.Resolver.Base;
+using Forte.RedirectMiddleware.Resolver.Composite;
+using Forte.RedirectMiddleware.Resolver.ExactMatch;
+using Forte.RedirectMiddleware.Resolver.Regex;
+using Forte.RedirectMiddleware.Resolver.Wildcard;
 
 namespace Forte.RedirectMiddleware.Configuration
 {

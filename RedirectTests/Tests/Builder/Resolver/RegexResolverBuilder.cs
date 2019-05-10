@@ -1,13 +1,15 @@
+using Forte.RedirectMiddleware.Resolver.Regex;
+
 namespace RedirectTests.Tests.Builder.Resolver
 {
-    public class RegexResolverBuilder : BaseBuilder<Forte.RedirectMiddleware.Resolver.RegexResolver, RegexResolverBuilder>
+    public class RegexResolverBuilder : BaseBuilder<RegexResolver, RegexResolverBuilder>
     {
         protected override RegexResolverBuilder ThisBuilder => this;
 
-        public override Forte.RedirectMiddleware.Resolver.RegexResolver Create()
+        public override RegexResolver Create()
         {
             CreateRepository();
-            return new Forte.RedirectMiddleware.Resolver.RegexResolver(RedirectRuleRepository);
+            return new RegexResolver(RedirectRuleRepository);
         }
     }
 }

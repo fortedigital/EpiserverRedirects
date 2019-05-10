@@ -229,10 +229,10 @@
         <Compile Include="Tests\Builder\Resolver\RegexResolverBuilder.cs" />
         <Compile Include="Tests\Builder\Resolver\WildcardResolverBuilder.cs" />
         <Compile Include="Tests\Mapper\MapperTests.cs" />
-        <Compile Include="Tests\RedirectResult\RedirectResultTests.cs" />
-        <Compile Include="Tests\RedirectRuleResolver\ExactMatchTests.cs" />
-        <Compile Include="Tests\RedirectRuleResolver\RegexTests.cs" />
-        <Compile Include="Tests\RedirectRuleResolver\WildcardTests.cs" />
+        <Compile Include="Tests\Redirect\RedirectTests.cs" />
+        <Compile Include="Tests\Resolver\ExactMatchTests.cs" />
+        <Compile Include="Tests\Resolver\RegexTests.cs" />
+        <Compile Include="Tests\Resolver\WildcardTests.cs" />
         <Compile Include="Tests\REST\ControllerTests.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
     </ItemGroup>

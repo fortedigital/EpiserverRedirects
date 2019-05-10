@@ -3,8 +3,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using Forte.RedirectMiddleware.Model.RedirectRule;
 using Forte.RedirectMiddleware.Model.UrlPath;
+using Forte.RedirectMiddleware.Redirect.Base;
+using Forte.RedirectMiddleware.Resolver.Base;
 
-namespace Forte.RedirectMiddleware.Resolver
+namespace Forte.RedirectMiddleware.Resolver.Composite
 {
     // ReSharper disable once ClassNeverInstantiated.Global
     public class CompositeResolver : IRedirectRuleResolver
@@ -15,7 +17,7 @@ namespace Forte.RedirectMiddleware.Resolver
             _resolvers.AddRange(resolvers);
         }
 
-        public async Task<RedirectRule> ResolveRedirectRule(UrlPath oldPath)
+        public async Task<IRedirect> ResolveRedirectRule(UrlPath oldPath)
         {
             var redirectRule =  _resolvers
                 .Select(resolver => resolver.ResolveRedirectRule(oldPath))

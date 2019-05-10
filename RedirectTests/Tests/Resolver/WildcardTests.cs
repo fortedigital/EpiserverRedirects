@@ -1,9 +1,8 @@
-﻿using System;
-using Forte.RedirectMiddleware.Model.UrlPath;
+﻿using Forte.RedirectMiddleware.Model.UrlPath;
 using RedirectTests.Tests.Builder.Resolver;
 using Xunit;
 
-namespace RedirectTests.Tests.RedirectRuleResolver
+namespace RedirectTests.Tests.Resolver
 {
     public class WildcardTests
     {
@@ -15,8 +14,8 @@ namespace RedirectTests.Tests.RedirectRuleResolver
             var resolver = WildcardResolver()
                 .Create();
             
-            var resolvedRule = await resolver.ResolveRedirectRule(UrlPath.Parse("/dummyPath"));
-            Assert.Null(resolvedRule);
+            var redirect = await resolver.ResolveRedirectRule(UrlPath.Parse("/dummyPath"));
+            Assert.Null(redirect?.RedirectRule);
         }
     }
 }

@@ -2,7 +2,7 @@
 using RedirectTests.Tests.Builder.Resolver;
 using Xunit;
 
-namespace RedirectTests.Tests.RedirectRuleResolver
+namespace RedirectTests.Tests.Resolver
 {
     public class ExactMatchTests
     {
@@ -14,9 +14,9 @@ namespace RedirectTests.Tests.RedirectRuleResolver
             var resolver = RedirectRuleResolver()
                 .Create();
             
-            var resolvedRule = await resolver.ResolveRedirectRule(UrlPath.Parse("/dummyPath"));
+            var redirect = await resolver.ResolveRedirectRule(UrlPath.Parse("/dummyPath"));
             
-            Assert.Null(resolvedRule);
+            Assert.Null(redirect?.RedirectRule);
         }
 
         [Fact]
@@ -26,9 +26,9 @@ namespace RedirectTests.Tests.RedirectRuleResolver
                 .WithRandomExistingRules(10)
                 .Create();
             
-            var resolvedRule = await resolver.ResolveRedirectRule(UrlPath.Parse("/dummyPath"));
+            var redirect = await resolver.ResolveRedirectRule(UrlPath.Parse("/dummyPath"));
             
-            Assert.Null(resolvedRule);
+            Assert.Null(redirect?.RedirectRule);
         }
         
         [Fact]
@@ -39,9 +39,9 @@ namespace RedirectTests.Tests.RedirectRuleResolver
                 .WithRule(r => r.WithOldPath("/dummyPath"), out var expectedRule)
                 .Create();
             
-            var resolvedRule = await resolver.ResolveRedirectRule(expectedRule.OldPath);
+            var redirect = await resolver.ResolveRedirectRule(expectedRule.OldPath);
             
-            Assert.Equal(expectedRule.Id, resolvedRule.Id);
+            Assert.Equal(expectedRule.Id, redirect?.RedirectRule.Id);
         }
     }
 }

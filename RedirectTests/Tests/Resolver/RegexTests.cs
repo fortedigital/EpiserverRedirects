@@ -1,9 +1,8 @@
-﻿using System;
-using Forte.RedirectMiddleware.Model.UrlPath;
+﻿using Forte.RedirectMiddleware.Model.UrlPath;
 using RedirectTests.Tests.Builder.Resolver;
 using Xunit;
 
-namespace RedirectTests.Tests.RedirectRuleResolver
+namespace RedirectTests.Tests.Resolver
 {
     public class RegexTests
     {
@@ -15,9 +14,9 @@ namespace RedirectTests.Tests.RedirectRuleResolver
             var resolver = RegexResolver()
                 .Create();
             
-            var resolvedRule = await resolver.ResolveRedirectRule(UrlPath.Parse("/dummyPath"));
+            var redirect = await resolver.ResolveRedirectRule(UrlPath.Parse("/dummyPath"));
             
-            Assert.Null(resolvedRule);
+            Assert.Null(redirect?.RedirectRule);
         }
 
         [Fact]
@@ -27,9 +26,9 @@ namespace RedirectTests.Tests.RedirectRuleResolver
                 .WithRandomExistingRules(10)
                 .Create();
             
-            var resolvedRule = await resolver.ResolveRedirectRule(UrlPath.Parse("/dummyPath"));
+            var redirect = await resolver.ResolveRedirectRule(UrlPath.Parse("/dummyPath"));
             
-            Assert.Null(resolvedRule);
+            Assert.Null(redirect?.RedirectRule);
         }
         
         
@@ -41,9 +40,9 @@ namespace RedirectTests.Tests.RedirectRuleResolver
                 .WithRule(r=>r.WithOldPatternAndNewPattern("oldPattern", "newPattern/$1"), out var expectedRule)
                 .Create();
             
-            var resolvedRule = await resolver.ResolveRedirectRule(UrlPath.Parse("/oldPattern"));
+            var redirect = await resolver.ResolveRedirectRule(UrlPath.Parse("/oldPattern"));
 
-            Assert.Equal(expectedRule.Id, resolvedRule.Id);
+            Assert.Equal(expectedRule.Id, redirect?.RedirectRule.Id);
         }
     }
 }

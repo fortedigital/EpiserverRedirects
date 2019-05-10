@@ -1,12 +1,13 @@
 ﻿using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using EPiServer.ServiceLocation;
-using Forte.RedirectMiddleware.Model.RedirectResult;
 using Forte.RedirectMiddleware.Model.RedirectRule;
 using Forte.RedirectMiddleware.Model.UrlPath;
+using Forte.RedirectMiddleware.Redirect.Base;
+using Forte.RedirectMiddleware.Redirect.Regex;
+using Forte.RedirectMiddleware.Resolver.Base;
 
-namespace Forte.RedirectMiddleware.Resolver
+namespace Forte.RedirectMiddleware.Resolver.Regex
 {
     public class RegexResolver : IRedirectRuleResolver
     {
@@ -17,18 +18,18 @@ namespace Forte.RedirectMiddleware.Resolver
             _redirectRuleResolverRepository = redirectRuleResolverRepository;
         }
 
-        public async Task<RedirectRule> ResolveRedirectRule(UrlPath oldPath)
+        public async Task<IRedirect> ResolveRedirectRule(UrlPath oldPath)
         {
             var redirectRule = _redirectRuleResolverRepository
                 .Where(r=>r.RedirectRuleType == RedirectRuleType.Regex)
                 .AsEnumerable()
-                .FirstOrDefault(r=>Regex.IsMatch(oldPath.ToString(), r.OldPattern.ToString(), RegexOptions.IgnoreCase));
+                .FirstOrDefault(r=>System.Text.RegularExpressions.Regex.IsMatch(oldPath.ToString(), r.OldPattern.ToString(), RegexOptions.IgnoreCase));
 
             if (redirectRule == null)
                 return null;
 
-            return await Task.FromResult(redirectRule);
+            return await Task.FromResult(new RegexRedirect(redirectRule));
         }
-        
     }
+    
 }

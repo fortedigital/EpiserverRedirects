@@ -1,11 +1,9 @@
 using System.Threading.Tasks;
 using EPiServer.Web.Routing;
-using Forte.RedirectMiddleware.Model.RedirectResult;
 using Forte.RedirectMiddleware.Model.RedirectType;
 using Forte.RedirectMiddleware.Model.UrlPath;
 using Forte.RedirectMiddleware.Request.HttpContext;
-using Forte.RedirectMiddleware.Resolver;
-using Forte.RedirectMiddleware.Result;
+using Forte.RedirectMiddleware.Resolver.Base;
 
 namespace Forte.RedirectMiddleware.Request
 {
@@ -30,19 +28,8 @@ namespace Forte.RedirectMiddleware.Request
             
             var redirectRule = await _redirectRuleResolver.ResolveRedirectRule(requestPath);
 
-            if (redirectRule != null)
-            {
-                var redirectResult = redirectRule.ToRedirectResult(requestPath.ToString(), _urlResolver);
-                RedirectResponse(httpContext, redirectResult);
-            }
+            redirectRule?.Execute(httpContext, _urlResolver, _responseStatusCodeResolver);
         }
-            
-        private void RedirectResponse(IHttpContext httpContext, RedirectResult redirectResult)
-        {
-            var location = redirectResult.NewUrl;
-            var statusCode = _responseStatusCodeResolver.GetHttpResponseStatusCode(redirectResult.RedirectType);
-
-            httpContext.ResponseRedirect(location, statusCode);
-        }
+        
     }
 }

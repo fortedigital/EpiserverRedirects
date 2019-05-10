@@ -2,8 +2,11 @@
 using System.Threading.Tasks;
 using Forte.RedirectMiddleware.Model.RedirectRule;
 using Forte.RedirectMiddleware.Model.UrlPath;
+using Forte.RedirectMiddleware.Redirect.Base;
+using Forte.RedirectMiddleware.Redirect.Wildcard;
+using Forte.RedirectMiddleware.Resolver.Base;
 
-namespace Forte.RedirectMiddleware.Resolver
+namespace Forte.RedirectMiddleware.Resolver.Wildcard
 {
     public class WildcardResolver : IRedirectRuleResolver
     {
@@ -14,14 +17,14 @@ namespace Forte.RedirectMiddleware.Resolver
             _redirectRuleResolverRepository = redirectRuleResolverRepository;
         }
 
-        public Task<RedirectRule> ResolveRedirectRule(UrlPath oldPath)
+        public async Task<IRedirect> ResolveRedirectRule(UrlPath oldPath)
         {
             var redirectRule = _redirectRuleResolverRepository
                 .Where(r=>r.RedirectRuleType == RedirectRuleType.Wildcard)
                 .AsEnumerable()
                 .FirstOrDefault();
 
-            return Task.FromResult(redirectRule);
+            return await Task.FromResult(new WildcardRedirect(redirectRule));
         }
         
     }

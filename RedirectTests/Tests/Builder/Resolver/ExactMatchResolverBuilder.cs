@@ -1,13 +1,15 @@
+using Forte.RedirectMiddleware.Resolver.ExactMatch;
+
 namespace RedirectTests.Tests.Builder.Resolver
 {
-    public class ExactMatchResolverBuilder : BaseBuilder<Forte.RedirectMiddleware.Resolver.ExactMatchResolver, ExactMatchResolverBuilder>
+    public class ExactMatchResolverBuilder : BaseBuilder<ExactMatchResolver, ExactMatchResolverBuilder>
     {
         protected override ExactMatchResolverBuilder ThisBuilder => this;
 
-        public override Forte.RedirectMiddleware.Resolver.ExactMatchResolver Create()
+        public override ExactMatchResolver Create()
         {
             CreateRepository();
-            return new Forte.RedirectMiddleware.Resolver.ExactMatchResolver(RedirectRuleRepository);
+            return new ExactMatchResolver(RedirectRuleRepository);
         }
     }
 }
