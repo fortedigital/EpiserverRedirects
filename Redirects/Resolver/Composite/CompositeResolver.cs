@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Forte.RedirectMiddleware.Model.RedirectRule;
 using Forte.RedirectMiddleware.Model.UrlPath;
 using Forte.RedirectMiddleware.Redirect.Base;
 using Forte.RedirectMiddleware.Resolver.Base;
@@ -22,6 +21,9 @@ namespace Forte.RedirectMiddleware.Resolver.Composite
             var redirectRule =  _resolvers
                 .Select(resolver => resolver.ResolveRedirectRule(oldPath))
                 .FirstOrDefault(redirectResult => redirectResult != null);
+            
+            if (redirectRule == null)
+                return null;
 
             return await redirectRule;
         }

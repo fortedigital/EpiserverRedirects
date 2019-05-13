@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using EPiServer.Core;
 using EPiServer.Web.Routing;
 using Forte.RedirectMiddleware.Model.RedirectRule;
@@ -8,9 +7,9 @@ using Forte.RedirectMiddleware.Redirect.Base;
 using Forte.RedirectMiddleware.Redirect.ExactMatch;
 using Forte.RedirectMiddleware.Redirect.Regex;
 using Forte.RedirectMiddleware.Redirect.Wildcard;
-using Forte.RedirectMiddleware.Request.HttpContext;
+using Forte.RedirectMiddleware.Request.HttpRequest;
+using Forte.RedirectMiddleware.Response.HttpResponse;
 using Moq;
-using RedirectTests.Data;
 
 namespace RedirectTests.Builder.Redirect
 {
@@ -32,9 +31,15 @@ namespace RedirectTests.Builder.Redirect
             return this;
         }
         
-        public RedirectBuilder WithRequestPathHttpContextMoq(out Mock<IHttpContext> httpContextMoq, string requestPath)
+        public RedirectBuilder WithHttpRequest(out IHttpRequest httpContext, string requestPath)
         {
-            httpContextMoq = HttpContext(requestPath);
+            httpContext = HttpRequest(requestPath);
+            return this;
+        }
+        
+        public RedirectBuilder WithHttpResponseMock(out Mock<IHttpResponse> httpResponseMock)
+        {
+            httpResponseMock = new Mock<IHttpResponse>();
             return this;
         }
         
@@ -48,15 +53,14 @@ namespace RedirectTests.Builder.Redirect
             return this;
         }
 
-        private static Mock<IHttpContext> HttpContext(string requestUrl)
+        private static IHttpRequest HttpRequest(string requestUrl)
         {
-            var httpContext = new Mock<IHttpContext>();
-            httpContext.Setup(context => context.RequestUri).Returns(new Uri(requestUrl, UriKind.Relative));
-            return httpContext;
+            var httpContext = new Mock<IHttpRequest>();
+            httpContext.Setup(request => request.Url).Returns(new Uri(requestUrl, UriKind.Relative));
+            return httpContext.Object;
         }
 
-        public RedirectBuilder WithContentRedirectRule(out RedirectRule redirectRule
-            , int? contentReferenceId = null)
+        public RedirectBuilder WithContentRedirectRule(out RedirectRule redirectRule, int? contentReferenceId = null)
         {
             _redirectRule.ContentId = contentReferenceId ?? new Random().Next(1, 1000);
 

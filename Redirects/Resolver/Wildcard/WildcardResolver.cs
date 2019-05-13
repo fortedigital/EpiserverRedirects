@@ -23,6 +23,9 @@ namespace Forte.RedirectMiddleware.Resolver.Wildcard
                 .Where(r=>r.RedirectRuleType == RedirectRuleType.Wildcard)
                 .AsEnumerable()
                 .FirstOrDefault();
+            
+            if (redirectRule == null)
+                return null;
 
             return await Task.FromResult(new WildcardRedirect(redirectRule));
         }

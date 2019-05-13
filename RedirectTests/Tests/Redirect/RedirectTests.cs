@@ -15,13 +15,14 @@ namespace RedirectTests.Tests.Redirect
             var contentRedirect = Redirect()
                 .WithContentRedirectRule(out var redirectRule)
                 .WithHttp_1_1_ResponseStatusCodeResolver(out var statusCodeResolver)
-                .WithRequestPathHttpContextMoq(out var httpContextMoq, "/requestPath")
+                .WithHttpRequest(out var httpRequest, "/requestPath")
+                .WithHttpResponseMock(out var httpResponseMock)
                 .WithUrlResolver(out var urlResolver)
                 .Create();
             
-            contentRedirect.Execute(httpContextMoq.Object, urlResolver, statusCodeResolver);
+            contentRedirect.Execute(httpRequest, httpResponseMock.Object, urlResolver, statusCodeResolver);
             
-            httpContextMoq.Verify(c => c.ResponseRedirect("/newContentUrl",
+            httpResponseMock.Verify(r => r.Redirect("/newContentUrl",
                     statusCodeResolver.GetHttpResponseStatusCode(redirectRule.RedirectType)),
                 Times.Once);
         }
@@ -32,13 +33,14 @@ namespace RedirectTests.Tests.Redirect
             var exactMatchRedirect = Redirect()
                 .WithExactMatchRedirectRule(out var redirectRule, "newUrl")
                 .WithHttp_1_1_ResponseStatusCodeResolver(out var statusCodeResolver)
-                .WithRequestPathHttpContextMoq(out var httpContextMoq, "/requestPath")
+                .WithHttpRequest(out var httpRequest, "/requestPath")
+                .WithHttpResponseMock(out var httpResponseMock)
                 .WithUrlResolver(out var urlResolver)
                 .Create();
 
-            exactMatchRedirect.Execute(httpContextMoq.Object, urlResolver, statusCodeResolver);
+            exactMatchRedirect.Execute(httpRequest, httpResponseMock.Object, urlResolver, statusCodeResolver);
 
-            httpContextMoq.Verify(c => c.ResponseRedirect(redirectRule.NewPattern,
+            httpResponseMock.Verify(r => r.Redirect(redirectRule.NewPattern,
                     statusCodeResolver.GetHttpResponseStatusCode(redirectRule.RedirectType)),
                 Times.Once);
         }
@@ -49,13 +51,14 @@ namespace RedirectTests.Tests.Redirect
             var regexRedirect = Redirect()
                 .WithRegexRedirectRule(out var redirectRule, "(oldPattern)", "newPattern/$1")
                 .WithHttp_1_1_ResponseStatusCodeResolver(out var statusCodeResolver)
-                .WithRequestPathHttpContextMoq(out var httpContextMoq, "/requestPath/oldPattern")
+                .WithHttpRequest(out var httpRequest, "/requestPath/oldPattern")
+                .WithHttpResponseMock(out var httpResponseMock)
                 .WithUrlResolver(out var urlResolver)
                 .Create();
             
-            regexRedirect.Execute(httpContextMoq.Object, urlResolver, statusCodeResolver);
-            
-            httpContextMoq.Verify(c => c.ResponseRedirect("/requestPath/newPattern/oldPattern",
+            regexRedirect.Execute(httpRequest, httpResponseMock.Object, urlResolver, statusCodeResolver);
+
+            httpResponseMock.Verify(r => r.Redirect("/requestPath/newPattern/oldPattern",
                     statusCodeResolver.GetHttpResponseStatusCode(redirectRule.RedirectType)),
                 Times.Once);
         }
@@ -66,14 +69,15 @@ namespace RedirectTests.Tests.Redirect
             var wildcardRedirect = Redirect()
                 .WithWildcardRedirectRule(out var redirectRule, "*oldPattern*", "newPattern/{1}")
                 .WithHttp_1_1_ResponseStatusCodeResolver(out var statusCodeResolver)
-                .WithRequestPathHttpContextMoq(out var httpContextMoq, "/requestPath/oldPattern")
+                .WithHttpRequest(out var httpRequest, "/requestPath/oldPattern")
+                .WithHttpResponseMock(out var httpResponseMock)
                 .WithUrlResolver(out var urlResolver)
                 .Create();
             
-            wildcardRedirect.Execute(httpContextMoq.Object, urlResolver, statusCodeResolver);
+            wildcardRedirect.Execute(httpRequest, httpResponseMock.Object, urlResolver, statusCodeResolver);
 
             throw new NotImplementedException();
-            //httpContextMoq.Verify(c => c.ResponseRedirect("/requestPath/newPattern/oldPattern",
+            //httpContextMoq.Verify(r => r.Redirect("/requestPath/newPattern/oldPattern",
             //        statusCodeResolver.GetHttpResponseStatusCode(redirectRule.RedirectType)),
              //   Times.Once);
         }

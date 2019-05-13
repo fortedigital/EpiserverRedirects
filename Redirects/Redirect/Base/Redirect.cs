@@ -3,7 +3,8 @@ using EPiServer.Data;
 using EPiServer.Web.Routing;
 using Forte.RedirectMiddleware.Model.RedirectRule;
 using Forte.RedirectMiddleware.Model.RedirectType;
-using Forte.RedirectMiddleware.Request.HttpContext;
+using Forte.RedirectMiddleware.Request.HttpRequest;
+using Forte.RedirectMiddleware.Response.HttpResponse;
 
 namespace Forte.RedirectMiddleware.Redirect.Base
 {
@@ -12,32 +13,31 @@ namespace Forte.RedirectMiddleware.Redirect.Base
         public Identity Id => RedirectRule.Id;
         protected RedirectRule RedirectRule { get; }
 
-        protected abstract string GetPathWithoutContentId(IHttpContext context, IUrlResolver contentUrlResolver,
-            IResponseStatusCodeResolver responseStatusCodeResolver);
-
         protected Redirect(RedirectRule redirectRule)
         {
             RedirectRule = redirectRule;
         }
 
-        public void Execute(IHttpContext context, IUrlResolver contentUrlResolver, IResponseStatusCodeResolver responseStatusCodeResolver)
+        protected abstract string GetPathWithoutContentId(IHttpRequest request, IUrlResolver contentUrlResolver, IResponseStatusCodeResolver responseStatusCodeResolver);
+        
+        public void Execute(IHttpRequest request, IHttpResponse response, IUrlResolver contentUrlResolver, IResponseStatusCodeResolver responseStatusCodeResolver)
         {
-            if (GetPathFromContentId(context, contentUrlResolver, responseStatusCodeResolver))
+            if (GetPathFromContentId(response, contentUrlResolver, responseStatusCodeResolver))
                 return;
 
-            var newUrl = GetPathWithoutContentId(context, contentUrlResolver, responseStatusCodeResolver);
+            var newUrl = GetPathWithoutContentId(request, contentUrlResolver, responseStatusCodeResolver);
 
-            RedirectResponse(context, responseStatusCodeResolver, newUrl);
+            RedirectResponse(response, responseStatusCodeResolver, newUrl);
         }
 
-        private bool GetPathFromContentId(IHttpContext context, IUrlResolver contentUrlResolver, IResponseStatusCodeResolver responseStatusCodeResolver)
+        private bool GetPathFromContentId(IHttpResponse response, IUrlResolver contentUrlResolver, IResponseStatusCodeResolver responseStatusCodeResolver)
         {
             if (RedirectRule.ContentId == null)
                 return false;
             
             var newUrl = GetPathFromContentId(RedirectRule.ContentId.Value, contentUrlResolver);
 
-            RedirectResponse(context, responseStatusCodeResolver, newUrl);
+            RedirectResponse(response, responseStatusCodeResolver, newUrl);
 
             return true;
         }
@@ -48,12 +48,12 @@ namespace Forte.RedirectMiddleware.Redirect.Base
             return contentUrlResolver.GetUrl(contentReference, null);
         }
 
-        private void RedirectResponse(IHttpContext httpContext, IResponseStatusCodeResolver responseStatusCodeResolver, string newUrl)
+        private void RedirectResponse(IHttpResponse httpResponse, IResponseStatusCodeResolver responseStatusCodeResolver, string newUrl)
         {
             var location = newUrl;
             var statusCode = responseStatusCodeResolver.GetHttpResponseStatusCode(RedirectRule.RedirectType);
 
-            httpContext.ResponseRedirect(location, statusCode);
+            httpResponse.Redirect(location, statusCode);
         }
 
     }

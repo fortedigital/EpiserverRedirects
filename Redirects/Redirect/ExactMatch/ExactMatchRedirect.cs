@@ -1,7 +1,7 @@
 using EPiServer.Web.Routing;
 using Forte.RedirectMiddleware.Model.RedirectRule;
 using Forte.RedirectMiddleware.Model.RedirectType;
-using Forte.RedirectMiddleware.Request.HttpContext;
+using Forte.RedirectMiddleware.Request.HttpRequest;
 
 namespace Forte.RedirectMiddleware.Redirect.ExactMatch
 {
@@ -11,7 +11,7 @@ namespace Forte.RedirectMiddleware.Redirect.ExactMatch
         {
         }
 
-        protected override string GetPathWithoutContentId(IHttpContext context, IUrlResolver contentUrlResolver, IResponseStatusCodeResolver responseStatusCodeResolver)
+        protected override string GetPathWithoutContentId(IHttpRequest request, IUrlResolver contentUrlResolver, IResponseStatusCodeResolver responseStatusCodeResolver)
         {
             var newUrl = RedirectRule.NewPattern;
 

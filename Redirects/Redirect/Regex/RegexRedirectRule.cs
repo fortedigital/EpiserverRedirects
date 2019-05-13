@@ -2,7 +2,7 @@ using System.Text.RegularExpressions;
 using EPiServer.Web.Routing;
 using Forte.RedirectMiddleware.Model.RedirectRule;
 using Forte.RedirectMiddleware.Model.RedirectType;
-using Forte.RedirectMiddleware.Request.HttpContext;
+using Forte.RedirectMiddleware.Request.HttpRequest;
 
 namespace Forte.RedirectMiddleware.Redirect.Regex
 {
@@ -12,10 +12,10 @@ namespace Forte.RedirectMiddleware.Redirect.Regex
         {
         }
         
-        protected override string GetPathWithoutContentId(IHttpContext context, IUrlResolver contentUrlResolver,
+        protected override string GetPathWithoutContentId(IHttpRequest request, IUrlResolver contentUrlResolver,
             IResponseStatusCodeResolver responseStatusCodeResolver)
         {
-            var newUrl = System.Text.RegularExpressions.Regex.Replace(context.RequestUri.ToString(), RedirectRule.OldPattern,
+            var newUrl = System.Text.RegularExpressions.Regex.Replace(request.Url.ToString(), RedirectRule.OldPattern,
                 RedirectRule.NewPattern, RegexOptions.IgnoreCase);
             return newUrl;
         }

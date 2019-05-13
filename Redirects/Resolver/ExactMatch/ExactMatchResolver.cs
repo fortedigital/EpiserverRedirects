@@ -22,8 +22,10 @@ namespace Forte.RedirectMiddleware.Resolver.ExactMatch
             var redirectRule = _redirectRuleResolverRepository
                 .FirstOrDefault(r => r.OldPath == oldPath && r.RedirectRuleType == RedirectRuleType.ExactMatch);
 
+            if (redirectRule == null)
+                return null;
+
             return await Task.FromResult(new ExactMatchRedirect(redirectRule));
         }
-        
     }
 }
