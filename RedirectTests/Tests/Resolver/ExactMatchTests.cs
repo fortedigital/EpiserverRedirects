@@ -1,5 +1,5 @@
 ﻿using Forte.RedirectMiddleware.Model.UrlPath;
-using RedirectTests.Tests.Builder.Resolver;
+using RedirectTests.Builder.WithRepository.Resolver;
 using Xunit;
 
 namespace RedirectTests.Tests.Resolver
@@ -16,7 +16,7 @@ namespace RedirectTests.Tests.Resolver
             
             var redirect = await resolver.ResolveRedirectRule(UrlPath.Parse("/dummyPath"));
             
-            Assert.Null(redirect?.RedirectRule);
+            Assert.Null(redirect?.Id);
         }
 
         [Fact]
@@ -28,7 +28,7 @@ namespace RedirectTests.Tests.Resolver
             
             var redirect = await resolver.ResolveRedirectRule(UrlPath.Parse("/dummyPath"));
             
-            Assert.Null(redirect?.RedirectRule);
+            Assert.Null(redirect?.Id);
         }
         
         [Fact]
@@ -41,7 +41,7 @@ namespace RedirectTests.Tests.Resolver
             
             var redirect = await resolver.ResolveRedirectRule(expectedRule.OldPath);
             
-            Assert.Equal(expectedRule.Id, redirect?.RedirectRule.Id);
+            Assert.Equal(expectedRule.Id, redirect?.Id);
         }
     }
 }

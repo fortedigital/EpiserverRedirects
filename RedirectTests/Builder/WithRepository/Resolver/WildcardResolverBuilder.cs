@@ -1,8 +1,8 @@
 using Forte.RedirectMiddleware.Resolver.Wildcard;
 
-namespace RedirectTests.Tests.Builder.Resolver
+namespace RedirectTests.Builder.WithRepository.Resolver
 {
-    public class WildcardResolverBuilder : BaseBuilder<WildcardResolver, WildcardResolverBuilder>
+    public class WildcardResolverBuilder : BaseWithRepositoryBuilder<WildcardResolver, WildcardResolverBuilder>
     {
         protected override WildcardResolverBuilder ThisBuilder => this;
 

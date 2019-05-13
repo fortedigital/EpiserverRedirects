@@ -1,8 +1,8 @@
 using Forte.RedirectMiddleware.Resolver.ExactMatch;
 
-namespace RedirectTests.Tests.Builder.Resolver
+namespace RedirectTests.Builder.WithRepository.Resolver
 {
-    public class ExactMatchResolverBuilder : BaseBuilder<ExactMatchResolver, ExactMatchResolverBuilder>
+    public class ExactMatchResolverBuilder : BaseWithRepositoryBuilder<ExactMatchResolver, ExactMatchResolverBuilder>
     {
         protected override ExactMatchResolverBuilder ThisBuilder => this;
 

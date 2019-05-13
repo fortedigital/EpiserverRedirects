@@ -221,13 +221,16 @@
         </Reference>
     </ItemGroup>
     <ItemGroup>
+        <Compile Include="Builder\Redirect\RedirectBuilder.cs" />
+        <Compile Include="Builder\WithRepository\BaseWithRepositoryBuilder.cs" />
+        <Compile Include="Builder\WithRepository\ControllerBuilder.cs" />
+        <Compile Include="Builder\WithRepository\Resolver\ExactMatchResolverBuilder.cs" />
+        <Compile Include="Builder\WithRepository\Resolver\RegexResolverBuilder.cs" />
+        <Compile Include="Builder\WithRepository\Resolver\WildcardResolverBuilder.cs" />
         <Compile Include="Data\RedirectRuleTestDataBuilder.cs" />
         <Compile Include="Data\RandomDataGenerator.cs" />
-        <Compile Include="Tests\Builder\BaseBuilder.cs" />
-        <Compile Include="Tests\Builder\ControllerBuilder.cs" />
-        <Compile Include="Tests\Builder\Resolver\ExactMatchResolverBuilder.cs" />
-        <Compile Include="Tests\Builder\Resolver\RegexResolverBuilder.cs" />
-        <Compile Include="Tests\Builder\Resolver\WildcardResolverBuilder.cs" />
+        <Compile Include="Mapper\RedirectRuleTestMapper.cs" />
+        <Compile Include="Repository\TestRepository.cs" />
         <Compile Include="Tests\Mapper\MapperTests.cs" />
         <Compile Include="Tests\Redirect\RedirectTests.cs" />
         <Compile Include="Tests\Resolver\ExactMatchTests.cs" />

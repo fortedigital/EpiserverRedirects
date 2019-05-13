@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using EPiServer.Data;
 using Forte.RedirectMiddleware.Model.RedirectRule;
+using Forte.RedirectMiddleware.Repository;
 
-namespace Forte.RedirectMiddleware.Repository
+namespace RedirectTests.Repository
 {
     public class TestRepository : RedirectRuleRepository
     {

@@ -3,18 +3,19 @@ using System.Collections.Generic;
 using Forte.RedirectMiddleware.Model.RedirectRule;
 using Forte.RedirectMiddleware.Repository;
 using RedirectTests.Data;
+using RedirectTests.Repository;
 
-namespace RedirectTests.Tests.Builder
+namespace RedirectTests.Builder.WithRepository
 {
-    public abstract class BaseBuilder<TResolver, TBuilder>
-        where TBuilder : BaseBuilder<TResolver, TBuilder>
+    public abstract class BaseWithRepositoryBuilder<TResolver, TBuilder>
+        where TBuilder : BaseWithRepositoryBuilder<TResolver, TBuilder>
     {
         private const int DefaultRedirectRulesNumber = 5;
         protected IRedirectRuleRepository RedirectRuleRepository = new TestRepository();
         private readonly RedirectRuleTestDataBuilder _redirectRuleTestDataBuilder = RedirectRuleTestDataBuilder.Start();
 
         protected abstract TBuilder ThisBuilder { get; }
-        internal BaseBuilder() { }
+        internal BaseWithRepositoryBuilder() { }
 
         public TBuilder WithRandomExistingRules(int numberOfExistingRandomRules = DefaultRedirectRulesNumber)
         {

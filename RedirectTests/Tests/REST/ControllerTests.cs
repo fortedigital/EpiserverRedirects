@@ -1,12 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Forte.RedirectMiddleware.Model;
-using Forte.RedirectMiddleware.Model.Mapper;
 using Forte.RedirectMiddleware.Model.RedirectRule;
 using Forte.RedirectMiddleware.Model.RedirectType;
+using RedirectTests.Builder.WithRepository;
 using RedirectTests.Data;
-using RedirectTests.Tests.Builder;
 using Xunit;
 
 namespace RedirectTests.Tests.REST

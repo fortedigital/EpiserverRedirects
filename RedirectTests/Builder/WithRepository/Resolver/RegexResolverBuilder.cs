@@ -1,8 +1,8 @@
 using Forte.RedirectMiddleware.Resolver.Regex;
 
-namespace RedirectTests.Tests.Builder.Resolver
+namespace RedirectTests.Builder.WithRepository.Resolver
 {
-    public class RegexResolverBuilder : BaseBuilder<RegexResolver, RegexResolverBuilder>
+    public class RegexResolverBuilder : BaseWithRepositoryBuilder<RegexResolver, RegexResolverBuilder>
     {
         protected override RegexResolverBuilder ThisBuilder => this;
 

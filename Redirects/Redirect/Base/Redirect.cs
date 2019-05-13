@@ -1,4 +1,5 @@
 using EPiServer.Core;
+using EPiServer.Data;
 using EPiServer.Web.Routing;
 using Forte.RedirectMiddleware.Model.RedirectRule;
 using Forte.RedirectMiddleware.Model.RedirectType;
@@ -8,7 +9,8 @@ namespace Forte.RedirectMiddleware.Redirect.Base
 {
     public abstract class Redirect : IRedirect
     {
-        public RedirectRule RedirectRule { get; }
+        public Identity Id => RedirectRule.Id;
+        protected RedirectRule RedirectRule { get; }
 
         protected abstract string GetPathWithoutContentId(IHttpContext context, IUrlResolver contentUrlResolver,
             IResponseStatusCodeResolver responseStatusCodeResolver);

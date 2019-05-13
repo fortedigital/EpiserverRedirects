@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using EPiServer.Shell.Services.Rest;
-using Forte.RedirectMiddleware.Model.Mapper;
+using Forte.RedirectMiddleware.Mapper;
 using Forte.RedirectMiddleware.Model.RedirectRule;
 using Forte.RedirectMiddleware.Repository;
 

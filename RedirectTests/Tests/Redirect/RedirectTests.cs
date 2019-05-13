@@ -1,104 +1,81 @@
 using System;
-using EPiServer.Core;
-using EPiServer.Web.Routing;
-using Forte.RedirectMiddleware.Model.RedirectRule;
-using Forte.RedirectMiddleware.Model.RedirectType;
-using Forte.RedirectMiddleware.Redirect.ExactMatch;
-using Forte.RedirectMiddleware.Redirect.Regex;
-using Forte.RedirectMiddleware.Redirect.Wildcard;
-using Forte.RedirectMiddleware.Request.HttpContext;
 using Moq;
+using RedirectTests.Builder.Redirect;
 using Xunit;
 
 namespace RedirectTests.Tests.Redirect
 {
     public class RedirectTests
     {
-        private static string NewUrl { get; set; }
-        private static IUrlResolver UrlResolver()
-        {
-            Mock<IUrlResolver> urlResolver = new Mock<IUrlResolver>();
-            urlResolver.Setup(ur => ur.GetUrl(It.IsAny<ContentReference>(),
-                It.IsAny<string>(),
-                It.IsAny<UrlResolverArguments>())).Returns("/newContentUrl");
-            return urlResolver.Object;
-        }
-        
-        private static IHttpContext HttpContext(string requestUrl)
-        {
-            var httpContext = new Mock<IHttpContext>();
-            httpContext.Setup(context => context.RequestUri).Returns(new Uri(requestUrl, UriKind.Relative));
-            httpContext.Setup(context => context
-                .ResponseRedirect(It.IsAny<string>(), It.IsAny<int>()))
-                .Callback<string, int>((location, statusCode)=>NewUrl = location);
-            return httpContext.Object;
-        }
+        private static RedirectBuilder Redirect() => new RedirectBuilder();
 
-        private static IResponseStatusCodeResolver ResponseStatusCodeResolver => new Http_1_1_ResponseStatusCodeResolver();
-        
         [Fact]
         public async void Given_ContentIdRedirectRule_ToRedirectResult_ReturnsCorrectResult()
         {
-            var redirectRule = new RedirectRule{ContentId = 35};
-            var redirectRuleExecutor = new ExactMatchRedirect(redirectRule);
-            var httpContext = HttpContext("/requestPath");
+            var contentRedirect = Redirect()
+                .WithContentRedirectRule(out var redirectRule)
+                .WithHttp_1_1_ResponseStatusCodeResolver(out var statusCodeResolver)
+                .WithRequestPathHttpContextMoq(out var httpContextMoq, "/requestPath")
+                .WithUrlResolver(out var urlResolver)
+                .Create();
             
-            redirectRuleExecutor.Execute(httpContext, UrlResolver(), ResponseStatusCodeResolver);
-
-            Assert.Equal("/newContentUrl", NewUrl);
+            contentRedirect.Execute(httpContextMoq.Object, urlResolver, statusCodeResolver);
+            
+            httpContextMoq.Verify(c => c.ResponseRedirect("/newContentUrl",
+                    statusCodeResolver.GetHttpResponseStatusCode(redirectRule.RedirectType)),
+                Times.Once);
         }
         
         [Fact]
         public async void Given_ExactMatchRedirectRule_ToRedirectResult_ReturnsCorrectResult()
         {
-            var redirectRule = new RedirectRule
-            {
-                RedirectRuleType = RedirectRuleType.ExactMatch,
-                NewPattern = "newUrl"
-            };
-            var exactMatchRedirect = new ExactMatchRedirect(redirectRule);
-            var httpContext = HttpContext("/requestPath");
+            var exactMatchRedirect = Redirect()
+                .WithExactMatchRedirectRule(out var redirectRule, "newUrl")
+                .WithHttp_1_1_ResponseStatusCodeResolver(out var statusCodeResolver)
+                .WithRequestPathHttpContextMoq(out var httpContextMoq, "/requestPath")
+                .WithUrlResolver(out var urlResolver)
+                .Create();
 
-            exactMatchRedirect.Execute(httpContext, UrlResolver(), ResponseStatusCodeResolver);
+            exactMatchRedirect.Execute(httpContextMoq.Object, urlResolver, statusCodeResolver);
 
-            Assert.Equal(redirectRule.NewPattern, NewUrl);
+            httpContextMoq.Verify(c => c.ResponseRedirect(redirectRule.NewPattern,
+                    statusCodeResolver.GetHttpResponseStatusCode(redirectRule.RedirectType)),
+                Times.Once);
         }
         
         [Fact]
         public async void Given_RegexRedirectRule_ToRedirectResult_ReturnsCorrectResult()
         {
-            var redirectRule = new RedirectRule
-            {
-                RedirectRuleType = RedirectRuleType.Regex,
-                OldPattern = "(oldPattern)",
-                NewPattern = "newPattern/$1"
-            };
+            var regexRedirect = Redirect()
+                .WithRegexRedirectRule(out var redirectRule, "(oldPattern)", "newPattern/$1")
+                .WithHttp_1_1_ResponseStatusCodeResolver(out var statusCodeResolver)
+                .WithRequestPathHttpContextMoq(out var httpContextMoq, "/requestPath/oldPattern")
+                .WithUrlResolver(out var urlResolver)
+                .Create();
             
-            var regexRedirect = new RegexRedirect(redirectRule);
-            var httpContext = HttpContext("/requestPath/oldPattern");
-
-            regexRedirect.Execute(httpContext, UrlResolver(), ResponseStatusCodeResolver);
-
-            Assert.Equal("/requestPath/newPattern/oldPattern", NewUrl);
+            regexRedirect.Execute(httpContextMoq.Object, urlResolver, statusCodeResolver);
+            
+            httpContextMoq.Verify(c => c.ResponseRedirect("/requestPath/newPattern/oldPattern",
+                    statusCodeResolver.GetHttpResponseStatusCode(redirectRule.RedirectType)),
+                Times.Once);
         }
         
         [Fact]
         public async void Given_WildcardRedirectRule_ToRedirectResult_ReturnsCorrectResult()
         {
-            var redirectRule = new RedirectRule
-            {
-                RedirectRuleType = RedirectRuleType.Wildcard,
-                OldPattern = "*oldPattern*",
-                NewPattern = "newPattern/{1}"
-            };
-
-            var wildcardRedirect = new WildcardRedirect(redirectRule);
-            var httpContext = HttpContext("/requestPath/oldPattern");
-
-            wildcardRedirect.Execute(httpContext, UrlResolver(), ResponseStatusCodeResolver);
+            var wildcardRedirect = Redirect()
+                .WithWildcardRedirectRule(out var redirectRule, "*oldPattern*", "newPattern/{1}")
+                .WithHttp_1_1_ResponseStatusCodeResolver(out var statusCodeResolver)
+                .WithRequestPathHttpContextMoq(out var httpContextMoq, "/requestPath/oldPattern")
+                .WithUrlResolver(out var urlResolver)
+                .Create();
+            
+            wildcardRedirect.Execute(httpContextMoq.Object, urlResolver, statusCodeResolver);
 
             throw new NotImplementedException();
-            //Assert.Equal("/requestPath/newPattern/oldPattern", NewUrl);
+            //httpContextMoq.Verify(c => c.ResponseRedirect("/requestPath/newPattern/oldPattern",
+            //        statusCodeResolver.GetHttpResponseStatusCode(redirectRule.RedirectType)),
+             //   Times.Once);
         }
     }
 }
