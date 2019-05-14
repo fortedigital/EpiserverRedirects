@@ -231,6 +231,7 @@
         <Compile Include="Data\RandomDataGenerator.cs" />
         <Compile Include="Mapper\RedirectRuleTestMapper.cs" />
         <Compile Include="Repository\TestRepository.cs" />
+        <Compile Include="RestExtensions\RestExtensions.cs" />
         <Compile Include="Tests\Mapper\MapperTests.cs" />
         <Compile Include="Tests\Redirect\RedirectTests.cs" />
         <Compile Include="Tests\Resolver\ExactMatchTests.cs" />

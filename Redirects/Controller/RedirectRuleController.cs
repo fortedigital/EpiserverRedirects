@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Web.Mvc;
 using EPiServer.Shell.Services.Rest;
 using Forte.RedirectMiddleware.Mapper;
 using Forte.RedirectMiddleware.Model.RedirectRule;
@@ -20,21 +21,23 @@ namespace Forte.RedirectMiddleware.Controller
             _redirectRuleMapper = redirectRuleMapper;
         }
 
-        public RedirectRuleDto GetRedirect(Guid id)
+        public ActionResult GetRedirect(Guid id)
         {
             var redirect = _redirectRuleRepository.GetById(id);
 
             if (redirect == null)
                 return null;
             
-            return _redirectRuleMapper.ModelToDto(redirect);
+            return Rest(_redirectRuleMapper.ModelToDto(redirect));
         }
-        public IEnumerable<RedirectRuleDto> GetAllRedirects()
+        public ActionResult GetAllRedirects()
         {
-            return _redirectRuleRepository.AsEnumerable().Select(_redirectRuleMapper.ModelToDto);
+            var redirects = _redirectRuleRepository.AsEnumerable().Select(_redirectRuleMapper.ModelToDto);
+            return Rest(redirects);
         }
 
-        public RedirectRuleDto Add(RedirectRuleDto dto)
+        [HttpPost]
+        public ActionResult Add(RedirectRuleDto dto)
         {
             if (!ViewData.ModelState.IsValid)
                 return null;
@@ -43,10 +46,11 @@ namespace Forte.RedirectMiddleware.Controller
             newRedirectRule = _redirectRuleRepository.Add(newRedirectRule);
 
             var newRedirectRuleDto = _redirectRuleMapper.ModelToDto(newRedirectRule);
-            return newRedirectRuleDto;
+            return Rest(newRedirectRuleDto);
         }
 
-        public RedirectRuleDto Update(RedirectRuleDto dto)
+        [HttpPut]
+        public ActionResult Update(RedirectRuleDto dto)
         {
             if (!ViewData.ModelState.IsValid)
                 return null;
@@ -55,12 +59,16 @@ namespace Forte.RedirectMiddleware.Controller
             updatedRedirectRule = _redirectRuleRepository.Update(updatedRedirectRule);
             
             var updatedRedirectRuleDto = _redirectRuleMapper.ModelToDto(updatedRedirectRule);
-            return updatedRedirectRuleDto;
+            return Rest(updatedRedirectRuleDto);
         }
         
-        public bool Delete(Guid id)
+        [HttpDelete]
+        public ActionResult Delete(Guid id)
         {
-            return _redirectRuleRepository.Delete(id);
+            var deletedSuccessfully = _redirectRuleRepository.Delete(id);
+            return deletedSuccessfully
+                ? Rest(HttpStatusCode.OK)
+                : Rest(HttpStatusCode.Conflict);
         }
     }
 

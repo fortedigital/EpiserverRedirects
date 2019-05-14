@@ -1,10 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using EPiServer.Shell.Services.Rest;
 using Forte.RedirectMiddleware.Model.RedirectRule;
 using Forte.RedirectMiddleware.Model.RedirectType;
 using RedirectTests.Builder.WithRepository;
 using RedirectTests.Data;
+using RedirectTests.RestExtensions;
 using Xunit;
 
 namespace RedirectTests.Tests.REST
@@ -12,13 +15,12 @@ namespace RedirectTests.Tests.REST
     public class ControllerTests
     {
         private static ControllerBuilder RedirectRuleController() => new ControllerBuilder();
-                
+
         [Fact]
         public void Given_ExistingRedirects_Controller_ReturnsAllRedirects()
         {
             var rule1 = RandomDataGenerator.CreateRandomRedirectRule();
             var rule2 = RandomDataGenerator.CreateRandomRedirectRule();
-            
             var existingRules = new HashSet<RedirectRule>()
             {
                 rule1,
@@ -27,36 +29,17 @@ namespace RedirectTests.Tests.REST
             var dto1 = new RedirectRuleDto();
             var dto2 = new RedirectRuleDto();
             
-            var restController = RedirectRuleController()     
+            var restController = RedirectRuleController()
                 .WithExplicitExistingRules(existingRules)
                 .WithMapper(r => r == rule1 ? dto1 : r == rule2 ? dto2 : null)
                 .Create();
-
-            var resolvedRules = restController.GetAllRedirects();
+            var resolvedRules = restController
+                .GetAllRedirects()
+                .GetEntitiesFromActionResult();
             
-            Assert.Equal(new [] { dto1, dto2 }, resolvedRules);
+            Assert.Equal(new[] { dto1, dto2 }, resolvedRules);
         }
-        
-/*        [Fact]
-        public void Given_ExistingRedirects_Controller_ReturnsAllRedirects2()
-        {
-            var rulesCount = 10;
 
-            var rule1 = DummyRule.Create();
-            var rule2 = DummyRule.Create();
-            var dto1 = new RedirectRuleDto();
-            var dto2 = new RedirectRuleDto();
-            
-            var restController = RedirectRuleController()             
-                .WithRules(new [] { rule1, rule2 })
-                .WithMapper(r => r == rule1 ? dto1 : r == rule2 ? dto2 : Assert.False(true))
-                .Create();
-
-            var resolvedRules = restController.GetAllRedirects();
-            
-            Assert.Equal(new [] { dto1, dto2 }, resolvedRules);
-        }*/
-        
         [Fact]
         public void Given_ExistingRedirects_Controller_CreatesNewRedirect()
         {
@@ -65,36 +48,40 @@ namespace RedirectTests.Tests.REST
                 .Create();
 
             var redirectDto = new RedirectRuleDto("randomOldPath", "randomNewPath");
-            var newRedirect = restController.Add(redirectDto);
-            var expectedRedirect = restController.GetRedirect(newRedirect.Id.ExternalId);
-            
+
+            var newRedirect = restController.Add(redirectDto).GetEntityFromActionResult();
+            var expectedRedirect = restController.GetRedirect(newRedirect.Id.ExternalId).GetEntityFromActionResult();
+
             Assert.NotNull(expectedRedirect);
         }
-        
+
         [Fact]
         public void Given_ExistingRedirects_Controller_UpdatesRedirect()
         {
             var rulesCount = 10;
-            
+
             var restController = RedirectRuleController()
                 .WithRandomExistingRules(rulesCount)
                 .Create();
-            
+
             var randomIndex = new Random().Next(rulesCount);
             var randomRedirectDto = restController
                 .GetAllRedirects()
+                .GetEntitiesFromActionResult()
                 .Skip(randomIndex)
                 .FirstOrDefault();
 
             var expectedNewUrl = "/updatedNewUrl";
             randomRedirectDto.NewUrl = expectedNewUrl;
-            
+
             restController.Update(randomRedirectDto);
-            var updatedRedirect = restController.GetRedirect(randomRedirectDto.Id.ExternalId);
-            
+            var updatedRedirect = restController
+                .GetRedirect(randomRedirectDto.Id.ExternalId)
+                .GetEntityFromActionResult();
+
             Assert.Equal(expectedNewUrl, updatedRedirect?.NewUrl);
         }
-        
+
         [Fact]
         public void Given_NotExistingRedirect_Controller_TriesToUpdateAndThrowsExceptionRedirectNotFound()
         {
@@ -102,34 +89,43 @@ namespace RedirectTests.Tests.REST
                 .WithRandomExistingRules()
                 .Create();
 
-            var redirectDto = new RedirectRuleDto(Guid.NewGuid(), "/NonExistentOldPath", "/randomNewUrl", RedirectType.Temporary);
-                     
-            Assert.Throws<KeyNotFoundException>(()=>restController.Update(redirectDto));
+            var redirectDto = new RedirectRuleDto(Guid.NewGuid(), "/NonExistentOldPath", "/randomNewUrl",
+                RedirectType.Temporary);
+
+            Assert.Throws<KeyNotFoundException>(() => restController.Update(redirectDto));
         }
-        
+
         [Theory]
-        [InlineData(true)]
-        [InlineData(false)]
-        public void Given_Redirects_Controller_ReturnsTrueIfFoundAndDeleted(bool doesExists)
+        [InlineData(true, HttpStatusCode.OK)]
+        [InlineData(false, HttpStatusCode.Conflict)]
+        public void Given_Redirects_Controller_ReturnsTrueIfFoundAndDeleted(bool doesExists, HttpStatusCode result)
         {
             var rulesCount = 10;
             var restController = RedirectRuleController()
                 .WithRandomExistingRules(rulesCount)
                 .Create();
 
-            bool deleteResult;
+            HttpStatusCode deleteResult;
             if (doesExists)
             {
                 var randomIndex = new Random().Next(rulesCount);
-                var randomRedirect = restController.GetAllRedirects().Skip(randomIndex).FirstOrDefault();
-                deleteResult = restController.Delete(randomRedirect.Id.ExternalId);
+                var randomRedirect = restController
+                    .GetAllRedirects()
+                    .GetEntitiesFromActionResult()
+                    .Skip(randomIndex)
+                    .FirstOrDefault();
+                deleteResult = restController
+                    .Delete(randomRedirect.Id.ExternalId)
+                    .GetStatusCodeFromActionResult();
             }
             else
             {
-                deleteResult = restController.Delete(Guid.NewGuid());
+                deleteResult = restController
+                    .Delete(Guid.NewGuid())
+                    .GetStatusCodeFromActionResult();
             }
-            
-            Assert.Equal(doesExists, deleteResult);
+
+            Assert.Equal(result, deleteResult);
         }
     }
 }
