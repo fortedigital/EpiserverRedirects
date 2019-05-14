@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using EPiServer.Shell.Services.Rest;
 using Forte.RedirectMiddleware.Model.RedirectRule;
 using Forte.RedirectMiddleware.Model.RedirectType;
 using RedirectTests.Builder.WithRepository;
@@ -21,7 +20,7 @@ namespace RedirectTests.Tests.REST
         {
             var rule1 = RandomDataGenerator.CreateRandomRedirectRule();
             var rule2 = RandomDataGenerator.CreateRandomRedirectRule();
-            var existingRules = new HashSet<RedirectRule>()
+            var existingRules = new HashSet<RedirectRule>
             {
                 rule1,
                 rule2
@@ -34,7 +33,7 @@ namespace RedirectTests.Tests.REST
                 .WithMapper(r => r == rule1 ? dto1 : r == rule2 ? dto2 : null)
                 .Create();
             var resolvedRules = restController
-                .GetAllRedirects()
+                .GetAll()
                 .GetEntitiesFromActionResult();
             
             Assert.Equal(new[] { dto1, dto2 }, resolvedRules);
@@ -50,7 +49,7 @@ namespace RedirectTests.Tests.REST
             var redirectDto = new RedirectRuleDto("randomOldPath", "randomNewPath");
 
             var newRedirect = restController.Add(redirectDto).GetEntityFromActionResult();
-            var expectedRedirect = restController.GetRedirect(newRedirect.Id.ExternalId).GetEntityFromActionResult();
+            var expectedRedirect = restController.Get(newRedirect.Id.ExternalId).GetEntityFromActionResult();
 
             Assert.NotNull(expectedRedirect);
         }
@@ -66,7 +65,7 @@ namespace RedirectTests.Tests.REST
 
             var randomIndex = new Random().Next(rulesCount);
             var randomRedirectDto = restController
-                .GetAllRedirects()
+                .GetAll()
                 .GetEntitiesFromActionResult()
                 .Skip(randomIndex)
                 .FirstOrDefault();
@@ -76,7 +75,7 @@ namespace RedirectTests.Tests.REST
 
             restController.Update(randomRedirectDto);
             var updatedRedirect = restController
-                .GetRedirect(randomRedirectDto.Id.ExternalId)
+                .Get(randomRedirectDto.Id.ExternalId)
                 .GetEntityFromActionResult();
 
             Assert.Equal(expectedNewUrl, updatedRedirect?.NewUrl);
@@ -110,7 +109,7 @@ namespace RedirectTests.Tests.REST
             {
                 var randomIndex = new Random().Next(rulesCount);
                 var randomRedirect = restController
-                    .GetAllRedirects()
+                    .GetAll()
                     .GetEntitiesFromActionResult()
                     .Skip(randomIndex)
                     .FirstOrDefault();

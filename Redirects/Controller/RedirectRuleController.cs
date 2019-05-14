@@ -21,7 +21,7 @@ namespace Forte.RedirectMiddleware.Controller
             _redirectRuleMapper = redirectRuleMapper;
         }
 
-        public ActionResult GetRedirect(Guid id)
+        public ActionResult Get(Guid id)
         {
             var redirect = _redirectRuleRepository.GetById(id);
 
@@ -30,9 +30,12 @@ namespace Forte.RedirectMiddleware.Controller
             
             return Rest(_redirectRuleMapper.ModelToDto(redirect));
         }
-        public ActionResult GetAllRedirects()
+        public ActionResult GetAll(Query query = null)
         {
-            var redirects = _redirectRuleRepository.AsEnumerable().Select(_redirectRuleMapper.ModelToDto);
+            var redirects = _redirectRuleRepository
+                .Get(query)
+                .Select(_redirectRuleMapper.ModelToDto);
+            
             return Rest(redirects);
         }
 
