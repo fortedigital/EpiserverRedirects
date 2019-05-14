@@ -7,8 +7,7 @@ using Forte.RedirectMiddleware.Redirect.Base;
 using Forte.RedirectMiddleware.Redirect.ExactMatch;
 using Forte.RedirectMiddleware.Redirect.Regex;
 using Forte.RedirectMiddleware.Redirect.Wildcard;
-using Forte.RedirectMiddleware.Request.HttpRequest;
-using Forte.RedirectMiddleware.Response.HttpResponse;
+using Forte.RedirectMiddleware.Request;
 using Moq;
 
 namespace RedirectTests.Builder.Redirect
@@ -31,9 +30,9 @@ namespace RedirectTests.Builder.Redirect
             return this;
         }
         
-        public RedirectBuilder WithHttpRequest(out IHttpRequest httpContext, string requestPath)
+        public RedirectBuilder WithHttpRequest(out Uri request, string requestPath)
         {
-            httpContext = HttpRequest(requestPath);
+            request = HttpRequest(requestPath);
             return this;
         }
         
@@ -53,12 +52,7 @@ namespace RedirectTests.Builder.Redirect
             return this;
         }
 
-        private static IHttpRequest HttpRequest(string requestUrl)
-        {
-            var httpContext = new Mock<IHttpRequest>();
-            httpContext.Setup(request => request.Url).Returns(new Uri(requestUrl, UriKind.Relative));
-            return httpContext.Object;
-        }
+        private static Uri HttpRequest(string requestUrl) => new Uri(requestUrl, UriKind.Relative);
 
         public RedirectBuilder WithContentRedirectRule(out RedirectRule redirectRule, int? contentReferenceId = null)
         {

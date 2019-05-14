@@ -1,10 +1,10 @@
+using System;
 using EPiServer.Core;
 using EPiServer.Data;
 using EPiServer.Web.Routing;
 using Forte.RedirectMiddleware.Model.RedirectRule;
 using Forte.RedirectMiddleware.Model.RedirectType;
-using Forte.RedirectMiddleware.Request.HttpRequest;
-using Forte.RedirectMiddleware.Response.HttpResponse;
+using Forte.RedirectMiddleware.Request;
 
 namespace Forte.RedirectMiddleware.Redirect.Base
 {
@@ -18,9 +18,9 @@ namespace Forte.RedirectMiddleware.Redirect.Base
             RedirectRule = redirectRule;
         }
 
-        protected abstract string GetPathWithoutContentId(IHttpRequest request, IUrlResolver contentUrlResolver, IResponseStatusCodeResolver responseStatusCodeResolver);
+        protected abstract string GetPathWithoutContentId(Uri request, IUrlResolver contentUrlResolver, IResponseStatusCodeResolver responseStatusCodeResolver);
         
-        public void Execute(IHttpRequest request, IHttpResponse response, IUrlResolver contentUrlResolver, IResponseStatusCodeResolver responseStatusCodeResolver)
+        public void Execute(Uri request, IHttpResponse response, IUrlResolver contentUrlResolver, IResponseStatusCodeResolver responseStatusCodeResolver)
         {
             if (GetPathFromContentId(response, contentUrlResolver, responseStatusCodeResolver))
                 return;
