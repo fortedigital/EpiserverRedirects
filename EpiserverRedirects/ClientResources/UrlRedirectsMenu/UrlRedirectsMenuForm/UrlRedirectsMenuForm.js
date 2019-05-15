@@ -36,13 +36,12 @@
                 on(this.saveButton, "click", () => this.onSaveClick(this._getModel()));
                 on(this.cancelButton, "click", () => this.onCancelClick());
                 on(this.deleteButton, "click", () => this.onDeleteClick());
-                on(this.oldUrlTextBox, "change", () => this._isFormValid());
-                on(this.newUrlTextBox, "change", () => this._isFormValid());
-                on(this.priorityNumberTextBox, "change", () => this._isFormValid());
+                on(this.oldPatternTextBox, "change", () => this._isFormValid());
+                on(this.newPatternTextBox, "change", () => this._isFormValid());
             },
 
             _isFormValid: function () {
-                this.saveButton.set("disabled", !this.newUrlTextBox.isValid() || !this.oldUrlTextBox.isValid() || !this.priorityNumberTextBox.isValid());
+                this.saveButton.set("disabled", !this.newPatternTextBox.isValid() || !this.oldPatternTextBox.isValid());
             },
 
             updateView: function (model, mode) {
@@ -58,19 +57,17 @@
             },
 
             _updateEditMode: function (model) {
-                this.oldUrlTextBox.set("value", model.oldUrl);
-                this.newUrlTextBox.set("value", model.newUrl);
-                this.priorityNumberTextBox.set("value", model.priority);
-                this.typeSelect.set("value", model.type);
-                this.redirectStatusCodeSelect.set("value", model.redirectStatusCode);
+                this.oldPatternTextBox.set("value", model.oldPattern);
+                this.newPatternTextBox.set("value", model.newPattern);
+                this.redirectRuleTypeSelect.set("value", model.redirectRuleType);
+                this.redirectTypeSelect.set("value", model.redirectType);
 
                 this.deleteButton.set("disabled", false);
             },
 
             _updateAddMode: function () {
-                this.oldUrlTextBox.set("value", "");
-                this.newUrlTextBox.set("value", "");
-                this.priorityNumberTextBox.set("value", 1);
+                this.oldPatternTextBox.set("value", "");
+                this.newPatternTextBox.set("value", "");
 
                 this.deleteButton.set("disabled", true);
                 this.saveButton.set("disabled", true);
@@ -78,11 +75,10 @@
 
             _getModel: function () {
                 var model = {
-                    oldUrl: this.oldUrlTextBox.get("value"),
-                    newUrl: this.newUrlTextBox.get("value"),
-                    priority: this.priorityNumberTextBox.get("value"),
-                    type: this.typeSelect.get("value"),
-                    redirectStatusCode: this.redirectStatusCodeSelect.get("value"),
+                    oldPattern: this.oldPatternTextBox.get("value"),
+                    newPattern: this.newPatternTextBox.get("value"),
+                    redirectRuleType: this.redirectRuleTypeSelect.get("value"),
+                    redirectType: this.redirectTypeSelect.get("value"),
                     id: this.id
                 };
 
@@ -97,9 +93,9 @@
 
             showDuplicateMessage() {
                 this.duplicateAlert.hidden = false;
-                this.oldUrlTextBox.focus();
-                this.oldUrlTextBox.set("state", "Error");
-                this.oldUrlTextBox.displayMessage("Invalid value");
+                this.oldPatternTextBox.focus();
+                this.oldPatternTextBox.set("state", "Error");
+                this.oldPatternTextBox.displayMessage("Invalid value");
             }
         });
     });

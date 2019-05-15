@@ -9,10 +9,10 @@ namespace Forte.RedirectMiddleware.Controller
     public class Query
     {
         public string OldPath { get; set; }
-        public string OldPattern { get; set; }
-        public string NewPattern { get; set; }
-        public RedirectType? RedirectType{ get; set; }
-        public RedirectRuleType? RedirectRuleType{ get; set; }
+        public string oldPattern { get; set; } //oldUrlSearch
+        public string newPattern { get; set; } //newUrlSearch
+        public RedirectType? redirectType{ get; set; } //priority search
+        public RedirectRuleType? redirectRuleType{ get; set; } //typeSearch
         public IEnumerable<SortColumn> SortColumns { get; set; }
         public ItemRange Range { get; set; }
     }
@@ -27,17 +27,17 @@ namespace Forte.RedirectMiddleware.Controller
             if (!string.IsNullOrEmpty(query.OldPath))
                 redirectRules = redirectRules.Where(rr => rr.OldPath.ToString().Contains(query.OldPath));
 
-            if (!string.IsNullOrEmpty(query.OldPattern))
-                redirectRules = redirectRules.Where(rr => rr.OldPattern.Contains(query.OldPattern));
+            if (!string.IsNullOrEmpty(query.oldPattern))
+                redirectRules = redirectRules.Where(rr => rr.OldPattern.Contains(query.oldPattern));
 
-            if (!string.IsNullOrEmpty(query.NewPattern))
-                redirectRules = redirectRules.Where(rr => rr.NewPattern.Contains(query.NewPattern));
+            if (!string.IsNullOrEmpty(query.newPattern))
+                redirectRules = redirectRules.Where(rr => rr.NewPattern.Contains(query.newPattern));
 
-            if (query.RedirectType != null)
-                redirectRules = redirectRules.Where(rr => rr.RedirectType == query.RedirectType);
+            if (query.redirectType != null)
+                redirectRules = redirectRules.Where(rr => rr.RedirectType == query.redirectType);
 
-            if (query.RedirectRuleType != null)
-                redirectRules = redirectRules.Where(rr => rr.RedirectRuleType == query.RedirectRuleType);
+            if (query.redirectRuleType != null)
+                redirectRules = redirectRules.Where(rr => rr.RedirectRuleType == query.redirectRuleType);
 
             return redirectRules
                 .OrderBy(query.SortColumns)

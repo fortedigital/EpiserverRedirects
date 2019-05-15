@@ -79,11 +79,10 @@ define("episerverRedirectsMenu/UrlRedirectsMenu", [
                 var searchQueryModel = this.urlRedirectsMenuViewModel.get("searchQueryModel");
                 this.urlRedirectsMenuGrid.setQuery(searchQueryModel);
 
-                this.urlRedirectsMenuGrid.oldUrlSearch.onSearchBoxChange = (newValue) => this._onSearchChange({ oldUrlSearch: newValue });
-                this.urlRedirectsMenuGrid.newUrlSearch.onSearchBoxChange = (newValue) => this._onSearchChange({ newUrlSearch: newValue });
-                on(this.urlRedirectsMenuGrid.typeSearch, "change", (newValue) => this._onSearchChange({ typeSearch: newValue }));
-                on(this.urlRedirectsMenuGrid.redirectStatusCodeSearch, "change", (newValue) => this._onSearchChange({ redirectStatusCodeSearch: newValue }));
-                this.urlRedirectsMenuGrid.prioritySearch.onSearchBoxChange = (newValue) => this._onSearchChange({ prioritySearch: newValue });
+                this.urlRedirectsMenuGrid.oldPattern.onSearchBoxChange = (newValue) => this._onSearchChange({ oldPattern: newValue });
+                this.urlRedirectsMenuGrid.newPattern.onSearchBoxChange = (newValue) => this._onSearchChange({ newPattern: newValue });
+                on(this.urlRedirectsMenuGrid.redirectRuleType, "change", (newValue) => this._onSearchChange({ redirectRuleType: newValue }));
+                on(this.urlRedirectsMenuGrid.redirectType, "change", (newValue) => this._onSearchChange({ redirectType: newValue }));
             },
 
             _initializeForm: function () {
@@ -108,7 +107,7 @@ define("episerverRedirectsMenu/UrlRedirectsMenu", [
             },
 
             _onEditClick: function () {
-                if (this.selectedModel.type === "System") return;
+                if (this.selectedModel.redirectRuleType === "System") return;
 
                 this.urlRedirectsMenuViewModel.set("mode", "edit");
                 this.urlRedirectsMenuForm.updateView(this.selectedModel, this.urlRedirectsMenuViewModel.get("mode"));
@@ -118,7 +117,7 @@ define("episerverRedirectsMenu/UrlRedirectsMenu", [
                 this.selectedModel = event.rows[0].data;
 
                 this.deleteButton.set('disabled', !this.selectedModel);
-                this.editButton.set('disabled', this.selectedModel.type === "System");
+                this.editButton.set('disabled', this.selectedModel.redirectRuleType === "System");
             },
 
             _onSaveForm: function (model) {
@@ -158,12 +157,12 @@ define("episerverRedirectsMenu/UrlRedirectsMenu", [
             },
 
             _onSimulateFindClick: function () {
-                this._onSearchChange({ simulatedOldUrl: this.simulateOldUrlTextBox.get("value")});
+                this._onSearchChange({ simulatedOldPattern: this.simulateOldPatternTextBox.get("value")});
             },
 
             _onSimulateResetClick: function () {
-                this.simulateOldUrlTextBox.set("value", "");
-                this._onSearchChange({ simulatedOldUrl: ""});
+                this.simulateOldPatternTextBox.set("value", "");
+                this._onSearchChange({ simulatedOldPattern: ""});
             },
 
             _onUploaderChange: function(fileArray) {

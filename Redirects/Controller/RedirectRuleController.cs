@@ -10,6 +10,7 @@ using Forte.RedirectMiddleware.Repository;
 
 namespace Forte.RedirectMiddleware.Controller
 {
+    [RestStore("RedirectRuleController")]
     public class RedirectRuleController : RestControllerBase
     {
         private readonly IRedirectRuleRepository _redirectRuleRepository;
@@ -30,7 +31,7 @@ namespace Forte.RedirectMiddleware.Controller
             
             return Rest(_redirectRuleMapper.ModelToDto(redirect));
         }
-        public ActionResult GetAll(Query query = null)
+        public ActionResult Get(Query query = null)
         {
             var redirects = _redirectRuleRepository
                 .Get(query)

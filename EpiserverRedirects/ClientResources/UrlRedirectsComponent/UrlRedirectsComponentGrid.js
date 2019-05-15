@@ -35,7 +35,7 @@
             init: function (store) {
                 this.grid = new this._gridClass({
                     columns: {
-                        oldUrl: "Old Url"
+                        oldPattern: "Old pattern"
                     },
                     selectionMode: 'single',
                     cellNavigation: false,

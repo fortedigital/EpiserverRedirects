@@ -36,63 +36,53 @@
             _gridClass: declare([Grid, Pagination, Selection, Keyboard, CompoundColumns]),
             grid: null,
 
-            oldUrlSearch: null,
-            newUrlSearch: null,
-            typeSearch: null,
-            redirectStatusCodeSearch: null,
-            prioritySearch: null,
+            oldPattern: null,
+            newPattern: null,
+            redirectRuleType: null,
+            redirectType: null,
 
             buildRendering: function () {
                 this.inherited(arguments);
             },
 
             init: function (store) {
-                this.oldUrlSearch = new SearchBox();
-                this.newUrlSearch = new SearchBox();
-                this.typeSearch = this._createTypeSelect();
-                this.redirectStatusCodeSearch = this._createRedirectStatusCodeSelect();
-                this.prioritySearch = new SearchBox();
+                this.oldPattern = new SearchBox();
+                this.newPattern = new SearchBox();
+                this.redirectRuleType = this._createRedirectRuleTypeSelect();
+                this.redirectType = this._createRedirectTypeSelect();
 
                 this.grid = new this._gridClass({
                     columns: [
                         {
                             renderHeaderCell: (node) => {
-                                return this._getSearchDomNode(this.oldUrlSearch);
+                                return this._getSearchDomNode(this.oldPattern);
                             },
                             children: [
-                                { field: 'oldUrl', label: 'Old Url' }
+                                { field: 'oldPattern', label: 'Old pattern' }
                             ]
                         },
                         {
                             renderHeaderCell: (node) => {
-                                return this._getSearchDomNode(this.newUrlSearch);
+                                return this._getSearchDomNode(this.newPattern);
                             },
                             children: [
-                                { field: 'newUrl', label: 'New Url' }
+                                { field: 'newPattern', label: 'New pattern' }
                             ]
                         },
                         {
                             renderHeaderCell: (node) => {
-                                return this.typeSearch.domNode;
+                                return this.redirectRuleType.domNode;
                             },
                             children: [
-                                { field: 'type', label: 'Type' }
+                                { field: 'redirectRuleType', label: 'Redirect Rule Type' }
                             ]
                         },
                         {
                             renderHeaderCell: (node) => {
-                                return this._getSearchDomNode(this.prioritySearch);
+                                return this.redirectType.domNode;
                             },
                             children: [
-                                { field: 'priority', label: 'Priority' }
-                            ]
-                        },
-                        {
-                            renderHeaderCell: (node) => {
-                                return this.redirectStatusCodeSearch.domNode;
-                            },
-                            children: [
-                                { field: 'redirectStatusCode', label: 'Redirect Type', renderCell: (object, value, node) => node.append(this._getRedirectStatusCodeText(value)) }
+                                { field: 'redirectType', label: 'Redirect Type', renderCell: (object, value, node) => node.append(this._getRedirectTypeText(value)) }
                             ]
                         }
                     ],
@@ -105,7 +95,7 @@
                     pageSizeOptions: [10, 25, 50]
                 }, this.domNode);
 
-                this.grid.set("queryOptions", { sort: [{ attribute: "oldUrl", descending: false }] });
+                this.grid.set("queryOptions", { sort: [{ attribute: "oldPattern", descending: false }] });
             },
 
             clearSelection: function () {
@@ -120,25 +110,25 @@
                 this.grid.set("query", searchQueryModel);
             },
 
-            _createTypeSelect: function() {
+            _createRedirectRuleTypeSelect: function() {
                 return new Select({
-                    name: "typeSelect",
+                    name: "redirectRuleTypeSelect",
                     options: [
-                        { label: "All", value: "" },
-                        { label: "System", value: "System" },
-                        { label: "Manual", value: "Manual" },
-                        { label: "ManualWildcard", value: "ManualWildcard" }
+                        { label: "All", value: null },
+                        { label: "ExactMatch", value: 0 },
+                        { label: "Regex", value: 1 },
+                        { label: "Wildcard", value: 2 }
                     ]
                 });
             },
 
-            _createRedirectStatusCodeSelect: function () {
+            _createRedirectTypeSelect: function () {
                 return new Select({
-                    name: "redirectStatusCodeSelect",
+                    name: "redirectTypeSelect",
                     options: [
                         { label: "All", value: "" },
-                        { label: "Permanent", value: 301 },
-                        { label: "Temporary", value: 302 }
+                        { label: "Permanent", value: 0 },
+                        { label: "Temporary", value: 1 }
                     ]
                 });
             },
@@ -150,11 +140,11 @@
                 return searchContainer;
             },
 
-            _getRedirectStatusCodeText: function (statusCode) {
+            _getRedirectTypeText: function (statusCode) {
                 switch (statusCode) {
-                    case 301:
+                    case 0:
                         return "Permanent";
-                    case 302:
+                    case 1:
                         return "Temporary";
                     default:
                         return statusCode;

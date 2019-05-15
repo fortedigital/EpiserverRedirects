@@ -33,7 +33,7 @@ namespace RedirectTests.Tests.REST
                 .WithMapper(r => r == rule1 ? dto1 : r == rule2 ? dto2 : null)
                 .Create();
             var resolvedRules = restController
-                .GetAll()
+                .Get()
                 .GetEntitiesFromActionResult();
             
             Assert.Equal(new[] { dto1, dto2 }, resolvedRules);
@@ -65,7 +65,7 @@ namespace RedirectTests.Tests.REST
 
             var randomIndex = new Random().Next(rulesCount);
             var randomRedirectDto = restController
-                .GetAll()
+                .Get()
                 .GetEntitiesFromActionResult()
                 .Skip(randomIndex)
                 .FirstOrDefault();
@@ -109,7 +109,7 @@ namespace RedirectTests.Tests.REST
             {
                 var randomIndex = new Random().Next(rulesCount);
                 var randomRedirect = restController
-                    .GetAll()
+                    .Get()
                     .GetEntitiesFromActionResult()
                     .Skip(randomIndex)
                     .FirstOrDefault();

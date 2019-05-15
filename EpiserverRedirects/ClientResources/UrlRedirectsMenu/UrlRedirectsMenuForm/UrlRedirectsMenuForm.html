@@ -2,54 +2,42 @@
     <div class="epi-formArea">
         <div class="epi-size10">
             <div class="epi-form-container__section__row">
-                <label for="oldUrl">Old Url:</label>
+                <label for="oldPattern">Old pattern:</label>
                 <input class="form-input" type="text" name="oldUrl"
                        required="true"
                        data-dojo-props="intermediateChanges:true"
                        data-dojo-type="dijit/form/ValidationTextBox"
-                       data-dojo-attach-point="oldUrlTextBox" id="oldUrl" />
+                       data-dojo-attach-point="oldPatternTextBox" id="oldPattern" />
             </div>
 
             <div class="epi-form-container__section__row">
-                <label for="newUrl">New Url:</label>
+                <label for="newPattern">New pattern:</label>
                 <input class="form-input" type="text" name="newUrl"
                        required="true"
                        data-dojo-props="intermediateChanges:true"
                        data-dojo-type="dijit/form/ValidationTextBox"
-                       data-dojo-attach-point="newUrlTextBox" id="newUrl" />
+                       data-dojo-attach-point="newPatternTextBox" id="newPattern" />
             </div>
 
             <div class="epi-form-container__section__row">
-                <label for="type">Type:</label>
-                <select class="form-input" name="typeSelect"
-                        data-dojo-attach-point="typeSelect"
+                <label for="redirectRuleType">Redirect Rule type:</label>
+                <select class="form-input" name="redirectRuleTypeSelect"
+                        data-dojo-attach-point="redirectRuleTypeSelect"
                         data-dojo-type="dijit/form/Select">
-                    <option value="Manual" selected="selected">Manual</option>
-                    <option value="ManualWildcard">ManualWildcard</option>
+                    <option value=0 selected="selected">ExactMatch</option>
+                    <option value=1 selected="selected">Regex</option>
+                    <option value=2>Wildcard</option>
                 </select>
             </div>
 
             <div class="epi-form-container__section__row">
-                <label for="type">Redirect Type:</label>
-                <select class="form-input" name="redirectStatusCodeSelect"
-                        data-dojo-attach-point="redirectStatusCodeSelect"
+                <label for="redirectType">Redirect type:</label>
+                <select class="form-input" name="redirectTypeSelect"
+                        data-dojo-attach-point="redirectTypeSelect"
                         data-dojo-type="dijit/form/Select">
-                    <option value="301" selected="selected">Permanent</option>
-                    <option value="302">Temporary</option>
+                    <option value="0" selected="selected">Permanent</option>
+                    <option value="1">Temporary</option>
                 </select>
-            </div>
-
-            <div class="epi-form-container__section__row">
-                <label for="priority">Priority:</label>
-                <input class="form-input" type="text" name="priority"
-                       required="true"
-                       data-dojo-props="
-                           intermediateChanges:true,
-                           constraints:{min:1,places:0},
-                           invalidMessage:'Please enter a numeric value.',
-                           rangeMessage:'Invalid elevation.'"
-                       data-dojo-type="dijit/form/NumberTextBox"
-                       data-dojo-attach-point="priorityNumberTextBox" id="" />
             </div>
 
             <div data-dojo-attach-point="duplicateAlert" class="alert-danger">
