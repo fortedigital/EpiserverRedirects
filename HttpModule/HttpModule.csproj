@@ -7,8 +7,8 @@
         <ProjectGuid>{1F9B32B9-749B-40C4-8C60-AB334B98875C}</ProjectGuid>
         <OutputType>Library</OutputType>
         <AppDesignerFolder>Properties</AppDesignerFolder>
-        <RootNamespace>HttpModule</RootNamespace>
-        <AssemblyName>HttpModule</AssemblyName>
+        <RootNamespace>Forte.RedirectsHttpModule</RootNamespace>
+        <AssemblyName>Forte.HttpModule</AssemblyName>
         <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
         <FileAlignment>512</FileAlignment>
     </PropertyGroup>

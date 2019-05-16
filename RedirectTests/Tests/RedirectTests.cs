@@ -1,9 +1,9 @@
 using System;
+using Forte.RedirectTests.Builder.Redirect;
 using Moq;
-using RedirectTests.Builder.Redirect;
 using Xunit;
 
-namespace RedirectTests.Tests.Redirect
+namespace Forte.RedirectTests.Tests
 {
     public class RedirectTests
     {

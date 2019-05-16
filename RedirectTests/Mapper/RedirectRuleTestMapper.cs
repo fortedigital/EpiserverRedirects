@@ -2,7 +2,7 @@ using System;
 using Forte.Redirects.Mapper;
 using Forte.Redirects.Model.RedirectRule;
 
-namespace RedirectTests.Mapper
+namespace Forte.RedirectTests.Mapper
 {
     public class RedirectRuleTestMapper : BaseRedirectRuleMapper
     {

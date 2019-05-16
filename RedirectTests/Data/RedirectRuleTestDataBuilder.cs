@@ -4,7 +4,7 @@ using System.Linq;
 using Forte.Redirects.Model.RedirectRule;
 using Forte.Redirects.Model.UrlPath;
 
-namespace RedirectTests.Data
+namespace Forte.RedirectTests.Data
 {
     public class RedirectRuleTestDataBuilder
     {

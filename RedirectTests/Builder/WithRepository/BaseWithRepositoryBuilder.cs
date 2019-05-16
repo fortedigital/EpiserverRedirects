@@ -2,10 +2,10 @@ using System;
 using System.Collections.Generic;
 using Forte.Redirects.Model.RedirectRule;
 using Forte.Redirects.Repository;
-using RedirectTests.Data;
-using RedirectTests.Repository;
+using Forte.RedirectTests.Data;
+using Forte.RedirectTests.Repository;
 
-namespace RedirectTests.Builder.WithRepository
+namespace Forte.RedirectTests.Builder.WithRepository
 {
     public abstract class BaseWithRepositoryBuilder<TResolver, TBuilder>
         where TBuilder : BaseWithRepositoryBuilder<TResolver, TBuilder>

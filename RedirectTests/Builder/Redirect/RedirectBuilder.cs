@@ -7,7 +7,7 @@ using Forte.Redirects.Redirect;
 using Forte.Redirects.Request;
 using Moq;
 
-namespace RedirectTests.Builder.Redirect
+namespace Forte.RedirectTests.Builder.Redirect
 {
     public class RedirectBuilder
     {

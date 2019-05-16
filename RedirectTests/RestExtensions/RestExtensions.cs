@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Web.Mvc;
@@ -6,7 +5,7 @@ using EPiServer.Shell.Services.Rest;
 using Forte.Redirects.Model.RedirectRule;
 using Xunit;
 
-namespace RedirectTests.RestExtensions
+namespace Forte.RedirectTests.RestExtensions
 {
     public static class RestExtensions
     {

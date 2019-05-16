@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Threading.Tasks;
 using System.Web;
 using EPiServer.ServiceLocation;
 using Forte.Redirects.Request;
 
-namespace HttpModule
+namespace Forte.RedirectsHttpModule
 {
     public class HttpModule : IHttpModule {
         

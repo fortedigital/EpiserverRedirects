@@ -1,9 +1,9 @@
 using Forte.Redirects.Mapper;
 using Forte.Redirects.Model.UrlPath;
-using RedirectTests.Data;
+using Forte.RedirectTests.Data;
 using Xunit;
 
-namespace RedirectTests.Tests.Mapper
+namespace Forte.RedirectTests.Tests
 {
     public class MapperTests
     {

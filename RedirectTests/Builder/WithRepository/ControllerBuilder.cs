@@ -2,9 +2,9 @@ using System;
 using Forte.Redirects.Mapper;
 using Forte.Redirects.Menu;
 using Forte.Redirects.Model.RedirectRule;
-using RedirectTests.Mapper;
+using Forte.RedirectTests.Mapper;
 
-namespace RedirectTests.Builder.WithRepository
+namespace Forte.RedirectTests.Builder.WithRepository
 {
     public class ControllerBuilder : BaseWithRepositoryBuilder<RedirectRuleStore, ControllerBuilder>
     {

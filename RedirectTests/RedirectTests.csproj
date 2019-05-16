@@ -8,8 +8,8 @@
         <ProjectTypeGuids>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
         <OutputType>Library</OutputType>
         <AppDesignerFolder>Properties</AppDesignerFolder>
-        <RootNamespace>RedirectTests</RootNamespace>
-        <AssemblyName>RedirectTests</AssemblyName>
+        <RootNamespace>Forte.RedirectTests</RootNamespace>
+        <AssemblyName>Forte.RedirectTests</AssemblyName>
         <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
         <FileAlignment>512</FileAlignment>
     </PropertyGroup>
@@ -232,12 +232,12 @@
         <Compile Include="Mapper\RedirectRuleTestMapper.cs" />
         <Compile Include="Repository\TestRepository.cs" />
         <Compile Include="RestExtensions\RestExtensions.cs" />
-        <Compile Include="Tests\Mapper\MapperTests.cs" />
-        <Compile Include="Tests\Redirect\RedirectTests.cs" />
+        <Compile Include="Tests\ControllerTests.cs" />
+        <Compile Include="Tests\MapperTests.cs" />
+        <Compile Include="Tests\RedirectTests.cs" />
         <Compile Include="Tests\Resolver\ExactMatchTests.cs" />
         <Compile Include="Tests\Resolver\RegexTests.cs" />
         <Compile Include="Tests\Resolver\WildcardTests.cs" />
-        <Compile Include="Tests\REST\ControllerTests.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
     </ItemGroup>
     <ItemGroup>

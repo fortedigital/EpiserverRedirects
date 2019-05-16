@@ -1,8 +1,8 @@
 ﻿using Forte.Redirects.Model.UrlPath;
-using RedirectTests.Builder.WithRepository.Resolver;
+using Forte.RedirectTests.Builder.WithRepository.Resolver;
 using Xunit;
 
-namespace RedirectTests.Tests.Resolver
+namespace Forte.RedirectTests.Tests.Resolver
 {
     public class ExactMatchTests
     {

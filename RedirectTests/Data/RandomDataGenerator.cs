@@ -5,7 +5,7 @@ using Forte.Redirects.Model.RedirectRule;
 using Forte.Redirects.Model.RedirectType;
 using Forte.Redirects.Model.UrlPath;
 
-namespace RedirectTests.Data
+namespace Forte.RedirectTests.Data
 {
     public static class RandomDataGenerator
     {

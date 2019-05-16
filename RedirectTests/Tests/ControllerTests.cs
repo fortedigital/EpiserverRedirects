@@ -4,12 +4,12 @@ using System.Linq;
 using System.Net;
 using Forte.Redirects.Model.RedirectRule;
 using Forte.Redirects.Model.RedirectType;
-using RedirectTests.Builder.WithRepository;
-using RedirectTests.Data;
-using RedirectTests.RestExtensions;
+using Forte.RedirectTests.Builder.WithRepository;
+using Forte.RedirectTests.Data;
+using Forte.RedirectTests.RestExtensions;
 using Xunit;
 
-namespace RedirectTests.Tests.REST
+namespace Forte.RedirectTests.Tests
 {
     public class ControllerTests
     {

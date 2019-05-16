@@ -3,6 +3,7 @@
     <PropertyGroup>
         <TargetFramework>net461</TargetFramework>
         <RootNamespace>Forte.Redirects</RootNamespace>
+        <AssemblyName>Forte.Redirects</AssemblyName>
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">

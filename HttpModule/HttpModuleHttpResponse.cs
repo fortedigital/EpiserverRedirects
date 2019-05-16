@@ -1,6 +1,6 @@
 using Forte.Redirects.Request;
 
-namespace HttpModule
+namespace Forte.RedirectsHttpModule
 {
     public class HttpModuleHttpResponse : IHttpResponse
     {

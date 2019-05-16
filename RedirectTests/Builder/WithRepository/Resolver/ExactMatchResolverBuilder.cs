@@ -1,6 +1,6 @@
 using Forte.Redirects.Resolver;
 
-namespace RedirectTests.Builder.WithRepository.Resolver
+namespace Forte.RedirectTests.Builder.WithRepository.Resolver
 {
     public class ExactMatchResolverBuilder : BaseWithRepositoryBuilder<ExactMatchResolver, ExactMatchResolverBuilder>
     {

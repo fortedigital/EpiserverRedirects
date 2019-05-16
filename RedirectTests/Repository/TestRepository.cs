@@ -5,7 +5,7 @@ using EPiServer.Data;
 using Forte.Redirects.Model.RedirectRule;
 using Forte.Redirects.Repository;
 
-namespace RedirectTests.Repository
+namespace Forte.RedirectTests.Repository
 {
     public class TestRepository : RedirectRuleRepository
     {
