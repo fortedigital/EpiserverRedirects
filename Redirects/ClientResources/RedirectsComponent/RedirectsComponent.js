@@ -1,17 +1,17 @@
 
-define("redirectsComponent/UrlRedirectsComponent",[
+define("redirectsComponent/RedirectsComponent",[
     "dojo/_base/declare",
-    "dojo/text!./UrlRedirectsComponent.html",
+    "dojo/text!./RedirectsComponent.html",
 
     "dijit/_WidgetBase",
     "dijit/_TemplatedMixin",
     "dijit/_WidgetsInTemplateMixin",
-    "redirectsComponent/UrlRedirectsComponentGrid",
+    "redirectsComponent/RedirectsComponentGrid",
 
     "epi-cms/_ContentContextMixin",
     "epi/dependency",
 
-    "xstyle/css!./UrlRedirectsComponent.css"
+    "xstyle/css!./RedirectsComponent.css"
 ],
     function (
         declare,
@@ -20,7 +20,7 @@ define("redirectsComponent/UrlRedirectsComponent",[
         _WidgetBase,
         _TemplatedMixin,
         _WidgetsInTemplateMixin,
-        UrlRedirectsComponentGrid,
+        RedirectsComponentGrid,
 
         _ContentContextMixin,
         dependency
@@ -41,13 +41,13 @@ define("redirectsComponent/UrlRedirectsComponent",[
                 this.search.onSearchBoxChange = this._onSearchChange.bind(this);
 
                 var registry = dependency.resolve("epi.storeregistry");
-                this.store = this.store || registry.get("redirectsComponent.urlRedirectsStore");
+                this.store = this.store || registry.get("redirectsComponent.redirectsStore");
 
-                this.urlRedirectsComponentGrid.init(this.store);
+                this.redirectsComponentGrid.init(this.store);
             },
 
             _getResults: function () {
-                this.urlRedirectsComponentGrid.setQuery({
+                this.redirectsComponentGrid.setQuery({
                     contentId: this.currentContentId,
                     filter: this.searchText
                 });

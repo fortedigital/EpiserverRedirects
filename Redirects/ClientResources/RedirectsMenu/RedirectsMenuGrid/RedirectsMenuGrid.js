@@ -1,4 +1,4 @@
-﻿define("redirectsMenu-grid/UrlRedirectsMenuGrid", [
+﻿define("redirectsMenu-grid/RedirectsMenuGrid", [
     "dojo/_base/declare",
     "dojo/dom-construct",
 
@@ -13,7 +13,7 @@
     "dijit/layout/_LayoutWidget",
     "dijit/form/Select",
 
-    "xstyle/css!./UrlRedirectsMenuGrid.css"
+    "xstyle/css!./RedirectsMenuGrid.css"
 ],
 
     function (

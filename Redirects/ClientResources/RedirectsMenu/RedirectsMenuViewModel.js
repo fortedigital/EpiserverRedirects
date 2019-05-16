@@ -1,4 +1,4 @@
-﻿define("redirectsMenu/UrlRedirectsMenuViewModel", [
+﻿define("redirectsMenu/RedirectsMenuViewModel", [
     // dojo
     "dojo/_base/declare",
     "dojo/Stateful",
@@ -12,11 +12,11 @@
 
         _dialogTitleGetter() {
             if (this.mode === "edit") {
-                return "Edit Url Redirect";
+                return "Edit Redirect Rule";
             }
 
             if (this.mode === "add") {
-                return "Add new Url Redirect";
+                return "Add new Redirect Rule";
             }
         },
 
@@ -42,22 +42,22 @@
 
         constructor: function () {
             var registry = dependency.resolve("epi.storeregistry");
-            this.store = this.store || registry.get("redirectsMenu.urlRedirectsStore");
+            this.store = this.store || registry.get("redirectsMenu.redirectsStore");
         },
 
-        getUrlRewrites: function () {
+        getRedirectRules: function () {
             return this.store.query();
         },
 
-        addUrlRewrite: function (newModel) {
+        addRedirectRule: function (newModel) {
             return this.store.add(newModel);
         },
 
-        updateUrlRewrite: function (model) {
+        updateRedirectRule: function (model) {
             return this.store.put(model);
         },
 
-        deleteUrlRewrite: function (id) {
+        deleteRedirectRule: function (id) {
             return this.store.remove(id);
         },
     });

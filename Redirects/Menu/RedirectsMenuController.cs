@@ -5,11 +5,11 @@ using EPiServer.Shell.Web.Mvc;
 namespace Forte.Redirects.Menu
 {
     [Authorize(Roles = "CmsEditors, CmsAdmins")]
-    public class UrlRedirectsMenuController: System.Web.Mvc.Controller
+    public class RedirectsMenuController: Controller
     {
         private readonly IBootstrapper _bootstrapper;
 
-        public UrlRedirectsMenuController(IBootstrapper bootstrapper)
+        public RedirectsMenuController(IBootstrapper bootstrapper)
         {
             _bootstrapper = bootstrapper;
         }
@@ -19,7 +19,7 @@ namespace Forte.Redirects.Menu
            Text = "Redirects")]
         public ActionResult Index()
         {
-            var viewModel = _bootstrapper.CreateViewModel("UrlRedirectsMenu", ControllerContext, "Redirects");
+            var viewModel = _bootstrapper.CreateViewModel("RedirectsMenu", ControllerContext, "Redirects");
 
             return View(_bootstrapper.BootstrapperViewName,
                 viewModel);

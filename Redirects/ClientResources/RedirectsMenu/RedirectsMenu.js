@@ -1,6 +1,6 @@
-define("redirectsMenu/UrlRedirectsMenu", [
+define("redirectsMenu/RedirectsMenu", [
     "dojo/_base/declare",
-    "dojo/text!./UrlRedirectsMenu.html",
+    "dojo/text!./RedirectsMenu.html",
     "dojo/on",
     "dojo/request/xhr",
 
@@ -11,11 +11,11 @@ define("redirectsMenu/UrlRedirectsMenu", [
     "dijit/Dialog",
     "dijit/form/TextBox",
 
-    "redirectsMenu/UrlRedirectsMenuViewModel",
-    "redirectsMenu-grid/UrlRedirectsMenuGrid",
-    "redirectsMenu-form/UrlRedirectsMenuForm",
+    "redirectsMenu/RedirectsMenuViewModel",
+    "redirectsMenu-grid/RedirectsMenuGrid",
+    "redirectsMenu-form/RedirectsMenuForm",
 
-    "xstyle/css!./UrlRedirectsMenu.css",
+    "xstyle/css!./RedirectsMenu.css",
 ], function (
     declare,
     template,
@@ -29,13 +29,13 @@ define("redirectsMenu/UrlRedirectsMenu", [
     Dialog,
     TextBox,
 
-    UrlRedirectsMenuViewModel,
-    UrlRedirectsMenuGrid,
-    UrlRedirectsMenuForm
+    RedirectsMenuViewModel,
+    RedirectsMenuGrid,
+    RedirectsMenuForm
     ) {
         return declare([_WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin], {
             templateString: template,
-            urlRedirectsMenuViewModel: null,
+            redirectsMenuViewModel: null,
             selectedModel: null,
 
             buildRendering: function () {
@@ -43,7 +43,7 @@ define("redirectsMenu/UrlRedirectsMenu", [
             },
 
             postCreate: function () {
-                this.urlRedirectsMenuViewModel = new UrlRedirectsMenuViewModel();
+                this.redirectsMenuViewModel = new RedirectsMenuViewModel();
 
                 this._initializeGrid();
                 this._initializeForm();
@@ -60,57 +60,57 @@ define("redirectsMenu/UrlRedirectsMenu", [
                 this.deleteButton.set('disabled', true);
                 this.editButton.set('disabled', true);
 
-                this.urlRedirectsMenuViewModel.watch("mode", (name, oldValue, value) => {
-                    !value ? this.urlRedirectsMenuFormDialog.hide() : this.urlRedirectsMenuFormDialog.show();
-                    this.urlRedirectsMenuFormDialog.set("title", this.urlRedirectsMenuViewModel.get("dialogTitle"));
+                this.redirectsMenuViewModel.watch("mode", (name, oldValue, value) => {
+                    !value ? this.redirectsMenuFormDialog.hide() : this.redirectsMenuFormDialog.show();
+                    this.redirectsMenuFormDialog.set("title", this.redirectsMenuViewModel.get("dialogTitle"));
                     this.deleteButton.set('disabled', !value);
                 });
 
-                this.urlRedirectsMenuViewModel.watch("searchQueryModel", (name, oldValue, value) => {
-                    this.urlRedirectsMenuGrid.setQuery(value);
+                this.redirectsMenuViewModel.watch("searchQueryModel", (name, oldValue, value) => {
+                    this.redirectsMenuGrid.setQuery(value);
                 });
             },
 
             _initializeGrid: function () {
-                this.urlRedirectsMenuGrid.init(this.urlRedirectsMenuViewModel.store);
-                this.urlRedirectsMenuGrid.on('dgrid-select', this._onSelectedItemChange.bind(this));
-                this.urlRedirectsMenuGrid.on('.dgrid-content .dgrid-row:dblclick', this._onEditClick.bind(this));
+                this.redirectsMenuGrid.init(this.redirectsMenuViewModel.store);
+                this.redirectsMenuGrid.on('dgrid-select', this._onSelectedItemChange.bind(this));
+                this.redirectsMenuGrid.on('.dgrid-content .dgrid-row:dblclick', this._onEditClick.bind(this));
 
-                var searchQueryModel = this.urlRedirectsMenuViewModel.get("searchQueryModel");
-                this.urlRedirectsMenuGrid.setQuery(searchQueryModel);
+                var searchQueryModel = this.redirectsMenuViewModel.get("searchQueryModel");
+                this.redirectsMenuGrid.setQuery(searchQueryModel);
 
-                this.urlRedirectsMenuGrid.oldPattern.onSearchBoxChange = (newValue) => this._onSearchChange({ oldPattern: newValue });
-                this.urlRedirectsMenuGrid.newPattern.onSearchBoxChange = (newValue) => this._onSearchChange({ newPattern: newValue });
-                on(this.urlRedirectsMenuGrid.redirectRuleType, "change", (newValue) => this._onSearchChange({ redirectRuleType: newValue }));
-                on(this.urlRedirectsMenuGrid.redirectType, "change", (newValue) => this._onSearchChange({ redirectType: newValue }));
+                this.redirectsMenuGrid.oldPattern.onSearchBoxChange = (newValue) => this._onSearchChange({ oldPattern: newValue });
+                this.redirectsMenuGrid.newPattern.onSearchBoxChange = (newValue) => this._onSearchChange({ newPattern: newValue });
+                on(this.redirectsMenuGrid.redirectRuleType, "change", (newValue) => this._onSearchChange({ redirectRuleType: newValue }));
+                on(this.redirectsMenuGrid.redirectType, "change", (newValue) => this._onSearchChange({ redirectType: newValue }));
             },
 
             _initializeForm: function () {
-                this.urlRedirectsMenuForm.onSaveClick = this._onSaveForm.bind(this);
-                this.urlRedirectsMenuForm.onDeleteClick = this._onDeleteClick.bind(this);
-                this.urlRedirectsMenuForm.onCancelClick = this._onCancelFormClick.bind(this);
+                this.redirectsMenuForm.onSaveClick = this._onSaveForm.bind(this);
+                this.redirectsMenuForm.onDeleteClick = this._onDeleteClick.bind(this);
+                this.redirectsMenuForm.onCancelClick = this._onCancelFormClick.bind(this);
             },
 
             _updateGrid: function () {
-                this.urlRedirectsMenuGrid.refresh();
+                this.redirectsMenuGrid.refresh();
             },
 
             _onAddNewClick: function () {
-                this.urlRedirectsMenuViewModel.set("mode", "add");
-                this.urlRedirectsMenuForm.updateView({}, this.urlRedirectsMenuViewModel.get("mode"));
-                this.urlRedirectsMenuGrid.clearSelection();
+                this.redirectsMenuViewModel.set("mode", "add");
+                this.redirectsMenuForm.updateView({}, this.redirectsMenuViewModel.get("mode"));
+                this.redirectsMenuGrid.clearSelection();
             },
 
             _onDeleteClick: function () {
-                this.urlRedirectsMenuViewModel.set("mode", "");
-                this.urlRedirectsMenuViewModel.deleteUrlRewrite(this.selectedModel.id).then((response) => this._refreshView());
+                this.redirectsMenuViewModel.set("mode", "");
+                this.redirectsMenuViewModel.deleteRedirectRule(this.selectedModel.id).then((response) => this._refreshView());
             },
 
             _onEditClick: function () {
                 if (this.selectedModel.redirectRuleType === "System") return;
 
-                this.urlRedirectsMenuViewModel.set("mode", "edit");
-                this.urlRedirectsMenuForm.updateView(this.selectedModel, this.urlRedirectsMenuViewModel.get("mode"));
+                this.redirectsMenuViewModel.set("mode", "edit");
+                this.redirectsMenuForm.updateView(this.selectedModel, this.redirectsMenuViewModel.get("mode"));
             },
 
             _onSelectedItemChange: function (event) {
@@ -121,39 +121,39 @@ define("redirectsMenu/UrlRedirectsMenu", [
             },
 
             _onSaveForm: function (model) {
-                var mode = this.urlRedirectsMenuViewModel.get("mode");
+                var mode = this.redirectsMenuViewModel.get("mode");
 
                 if (mode === "edit") {
-                    this.urlRedirectsMenuViewModel.updateUrlRewrite(model)
+                    this.redirectsMenuViewModel.updateRedirectRule(model)
                         .then(response => this._refreshView(), error => this._handleError(error));
                 } else if (mode === "add") {
-                    this.urlRedirectsMenuViewModel.addUrlRewrite(model)
+                    this.redirectsMenuViewModel.addRedirectRule(model)
                         .then(response => this._refreshView(), error => this._handleError(error));
                 }
             },
 
             _refreshView: function () {
                 this._updateGrid();
-                this.urlRedirectsMenuViewModel.set("mode", "");
-                this.urlRedirectsMenuGrid.clearSelection();
+                this.redirectsMenuViewModel.set("mode", "");
+                this.redirectsMenuGrid.clearSelection();
                 this.selectedModel = null;
                 this.deleteButton.set("disabled", !this.selectedModel);
                 this.editButton.set("disabled", !this.selectedModel);
             },
 
             _handleError: function (error) {
-                this.urlRedirectsMenuForm.showDuplicateMessage();
+                this.redirectsMenuForm.showDuplicateMessage();
             },
 
             _onCancelFormClick: function () {
-                this.urlRedirectsMenuViewModel.set("mode", "");
+                this.redirectsMenuViewModel.set("mode", "");
             },
 
             _onSearchChange: function (newValue) {
-                var searchQueryModel = this.urlRedirectsMenuViewModel.get("searchQueryModel");
+                var searchQueryModel = this.redirectsMenuViewModel.get("searchQueryModel");
                 var newSearchQueryModel = Object.assign(searchQueryModel, newValue);
 
-                this.urlRedirectsMenuViewModel.set("searchQueryModel", newSearchQueryModel);
+                this.redirectsMenuViewModel.set("searchQueryModel", newSearchQueryModel);
             },
 
             _onSimulateFindClick: function () {

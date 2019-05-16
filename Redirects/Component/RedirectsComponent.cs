@@ -5,9 +5,9 @@ namespace Forte.Redirects.Component
      [Component(
          Title = "Redirects",
          Categories = "cms",
-         WidgetType = "redirectsComponent/UrlRedirectsComponent"
+         WidgetType = "redirectsComponent/RedirectsComponent"
      )]
-     public class UrlRedirectsComponent
+     public class RedirectsComponent
      {
      }
  }

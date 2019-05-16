@@ -4,9 +4,9 @@ using EPiServer.Shell.ViewComposition.Containers;
 namespace Forte.Redirects.Menu
 {
     [CompositeView]
-    public class UrlRedirectsMenuView : ICompositeView
+    public class RedirectsMenuView : ICompositeView
     {
-        private const string ViewName = "UrlRedirectsMenu";
+        private const string ViewName = "RedirectsMenu";
         private IContainer _rootContainer;
 
         public string Name => ViewName;
@@ -30,6 +30,6 @@ namespace Forte.Redirects.Menu
             }
         }
 
-        public ICompositeView CreateView() => new UrlRedirectsMenuView();
+        public ICompositeView CreateView() => new RedirectsMenuView();
     }
 }

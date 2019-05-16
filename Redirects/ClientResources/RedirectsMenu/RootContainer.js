@@ -4,19 +4,19 @@
     "dijit/_WidgetBase",
     "dijit/_Container",
 
-    "redirectsMenu/UrlRedirectsMenu"
+    "redirectsMenu/RedirectsMenu"
 
 ],
 
-    function (declare, _WidgetBase, _Container, UrlRedirectsMenu) {
+    function (declare, _WidgetBase, _Container, RedirectsMenu) {
         return declare([_WidgetBase, _Container], {
             buildRendering: function () {
 
                 this.inherited(arguments);
 
-                var urlRedirectsMenu = new UrlRedirectsMenu(); 
+                var redirectsMenu = new RedirectsMenu(); 
 
-                this.addChild(urlRedirectsMenu);
+                this.addChild(redirectsMenu);
             }
         });
 

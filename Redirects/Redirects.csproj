@@ -17,20 +17,20 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Content Include="ClientResources\UrlRedirectsComponent\UrlRedirectsComponent.css" />
-      <Content Include="ClientResources\UrlRedirectsComponent\UrlRedirectsComponent.html" />
-      <Content Include="ClientResources\UrlRedirectsComponent\UrlRedirectsComponent.js" />
-      <Content Include="ClientResources\UrlRedirectsComponent\UrlRedirectsComponentGrid.js" />
-      <Content Include="ClientResources\UrlRedirectsMenu\RootContainer.js" />
-      <Content Include="ClientResources\UrlRedirectsMenu\UrlRedirectsMenu.css" />
-      <Content Include="ClientResources\UrlRedirectsMenu\UrlRedirectsMenu.html" />
-      <Content Include="ClientResources\UrlRedirectsMenu\UrlRedirectsMenu.js" />
-      <Content Include="ClientResources\UrlRedirectsMenu\UrlRedirectsMenuForm\UrlRedirectsMenuForm.html" />
-      <Content Include="ClientResources\UrlRedirectsMenu\UrlRedirectsMenuForm\UrlRedirectsMenuForm.js" />
-      <Content Include="ClientResources\UrlRedirectsMenu\UrlRedirectsMenuGrid\UrlRedirectsMenuGrid.css" />
-      <Content Include="ClientResources\UrlRedirectsMenu\UrlRedirectsMenuGrid\UrlRedirectsMenuGrid.js" />
-      <Content Include="ClientResources\UrlRedirectsMenu\UrlRedirectsMenuViewModel.js" />
-      <Content Include="ClientResources\UrlRedirectsModuleInitializer.js" />
+      <Content Include="ClientResources\RedirectsComponent\RedirectsComponent.css" />
+      <Content Include="ClientResources\RedirectsComponent\RedirectsComponent.html" />
+      <Content Include="ClientResources\RedirectsComponent\RedirectsComponent.js" />
+      <Content Include="ClientResources\RedirectsComponent\RedirectsComponentGrid.js" />
+      <Content Include="ClientResources\RedirectsMenu\RootContainer.js" />
+      <Content Include="ClientResources\RedirectsMenu\RedirectsMenu.css" />
+      <Content Include="ClientResources\RedirectsMenu\RedirectsMenu.html" />
+      <Content Include="ClientResources\RedirectsMenu\RedirectsMenu.js" />
+      <Content Include="ClientResources\RedirectsMenu\RedirectsMenuForm\RedirectsMenuForm.html" />
+      <Content Include="ClientResources\RedirectsMenu\RedirectsMenuForm\RedirectsMenuForm.js" />
+      <Content Include="ClientResources\RedirectsMenu\RedirectsMenuGrid\RedirectsMenuGrid.css" />
+      <Content Include="ClientResources\RedirectsMenu\RedirectsMenuGrid\RedirectsMenuGrid.js" />
+      <Content Include="ClientResources\RedirectsMenu\RedirectsMenuViewModel.js" />
+      <Content Include="ClientResources\RedirectsModuleInitializer.js" />
       <Content Include="module.config" />
     </ItemGroup>
 

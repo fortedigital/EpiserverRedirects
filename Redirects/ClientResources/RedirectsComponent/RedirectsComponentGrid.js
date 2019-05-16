@@ -1,4 +1,4 @@
-﻿define("redirectsComponent/UrlRedirectsComponentGrid", [
+﻿define("redirectsComponent/RedirectsComponentGrid", [
     "dojo/_base/declare",
 
     "dgrid/Grid",

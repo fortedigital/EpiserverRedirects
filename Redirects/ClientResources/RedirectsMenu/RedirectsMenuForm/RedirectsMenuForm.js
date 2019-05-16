@@ -1,6 +1,6 @@
-﻿define("redirectsMenu-form/UrlRedirectsMenuForm", [
+﻿define("redirectsMenu-form/RedirectsMenuForm", [
     "dojo/_base/declare",
-    "dojo/text!./UrlRedirectsMenuForm.html",
+    "dojo/text!./RedirectsMenuForm.html",
     "dojo/on",
 
     "dijit/_WidgetBase",

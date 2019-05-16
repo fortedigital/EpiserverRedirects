@@ -6,13 +6,13 @@ using Forte.Redirects.Repository;
 
 namespace Forte.Redirects.Component
 {
-    [RestStore("UrlRedirectsComponentStore")]
-    public class UrlRedirectsComponentStore : RestControllerBase
+    [RestStore("RedirectsComponentStore")]
+    public class RedirectsComponentStore : RestControllerBase
     {
         private readonly IRedirectRuleRepository _redirectRuleRepository;
         private readonly IRedirectRuleMapper _redirectRuleMapper;
 
-        public UrlRedirectsComponentStore(IRedirectRuleRepository redirectRuleRepository, IRedirectRuleMapper redirectRuleMapper)
+        public RedirectsComponentStore(IRedirectRuleRepository redirectRuleRepository, IRedirectRuleMapper redirectRuleMapper)
         {
             _redirectRuleRepository = redirectRuleRepository;
             _redirectRuleMapper = redirectRuleMapper;
