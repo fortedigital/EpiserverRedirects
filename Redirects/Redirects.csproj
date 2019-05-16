@@ -2,7 +2,7 @@
 
     <PropertyGroup>
         <TargetFramework>net461</TargetFramework>
-        <RootNamespace>Forte.RedirectMiddleware</RootNamespace>
+        <RootNamespace>Forte.Redirects</RootNamespace>
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
@@ -13,6 +13,24 @@
       <PackageReference Include="EPiServer.CMS.UI.Core" Version="11.19.2" />
       <PackageReference Include="EPiServer.Framework" Version="11.11.3" />
       <PackageReference Include="Microsoft.Owin" Version="4.0.1" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Include="ClientResources\UrlRedirectsComponent\UrlRedirectsComponent.css" />
+      <Content Include="ClientResources\UrlRedirectsComponent\UrlRedirectsComponent.html" />
+      <Content Include="ClientResources\UrlRedirectsComponent\UrlRedirectsComponent.js" />
+      <Content Include="ClientResources\UrlRedirectsComponent\UrlRedirectsComponentGrid.js" />
+      <Content Include="ClientResources\UrlRedirectsMenu\RootContainer.js" />
+      <Content Include="ClientResources\UrlRedirectsMenu\UrlRedirectsMenu.css" />
+      <Content Include="ClientResources\UrlRedirectsMenu\UrlRedirectsMenu.html" />
+      <Content Include="ClientResources\UrlRedirectsMenu\UrlRedirectsMenu.js" />
+      <Content Include="ClientResources\UrlRedirectsMenu\UrlRedirectsMenuForm\UrlRedirectsMenuForm.html" />
+      <Content Include="ClientResources\UrlRedirectsMenu\UrlRedirectsMenuForm\UrlRedirectsMenuForm.js" />
+      <Content Include="ClientResources\UrlRedirectsMenu\UrlRedirectsMenuGrid\UrlRedirectsMenuGrid.css" />
+      <Content Include="ClientResources\UrlRedirectsMenu\UrlRedirectsMenuGrid\UrlRedirectsMenuGrid.js" />
+      <Content Include="ClientResources\UrlRedirectsMenu\UrlRedirectsMenuViewModel.js" />
+      <Content Include="ClientResources\UrlRedirectsModuleInitializer.js" />
+      <Content Include="module.config" />
     </ItemGroup>
 
 </Project>

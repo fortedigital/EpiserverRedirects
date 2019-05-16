@@ -1,41 +1,41 @@
 using System;
-using Forte.RedirectMiddleware.Model.RedirectRule;
+using Forte.Redirects.Model.RedirectRule;
 
-namespace Forte.RedirectMiddleware.Mapper
+namespace Forte.Redirects.Mapper
 {
     public interface IRedirectRuleMapper
     {
-        RedirectRuleDto ModelToDto(Model.RedirectRule.RedirectRule source);
-        Model.RedirectRule.RedirectRule DtoToModel(RedirectRuleDto source);    
+        RedirectRuleDto ModelToDto(RedirectRule source);
+        RedirectRule DtoToModel(RedirectRuleDto source);    
     }
 
     public abstract class BaseRedirectRuleMapper : IRedirectRuleMapper
     {
-        protected BaseRedirectRuleMapper(Func<Model.RedirectRule.RedirectRule, RedirectRuleDto> modelToDtoDelegate, Func<RedirectRuleDto, Model.RedirectRule.RedirectRule> dtoToModelDelegate)
+        protected BaseRedirectRuleMapper(Func<RedirectRule, RedirectRuleDto> modelToDtoDelegate, Func<RedirectRuleDto, RedirectRule> dtoToModelDelegate)
         {
             ModelToDtoDelegate = modelToDtoDelegate;
             DtoToModelDelegate = dtoToModelDelegate;
         }
         
-        protected BaseRedirectRuleMapper(Func<Model.RedirectRule.RedirectRule, RedirectRuleDto> modelToDto)
+        protected BaseRedirectRuleMapper(Func<RedirectRule, RedirectRuleDto> modelToDto)
         {
             ModelToDtoDelegate = modelToDto;
         }
         
-        protected BaseRedirectRuleMapper(Func<RedirectRuleDto, Model.RedirectRule.RedirectRule> dtoToModel)
+        protected BaseRedirectRuleMapper(Func<RedirectRuleDto, RedirectRule> dtoToModel)
         {
             DtoToModelDelegate = dtoToModel;
         }
 
-        private Func<Model.RedirectRule.RedirectRule, RedirectRuleDto> ModelToDtoDelegate { get; }
-        private Func<RedirectRuleDto, Model.RedirectRule.RedirectRule> DtoToModelDelegate { get; }
-        public RedirectRuleDto ModelToDto(Model.RedirectRule.RedirectRule source)
+        private Func<RedirectRule, RedirectRuleDto> ModelToDtoDelegate { get; }
+        private Func<RedirectRuleDto, RedirectRule> DtoToModelDelegate { get; }
+        public RedirectRuleDto ModelToDto(RedirectRule source)
         {
             var destination = ModelToDtoDelegate(source);
             return destination;
         }
         
-        public Model.RedirectRule.RedirectRule DtoToModel(RedirectRuleDto source)
+        public RedirectRule DtoToModel(RedirectRuleDto source)
         {
             var destination = DtoToModelDelegate(source);
             return destination;

@@ -1,10 +1,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using EPiServer.Shell.Services.Rest;
-using Forte.RedirectMiddleware.Model.RedirectRule;
-using Forte.RedirectMiddleware.Model.RedirectType;
+using Forte.Redirects.Model.RedirectRule;
+using Forte.Redirects.Model.RedirectType;
 
-namespace Forte.RedirectMiddleware.Controller
+namespace Forte.Redirects.Controller
 {
     public class Query
     {
@@ -19,7 +19,7 @@ namespace Forte.RedirectMiddleware.Controller
 
     public static class QueryExtension
     {
-        public static IEnumerable<RedirectRule> Get(this IQueryable<RedirectRule> redirectRules, Query query)
+        public static IEnumerable<RedirectRule> Get(this IQueryable<RedirectRule> redirectRules, Query query = null)
         {
             if (query == null)
                 return redirectRules.AsEnumerable();

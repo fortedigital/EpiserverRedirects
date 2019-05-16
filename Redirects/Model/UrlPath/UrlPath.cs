@@ -1,6 +1,6 @@
 using System;
 
-namespace Forte.RedirectMiddleware.Model.UrlPath
+namespace Forte.Redirects.Model.UrlPath
 {
     public class UrlPath : IEquatable<UrlPath>
     {

@@ -2,18 +2,13 @@ using System.Linq;
 using EPiServer.Framework;
 using EPiServer.Framework.Initialization;
 using EPiServer.ServiceLocation;
-using Forte.RedirectMiddleware.Model.RedirectRule;
-using Forte.RedirectMiddleware.Model.RedirectType;
-using Forte.RedirectMiddleware.Repository;
-using Forte.RedirectMiddleware.Request;
-using Forte.RedirectMiddleware.Resolver;
-using Forte.RedirectMiddleware.Resolver.Base;
-using Forte.RedirectMiddleware.Resolver.Composite;
-using Forte.RedirectMiddleware.Resolver.ExactMatch;
-using Forte.RedirectMiddleware.Resolver.Regex;
-using Forte.RedirectMiddleware.Resolver.Wildcard;
+using Forte.Redirects.Model.RedirectRule;
+using Forte.Redirects.Model.RedirectType;
+using Forte.Redirects.Repository;
+using Forte.Redirects.Request;
+using Forte.Redirects.Resolver;
 
-namespace Forte.RedirectMiddleware.Configuration
+namespace Forte.Redirects.Configuration
 {
     [InitializableModule]
     public class DependencyInjectionConfig : IConfigurableModule

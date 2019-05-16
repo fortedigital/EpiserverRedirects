@@ -1,4 +1,4 @@
-using Forte.RedirectMiddleware.Resolver.Regex;
+using Forte.Redirects.Resolver;
 
 namespace RedirectTests.Builder.WithRepository.Resolver
 {

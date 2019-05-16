@@ -1,12 +1,12 @@
 using System;
-using Forte.RedirectMiddleware.Controller;
-using Forte.RedirectMiddleware.Mapper;
-using Forte.RedirectMiddleware.Model.RedirectRule;
+using Forte.Redirects.Mapper;
+using Forte.Redirects.Menu;
+using Forte.Redirects.Model.RedirectRule;
 using RedirectTests.Mapper;
 
 namespace RedirectTests.Builder.WithRepository
 {
-    public class ControllerBuilder : BaseWithRepositoryBuilder<RedirectRuleController, ControllerBuilder>
+    public class ControllerBuilder : BaseWithRepositoryBuilder<RedirectRuleStore, ControllerBuilder>
     {
         protected override ControllerBuilder ThisBuilder => this;
         
@@ -18,10 +18,10 @@ namespace RedirectTests.Builder.WithRepository
             return this;
         }
         
-        public override RedirectRuleController Create()
+        public override RedirectRuleStore Create()
         {
             CreateRepository();
-            return new RedirectRuleController(RedirectRuleRepository, _redirectRuleMapper);
+            return new RedirectRuleStore(RedirectRuleRepository, _redirectRuleMapper);
         }
     }
 }

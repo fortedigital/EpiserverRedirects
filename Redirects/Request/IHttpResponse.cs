@@ -1,4 +1,4 @@
-namespace Forte.RedirectMiddleware.Request
+namespace Forte.Redirects.Request
 {
     public interface IHttpResponse
     {

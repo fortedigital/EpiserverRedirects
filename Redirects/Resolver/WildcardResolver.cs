@@ -1,12 +1,10 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
-using Forte.RedirectMiddleware.Model.RedirectRule;
-using Forte.RedirectMiddleware.Model.UrlPath;
-using Forte.RedirectMiddleware.Redirect.Base;
-using Forte.RedirectMiddleware.Redirect.Wildcard;
-using Forte.RedirectMiddleware.Resolver.Base;
+using Forte.Redirects.Model.RedirectRule;
+using Forte.Redirects.Model.UrlPath;
+using Forte.Redirects.Redirect;
 
-namespace Forte.RedirectMiddleware.Resolver.Wildcard
+namespace Forte.Redirects.Resolver
 {
     public class WildcardResolver : IRedirectRuleResolver
     {

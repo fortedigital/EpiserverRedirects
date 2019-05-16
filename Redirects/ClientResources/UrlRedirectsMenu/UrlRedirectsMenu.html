@@ -1,0 +1,51 @@
+﻿
+<div class="epi-padding redirects-container">
+    <div class="epi-fullWidth">
+        <div class="epi-contentArea">
+            <h1 class="EP-prefix">
+                Url Redirects
+            </h1>
+            <p>
+                <span class="EP-systemInfo">
+                    Manage URL redirects
+                </span>
+            </p>
+
+            <div class="redirect-importer">
+                <h2 class="redirect-importer-header">Import redirects from CSV file</h2>
+                <p class="redirect-importer-description">Select a file, and click "upload". File shoud be in CSV format 
+                    and consist of two columns: old URL and new URL.
+                </p>
+                    <input name="uploadedFile" multiple="false" type="file" data-dojo-type="dojox/form/Uploader"
+                           data-dojo-attach-point="fileUploader" label="Select CSV file" id="redirectsUploader" />
+                    <input type="button" label="Submit" data-dojo-type="dijit/form/Button" data-dojo-attach-point="uploadFormSubmit" />
+                <span name="importStatus" value="" data-dojo-attach-point="importStatus">Select a file</span>
+            </div>
+                     
+            <div class="menu-container">
+                <div class="url-redirect-grid-container">
+                    <button data-dojo-type="dijit/form/Button" data-dojo-attach-point="addButton" type="button">Add new</button>
+                    <button data-dojo-type="dijit/form/Button" data-dojo-attach-point="editButton" type="button">Edit</button>
+                    <button data-dojo-type="dijit/form/Button" data-dojo-attach-point="deleteButton" type="button">Delete</button>
+                    <button data-dojo-type="dijit/form/Button" data-dojo-attach-point="refreshButton" type="button">Refresh</button>
+                    <div class="epi-formArea">
+                        <label>Simulate Wildcard redirect:</label>
+                        <input class="form-input" type="text" name="simulateOldUrl"
+                               data-dojo-props="intermediateChanges:true"
+                               data-dojo-type="dijit/form/TextBox"
+                               placeHolder="Old Url"
+                               data-dojo-attach-point="simulateOldUrlTextBox" id="simulateOldUrl" />
+                        <button data-dojo-type="dijit/form/Button" data-dojo-attach-point="simulateFindButton" type="button">Find</button>
+                        <button data-dojo-type="dijit/form/Button" data-dojo-attach-point="simulateResetButton" type="button">Reset</button>
+                    </div>
+                    <div class="url-redirect-grid" data-dojo-type="episerverRedirectsMenu-grid/UrlRedirectsMenuGrid" data-dojo-attach-point="urlRedirectsMenuGrid">
+                    </div>
+                </div>
+            </div>
+            <div data-dojo-type="dijit/Dialog" data-dojo-attach-point="urlRedirectsMenuFormDialog">
+                <div class="epi-formContainer" data-dojo-type="episerverRedirectsMenu-form/UrlRedirectsMenuForm" data-dojo-attach-point="urlRedirectsMenuForm">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

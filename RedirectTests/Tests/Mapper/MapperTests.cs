@@ -1,5 +1,5 @@
-using Forte.RedirectMiddleware.Mapper;
-using Forte.RedirectMiddleware.Model.UrlPath;
+using Forte.Redirects.Mapper;
+using Forte.Redirects.Model.UrlPath;
 using RedirectTests.Data;
 using Xunit;
 

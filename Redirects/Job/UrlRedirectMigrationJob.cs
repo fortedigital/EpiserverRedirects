@@ -10,12 +10,12 @@ using EPiServer.PlugIn;
 using EPiServer.Scheduler;
 using EPiServer.ServiceLocation;
 using Forte.EpiserverRedirects.UrlRewritePlugin;
-using Forte.RedirectMiddleware.Model.RedirectRule;
-using Forte.RedirectMiddleware.Model.RedirectType;
-using Forte.RedirectMiddleware.Model.UrlPath;
-using Forte.RedirectMiddleware.Repository;
+using Forte.Redirects.Model.RedirectRule;
+using Forte.Redirects.Model.RedirectType;
+using Forte.Redirects.Model.UrlPath;
+using Forte.Redirects.Repository;
 
-namespace Forte.RedirectMiddleware.Job
+namespace Forte.Redirects.Job
 {
     [ScheduledPlugIn(
         DisplayName = "UrlRedirectMigrationJob",

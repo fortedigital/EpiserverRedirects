@@ -1,7 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using EPiServer.ServiceLocation;
-using Forte.RedirectMiddleware.Request;
+using Forte.Redirects.Request;
 using Microsoft.Owin;
 
 namespace Forte.RedirectMiddleware

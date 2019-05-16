@@ -1,7 +1,7 @@
 using System;
 using EPiServer.Data.Dynamic;
 
-namespace Forte.RedirectMiddleware.Model.UrlPath
+namespace Forte.Redirects.Model.UrlPath
 {
     public class UrlPathTypeHandler : ITypeHandler
     {

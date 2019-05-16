@@ -2,11 +2,11 @@ using System;
 using EPiServer.Core;
 using EPiServer.Data;
 using EPiServer.Web.Routing;
-using Forte.RedirectMiddleware.Model.RedirectRule;
-using Forte.RedirectMiddleware.Model.RedirectType;
-using Forte.RedirectMiddleware.Request;
+using Forte.Redirects.Model.RedirectRule;
+using Forte.Redirects.Model.RedirectType;
+using Forte.Redirects.Request;
 
-namespace Forte.RedirectMiddleware.Redirect.Base
+namespace Forte.Redirects.Redirect
 {
     public abstract class Redirect : IRedirect
     {

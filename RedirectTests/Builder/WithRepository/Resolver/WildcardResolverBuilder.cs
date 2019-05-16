@@ -1,4 +1,4 @@
-using Forte.RedirectMiddleware.Resolver.Wildcard;
+using Forte.Redirects.Resolver;
 
 namespace RedirectTests.Builder.WithRepository.Resolver
 {

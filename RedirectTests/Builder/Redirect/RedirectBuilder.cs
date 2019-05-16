@@ -1,13 +1,10 @@
 using System;
 using EPiServer.Core;
 using EPiServer.Web.Routing;
-using Forte.RedirectMiddleware.Model.RedirectRule;
-using Forte.RedirectMiddleware.Model.RedirectType;
-using Forte.RedirectMiddleware.Redirect.Base;
-using Forte.RedirectMiddleware.Redirect.ExactMatch;
-using Forte.RedirectMiddleware.Redirect.Regex;
-using Forte.RedirectMiddleware.Redirect.Wildcard;
-using Forte.RedirectMiddleware.Request;
+using Forte.Redirects.Model.RedirectRule;
+using Forte.Redirects.Model.RedirectType;
+using Forte.Redirects.Redirect;
+using Forte.Redirects.Request;
 using Moq;
 
 namespace RedirectTests.Builder.Redirect

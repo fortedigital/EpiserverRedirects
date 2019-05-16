@@ -1,4 +1,4 @@
-using Forte.RedirectMiddleware.Request;
+using Forte.Redirects.Request;
 
 namespace HttpModule
 {

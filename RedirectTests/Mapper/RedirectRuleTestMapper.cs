@@ -1,6 +1,6 @@
 using System;
-using Forte.RedirectMiddleware.Mapper;
-using Forte.RedirectMiddleware.Model.RedirectRule;
+using Forte.Redirects.Mapper;
+using Forte.Redirects.Model.RedirectRule;
 
 namespace RedirectTests.Mapper
 {

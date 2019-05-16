@@ -1,11 +1,11 @@
 using System;
 using System.Threading.Tasks;
 using EPiServer.Web.Routing;
-using Forte.RedirectMiddleware.Model.RedirectType;
-using Forte.RedirectMiddleware.Model.UrlPath;
-using Forte.RedirectMiddleware.Resolver.Base;
+using Forte.Redirects.Model.RedirectType;
+using Forte.Redirects.Model.UrlPath;
+using Forte.Redirects.Resolver;
 
-namespace Forte.RedirectMiddleware.Request
+namespace Forte.Redirects.Request
 {
     public class RequestHandler
     {

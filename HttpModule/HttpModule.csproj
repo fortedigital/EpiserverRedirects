@@ -32,28 +32,28 @@
         <WarningLevel>4</WarningLevel>
     </PropertyGroup>
     <ItemGroup>
-        <Reference Include="EPiServer.ApplicationModules, Version=11.11.0.0, Culture=neutral, PublicKeyToken=8fe83dea738b45b7">
-          <HintPath>..\packages\EPiServer.Framework.11.11.0\lib\net461\EPiServer.ApplicationModules.dll</HintPath>
+        <Reference Include="EPiServer.ApplicationModules, Version=11.11.3.0, Culture=neutral, PublicKeyToken=8fe83dea738b45b7">
+          <HintPath>..\packages\EPiServer.Framework.11.11.3\lib\net461\EPiServer.ApplicationModules.dll</HintPath>
           <Private>True</Private>
         </Reference>
-        <Reference Include="EPiServer.Data, Version=11.11.0.0, Culture=neutral, PublicKeyToken=8fe83dea738b45b7">
-          <HintPath>..\packages\EPiServer.Framework.11.11.0\lib\net461\EPiServer.Data.dll</HintPath>
+        <Reference Include="EPiServer.Data, Version=11.11.3.0, Culture=neutral, PublicKeyToken=8fe83dea738b45b7">
+          <HintPath>..\packages\EPiServer.Framework.11.11.3\lib\net461\EPiServer.Data.dll</HintPath>
           <Private>True</Private>
         </Reference>
-        <Reference Include="EPiServer.Data.Cache, Version=11.11.0.0, Culture=neutral, PublicKeyToken=8fe83dea738b45b7">
-          <HintPath>..\packages\EPiServer.Framework.11.11.0\lib\net461\EPiServer.Data.Cache.dll</HintPath>
+        <Reference Include="EPiServer.Data.Cache, Version=11.11.3.0, Culture=neutral, PublicKeyToken=8fe83dea738b45b7">
+          <HintPath>..\packages\EPiServer.Framework.11.11.3\lib\net461\EPiServer.Data.Cache.dll</HintPath>
           <Private>True</Private>
         </Reference>
-        <Reference Include="EPiServer.Events, Version=11.11.0.0, Culture=neutral, PublicKeyToken=8fe83dea738b45b7">
-          <HintPath>..\packages\EPiServer.Framework.11.11.0\lib\net461\EPiServer.Events.dll</HintPath>
+        <Reference Include="EPiServer.Events, Version=11.11.3.0, Culture=neutral, PublicKeyToken=8fe83dea738b45b7">
+          <HintPath>..\packages\EPiServer.Framework.11.11.3\lib\net461\EPiServer.Events.dll</HintPath>
           <Private>True</Private>
         </Reference>
-        <Reference Include="EPiServer.Framework, Version=11.11.0.0, Culture=neutral, PublicKeyToken=8fe83dea738b45b7">
-          <HintPath>..\packages\EPiServer.Framework.11.11.0\lib\net461\EPiServer.Framework.dll</HintPath>
+        <Reference Include="EPiServer.Framework, Version=11.11.3.0, Culture=neutral, PublicKeyToken=8fe83dea738b45b7">
+          <HintPath>..\packages\EPiServer.Framework.11.11.3\lib\net461\EPiServer.Framework.dll</HintPath>
           <Private>True</Private>
         </Reference>
-        <Reference Include="EPiServer.Licensing, Version=11.11.0.0, Culture=neutral, PublicKeyToken=8fe83dea738b45b7">
-          <HintPath>..\packages\EPiServer.Framework.11.11.0\lib\net461\EPiServer.Licensing.dll</HintPath>
+        <Reference Include="EPiServer.Licensing, Version=11.11.3.0, Culture=neutral, PublicKeyToken=8fe83dea738b45b7">
+          <HintPath>..\packages\EPiServer.Framework.11.11.3\lib\net461\EPiServer.Licensing.dll</HintPath>
           <Private>True</Private>
         </Reference>
         <Reference Include="mscorlib" />
@@ -98,6 +98,10 @@
           <Private>True</Private>
         </Reference>
         <Reference Include="System.Transactions" />
+        <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51">
+          <HintPath>..\packages\System.ValueTuple.4.5.0\lib\net461\System.ValueTuple.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
         <Reference Include="System.Web" />
         <Reference Include="System.Xml" />
     </ItemGroup>

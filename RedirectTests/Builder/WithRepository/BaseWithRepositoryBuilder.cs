@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
-using Forte.RedirectMiddleware.Model.RedirectRule;
-using Forte.RedirectMiddleware.Repository;
+using Forte.Redirects.Model.RedirectRule;
+using Forte.Redirects.Repository;
 using RedirectTests.Data;
 using RedirectTests.Repository;
 

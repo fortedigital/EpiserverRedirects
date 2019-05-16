@@ -2,7 +2,7 @@ using System;
 using EPiServer.Data;
 using EPiServer.Data.Dynamic;
 
-namespace Forte.RedirectMiddleware.Model.RedirectRule
+namespace Forte.Redirects.Model.RedirectRule
 {
     public enum RedirectRuleType { ExactMatch, Regex, Wildcard}
     

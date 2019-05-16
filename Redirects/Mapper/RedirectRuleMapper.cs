@@ -1,6 +1,7 @@
-using Forte.RedirectMiddleware.Model.RedirectRule;
+using Forte.Redirects.Model.RedirectRule;
+using Forte.Redirects.Model.UrlPath;
 
-namespace Forte.RedirectMiddleware.Mapper
+namespace Forte.Redirects.Mapper
 {
     public class RedirectRuleMapper : BaseRedirectRuleMapper
     {
@@ -9,7 +10,7 @@ namespace Forte.RedirectMiddleware.Mapper
         }
         
 
-        private static RedirectRuleDto ModelToDtoDelegate(Model.RedirectRule.RedirectRule source)
+        private static RedirectRuleDto ModelToDtoDelegate(RedirectRule source)
         {
             var destination = new RedirectRuleDto();
             destination.Id = source.Id;
@@ -37,9 +38,9 @@ namespace Forte.RedirectMiddleware.Mapper
             return destination;
         }
 
-        public static Model.RedirectRule.RedirectRule DtoToModelDelegate(RedirectRuleDto source)
+        public static RedirectRule DtoToModelDelegate(RedirectRuleDto source)
         {
-            var destination = new Model.RedirectRule.RedirectRule();
+            var destination = new RedirectRule();
             destination.Id = source.Id;
             destination.NewPattern = source.NewUrl;
 
@@ -53,7 +54,7 @@ namespace Forte.RedirectMiddleware.Mapper
             switch (destination.RedirectRuleType)
             {
                 case RedirectRuleType.ExactMatch:
-                    destination.OldPath = Model.UrlPath.UrlPath.Parse(source.Pattern);
+                    destination.OldPath = UrlPath.Parse(source.Pattern);
                     break;
                 case RedirectRuleType.Regex:
                     destination.OldPattern = source.Pattern;

@@ -1,11 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Forte.RedirectMiddleware.Model.UrlPath;
-using Forte.RedirectMiddleware.Redirect.Base;
-using Forte.RedirectMiddleware.Resolver.Base;
+using Forte.Redirects.Model.UrlPath;
+using Forte.Redirects.Redirect;
 
-namespace Forte.RedirectMiddleware.Resolver.Composite
+namespace Forte.Redirects.Resolver
 {
     // ReSharper disable once ClassNeverInstantiated.Global
     public class CompositeResolver : IRedirectRuleResolver

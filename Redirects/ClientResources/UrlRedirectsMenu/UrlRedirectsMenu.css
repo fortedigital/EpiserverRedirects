@@ -1,0 +1,41 @@
+﻿.redirects-container {
+    overflow-y: scroll;
+}
+
+.redirect-importer {
+    margin: 0 10px;
+    padding: 15px 10px;
+    background: #ddd;
+    display: inline-block;
+}
+
+.redirect-importer .redirect-importer-header {
+    font-size: 14px;
+}
+
+.menu-container {
+    display: flex;
+    height:60vh;
+}
+
+.url-redirect-grid-container {
+    width: 75%;
+    padding: 10px;
+}
+
+.wildcard-test-container {
+    padding: 10px;
+    width: 25%;
+}
+
+.epi-formArea .form-input {
+    width: 300px
+}
+
+.alert-danger {
+    padding: 10px;
+    border-radius: 5px;
+    color: #a94442;
+    background-color: #f2dede;
+    border-color: #ebccd1;
+}

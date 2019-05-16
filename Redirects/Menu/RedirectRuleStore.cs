@@ -1,22 +1,22 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
 using EPiServer.Shell.Services.Rest;
-using Forte.RedirectMiddleware.Mapper;
-using Forte.RedirectMiddleware.Model.RedirectRule;
-using Forte.RedirectMiddleware.Repository;
+using Forte.Redirects.Controller;
+using Forte.Redirects.Mapper;
+using Forte.Redirects.Model.RedirectRule;
+using Forte.Redirects.Repository;
 
-namespace Forte.RedirectMiddleware.Controller
+namespace Forte.Redirects.Menu
 {
-    [RestStore("RedirectRuleController")]
-    public class RedirectRuleController : RestControllerBase
+    [RestStore("RedirectRuleStore")]
+    public class RedirectRuleStore : RestControllerBase
     {
         private readonly IRedirectRuleRepository _redirectRuleRepository;
         private readonly IRedirectRuleMapper _redirectRuleMapper;
 
-        public RedirectRuleController(IRedirectRuleRepository redirectRuleRepository, IRedirectRuleMapper redirectRuleMapper)
+        public RedirectRuleStore(IRedirectRuleRepository redirectRuleRepository, IRedirectRuleMapper redirectRuleMapper)
         {
             _redirectRuleRepository = redirectRuleRepository;
             _redirectRuleMapper = redirectRuleMapper;

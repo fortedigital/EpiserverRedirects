@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Forte.RedirectMiddleware.Model.RedirectRule;
-using Forte.RedirectMiddleware.Model.UrlPath;
+using Forte.Redirects.Model.RedirectRule;
+using Forte.Redirects.Model.UrlPath;
 
 namespace RedirectTests.Data
 {

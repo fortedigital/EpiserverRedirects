@@ -1,6 +1,6 @@
 using EPiServer.ServiceLocation;
 
-namespace Forte.RedirectMiddleware.Model.RedirectType {
+namespace Forte.Redirects.Model.RedirectType {
     public enum RedirectType {Permanent, Temporary}
 
     public interface IResponseStatusCodeResolver

@@ -1,6 +1,7 @@
 using EPiServer.Data;
 using EPiServer.Data.Dynamic;
 
+//oldProjectNamespaceToWorkWithDDS
 namespace Forte.EpiserverRedirects.UrlRewritePlugin
 {
     [EPiServerDataStore(AutomaticallyRemapStore = true)]

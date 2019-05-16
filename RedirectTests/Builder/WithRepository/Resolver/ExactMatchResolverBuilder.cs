@@ -1,4 +1,4 @@
-using Forte.RedirectMiddleware.Resolver.ExactMatch;
+using Forte.Redirects.Resolver;
 
 namespace RedirectTests.Builder.WithRepository.Resolver
 {

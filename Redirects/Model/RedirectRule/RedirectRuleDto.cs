@@ -2,7 +2,7 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using EPiServer.Data;
 
-namespace Forte.RedirectMiddleware.Model.RedirectRule
+namespace Forte.Redirects.Model.RedirectRule
 {
     public class RedirectRuleDto
     {

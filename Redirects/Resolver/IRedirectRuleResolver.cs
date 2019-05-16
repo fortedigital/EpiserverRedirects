@@ -1,8 +1,8 @@
 using System.Threading.Tasks;
-using Forte.RedirectMiddleware.Model.UrlPath;
-using Forte.RedirectMiddleware.Redirect.Base;
+using Forte.Redirects.Model.UrlPath;
+using Forte.Redirects.Redirect;
 
-namespace Forte.RedirectMiddleware.Resolver.Base
+namespace Forte.Redirects.Resolver
 {
     public interface IRedirectRuleResolver
     {

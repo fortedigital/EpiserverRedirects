@@ -1,12 +1,11 @@
 using System;
 using EPiServer.Web.Routing;
-using Forte.RedirectMiddleware.Model.RedirectRule;
-using Forte.RedirectMiddleware.Model.RedirectType;
-using Forte.RedirectMiddleware.Request;
+using Forte.Redirects.Model.RedirectRule;
+using Forte.Redirects.Model.RedirectType;
 
-namespace Forte.RedirectMiddleware.Redirect.ExactMatch
+namespace Forte.Redirects.Redirect
 {
-    public class ExactMatchRedirect : Redirect.Base.Redirect
+    public class ExactMatchRedirect : Redirect
     {
         public ExactMatchRedirect(RedirectRule redirectRule) : base(redirectRule)
         {

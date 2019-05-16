@@ -32,8 +32,8 @@
         <WarningLevel>4</WarningLevel>
     </PropertyGroup>
     <ItemGroup>
-        <Reference Include="EPiServer, Version=11.11.2.0, Culture=neutral, PublicKeyToken=8fe83dea738b45b7">
-          <HintPath>..\..\..\Users\MaciejEkiert\AppData\Local\Temp\Temporary ASP.NET Files\root\d72af608\61afa2f0\assembly\dl3\1cccf8f0\0037b6e2_5fc7d401\EPiServer.dll</HintPath>
+        <Reference Include="EPiServer, Version=11.11.3.0, Culture=neutral, PublicKeyToken=8fe83dea738b45b7">
+          <HintPath>..\packages\EPiServer.CMS.Core.11.11.3\lib\net461\EPiServer.dll</HintPath>
         </Reference>
         <Reference Include="EPiServer.ApplicationModules, Version=11.11.3.0, Culture=neutral, PublicKeyToken=8fe83dea738b45b7">
           <HintPath>..\packages\EPiServer.Framework.11.11.3\lib\net461\EPiServer.ApplicationModules.dll</HintPath>

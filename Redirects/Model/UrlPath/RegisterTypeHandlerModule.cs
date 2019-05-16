@@ -2,7 +2,7 @@ using EPiServer.Data.Dynamic;
 using EPiServer.Framework;
 using EPiServer.Framework.Initialization;
 
-namespace Forte.RedirectMiddleware.Model.UrlPath
+namespace Forte.Redirects.Model.UrlPath
 {
     [InitializableModule]
     public class RegisterTypeHandlerModule : IInitializableModule

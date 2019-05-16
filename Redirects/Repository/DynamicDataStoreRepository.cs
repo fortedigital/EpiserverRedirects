@@ -1,16 +1,10 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using EPiServer.Data.Dynamic;
-using EPiServer.ServiceLocation;
-using EPiServer.Web.Internal;
-using Forte.RedirectMiddleware.Model.RedirectRule;
-using Forte.RedirectMiddleware.Model.UrlPath;
+using Forte.Redirects.Model.RedirectRule;
 
-namespace Forte.RedirectMiddleware.Repository
+namespace Forte.Redirects.Repository
 {
-//    [ServiceConfiguration(ServiceType = typeof(IRedirectRuleRepository))]
     public class DynamicDataStoreRepository : RedirectRuleRepository
     {
         private readonly DynamicDataStoreFactory _dynamicDataStoreFactory;

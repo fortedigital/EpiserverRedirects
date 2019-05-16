@@ -9,8 +9,8 @@
     <description>Episerver plugin to manage redirects</description>
     <projectUrl>https://github.com/fortedigital/EPiAutoAlias</projectUrl>
     <dependencies>
-      <dependency id="EPiServer.CMS.Core" version="[11.11.0,12)" />
-      <dependency id="EPiServer.Framework" version="[11.11.0,12)" />
+      <dependency id="EPiServer.CMS.Core" version="[11.11.3,12)" />
+      <dependency id="EPiServer.Framework" version="[11.11.3,12)" />
       <dependency id="EPiServer.CMS.UI.Core" version="[11.13.1,12)" />
       <dependency id="Microsoft.Owin" version="[3.0.1, 4]" />
       <dependency id="CsvHelper" version="[7,8)" />

@@ -1,0 +1,54 @@
+﻿<div>
+    <div class="epi-formArea">
+        <div class="epi-size10">
+            <div class="epi-form-container__section__row">
+                <label for="oldPattern">Old pattern:</label>
+                <input class="form-input" type="text" name="oldUrl"
+                       required="true"
+                       data-dojo-props="intermediateChanges:true"
+                       data-dojo-type="dijit/form/ValidationTextBox"
+                       data-dojo-attach-point="oldPatternTextBox" id="oldPattern" />
+            </div>
+
+            <div class="epi-form-container__section__row">
+                <label for="newPattern">New pattern:</label>
+                <input class="form-input" type="text" name="newUrl"
+                       required="true"
+                       data-dojo-props="intermediateChanges:true"
+                       data-dojo-type="dijit/form/ValidationTextBox"
+                       data-dojo-attach-point="newPatternTextBox" id="newPattern" />
+            </div>
+
+            <div class="epi-form-container__section__row">
+                <label for="redirectRuleType">Redirect Rule type:</label>
+                <select class="form-input" name="redirectRuleTypeSelect"
+                        data-dojo-attach-point="redirectRuleTypeSelect"
+                        data-dojo-type="dijit/form/Select">
+                    <option value=0 selected="selected">ExactMatch</option>
+                    <option value=1 selected="selected">Regex</option>
+                    <option value=2>Wildcard</option>
+                </select>
+            </div>
+
+            <div class="epi-form-container__section__row">
+                <label for="redirectType">Redirect type:</label>
+                <select class="form-input" name="redirectTypeSelect"
+                        data-dojo-attach-point="redirectTypeSelect"
+                        data-dojo-type="dijit/form/Select">
+                    <option value="0" selected="selected">Permanent</option>
+                    <option value="1">Temporary</option>
+                </select>
+            </div>
+
+            <div data-dojo-attach-point="duplicateAlert" class="alert-danger">
+                <span>Unable to save because of duplicate old url</span>
+            </div>
+
+        </div>
+        <div class="epi-buttonContainer">
+            <button class="Salt" data-dojo-type="dijit/form/Button" data-dojo-attach-point="saveButton" type="button">Save</button>
+            <button data-dojo-type="dijit/form/Button" data-dojo-attach-point="deleteButton" type="button">Delete</button>
+            <button data-dojo-type="dijit/form/Button" data-dojo-attach-point="cancelButton" type="button">Cancel</button>
+        </div>
+    </div>
+</div>

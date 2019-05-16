@@ -1,13 +1,12 @@
 using System;
 using System.Text.RegularExpressions;
 using EPiServer.Web.Routing;
-using Forte.RedirectMiddleware.Model.RedirectRule;
-using Forte.RedirectMiddleware.Model.RedirectType;
-using Forte.RedirectMiddleware.Request;
+using Forte.Redirects.Model.RedirectRule;
+using Forte.Redirects.Model.RedirectType;
 
-namespace Forte.RedirectMiddleware.Redirect.Regex
+namespace Forte.Redirects.Redirect
 {
-    public class RegexRedirect : Redirect.Base.Redirect
+    public class RegexRedirect : Redirect
     {
         public RegexRedirect(RedirectRule redirectRule) : base(redirectRule)
         {

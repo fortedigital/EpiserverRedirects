@@ -3,9 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using Forte.RedirectMiddleware.Model.RedirectRule;
+using Forte.Redirects.Model.RedirectRule;
 
-namespace Forte.RedirectMiddleware.Repository
+namespace Forte.Redirects.Repository
 {
     public interface IRedirectRuleRepository : IQueryable<RedirectRule>
     {
