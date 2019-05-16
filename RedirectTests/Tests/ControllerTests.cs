@@ -48,7 +48,7 @@ namespace Forte.RedirectTests.Tests
 
             var redirectDto = new RedirectRuleDto("randomOldPath", "randomNewPath");
 
-            var newRedirect = restController.Add(redirectDto).GetEntityFromActionResult();
+            var newRedirect = restController.Post(redirectDto).GetEntityFromActionResult();
             var expectedRedirect = restController.Get(newRedirect.Id.ExternalId).GetEntityFromActionResult();
 
             Assert.NotNull(expectedRedirect);
@@ -71,14 +71,14 @@ namespace Forte.RedirectTests.Tests
                 .FirstOrDefault();
 
             var expectedNewUrl = "/updatedNewUrl";
-            randomRedirectDto.NewUrl = expectedNewUrl;
+            randomRedirectDto.NewPattern = expectedNewUrl;
 
-            restController.Update(randomRedirectDto);
+            restController.Put(randomRedirectDto);
             var updatedRedirect = restController
                 .Get(randomRedirectDto.Id.ExternalId)
                 .GetEntityFromActionResult();
 
-            Assert.Equal(expectedNewUrl, updatedRedirect?.NewUrl);
+            Assert.Equal(expectedNewUrl, updatedRedirect?.NewPattern);
         }
 
         [Fact]
@@ -91,7 +91,7 @@ namespace Forte.RedirectTests.Tests
             var redirectDto = new RedirectRuleDto(Guid.NewGuid(), "/NonExistentOldPath", "/randomNewUrl",
                 RedirectType.Temporary);
 
-            Assert.Throws<KeyNotFoundException>(() => restController.Update(redirectDto));
+            Assert.Throws<KeyNotFoundException>(() => restController.Put(redirectDto));
         }
 
         [Theory]

@@ -35,8 +35,8 @@ namespace Forte.RedirectTests.Data
             return new RedirectRuleDto
             {
                 Id = Guid.NewGuid(),
-                Pattern = GetRandomPath(),
-                NewUrl = GetRandomPath(),
+                OldPattern = GetRandomPath(),
+                NewPattern = GetRandomPath(),
                 IsActive = true,
                 Notes = "some notes",
                 CreatedOn = DateTime.Now,

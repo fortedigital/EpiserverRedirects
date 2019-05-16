@@ -10,7 +10,6 @@ namespace Forte.Redirects.Menu
     [ModelBinder(typeof(QueryModelBinder))]
     public class Query
     {
-        public string OldPath { get; set; }
         public string oldPattern { get; set; } //oldUrlSearch
         public string newPattern { get; set; } //newUrlSearch
         public RedirectType? redirectType{ get; set; } //priority search
@@ -25,9 +24,6 @@ namespace Forte.Redirects.Menu
         {
             if (query == null)
                 return redirectRules.AsEnumerable();
-            
-            if (!string.IsNullOrEmpty(query.OldPath))
-                redirectRules = redirectRules.Where(rr => rr.OldPath.ToString().Contains(query.OldPath));
 
             if (!string.IsNullOrEmpty(query.oldPattern))
                 redirectRules = redirectRules.Where(rr => rr.OldPattern.Contains(query.oldPattern));

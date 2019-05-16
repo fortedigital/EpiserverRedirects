@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
+using EPiServer.Security;
 using EPiServer.Shell.Services.Rest;
 using Forte.Redirects.Mapper;
 using Forte.Redirects.Model.RedirectRule;
@@ -42,12 +43,14 @@ namespace Forte.Redirects.Menu
         }
 
         [HttpPost]
-        public ActionResult Add(RedirectRuleDto dto)
+        public ActionResult Post(RedirectRuleDto dto)
         {
             if (!ViewData.ModelState.IsValid)
                 return null;
             
             var newRedirectRule = _redirectRuleMapper.DtoToModel(dto);
+            newRedirectRule.CreatedOn = DateTimeOffset.Now;
+            newRedirectRule.CreatedBy = PrincipalInfo.CurrentPrincipal.Identity.Name;
             newRedirectRule = _redirectRuleRepository.Add(newRedirectRule);
 
             var newRedirectRuleDto = _redirectRuleMapper.ModelToDto(newRedirectRule);
@@ -55,7 +58,7 @@ namespace Forte.Redirects.Menu
         }
 
         [HttpPut]
-        public ActionResult Update(RedirectRuleDto dto)
+        public ActionResult Put(RedirectRuleDto dto)
         {
             if (!ViewData.ModelState.IsValid)
                 return null;

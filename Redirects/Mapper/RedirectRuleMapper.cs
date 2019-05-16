@@ -14,7 +14,7 @@ namespace Forte.Redirects.Mapper
         {
             var destination = new RedirectRuleDto();
             destination.Id = source.Id;
-            destination.NewUrl = source.NewPattern;
+            destination.NewPattern = source.NewPattern;
             destination.RedirectType = source.RedirectType;
             destination.IsActive = source.IsActive;
             destination.Notes = source.Notes;
@@ -26,10 +26,10 @@ namespace Forte.Redirects.Mapper
             switch (destination.RedirectRuleType)
             {
                 case RedirectRuleType.ExactMatch:
-                    destination.Pattern = source.OldPath.Path.OriginalString;
+                    destination.OldPattern = source.OldPath.Path.OriginalString;
                     break;
                 case RedirectRuleType.Regex:
-                    destination.Pattern = source.OldPattern;
+                    destination.OldPattern = source.OldPattern;
                     break;
                 case RedirectRuleType.Wildcard:
                     break;
@@ -42,7 +42,7 @@ namespace Forte.Redirects.Mapper
         {
             var destination = new RedirectRule();
             destination.Id = source.Id;
-            destination.NewPattern = source.NewUrl;
+            destination.NewPattern = source.NewPattern;
 
             destination.RedirectType = source.RedirectType;
             destination.IsActive = source.IsActive;
@@ -54,10 +54,10 @@ namespace Forte.Redirects.Mapper
             switch (destination.RedirectRuleType)
             {
                 case RedirectRuleType.ExactMatch:
-                    destination.OldPath = UrlPath.Parse(source.Pattern);
+                    destination.OldPath = UrlPath.Parse(source.OldPattern);
                     break;
                 case RedirectRuleType.Regex:
-                    destination.OldPattern = source.Pattern;
+                    destination.OldPattern = source.OldPattern;
                     break;
                 case RedirectRuleType.Wildcard:
                     break;

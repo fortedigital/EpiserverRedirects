@@ -30,9 +30,10 @@ namespace Forte.Redirects.Repository
         protected static void WriteToModel(RedirectRule redirectRule, RedirectRule redirectToUpdate)
         {
             redirectToUpdate.Id = redirectRule.Id;
-            redirectToUpdate.NewPattern = redirectRule.NewPattern;
             redirectToUpdate.OldPath = redirectRule.OldPath;
+            redirectToUpdate.NewPattern = redirectRule.NewPattern;
             redirectToUpdate.RedirectType = redirectRule.RedirectType;
+            redirectToUpdate.RedirectRuleType = redirectRule.RedirectRuleType;
             redirectToUpdate.IsActive = redirectRule.IsActive;
             redirectToUpdate.Notes = redirectRule.Notes;
         }

@@ -1,18 +1,23 @@
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.Web.Mvc;
 using EPiServer.Data;
 
 namespace Forte.Redirects.Model.RedirectRule
 {
+    [ModelBinder(typeof(RedirectRuleDtoModelBinder))]
     public class RedirectRuleDto
     {
         public Identity Id { get; set; }
         
         [Required]
-        public string Pattern { get; set; }
+        public string OldPattern { get; set; }
         
         [Required]
-        public string NewUrl { get; set; }
+        public string NewPattern { get; set; }
+        
+        [Required]
+        public RedirectRuleType RedirectRuleType { get; set; }
         
         [Required]
         public RedirectType.RedirectType RedirectType { get; set; }
@@ -26,24 +31,22 @@ namespace Forte.Redirects.Model.RedirectRule
         
         public string CreatedBy { get; set; }
         
-        [Required]
-        public RedirectRuleType RedirectRuleType { get; set; }
-
+        
         public RedirectRuleDto()
         {
             
         }
         public RedirectRuleDto(string pattern, string newUrl)
         {
-            Pattern = pattern;
-            NewUrl = newUrl;
+            OldPattern = pattern;
+            NewPattern = newUrl;
         }
         
         public RedirectRuleDto(Guid guid, string pattern, string newUrl, RedirectType.RedirectType redirectType)
         {
             Id = guid;
-            Pattern = pattern;
-            NewUrl = newUrl;
+            OldPattern = pattern;
+            NewPattern = newUrl;
         }
     }
 }
