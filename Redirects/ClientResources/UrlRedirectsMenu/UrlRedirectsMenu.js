@@ -1,4 +1,4 @@
-define("episerverRedirectsMenu/UrlRedirectsMenu", [
+define("redirectsMenu/UrlRedirectsMenu", [
     "dojo/_base/declare",
     "dojo/text!./UrlRedirectsMenu.html",
     "dojo/on",
@@ -11,9 +11,9 @@ define("episerverRedirectsMenu/UrlRedirectsMenu", [
     "dijit/Dialog",
     "dijit/form/TextBox",
 
-    "episerverRedirectsMenu/UrlRedirectsMenuViewModel",
-    "episerverRedirectsMenu-grid/UrlRedirectsMenuGrid",
-    "episerverRedirectsMenu-form/UrlRedirectsMenuForm",
+    "redirectsMenu/UrlRedirectsMenuViewModel",
+    "redirectsMenu-grid/UrlRedirectsMenuGrid",
+    "redirectsMenu-form/UrlRedirectsMenuForm",
 
     "xstyle/css!./UrlRedirectsMenu.css",
 ], function (
@@ -191,7 +191,7 @@ define("episerverRedirectsMenu/UrlRedirectsMenu", [
                             handleAs: "json"
                         };
                     statusLabel.innerText = "Uploading file...";
-                        var xhrRequest = xhr.post("/EpiserverRedirects/Import", xhrArgs)
+                        var xhrRequest = xhr.post("/Redirects/Import", xhrArgs)
                             .then(function(data) {
                                 var date = new Date(data.TimeStamp);
                                 statusLabel.innerText = date.toLocaleString()+" - Imported redirects: " + data.ImportedCount;

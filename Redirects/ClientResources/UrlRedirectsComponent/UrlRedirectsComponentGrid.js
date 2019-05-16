@@ -1,4 +1,4 @@
-﻿define("episerverRedirectsComponent/UrlRedirectsComponentGrid", [
+﻿define("redirectsComponent/UrlRedirectsComponentGrid", [
     "dojo/_base/declare",
 
     "dgrid/Grid",

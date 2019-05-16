@@ -4,7 +4,7 @@ using EPiServer.Data.Dynamic;
 
 namespace Forte.Redirects.Model.RedirectRule
 {
-    public enum RedirectRuleType { ExactMatch, Regex, Wildcard}
+    public enum RedirectRuleType { ExactMatch = 1, Regex = 2, Wildcard = 3}
     
     [EPiServerDataStore(AutomaticallyRemapStore = true)]
     public class RedirectRule : IDynamicData

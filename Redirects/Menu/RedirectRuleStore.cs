@@ -3,7 +3,6 @@ using System.Linq;
 using System.Net;
 using System.Web.Mvc;
 using EPiServer.Shell.Services.Rest;
-using Forte.Redirects.Controller;
 using Forte.Redirects.Mapper;
 using Forte.Redirects.Model.RedirectRule;
 using Forte.Redirects.Repository;
@@ -31,6 +30,8 @@ namespace Forte.Redirects.Menu
             
             return Rest(_redirectRuleMapper.ModelToDto(redirect));
         }
+        
+        [HttpGet]
         public ActionResult Get(Query query = null)
         {
             var redirects = _redirectRuleRepository

@@ -1,11 +1,13 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Web.Mvc;
 using EPiServer.Shell.Services.Rest;
 using Forte.Redirects.Model.RedirectRule;
 using Forte.Redirects.Model.RedirectType;
 
-namespace Forte.Redirects.Controller
+namespace Forte.Redirects.Menu
 {
+    [ModelBinder(typeof(QueryModelBinder))]
     public class Query
     {
         public string OldPath { get; set; }
@@ -39,8 +41,10 @@ namespace Forte.Redirects.Controller
             if (query.redirectRuleType != null)
                 redirectRules = redirectRules.Where(rr => rr.RedirectRuleType == query.redirectRuleType);
 
+            if (query.SortColumns != null)
+                redirectRules = redirectRules.OrderBy(query.SortColumns);
+            
             return redirectRules
-                .OrderBy(query.SortColumns)
                 .ApplyRange(query.Range)
                 .Items
                 .AsEnumerable();

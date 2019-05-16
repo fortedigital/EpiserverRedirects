@@ -114,7 +114,7 @@
                 return new Select({
                     name: "redirectRuleTypeSelect",
                     options: [
-                        { label: "All", value: null },
+                        { label: "All", value: "" },
                         { label: "ExactMatch", value: 0 },
                         { label: "Regex", value: 1 },
                         { label: "Wildcard", value: 2 }

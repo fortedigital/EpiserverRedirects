@@ -1,4 +1,4 @@
-﻿define("episerverRedirectsMenu/UrlRedirectsMenuViewModel", [
+﻿define("redirectsMenu/UrlRedirectsMenuViewModel", [
     // dojo
     "dojo/_base/declare",
     "dojo/Stateful",
@@ -42,7 +42,7 @@
 
         constructor: function () {
             var registry = dependency.resolve("epi.storeregistry");
-            this.store = this.store || registry.get("episerverRedirectsMenu.urlRedirectsStore");
+            this.store = this.store || registry.get("redirectsMenu.urlRedirectsStore");
         },
 
         getUrlRewrites: function () {

@@ -6,11 +6,6 @@ namespace Forte.Redirects.Menu
     [CompositeView]
     public class UrlRedirectsMenuView : ICompositeView
     {
-        public UrlRedirectsMenuView()
-        {
-            
-        }
-        
         private const string ViewName = "UrlRedirectsMenu";
         private IContainer _rootContainer;
 
@@ -26,7 +21,7 @@ namespace Forte.Redirects.Menu
             {
                 if (_rootContainer == null)
                 {
-                    var customContainer = new CustomContainer("episerverRedirectsMenu/RootContainer");
+                    var customContainer = new CustomContainer("redirectsMenu/RootContainer");
                     customContainer.Settings.Add("id", Name + "_rootContainer");
                     customContainer.Settings.Add("persist", "true"); 
                     _rootContainer = customContainer;
@@ -35,9 +30,6 @@ namespace Forte.Redirects.Menu
             }
         }
 
-        public ICompositeView CreateView()
-        {
-            return new UrlRedirectsMenuView();
-        }
+        public ICompositeView CreateView() => new UrlRedirectsMenuView();
     }
 }

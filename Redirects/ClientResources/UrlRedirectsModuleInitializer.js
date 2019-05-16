@@ -11,7 +11,7 @@
     _Module,
     routes
 ) {
-    return declare("episerverRedirects.UrlRedirectsModuleInitializer", [_Module], {
+    return declare("redirects.UrlRedirectsModuleInitializer", [_Module], {
 
         initialize: function () {
 
@@ -19,11 +19,11 @@
 
             var registry = this.resolveDependency("epi.storeregistry");
             //Register the store
-            registry.create("episerverRedirectsComponent.urlRedirectsStore", this._getRestPath("UrlRedirectsComponentStore"));
-            registry.create("episerverRedirectsMenu.urlRedirectsStore", this._getRestPath("RedirectRuleStore"));
+            registry.create("redirectsComponent.urlRedirectsStore", this._getRestPath("UrlRedirectsComponentStore"));
+            registry.create("redirectsMenu.urlRedirectsStore", this._getRestPath("RedirectRuleStore"));
         },
         _getRestPath: function (name) {
-            return routes.getRestPath({ moduleArea: "EpiserverRedirects", storeName: name });
+            return routes.getRestPath({ moduleArea: "Redirects", storeName: name });
         }
    });
 });

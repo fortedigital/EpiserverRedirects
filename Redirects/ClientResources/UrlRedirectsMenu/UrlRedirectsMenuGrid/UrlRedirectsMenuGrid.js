@@ -1,4 +1,4 @@
-﻿define("episerverRedirectsMenu-grid/UrlRedirectsMenuGrid", [
+﻿define("redirectsMenu-grid/UrlRedirectsMenuGrid", [
     "dojo/_base/declare",
     "dojo/dom-construct",
 
@@ -114,10 +114,10 @@
                 return new Select({
                     name: "redirectRuleTypeSelect",
                     options: [
-                        { label: "All", value: null },
-                        { label: "ExactMatch", value: 0 },
-                        { label: "Regex", value: 1 },
-                        { label: "Wildcard", value: 2 }
+                        { label: "All", value: 0},
+                        { label: "ExactMatch", value: 1 },
+                        { label: "Regex", value: 2 },
+                        { label: "Wildcard", value: 3 }
                     ]
                 });
             },
@@ -126,9 +126,9 @@
                 return new Select({
                     name: "redirectTypeSelect",
                     options: [
-                        { label: "All", value: "" },
-                        { label: "Permanent", value: 0 },
-                        { label: "Temporary", value: 1 }
+                        { label: "All", value: 0 },
+                        { label: "Permanent", value: 1 },
+                        { label: "Temporary", value: 2 }
                     ]
                 });
             },
@@ -142,9 +142,9 @@
 
             _getRedirectTypeText: function (statusCode) {
                 switch (statusCode) {
-                    case 0:
-                        return "Permanent";
                     case 1:
+                        return "Permanent";
+                    case 2:
                         return "Temporary";
                     default:
                         return statusCode;

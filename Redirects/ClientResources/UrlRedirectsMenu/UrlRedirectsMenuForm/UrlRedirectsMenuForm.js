@@ -1,4 +1,4 @@
-﻿define("episerverRedirectsMenu-form/UrlRedirectsMenuForm", [
+﻿define("redirectsMenu-form/UrlRedirectsMenuForm", [
     "dojo/_base/declare",
     "dojo/text!./UrlRedirectsMenuForm.html",
     "dojo/on",

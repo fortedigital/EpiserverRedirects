@@ -2,6 +2,7 @@ using System.Linq;
 using EPiServer.Framework;
 using EPiServer.Framework.Initialization;
 using EPiServer.ServiceLocation;
+using Forte.Redirects.Mapper;
 using Forte.Redirects.Model.RedirectRule;
 using Forte.Redirects.Model.RedirectType;
 using Forte.Redirects.Repository;
@@ -18,6 +19,8 @@ namespace Forte.Redirects.Configuration
             context.Services.AddScoped<RequestHandler>();
             context.Services.AddTransient<IRedirectRuleRepository, DynamicDataStoreRepository>();
             context.Services.AddTransient<IResponseStatusCodeResolver, Http_1_1_ResponseStatusCodeResolver>();
+
+            context.Services.AddTransient<IRedirectRuleMapper, RedirectRuleMapper>();
 
             context.Services.AddTransient<IRedirectRuleResolver>(c => new CompositeResolver(
                 new ExactMatchResolver(c.GetInstance<IQueryable<RedirectRule>>()),

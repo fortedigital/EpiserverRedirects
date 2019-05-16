@@ -1,10 +1,10 @@
-﻿define("episerverRedirectsMenu/RootContainer", [
+﻿define("redirectsMenu/RootContainer", [
     "dojo/_base/declare",
 
     "dijit/_WidgetBase",
     "dijit/_Container",
 
-    "episerverRedirectsMenu/UrlRedirectsMenu"
+    "redirectsMenu/UrlRedirectsMenu"
 
 ],
 

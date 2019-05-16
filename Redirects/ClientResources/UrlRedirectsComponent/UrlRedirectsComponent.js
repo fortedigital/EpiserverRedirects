@@ -1,12 +1,12 @@
 
-define("episerverRedirectsComponent/UrlRedirectsComponent",[
+define("redirectsComponent/UrlRedirectsComponent",[
     "dojo/_base/declare",
     "dojo/text!./UrlRedirectsComponent.html",
 
     "dijit/_WidgetBase",
     "dijit/_TemplatedMixin",
     "dijit/_WidgetsInTemplateMixin",
-    "episerverRedirectsComponent/UrlRedirectsComponentGrid",
+    "redirectsComponent/UrlRedirectsComponentGrid",
 
     "epi-cms/_ContentContextMixin",
     "epi/dependency",
@@ -41,7 +41,7 @@ define("episerverRedirectsComponent/UrlRedirectsComponent",[
                 this.search.onSearchBoxChange = this._onSearchChange.bind(this);
 
                 var registry = dependency.resolve("epi.storeregistry");
-                this.store = this.store || registry.get("episerverRedirectsComponent.urlRedirectsStore");
+                this.store = this.store || registry.get("redirectsComponent.urlRedirectsStore");
 
                 this.urlRedirectsComponentGrid.init(this.store);
             },
