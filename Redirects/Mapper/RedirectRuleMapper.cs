@@ -14,26 +14,14 @@ namespace Forte.Redirects.Mapper
         {
             var destination = new RedirectRuleDto();
             destination.Id = source.Id;
+            destination.OldPattern = source.OldPattern;
             destination.NewPattern = source.NewPattern;
             destination.RedirectType = source.RedirectType;
             destination.IsActive = source.IsActive;
             destination.Notes = source.Notes;
             destination.CreatedOn = source.CreatedOn;
             destination.CreatedBy = source.CreatedBy;
-            
             destination.RedirectRuleType = source.RedirectRuleType;
-
-            switch (destination.RedirectRuleType)
-            {
-                case RedirectRuleType.ExactMatch:
-                    destination.OldPattern = source.OldPath.Path.OriginalString;
-                    break;
-                case RedirectRuleType.Regex:
-                    destination.OldPattern = source.OldPattern;
-                    break;
-                case RedirectRuleType.Wildcard:
-                    break;
-            }
 
             return destination;
         }
@@ -54,7 +42,7 @@ namespace Forte.Redirects.Mapper
             switch (destination.RedirectRuleType)
             {
                 case RedirectRuleType.ExactMatch:
-                    destination.OldPath = UrlPath.Parse(source.OldPattern);
+                    destination.OldPattern = UrlPath.NormalizePath(source.OldPattern);
                     break;
                 case RedirectRuleType.Regex:
                     destination.OldPattern = source.OldPattern;

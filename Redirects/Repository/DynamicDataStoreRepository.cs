@@ -34,16 +34,16 @@ namespace Forte.Redirects.Repository
 
         public override RedirectRule Update(RedirectRule redirectRule)
         {
-            var redirectToUpdate = GetById(redirectRule.Id.ExternalId);
+            var redirectRuleToUpdate = GetById(redirectRule.Id.ExternalId);
             
-            if(redirectToUpdate==null)
+            if(redirectRuleToUpdate==null)
                 throw new Exception("No existing redirect with this GUID");
             
-            WriteToModel(redirectRule, redirectToUpdate);
+            WriteToModel(redirectRule, redirectRuleToUpdate);
             
-            DynamicDataStore.Save(redirectToUpdate);
+            DynamicDataStore.Save(redirectRuleToUpdate);
 
-            return redirectToUpdate;
+            return redirectRuleToUpdate;
         }
 
         public override bool Delete(Guid id)

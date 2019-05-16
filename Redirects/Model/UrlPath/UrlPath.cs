@@ -5,7 +5,7 @@ namespace Forte.Redirects.Model.UrlPath
     public class UrlPath : IEquatable<UrlPath>
     {
         private const string InvalidRelativePathExceptionMessage = "Entered path is not a valid relative path.";
-        public Uri Path { get; }
+        private Uri Path { get; }
            
         public static UrlPath Parse(string oldPath)
         {

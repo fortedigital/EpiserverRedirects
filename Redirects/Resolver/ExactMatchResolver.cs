@@ -18,7 +18,7 @@ namespace Forte.Redirects.Resolver
         public async Task<IRedirect> ResolveRedirectRule(UrlPath oldPath)
         {
             var redirectRule = _redirectRuleResolverRepository
-                .FirstOrDefault(r => r.OldPath == oldPath && r.RedirectRuleType == RedirectRuleType.ExactMatch);
+                .FirstOrDefault(r => r.OldPattern == oldPath.ToString() && r.RedirectRuleType == RedirectRuleType.ExactMatch);
 
             if (redirectRule == null)
                 return null;

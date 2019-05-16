@@ -19,7 +19,8 @@ namespace Forte.RedirectTests.Data
             return new RedirectRule
             {
                 Id = Guid.NewGuid(),
-                OldPath = UrlPath.Parse(GetRandomPath()),
+                //TODO: 
+                OldPattern = UrlPath.NormalizePath(GetRandomPath()),
                 NewPattern = GetRandomPath(),
                 IsActive = true,
                 Notes = "some notes",

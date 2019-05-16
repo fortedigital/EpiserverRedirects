@@ -33,7 +33,7 @@ namespace Forte.RedirectTests.Data
         
         public RedirectRule WithOldPath(string oldPath)
         {
-            var redirectRule = ChangeData(r=>r.OldPath = UrlPath.Parse(oldPath));
+            var redirectRule = ChangeData(r=>r.OldPattern = UrlPath.NormalizePath(oldPath));
             return redirectRule;
         }
         
@@ -41,7 +41,7 @@ namespace Forte.RedirectTests.Data
         {
             var redirectRule = ChangeData(r=>
             {
-                r.OldPath = UrlPath.Parse(oldPath);
+                r.OldPattern = UrlPath.NormalizePath(oldPath);
                 r.NewPattern = newUrl;
                 r.RedirectRuleType = RedirectRuleType.ExactMatch;
             });

@@ -39,7 +39,7 @@ namespace Forte.RedirectTests.Tests.Resolver
                 .WithRule(r => r.WithOldPath("/dummyPath"), out var expectedRule)
                 .Create();
             
-            var redirect = await resolver.ResolveRedirectRule(expectedRule.OldPath);
+            var redirect = await resolver.ResolveRedirectRule(UrlPath.Parse(expectedRule.OldPattern));
             
             Assert.Equal(expectedRule.Id, redirect?.Id);
         }

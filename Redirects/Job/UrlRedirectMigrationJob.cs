@@ -79,7 +79,7 @@ namespace Forte.Redirects.Job
         {
             var redirectRule = new RedirectRule
             {
-                OldPath   = UrlPath.Parse(urlRewriteModel.OldUrl),
+                OldPattern   = UrlPath.NormalizePath(urlRewriteModel.OldUrl),
                 NewPattern = urlRewriteModel.NewUrl,
                 RedirectType = MapStatusCodeToRedirectType(urlRewriteModel.RedirectStatusCode),
                 CreatedOn = DateTime.Now,

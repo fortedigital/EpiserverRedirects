@@ -15,7 +15,7 @@ namespace Forte.RedirectTests.Tests
             var redirectRule = mapper.DtoToModel(redirectRuleDto);
 
             Assert.Equal(redirectRuleDto.Id, redirectRule.Id);
-            Assert.Equal(UrlPath.NormalizePath(redirectRuleDto.OldPattern), redirectRule.OldPath.Path.OriginalString);
+            Assert.Equal(UrlPath.NormalizePath(redirectRuleDto.OldPattern), redirectRule.OldPattern);
             Assert.Equal(redirectRuleDto.NewPattern, redirectRule.NewPattern);
             Assert.Equal(redirectRuleDto.Notes, redirectRule.Notes);
             Assert.Equal(redirectRuleDto.IsActive, redirectRule.IsActive);
@@ -33,7 +33,7 @@ namespace Forte.RedirectTests.Tests
             var redirectRuleDto = mapper.ModelToDto(redirectRule);
 
             Assert.Equal(redirectRule.Id, redirectRuleDto.Id);
-            Assert.Equal(redirectRule.OldPath.Path.OriginalString, redirectRuleDto.OldPattern);
+            Assert.Equal(redirectRule.OldPattern, redirectRuleDto.OldPattern);
             Assert.Equal(redirectRule.NewPattern, redirectRuleDto.NewPattern);
             Assert.Equal(redirectRule.Notes, redirectRuleDto.Notes);
             Assert.Equal(redirectRule.IsActive, redirectRuleDto.IsActive);

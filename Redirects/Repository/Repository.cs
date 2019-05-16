@@ -27,15 +27,15 @@ namespace Forte.Redirects.Repository
 
         public abstract bool Delete(Guid id);
 
-        protected static void WriteToModel(RedirectRule redirectRule, RedirectRule redirectToUpdate)
+        protected static void WriteToModel(RedirectRule redirectRule, RedirectRule redirectRuleToUpdate)
         {
-            redirectToUpdate.Id = redirectRule.Id;
-            redirectToUpdate.OldPath = redirectRule.OldPath;
-            redirectToUpdate.NewPattern = redirectRule.NewPattern;
-            redirectToUpdate.RedirectType = redirectRule.RedirectType;
-            redirectToUpdate.RedirectRuleType = redirectRule.RedirectRuleType;
-            redirectToUpdate.IsActive = redirectRule.IsActive;
-            redirectToUpdate.Notes = redirectRule.Notes;
+            redirectRuleToUpdate.Id = redirectRule.Id;
+            redirectRuleToUpdate.OldPattern = redirectRule.OldPattern;
+            redirectRuleToUpdate.NewPattern = redirectRule.NewPattern;
+            redirectRuleToUpdate.RedirectType = redirectRule.RedirectType;
+            redirectRuleToUpdate.RedirectRuleType = redirectRule.RedirectRuleType;
+            redirectRuleToUpdate.IsActive = redirectRule.IsActive;
+            redirectRuleToUpdate.Notes = redirectRule.Notes;
         }
 
         public IEnumerator<RedirectRule> GetEnumerator()
