@@ -10,9 +10,8 @@ using EPiServer.PlugIn;
 using EPiServer.Scheduler;
 using EPiServer.ServiceLocation;
 using Forte.EpiserverRedirects.UrlRewritePlugin;
+using Forte.Redirects.Model;
 using Forte.Redirects.Model.RedirectRule;
-using Forte.Redirects.Model.RedirectType;
-using Forte.Redirects.Model.UrlPath;
 using Forte.Redirects.Repository;
 
 namespace Forte.Redirects.Job
@@ -83,7 +82,9 @@ namespace Forte.Redirects.Job
                 NewPattern = urlRewriteModel.NewUrl,
                 RedirectType = MapStatusCodeToRedirectType(urlRewriteModel.RedirectStatusCode),
                 CreatedOn = DateTime.Now,
-                IsActive = IsMigratedRedirectRuleActive(urlRewriteModel.ContentId)
+                IsActive = IsMigratedRedirectRuleActive(urlRewriteModel.ContentId),
+                RedirectOrigin = urlRewriteModel.ContentId != 0 ? RedirectOrigin.System : RedirectOrigin.Import,
+                Notes = "Migrated from old redirects module"
             };
 
             return redirectRule;

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Web;
 using System.Web.Mvc;
-using EPiServer.Data;
 using Newtonsoft.Json;
 
 namespace Forte.Redirects.Model.RedirectRule
@@ -20,12 +19,12 @@ namespace Forte.Redirects.Model.RedirectRule
                 return new RedirectRuleDto
                 {
                     //TODO: no id passing
-                    Id = ParseIdentity(redirectRuleDtoProperties["identity"]),
+                    Id = Parser.ParseIdentity(redirectRuleDtoProperties["identity"]),
                     OldPattern = redirectRuleDtoProperties["oldPattern"],
                     NewPattern = redirectRuleDtoProperties["newPattern"],
-                    RedirectType = ParseRedirectType(redirectRuleDtoProperties["redirectType"]),
-                    RedirectRuleType = ParseRedirectRuleType(redirectRuleDtoProperties["redirectRuleType"]),
-                    IsActive = ParseIsActive(redirectRuleDtoProperties["isActive"]),
+                    RedirectType = Parser.ParseRedirectType(redirectRuleDtoProperties["redirectType"]),
+                    RedirectRuleType = Parser.ParseRedirectRuleType(redirectRuleDtoProperties["redirectRuleType"]),
+                    IsActive = Parser.ParseIsActive(redirectRuleDtoProperties["isActive"]),
                 };
             }
             catch
@@ -33,19 +32,7 @@ namespace Forte.Redirects.Model.RedirectRule
                 throw new Exception("Failed to parse json from http request body " + jsonBody);
             }
         }
-
-        private static Guid? ParseIdentity(string guidString)
-        {
-            if(Guid.TryParse(guidString, out var guid))
-                return guid;
-            return null;
-        }
-
-        private static bool ParseIsActive(string redirectRuleDtoProperty)
-        {
-            return bool.Parse(redirectRuleDtoProperty);
-        }
-
+        
         private static string GetBody(HttpRequestBase request)
         {
             var inputStream = request.InputStream;
@@ -56,18 +43,6 @@ namespace Forte.Redirects.Model.RedirectRule
                 var body = reader.ReadToEnd();
                 return body;
             }
-        }
-
-        private static RedirectType.RedirectType ParseRedirectType(string val)
-        {
-            Enum.TryParse<RedirectType.RedirectType>(val, out var redirectType);
-            return redirectType;
-        }
-
-        private static RedirectRuleType ParseRedirectRuleType(string val)
-        {
-            Enum.TryParse<RedirectRuleType>(val, out var redirectRuleType);
-            return redirectRuleType;
         }
     }
 }

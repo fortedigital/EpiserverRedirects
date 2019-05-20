@@ -1,8 +1,8 @@
 ﻿using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Forte.Redirects.Model;
 using Forte.Redirects.Model.RedirectRule;
-using Forte.Redirects.Model.UrlPath;
 using Forte.Redirects.Redirect;
 
 namespace Forte.Redirects.Resolver
@@ -21,7 +21,7 @@ namespace Forte.Redirects.Resolver
             var redirectRule = _redirectRuleResolverRepository
                 .Where(r=>r.RedirectRuleType == RedirectRuleType.Regex)
                 .AsEnumerable()
-                .FirstOrDefault(r=>System.Text.RegularExpressions.Regex.IsMatch(oldPath.ToString(), r.OldPattern.ToString(), RegexOptions.IgnoreCase));
+                .FirstOrDefault(r=>Regex.IsMatch(oldPath.ToString(), r.OldPattern.ToString(), RegexOptions.IgnoreCase));
 
             if (redirectRule == null)
                 return null;

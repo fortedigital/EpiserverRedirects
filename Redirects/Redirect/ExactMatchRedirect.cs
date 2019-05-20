@@ -1,7 +1,6 @@
 using System;
 using EPiServer.Web.Routing;
 using Forte.Redirects.Model.RedirectRule;
-using Forte.Redirects.Model.RedirectType;
 
 namespace Forte.Redirects.Redirect
 {
@@ -11,7 +10,7 @@ namespace Forte.Redirects.Redirect
         {
         }
 
-        protected override string GetPathWithoutContentId(Uri request, IUrlResolver contentUrlResolver, IResponseStatusCodeResolver responseStatusCodeResolver)
+        protected override string GetPathWithoutContentId(Uri request)
         {
             var newUrl = RedirectRule.NewPattern;
 

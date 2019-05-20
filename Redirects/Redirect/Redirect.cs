@@ -2,8 +2,8 @@ using System;
 using EPiServer.Core;
 using EPiServer.Data;
 using EPiServer.Web.Routing;
+using Forte.Redirects.Model;
 using Forte.Redirects.Model.RedirectRule;
-using Forte.Redirects.Model.RedirectType;
 using Forte.Redirects.Request;
 
 namespace Forte.Redirects.Redirect
@@ -18,33 +18,20 @@ namespace Forte.Redirects.Redirect
             RedirectRule = redirectRule;
         }
 
-        protected abstract string GetPathWithoutContentId(Uri request, IUrlResolver contentUrlResolver, IResponseStatusCodeResolver responseStatusCodeResolver);
+        protected abstract string GetPathWithoutContentId(Uri request);
         
         public void Execute(Uri request, IHttpResponse response, IUrlResolver contentUrlResolver, IResponseStatusCodeResolver responseStatusCodeResolver)
         {
-            if (GetPathFromContentId(response, contentUrlResolver, responseStatusCodeResolver))
-                return;
-
-            var newUrl = GetPathWithoutContentId(request, contentUrlResolver, responseStatusCodeResolver);
-
-            RedirectResponse(response, responseStatusCodeResolver, newUrl);
-        }
-
-        private bool GetPathFromContentId(IHttpResponse response, IUrlResolver contentUrlResolver, IResponseStatusCodeResolver responseStatusCodeResolver)
-        {
-            if (RedirectRule.ContentId == null)
-                return false;
+            var newUrl = RedirectRule.ContentId != null
+                ? GetPathFromContentId(contentUrlResolver)
+                    : GetPathWithoutContentId(request);
             
-            var newUrl = GetPathFromContentId(RedirectRule.ContentId.Value, contentUrlResolver);
-
             RedirectResponse(response, responseStatusCodeResolver, newUrl);
-
-            return true;
         }
 
-        private static string GetPathFromContentId(int contentReferenceId, IUrlResolver contentUrlResolver)
+        private string GetPathFromContentId(IUrlResolver contentUrlResolver)
         {
-            var contentReference = new ContentReference(contentReferenceId);
+            var contentReference = new ContentReference(RedirectRule.ContentId.Value);
             return contentUrlResolver.GetUrl(contentReference, null);
         }
 

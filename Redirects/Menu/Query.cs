@@ -4,7 +4,6 @@ using System.Linq;
 using System.Web.Mvc;
 using EPiServer.Shell.Services.Rest;
 using Forte.Redirects.Model.RedirectRule;
-using Forte.Redirects.Model.RedirectType;
 
 namespace Forte.Redirects.Menu
 {
@@ -15,6 +14,7 @@ namespace Forte.Redirects.Menu
         public string NewPattern { get; set; }
         public RedirectType? RedirectType{ get; set; }
         public RedirectRuleType? RedirectRuleType{ get; set; }
+        public RedirectOrigin? RedirectOrigin{ get; set; }
         
         public bool? IsActive{ get; set; }
         public DateTime? CreatedOnFrom{ get; set; }
@@ -44,7 +44,10 @@ namespace Forte.Redirects.Menu
             if (query.RedirectRuleType != null)
                 redirectRules = redirectRules.Where(rr => rr.RedirectRuleType == query.RedirectRuleType);
             
-            if (query.RedirectRuleType != null)
+            if (query.RedirectOrigin != null)
+                redirectRules = redirectRules.Where(rr => rr.RedirectOrigin == query.RedirectOrigin);
+            
+            if (query.IsActive != null)
                 redirectRules = redirectRules.Where(rr => rr.IsActive == query.IsActive);
             
             if (query.CreatedOnFrom != null)
@@ -52,6 +55,12 @@ namespace Forte.Redirects.Menu
             
             if (query.CreatedOnTo != null)
                 redirectRules = redirectRules.Where(rr => rr.CreatedOn <= query.CreatedOnTo);
+            
+            if (!string.IsNullOrEmpty(query.CreatedBy))
+                redirectRules = redirectRules.Where(rr => rr.CreatedBy.Contains(query.CreatedBy));
+            
+            if (!string.IsNullOrEmpty(query.Notes))
+                redirectRules = redirectRules.Where(rr => rr.Notes.Contains(query.Notes));
 
             if (query.SortColumns != null)
                 redirectRules = redirectRules.OrderBy(query.SortColumns);

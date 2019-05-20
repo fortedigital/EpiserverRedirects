@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Forte.Redirects.Model.UrlPath;
+using Forte.Redirects.Model;
 using Forte.Redirects.Redirect;
 
 namespace Forte.Redirects.Resolver

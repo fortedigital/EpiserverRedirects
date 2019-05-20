@@ -1,8 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using EPiServer.Web.Routing;
-using Forte.Redirects.Model.RedirectType;
-using Forte.Redirects.Model.UrlPath;
+using Forte.Redirects.Model;
 using Forte.Redirects.Resolver;
 
 namespace Forte.Redirects.Request

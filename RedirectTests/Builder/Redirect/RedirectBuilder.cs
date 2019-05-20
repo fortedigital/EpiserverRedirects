@@ -1,8 +1,8 @@
 using System;
 using EPiServer.Core;
 using EPiServer.Web.Routing;
+using Forte.Redirects.Model;
 using Forte.Redirects.Model.RedirectRule;
-using Forte.Redirects.Model.RedirectType;
 using Forte.Redirects.Redirect;
 using Forte.Redirects.Request;
 using Moq;

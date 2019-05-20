@@ -14,7 +14,9 @@
     "dijit/form/Select",
     "dijit/form/DateTextBox",
 
-    "xstyle/css!./RedirectsMenuGrid.css"
+
+    "redirects/Moment", 
+        "xstyle/css!./RedirectsMenuGrid.css"
 ],
 
     function (
@@ -31,7 +33,8 @@
 
         _LayoutWidget,
         Select,
-        DateTextBox
+        DateTextBox,
+        moment
     ) {
 
         return declare([_LayoutWidget], {
@@ -42,6 +45,7 @@
             newPattern: null,
             redirectRuleType: null,
             redirectType: null,
+            redirectOrigin: null,
             isActive: null,
             createdOnFrom: null,
             createdOnTo: null,
@@ -57,6 +61,7 @@
                 this.newPattern = new SearchBox();
                 this.redirectRuleType = this._createRedirectRuleTypeSelect();
                 this.redirectType = this._createRedirectTypeSelect();
+                this.redirectOrigin = this._createRedirectOriginSelect();
                 this.isActive = this._createIsActiveSelect();
                 this.createdOnFrom = this._createCreatedOnFromFilter();
                 this.createdOnTo = this._createCreatedOnToFilter();
@@ -95,6 +100,14 @@
                             },
                             children: [
                                 { field: 'redirectType', label: 'Redirect Type', renderCell: (object, value, node) => node.append(this._getRedirectTypeText(value)) }
+                            ]
+                        },
+                        {
+                            renderHeaderCell: (node) => {
+                                return this.redirectOrigin.domNode;
+                            },
+                            children: [
+                                { field: 'redirectOrigin', label: 'Redirect Origin', renderCell: (object, value, node) => node.append(this._getRedirectOriginText(value)) }
                             ]
                         },
                         {
@@ -177,6 +190,18 @@
                 });
             },
 
+            _createRedirectOriginSelect: function () {
+                return new Select({
+                    name: "redirectOriginSelect",
+                    options: [
+                        { label: "All", value: 0 },
+                        { label: "System", value: 1 },
+                        { label: "Manual", value: 2 },
+                        { label: "Import", value: 3 }
+                    ]
+                });
+            },
+
             _createIsActiveSelect() {
                 return new Select({
                     name: "isActiveSelect",
@@ -231,6 +256,19 @@
                 }
             },
 
+            _getRedirectOriginText: function (redirectOrigin) {
+                switch (redirectOrigin) {
+                    case 1:
+                        return "System";
+                    case 2:
+                        return "Manual";
+                    case 3:
+                        return "Import";
+                    default:
+                        return redirectOrigin;
+                }
+            },
+
             _getIsActiveText: function (isActive) {
                 switch (isActive) {
                     case "false":
@@ -243,7 +281,7 @@
             },
 
             _getLocalDateTime: function (utcDateTime) {
-                var localDateTime = new Date(utcDateTime);
+                var localDateTime = moment(utcDateTime).local().format('DD-MM-YYYY HH:mm:ss');
                 return localDateTime.toString();
             },
 

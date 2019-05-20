@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using Forte.Redirects.Model.RedirectRule;
-using Forte.Redirects.Model.RedirectType;
 using Forte.RedirectTests.Builder.WithRepository;
 using Forte.RedirectTests.Data;
 using Forte.RedirectTests.RestExtensions;

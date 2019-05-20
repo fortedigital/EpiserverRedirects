@@ -1,9 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Forte.Redirects.Model;
 using Forte.Redirects.Model.RedirectRule;
-using Forte.Redirects.Model.RedirectType;
-using Forte.Redirects.Model.UrlPath;
 
 namespace Forte.RedirectTests.Data
 {
@@ -19,15 +18,15 @@ namespace Forte.RedirectTests.Data
             return new RedirectRule
             {
                 Id = Guid.NewGuid(),
-                //TODO: 
                 OldPattern = UrlPath.NormalizePath(GetRandomPath()),
                 NewPattern = GetRandomPath(),
                 IsActive = true,
                 Notes = "some notes",
-                CreatedOn = DateTime.Now,
+                CreatedOn = DateTime.SpecifyKind(DateTime.UtcNow, DateTimeKind.Utc),
                 RedirectType = RedirectType.Temporary,
                 CreatedBy = "user",
                 RedirectRuleType = RedirectRuleType.ExactMatch,
+                RedirectOrigin = RedirectOrigin.System
             };
         }
         
@@ -40,10 +39,11 @@ namespace Forte.RedirectTests.Data
                 NewPattern = GetRandomPath(),
                 IsActive = true,
                 Notes = "some notes",
-                CreatedOn = DateTime.Now,
+                CreatedOn = DateTime.SpecifyKind(DateTime.UtcNow, DateTimeKind.Utc),
                 RedirectType = RedirectType.Temporary,
                 CreatedBy = "user",
                 RedirectRuleType = RedirectRuleType.ExactMatch,
+                RedirectOrigin = RedirectOrigin.System
             };
         }
         

@@ -1,4 +1,4 @@
-﻿using Forte.Redirects.Model.UrlPath;
+﻿using Forte.Redirects.Model;
 using Forte.RedirectTests.Builder.WithRepository.Resolver;
 using Xunit;
 

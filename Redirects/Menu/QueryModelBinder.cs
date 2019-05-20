@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Web.Mvc;
 using EPiServer.Shell.Services.Rest;
 using Forte.Redirects.Model.RedirectRule;
-using Forte.Redirects.Model.RedirectType;
 
 namespace Forte.Redirects.Menu
 {
@@ -19,14 +18,15 @@ namespace Forte.Redirects.Menu
                 {
                     OldPattern = queryPropertiesDictionary["oldPattern"],
                     NewPattern = queryPropertiesDictionary["newPattern"],
-                    RedirectType = ParseRedirectType(queryPropertiesDictionary["redirectType"]),
-                    RedirectRuleType = ParseRedirectRuleType(queryPropertiesDictionary["redirectRuleType"]),
-                    IsActive = ParseIsActive(queryPropertiesDictionary["isActive"]),
-                    CreatedOnFrom = ParseCreatedOnFrom(queryPropertiesDictionary["createdOnFrom"]),
-                    CreatedOnTo = ParseCreatedOnTo(queryPropertiesDictionary["createdOnTo"]),
+                    RedirectType = Parser.ParseRedirectTypeNullable(queryPropertiesDictionary["redirectType"]),
+                    RedirectRuleType = Parser.ParseRedirectRuleTypeNullable(queryPropertiesDictionary["redirectRuleType"]),
+                    RedirectOrigin = Parser.ParseRedirectOriginNullable(queryPropertiesDictionary["redirectOrigin"]),
+                    IsActive = Parser.ParseIsActiveNullable(queryPropertiesDictionary["isActive"]),
+                    CreatedOnFrom = Parser.ParseCreatedOnFrom(queryPropertiesDictionary["createdOnFrom"]),
+                    CreatedOnTo = Parser.ParseCreatedOnTo(queryPropertiesDictionary["createdOnTo"]),
                     CreatedBy = queryPropertiesDictionary["createdBy"],
                     Notes = queryPropertiesDictionary["notes"],
-                    SortColumns = ParseSortColumns(queryPropertiesDictionary.ToString()),
+                    SortColumns = Parser.ParseSortColumns(queryPropertiesDictionary.ToString()),
                 };
             }
             catch
@@ -35,50 +35,6 @@ namespace Forte.Redirects.Menu
             }
         }
 
-        private static DateTime? ParseCreatedOnFrom(string value)
-        {
-            if(DateTime.TryParse(value, out var createdOnFrom))
-                return createdOnFrom;
-            return null;
-        }
         
-        private static DateTime? ParseCreatedOnTo(string value)
-        {
-            if(DateTime.TryParse(value, out var createdOnTo))
-                return createdOnTo;
-            return null;
-        }
-
-        private static bool? ParseIsActive(string value)
-        {
-            if (bool.TryParse(value, out var isActive))
-                return isActive;
-            return null;
-        }
-
-        private static IEnumerable<SortColumn> ParseSortColumns(string sortQuery)
-        {
-            return string.IsNullOrEmpty(sortQuery)
-                ? null 
-                : SortColumn.Parse(sortQuery);
-        }
-
-        private static RedirectType? ParseRedirectType(string val)
-        {
-            if(string.IsNullOrEmpty(val) || val == "0")
-                return null;
-
-            Enum.TryParse<RedirectType>(val, out var redirectType);
-            return redirectType;
-        }
-
-        private static RedirectRuleType? ParseRedirectRuleType(string val)
-        {
-            if(string.IsNullOrEmpty(val) || val == "0")
-                return null;
-
-            Enum.TryParse<RedirectRuleType>(val, out var redirectRuleType);
-            return redirectRuleType;
-        }
     }
 }

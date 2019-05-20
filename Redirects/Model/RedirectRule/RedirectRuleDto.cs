@@ -19,7 +19,9 @@ namespace Forte.Redirects.Model.RedirectRule
         public RedirectRuleType RedirectRuleType { get; set; }
         
         [Required]
-        public RedirectType.RedirectType RedirectType { get; set; }
+        public RedirectType RedirectType { get; set; }
+        
+        public RedirectOrigin RedirectOrigin { get; set; }
         
         [Required]
         public DateTime CreatedOn { get; set; }
@@ -41,7 +43,7 @@ namespace Forte.Redirects.Model.RedirectRule
             NewPattern = newUrl;
         }
         
-        public RedirectRuleDto(Guid guid, string pattern, string newUrl, RedirectType.RedirectType redirectType)
+        public RedirectRuleDto(Guid guid, string pattern, string newUrl, RedirectType temporary)
         {
             Id = guid;
             OldPattern = pattern;

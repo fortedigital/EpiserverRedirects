@@ -1,22 +1,20 @@
 using EPiServer.ServiceLocation;
 
-namespace Forte.Redirects.Model.RedirectType {
-    public enum RedirectType {Permanent = 1, Temporary = 2}
-
+namespace Forte.Redirects.Model {
     public interface IResponseStatusCodeResolver
     {
-        int GetHttpResponseStatusCode(RedirectType redirectType);
+        int GetHttpResponseStatusCode(RedirectRule.RedirectType redirectType);
     }
 
     public class Http_1_0_ResponseStatusCodeResolver : IResponseStatusCodeResolver
     {
-        public int GetHttpResponseStatusCode(RedirectType redirectType)
+        public int GetHttpResponseStatusCode(RedirectRule.RedirectType redirectType)
         {
             switch (redirectType)
             {
-                case RedirectType.Permanent:
+                case RedirectRule.RedirectType.Permanent:
                     return 301;
-                case RedirectType.Temporary:
+                case RedirectRule.RedirectType.Temporary:
                     return 302;
                 default:
                     return 301;
@@ -27,13 +25,13 @@ namespace Forte.Redirects.Model.RedirectType {
     [ServiceConfiguration(ServiceType = typeof(IResponseStatusCodeResolver))]
     public class Http_1_1_ResponseStatusCodeResolver : IResponseStatusCodeResolver
     {
-        public int GetHttpResponseStatusCode(RedirectType redirectType)
+        public int GetHttpResponseStatusCode(RedirectRule.RedirectType redirectType)
         {
             switch (redirectType)
             {
-                case RedirectType.Temporary:
+                case RedirectRule.RedirectType.Temporary:
                     return 307;
-                case RedirectType.Permanent:
+                case RedirectRule.RedirectType.Permanent:
                     return 308;
                 default:
                     return 308;

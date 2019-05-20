@@ -1,5 +1,5 @@
 using Forte.Redirects.Mapper;
-using Forte.Redirects.Model.UrlPath;
+using Forte.Redirects.Model;
 using Forte.RedirectTests.Data;
 using Xunit;
 
@@ -17,12 +17,13 @@ namespace Forte.RedirectTests.Tests
             Assert.Equal(redirectRuleDto.Id, redirectRule.Id);
             Assert.Equal(UrlPath.NormalizePath(redirectRuleDto.OldPattern), redirectRule.OldPattern);
             Assert.Equal(redirectRuleDto.NewPattern, redirectRule.NewPattern);
-            Assert.Equal(redirectRuleDto.Notes, redirectRule.Notes);
-            Assert.Equal(redirectRuleDto.IsActive, redirectRule.IsActive);
-            Assert.Equal(redirectRuleDto.CreatedOn, redirectRule.CreatedOn);
+            
             Assert.Equal(redirectRuleDto.RedirectType, redirectRule.RedirectType);
-            Assert.Equal(redirectRuleDto.CreatedBy, redirectRule.CreatedBy);
             Assert.Equal(redirectRuleDto.RedirectRuleType, redirectRule.RedirectRuleType);
+
+            Assert.Equal(redirectRuleDto.IsActive, redirectRule.IsActive);
+            Assert.Equal(redirectRuleDto.Notes, redirectRule.Notes);
+
         }
 
         [Fact]
@@ -35,12 +36,16 @@ namespace Forte.RedirectTests.Tests
             Assert.Equal(redirectRule.Id, redirectRuleDto.Id);
             Assert.Equal(redirectRule.OldPattern, redirectRuleDto.OldPattern);
             Assert.Equal(redirectRule.NewPattern, redirectRuleDto.NewPattern);
-            Assert.Equal(redirectRule.Notes, redirectRuleDto.Notes);
-            Assert.Equal(redirectRule.IsActive, redirectRuleDto.IsActive);
-            Assert.Equal(redirectRule.CreatedOn, redirectRuleDto.CreatedOn);
+
             Assert.Equal(redirectRule.RedirectType, redirectRuleDto.RedirectType);
-            Assert.Equal(redirectRule.CreatedBy, redirectRuleDto.CreatedBy);
             Assert.Equal(redirectRule.RedirectRuleType, redirectRuleDto.RedirectRuleType);
+            Assert.Equal(redirectRule.RedirectOrigin, redirectRuleDto.RedirectOrigin);
+            
+            Assert.Equal(redirectRuleDto.CreatedOn, redirectRule.CreatedOn);
+            Assert.Equal(redirectRuleDto.CreatedBy, redirectRule.CreatedBy);
+            
+            Assert.Equal(redirectRule.IsActive, redirectRuleDto.IsActive);
+            Assert.Equal(redirectRule.Notes, redirectRuleDto.Notes);
         }
     }
 }

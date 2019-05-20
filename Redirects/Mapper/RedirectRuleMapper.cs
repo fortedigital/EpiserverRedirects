@@ -1,5 +1,6 @@
+using System;
+using Forte.Redirects.Model;
 using Forte.Redirects.Model.RedirectRule;
-using Forte.Redirects.Model.UrlPath;
 
 namespace Forte.Redirects.Mapper
 {
@@ -18,9 +19,10 @@ namespace Forte.Redirects.Mapper
             destination.NewPattern = source.NewPattern;
             destination.RedirectType = source.RedirectType;
             destination.RedirectRuleType = source.RedirectRuleType;
+            destination.RedirectOrigin = source.RedirectOrigin;
             destination.IsActive = source.IsActive;
             destination.Notes = source.Notes;
-            destination.CreatedOn = source.CreatedOn;
+            destination.CreatedOn = DateTime.SpecifyKind(source.CreatedOn, DateTimeKind.Utc);
             destination.CreatedBy = source.CreatedBy;
 
             return destination;
@@ -36,8 +38,6 @@ namespace Forte.Redirects.Mapper
             destination.RedirectRuleType = source.RedirectRuleType;
             destination.IsActive = source.IsActive;
             destination.Notes = source.Notes;
-            destination.CreatedOn = source.CreatedOn;
-            destination.CreatedBy = source.CreatedBy;
 
             return destination;
         }

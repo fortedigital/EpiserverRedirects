@@ -6,6 +6,9 @@ namespace Forte.Redirects.Model.RedirectRule
 {
     public enum RedirectRuleType { ExactMatch = 1, Regex = 2, Wildcard = 3}
     
+    public enum RedirectType {Permanent = 1, Temporary = 2}
+    public enum RedirectOrigin { System = 1, Manual = 2, Import = 3}
+    
     [EPiServerDataStore(AutomaticallyRemapStore = true)]
     public class RedirectRule : IDynamicData
     {
@@ -13,22 +16,83 @@ namespace Forte.Redirects.Model.RedirectRule
         {
             
         }
-        public RedirectRule(Identity id)
+
+        public static RedirectRule NewFromManual(string oldPattern, string newPattern, RedirectType redirectType,
+            RedirectRuleType redirectRuleType, bool isActive, string createdBy, string notes)
         {
-            Id = id;
+            return new RedirectRule
+            {
+                RedirectOrigin = RedirectOrigin.Manual,
+                OldPattern = oldPattern,
+                NewPattern = newPattern,
+                RedirectType = redirectType,
+                RedirectRuleType = redirectRuleType,
+                IsActive = isActive,
+                CreatedBy = createdBy,
+                Notes = notes
+            };
         }
         
-        public RedirectRule(string oldPattern, string newPattern)
+        public static RedirectRule NewFromSystem(string oldPattern, string newPattern, RedirectType redirectType,
+            RedirectRuleType redirectRuleType, string createdBy, string notes)
         {
-            OldPattern = oldPattern;
-            NewPattern = newPattern;
+            return new RedirectRule
+            {
+                RedirectOrigin = RedirectOrigin.System,
+                OldPattern = oldPattern,
+                NewPattern = newPattern,
+                RedirectType = redirectType,
+                RedirectRuleType = redirectRuleType,
+                CreatedBy = createdBy,
+                Notes = notes
+            };
         }
-        public RedirectRule(Identity id, string oldPattern, string newPattern, RedirectType.RedirectType redirectType)
+
+        public static RedirectRule NewFromSystem(string oldPattern, int contentId, RedirectType redirectType,
+            RedirectRuleType redirectRuleType, string createdBy, string notes)
         {
-            Id = id;
-            OldPattern = oldPattern;
-            NewPattern = newPattern;
+            return new RedirectRule
+            {
+                RedirectOrigin = RedirectOrigin.System,
+                OldPattern = oldPattern,
+                ContentId = contentId,
+                RedirectType = redirectType,
+                RedirectRuleType = redirectRuleType,
+                CreatedBy = createdBy,
+                Notes = notes
+            };
         }
+
+        public static RedirectRule NewFromImport(string oldPattern, string newPattern, RedirectType redirectType,
+            RedirectRuleType redirectRuleType, string createdBy, string notes)
+        {
+            return new RedirectRule
+            {
+                RedirectOrigin = RedirectOrigin.Import,
+                OldPattern = oldPattern,
+                NewPattern = newPattern,
+                RedirectType = redirectType,
+                RedirectRuleType = redirectRuleType,
+                CreatedBy = createdBy,
+                Notes = notes
+            };
+        }
+
+        public static RedirectRule NewFromImport(string oldPattern, int contentId, RedirectType redirectType,
+            RedirectRuleType redirectRuleType, string createdBy, string notes)
+        {
+            return new RedirectRule
+            {
+                RedirectOrigin = RedirectOrigin.Import,
+                OldPattern = oldPattern,
+                ContentId = contentId,
+                RedirectType = redirectType,
+                RedirectRuleType = redirectRuleType,
+                CreatedBy = createdBy,
+                Notes = notes
+            };
+        }
+
         public Identity Id { get; set; }
 
         public int? ContentId { get; set; }
@@ -37,11 +101,13 @@ namespace Forte.Redirects.Model.RedirectRule
 
         public RedirectRuleType RedirectRuleType { get; set; }
         
-        public RedirectType.RedirectType RedirectType { get; set; }
+        public RedirectType RedirectType { get; set; }
+        
+        public RedirectOrigin RedirectOrigin { get; set; }
         public DateTime CreatedOn { get; set; }
         
-        public string CreatedBy { get; set; }
         public bool IsActive { get; set; }
+        public string CreatedBy { get; set; }
         public string Notes { get; set; }
     }
 
