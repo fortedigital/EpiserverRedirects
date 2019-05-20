@@ -12,6 +12,7 @@
 
     "dijit/layout/_LayoutWidget",
     "dijit/form/Select",
+    "dijit/form/DateTextBox",
 
     "xstyle/css!./RedirectsMenuGrid.css"
 ],
@@ -29,7 +30,8 @@
         SearchBox,
 
         _LayoutWidget,
-        Select
+        Select,
+        DateTextBox
     ) {
 
         return declare([_LayoutWidget], {
@@ -40,6 +42,11 @@
             newPattern: null,
             redirectRuleType: null,
             redirectType: null,
+            isActive: null,
+            createdOnFrom: null,
+            createdOnTo: null,
+            createdBy: null,
+            notes: null,
 
             buildRendering: function () {
                 this.inherited(arguments);
@@ -50,6 +57,11 @@
                 this.newPattern = new SearchBox();
                 this.redirectRuleType = this._createRedirectRuleTypeSelect();
                 this.redirectType = this._createRedirectTypeSelect();
+                this.isActive = this._createIsActiveSelect();
+                this.createdOnFrom = this._createCreatedOnFromFilter();
+                this.createdOnTo = this._createCreatedOnToFilter();
+                this.createdBy = new SearchBox();
+                this.notes = new SearchBox();
 
                 this.grid = new this._gridClass({
                     columns: [
@@ -74,7 +86,7 @@
                                 return this.redirectRuleType.domNode;
                             },
                             children: [
-                                { field: 'redirectRuleType', label: 'Redirect Rule Type' }
+                                { field: 'redirectRuleType', label: 'Redirect Rule Type', renderCell: (object, value, node) => node.append(this._getRedirectRuleTypeText(value)) }
                             ]
                         },
                         {
@@ -84,7 +96,39 @@
                             children: [
                                 { field: 'redirectType', label: 'Redirect Type', renderCell: (object, value, node) => node.append(this._getRedirectTypeText(value)) }
                             ]
-                        }
+                        },
+                        {
+                            renderHeaderCell: (node) => {
+                                return this.isActive.domNode;
+                            },
+                            children: [
+                                { field: 'isActive', label: 'Is active', renderCell: (object, value, node) => node.append(this._getIsActiveText(value)) }
+                            ]
+                        },
+                        {
+                            renderHeaderCell: (node) => {
+                                return [this.createdOnFrom.domNode, this.createdOnTo.domNode];
+                            },
+                            children: [
+                                { field: 'createdOn', label: 'Created on', renderCell: (object, value, node) => node.append(this._getLocalDateTime(value)) }
+                            ]
+                        },
+                        {
+                            renderHeaderCell: (node) => {
+                                return this._getSearchDomNode(this.createdBy);
+                            },
+                            children: [
+                                { field: 'createdBy', label: 'Created by' }
+                            ]
+                        },
+                        {
+                            renderHeaderCell: (node) => {
+                                return this._getSearchDomNode(this.notes);
+                            },
+                            children: [
+                                { field: 'notes', label: 'Notes' }
+                            ]
+                        },
                     ],
                     selectionMode: 'single',
                     cellNavigation: false,
@@ -95,7 +139,7 @@
                     pageSizeOptions: [10, 25, 50]
                 }, this.domNode);
 
-                this.grid.set("queryOptions", { sort: [{ attribute: "oldPattern", descending: false }] });
+                this.grid.set("queryOptions", { sort: [{ attribute: "createdOn", descending: true }] });
             },
 
             clearSelection: function () {
@@ -133,6 +177,29 @@
                 });
             },
 
+            _createIsActiveSelect() {
+                return new Select({
+                    name: "isActiveSelect",
+                    options: [
+                        { label: "All", value: "" },
+                        { label: "Active", value: "true" },
+                        { label: "Not active", value: "false" }
+                    ]
+                });
+            },
+
+            _createCreatedOnFromFilter() {
+                return new DateTextBox({
+                        name: "createdOnFrom"
+                    });
+            },
+
+            _createCreatedOnToFilter() {
+                return new DateTextBox({
+                    name: "createdOnTo"
+                });
+            },
+
             _getSearchDomNode: function (searchBox) {
                 var searchContainer = domConstruct.create("div", { "class": "epi-gadgetInnerToolbar" });
                 searchContainer.appendChild(searchBox.domNode);
@@ -149,6 +216,36 @@
                     default:
                         return statusCode;
                 }
-            }
+            },
+
+            _getRedirectRuleTypeText: function (redirectRuleType) {
+                switch (redirectRuleType) {
+                    case 1:
+                        return "ExactMatch";
+                    case 2:
+                        return "Regex";
+                    case 3:
+                        return "Wildcard";
+                    default:
+                        return redirectRuleType;
+                }
+            },
+
+            _getIsActiveText: function (isActive) {
+                switch (isActive) {
+                    case "false":
+                        return "False";
+                    case "true":
+                        return "True";
+                    default:
+                        return isActive;
+                }
+            },
+
+            _getLocalDateTime: function (utcDateTime) {
+                var localDateTime = new Date(utcDateTime);
+                return localDateTime.toString();
+            },
+
         });
     });

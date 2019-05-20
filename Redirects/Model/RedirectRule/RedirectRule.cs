@@ -38,7 +38,7 @@ namespace Forte.Redirects.Model.RedirectRule
         public RedirectRuleType RedirectRuleType { get; set; }
         
         public RedirectType.RedirectType RedirectType { get; set; }
-        public DateTimeOffset CreatedOn { get; set; }
+        public DateTime CreatedOn { get; set; }
         
         public string CreatedBy { get; set; }
         public bool IsActive { get; set; }

@@ -13,44 +13,32 @@ namespace Forte.Redirects.Mapper
         private static RedirectRuleDto ModelToDtoDelegate(RedirectRule source)
         {
             var destination = new RedirectRuleDto();
-            destination.Id = source.Id;
+            destination.Id = source.Id.ExternalId;
             destination.OldPattern = source.OldPattern;
             destination.NewPattern = source.NewPattern;
             destination.RedirectType = source.RedirectType;
+            destination.RedirectRuleType = source.RedirectRuleType;
             destination.IsActive = source.IsActive;
             destination.Notes = source.Notes;
             destination.CreatedOn = source.CreatedOn;
             destination.CreatedBy = source.CreatedBy;
-            destination.RedirectRuleType = source.RedirectRuleType;
 
             return destination;
         }
 
-        public static RedirectRule DtoToModelDelegate(RedirectRuleDto source)
+        private static RedirectRule DtoToModelDelegate(RedirectRuleDto source)
         {
             var destination = new RedirectRule();
             destination.Id = source.Id;
+            destination.OldPattern = UrlPath.NormalizePath(source.OldPattern);
             destination.NewPattern = source.NewPattern;
-
             destination.RedirectType = source.RedirectType;
+            destination.RedirectRuleType = source.RedirectRuleType;
             destination.IsActive = source.IsActive;
             destination.Notes = source.Notes;
             destination.CreatedOn = source.CreatedOn;
             destination.CreatedBy = source.CreatedBy;
-            destination.RedirectRuleType = source.RedirectRuleType;
 
-            switch (destination.RedirectRuleType)
-            {
-                case RedirectRuleType.ExactMatch:
-                    destination.OldPattern = UrlPath.NormalizePath(source.OldPattern);
-                    break;
-                case RedirectRuleType.Regex:
-                    destination.OldPattern = source.OldPattern;
-                    break;
-                case RedirectRuleType.Wildcard:
-                    break;
-            }
-            
             return destination;
         }
     }

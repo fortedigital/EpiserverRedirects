@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Web;
 using System.Web.Mvc;
+using EPiServer.Data;
 using Newtonsoft.Json;
 
 namespace Forte.Redirects.Model.RedirectRule
@@ -19,18 +20,30 @@ namespace Forte.Redirects.Model.RedirectRule
                 return new RedirectRuleDto
                 {
                     //TODO: no id passing
-                    //Id = Identity.Parse(redirectRuleDtoProperties["id"]),
+                    Id = ParseIdentity(redirectRuleDtoProperties["identity"]),
                     OldPattern = redirectRuleDtoProperties["oldPattern"],
                     NewPattern = redirectRuleDtoProperties["newPattern"],
-                    RedirectType = ParseRedirectType(redirectRuleDtoProperties["oldPattern"]),
-                    RedirectRuleType = ParseRedirectRuleType(redirectRuleDtoProperties["oldPattern"]),
-                    //IsActive = ParseIsActive(redirectRuleDtoProperties["isActive"]),
+                    RedirectType = ParseRedirectType(redirectRuleDtoProperties["redirectType"]),
+                    RedirectRuleType = ParseRedirectRuleType(redirectRuleDtoProperties["redirectRuleType"]),
+                    IsActive = ParseIsActive(redirectRuleDtoProperties["isActive"]),
                 };
             }
             catch
             {
                 throw new Exception("Failed to parse json from http request body " + jsonBody);
             }
+        }
+
+        private static Guid? ParseIdentity(string guidString)
+        {
+            if(Guid.TryParse(guidString, out var guid))
+                return guid;
+            return null;
+        }
+
+        private static bool ParseIsActive(string redirectRuleDtoProperty)
+        {
+            return bool.Parse(redirectRuleDtoProperty);
         }
 
         private static string GetBody(HttpRequestBase request)

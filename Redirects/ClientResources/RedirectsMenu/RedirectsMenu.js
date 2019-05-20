@@ -83,6 +83,11 @@ define("redirectsMenu/RedirectsMenu", [
                 this.redirectsMenuGrid.newPattern.onSearchBoxChange = (newValue) => this._onSearchChange({ newPattern: newValue });
                 on(this.redirectsMenuGrid.redirectRuleType, "change", (newValue) => this._onSearchChange({ redirectRuleType: newValue }));
                 on(this.redirectsMenuGrid.redirectType, "change", (newValue) => this._onSearchChange({ redirectType: newValue }));
+                on(this.redirectsMenuGrid.isActive, "change", (newValue) => this._onSearchChange({ isActive: newValue }));
+                on(this.redirectsMenuGrid.createdOnFrom, "change", (newValue) => this._onSearchChange({ createdOnFrom: newValue }));
+                on(this.redirectsMenuGrid.createdOnTo, "change", (newValue) => this._onSearchChange({ createdOnTo: newValue }));
+                on(this.redirectsMenuGrid.createdBy, "change", (newValue) => this._onSearchChange({ createdBy: newValue }));
+                on(this.redirectsMenuGrid.notes, "change", (newValue) => this._onSearchChange({ notes: newValue }));
             },
 
             _initializeForm: function () {

@@ -49,7 +49,7 @@ namespace Forte.RedirectTests.Tests
             var redirectDto = new RedirectRuleDto("randomOldPath", "randomNewPath");
 
             var newRedirect = restController.Post(redirectDto).GetEntityFromActionResult();
-            var expectedRedirect = restController.Get(newRedirect.Id.ExternalId).GetEntityFromActionResult();
+            var expectedRedirect = restController.Get(newRedirect.Id.Value).GetEntityFromActionResult();
 
             Assert.NotNull(expectedRedirect);
         }
@@ -75,7 +75,7 @@ namespace Forte.RedirectTests.Tests
 
             restController.Put(randomRedirectDto);
             var updatedRedirect = restController
-                .Get(randomRedirectDto.Id.ExternalId)
+                .Get(randomRedirectDto.Id.Value)
                 .GetEntityFromActionResult();
 
             Assert.Equal(expectedNewUrl, updatedRedirect?.NewPattern);
@@ -114,7 +114,7 @@ namespace Forte.RedirectTests.Tests
                     .Skip(randomIndex)
                     .FirstOrDefault();
                 deleteResult = restController
-                    .Delete(randomRedirect.Id.ExternalId)
+                    .Delete(randomRedirect.Id.Value)
                     .GetStatusCodeFromActionResult();
             }
             else

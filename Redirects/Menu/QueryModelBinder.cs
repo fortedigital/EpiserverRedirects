@@ -17,17 +17,43 @@ namespace Forte.Redirects.Menu
             {
                 return new Query
                 {
-                    oldPattern = queryPropertiesDictionary["oldPattern"],
-                    newPattern = queryPropertiesDictionary["newPattern"],
-                    redirectType = ParseRedirectType(queryPropertiesDictionary["redirectType"]),
-                    redirectRuleType = ParseRedirectRuleType(queryPropertiesDictionary["redirectRuleType"]),
-                    SortColumns = ParseSortColumns(queryPropertiesDictionary[""]),
+                    OldPattern = queryPropertiesDictionary["oldPattern"],
+                    NewPattern = queryPropertiesDictionary["newPattern"],
+                    RedirectType = ParseRedirectType(queryPropertiesDictionary["redirectType"]),
+                    RedirectRuleType = ParseRedirectRuleType(queryPropertiesDictionary["redirectRuleType"]),
+                    IsActive = ParseIsActive(queryPropertiesDictionary["isActive"]),
+                    CreatedOnFrom = ParseCreatedOnFrom(queryPropertiesDictionary["createdOnFrom"]),
+                    CreatedOnTo = ParseCreatedOnTo(queryPropertiesDictionary["createdOnTo"]),
+                    CreatedBy = queryPropertiesDictionary["createdBy"],
+                    Notes = queryPropertiesDictionary["notes"],
+                    SortColumns = ParseSortColumns(queryPropertiesDictionary.ToString()),
                 };
             }
             catch
             {
                 throw new Exception("Failed to parse query string from http request");
             }
+        }
+
+        private static DateTime? ParseCreatedOnFrom(string value)
+        {
+            if(DateTime.TryParse(value, out var createdOnFrom))
+                return createdOnFrom;
+            return null;
+        }
+        
+        private static DateTime? ParseCreatedOnTo(string value)
+        {
+            if(DateTime.TryParse(value, out var createdOnTo))
+                return createdOnTo;
+            return null;
+        }
+
+        private static bool? ParseIsActive(string value)
+        {
+            if (bool.TryParse(value, out var isActive))
+                return isActive;
+            return null;
         }
 
         private static IEnumerable<SortColumn> ParseSortColumns(string sortQuery)

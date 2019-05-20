@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
@@ -10,10 +11,16 @@ namespace Forte.Redirects.Menu
     [ModelBinder(typeof(QueryModelBinder))]
     public class Query
     {
-        public string oldPattern { get; set; } //oldUrlSearch
-        public string newPattern { get; set; } //newUrlSearch
-        public RedirectType? redirectType{ get; set; } //priority search
-        public RedirectRuleType? redirectRuleType{ get; set; } //typeSearch
+        public string OldPattern { get; set; }
+        public string NewPattern { get; set; }
+        public RedirectType? RedirectType{ get; set; }
+        public RedirectRuleType? RedirectRuleType{ get; set; }
+        
+        public bool? IsActive{ get; set; }
+        public DateTime? CreatedOnFrom{ get; set; }
+        public DateTime? CreatedOnTo{ get; set; }
+        public string CreatedBy{ get; set; }
+        public string Notes{ get; set; }
         public IEnumerable<SortColumn> SortColumns { get; set; }
         public ItemRange Range { get; set; }
     }
@@ -25,17 +32,26 @@ namespace Forte.Redirects.Menu
             if (query == null)
                 return redirectRules.AsEnumerable();
 
-            if (!string.IsNullOrEmpty(query.oldPattern))
-                redirectRules = redirectRules.Where(rr => rr.OldPattern.Contains(query.oldPattern));
+            if (!string.IsNullOrEmpty(query.OldPattern))
+                redirectRules = redirectRules.Where(rr => rr.OldPattern.Contains(query.OldPattern));
 
-            if (!string.IsNullOrEmpty(query.newPattern))
-                redirectRules = redirectRules.Where(rr => rr.NewPattern.Contains(query.newPattern));
+            if (!string.IsNullOrEmpty(query.NewPattern))
+                redirectRules = redirectRules.Where(rr => rr.NewPattern.Contains(query.NewPattern));
 
-            if (query.redirectType != null)
-                redirectRules = redirectRules.Where(rr => rr.RedirectType == query.redirectType);
+            if (query.RedirectType != null)
+                redirectRules = redirectRules.Where(rr => rr.RedirectType == query.RedirectType);
 
-            if (query.redirectRuleType != null)
-                redirectRules = redirectRules.Where(rr => rr.RedirectRuleType == query.redirectRuleType);
+            if (query.RedirectRuleType != null)
+                redirectRules = redirectRules.Where(rr => rr.RedirectRuleType == query.RedirectRuleType);
+            
+            if (query.RedirectRuleType != null)
+                redirectRules = redirectRules.Where(rr => rr.IsActive == query.IsActive);
+            
+            if (query.CreatedOnFrom != null)
+                redirectRules = redirectRules.Where(rr => rr.CreatedOn >= query.CreatedOnFrom);
+            
+            if (query.CreatedOnTo != null)
+                redirectRules = redirectRules.Where(rr => rr.CreatedOn <= query.CreatedOnTo);
 
             if (query.SortColumns != null)
                 redirectRules = redirectRules.OrderBy(query.SortColumns);

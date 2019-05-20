@@ -1,14 +1,13 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
-using EPiServer.Data;
 
 namespace Forte.Redirects.Model.RedirectRule
 {
     [ModelBinder(typeof(RedirectRuleDtoModelBinder))]
     public class RedirectRuleDto
     {
-        public Identity Id { get; set; }
+        public Guid? Id { get; set; }
         
         [Required]
         public string OldPattern { get; set; }
@@ -23,7 +22,7 @@ namespace Forte.Redirects.Model.RedirectRule
         public RedirectType.RedirectType RedirectType { get; set; }
         
         [Required]
-        public DateTimeOffset CreatedOn { get; set; }
+        public DateTime CreatedOn { get; set; }
         
         [Required]
         public bool IsActive { get; set; }
