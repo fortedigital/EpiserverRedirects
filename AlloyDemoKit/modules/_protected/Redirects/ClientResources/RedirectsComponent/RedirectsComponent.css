@@ -1,0 +1,11 @@
+﻿.field-contextMenu {
+    width: 20px;
+}
+
+.grid-container {
+    height: 50%;
+}
+
+.grid-container .dgrid {
+    height: 100%;
+}

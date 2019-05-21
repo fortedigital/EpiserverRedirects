@@ -36,8 +36,11 @@ namespace Forte.Redirects.Model.RedirectRule
             return redirectRuleType;
         }
 
-        public static Guid? ParseIdentity(string guidString)
+        public static Guid? ParseIdentity(Dictionary<string, string> redirectRuleDtoProperties)
         {
+            if (!redirectRuleDtoProperties.TryGetValue("id", out var guidString))
+                return null;
+            
             if(Guid.TryParse(guidString, out var guid))
                 return guid;
             return null;

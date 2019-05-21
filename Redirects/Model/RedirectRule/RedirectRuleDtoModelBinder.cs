@@ -19,7 +19,7 @@ namespace Forte.Redirects.Model.RedirectRule
                 return new RedirectRuleDto
                 {
                     //TODO: no id passing
-                    Id = Parser.ParseIdentity(redirectRuleDtoProperties["id"]),
+                    Id = Parser.ParseIdentity(redirectRuleDtoProperties),
                     OldPattern = redirectRuleDtoProperties["oldPattern"],
                     NewPattern = redirectRuleDtoProperties["newPattern"],
                     RedirectType = Parser.ParseRedirectType(redirectRuleDtoProperties["redirectType"]),

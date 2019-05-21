@@ -49,8 +49,9 @@ namespace Forte.Redirects.Menu
                 return null;
             
             var newRedirectRule = _redirectRuleMapper.DtoToModel(dto);
-            newRedirectRule.CreatedOn = DateTime.UtcNow;
-            newRedirectRule.CreatedBy = PrincipalInfo.CurrentPrincipal.Identity.Name;
+
+            newRedirectRule.FromManual();
+            
             newRedirectRule = _redirectRuleRepository.Add(newRedirectRule);
 
             var newRedirectRuleDto = _redirectRuleMapper.ModelToDto(newRedirectRule);

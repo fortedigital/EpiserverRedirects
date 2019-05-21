@@ -1,0 +1,40 @@
+﻿.epi-icon__search {
+  background: url('../Images/Icons/16px/0135-search.png');
+  height: 16px;
+  width: 16px;
+}
+.epi-icon__article {
+  background: url('../Images/Icons/16px/0005-newspaper.png');
+ height: 16px;
+  width: 16px;
+}
+.epi-icon__blog {
+  background: url('../Images/Icons/16px/0010-blog.png');
+ height: 16px;
+  width: 16px;
+}
+.epi-icon__list {
+  background: url('../Images/Icons/16px/0187-list.png');
+  height: 16px;
+  width: 16px;
+}
+
+.pdfIcon { 
+  background-image: url('/ClientResources/Images/icons/pdf-icon32x32.png'); 
+  width: 32px; 
+  height: 32px;
+  margin: 5px !important; 
+}
+
+/* ContentArea + LinkItemCollection */
+.epi-content-area-editor .pdfIcon { 
+  background-image: url('/ClientResources/Images/icons/pdf-icon16x16.png'); 
+  width: 16px; 
+  height: 16px; 
+  margin: 0 2px 0 0 !important;
+}
+  
+/* ContentArea needs more margin */
+.dijitTreeRow .pdfIcon { 
+  margin-top: 6px !important; 
+}

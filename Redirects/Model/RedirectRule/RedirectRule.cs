@@ -18,6 +18,13 @@ namespace Forte.Redirects.Model.RedirectRule
             
         }
 
+        public void FromManual()
+        {
+            CreatedOn = DateTime.UtcNow;
+            CreatedBy = PrincipalInfo.CurrentPrincipal.Identity.Name;
+            RedirectOrigin = RedirectOrigin.Manual;
+        }
+
         public static RedirectRule NewFromManual(string oldPattern, string newPattern, RedirectType redirectType,
             RedirectRuleType redirectRuleType, bool isActive, string createdBy, string notes)
         {
@@ -35,7 +42,7 @@ namespace Forte.Redirects.Model.RedirectRule
         }
         
         public static RedirectRule NewFromSystem(string oldPattern, string newPattern, RedirectType redirectType,
-            RedirectRuleType redirectRuleType, string createdBy, string notes)
+            RedirectRuleType redirectRuleType, string notes)
         {
             return new RedirectRule
             {

@@ -30,7 +30,7 @@ namespace Forte.Redirects.Import
                 _redirectsImporter.ImportRedirects(redirectDefinitions);
                 return Json(new
                 {
-                    TimeStamp = DateTime.SpecifyKind(DateTime.UtcNow, DateTimeKind.Utc),
+                    TimeStamp = DateTime.SpecifyKind(DateTime.UtcNow, DateTimeKind.Utc).ToString("O"),
                     ImportedCount = redirectDefinitions.Count
                 });
             }

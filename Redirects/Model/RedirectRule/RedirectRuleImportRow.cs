@@ -21,6 +21,5 @@ namespace Forte.Redirects.Model.RedirectRule
         
         [Index(5)]
         public string Notes { get; set; }
-        
     }
 }

@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RedirectMiddleware", "Redir
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HttpModule", "HttpModule\HttpModule.csproj", "{1F9B32B9-749B-40C4-8C60-AB334B98875C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AlloyDemoKit", "AlloyDemoKit\AlloyDemoKit.csproj", "{6FA51284-08EC-4032-AF77-D6F2ECA790D4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{1F9B32B9-749B-40C4-8C60-AB334B98875C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1F9B32B9-749B-40C4-8C60-AB334B98875C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1F9B32B9-749B-40C4-8C60-AB334B98875C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6FA51284-08EC-4032-AF77-D6F2ECA790D4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6FA51284-08EC-4032-AF77-D6F2ECA790D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6FA51284-08EC-4032-AF77-D6F2ECA790D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6FA51284-08EC-4032-AF77-D6F2ECA790D4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
