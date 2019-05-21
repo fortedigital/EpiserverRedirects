@@ -21,4 +21,11 @@ namespace Forte.EpiserverRedirects.UrlRewritePlugin
 
         public int RedirectStatusCode { get; set; }
     }
+    
+    public enum UrlRedirectsType
+    {
+        System,
+        Manual,
+        ManualWildcard
+    }
 }

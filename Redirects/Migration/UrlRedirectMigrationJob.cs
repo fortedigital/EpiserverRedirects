@@ -14,7 +14,7 @@ using Forte.Redirects.Model;
 using Forte.Redirects.Model.RedirectRule;
 using Forte.Redirects.Repository;
 
-namespace Forte.Redirects.Job
+namespace Forte.Redirects.Migration
 {
     [ScheduledPlugIn(
         DisplayName = "UrlRedirectMigrationJob",
@@ -27,11 +27,10 @@ namespace Forte.Redirects.Job
             {
                 Id = id;
             }
-            public Identity Id { get; set; }
+            public Identity Id { get; }
             public string ErrorMessage { get; set; }
         }
-       
-        
+
         public override string Execute()
         {
             var redirectRulesRepository = ServiceLocator.Current.GetInstance<IRedirectRuleRepository>();
@@ -81,21 +80,39 @@ namespace Forte.Redirects.Job
                 OldPattern   = UrlPath.NormalizePath(urlRewriteModel.OldUrl),
                 NewPattern = urlRewriteModel.NewUrl,
                 RedirectType = MapStatusCodeToRedirectType(urlRewriteModel.RedirectStatusCode),
-                CreatedOn = DateTime.Now,
+                CreatedOn = DateTime.SpecifyKind(DateTime.UtcNow, DateTimeKind.Utc),
                 IsActive = IsMigratedRedirectRuleActive(urlRewriteModel.ContentId),
                 RedirectOrigin = urlRewriteModel.ContentId != 0 ? RedirectOrigin.System : RedirectOrigin.Import,
-                Notes = "Migrated from old redirects module"
+                Notes = "Migrated from old redirects module",
+                RedirectRuleType = MapUrlRewriteTypeToRedirectRuleType(urlRewriteModel.Type)
             };
 
             return redirectRule;
         }
-        
+
+        //TODO: verify how to map from old model
+        private static RedirectRuleType MapUrlRewriteTypeToRedirectRuleType(string urlRewriteModelType)
+        {
+            if (!Enum.TryParse(urlRewriteModelType, out UrlRedirectsType urlRedirectsType))
+                return RedirectRuleType.ExactMatch;
+            
+            switch (urlRedirectsType)
+            {
+                case UrlRedirectsType.System:
+                    return RedirectRuleType.ExactMatch;
+                case UrlRedirectsType.Manual:
+                    return RedirectRuleType.ExactMatch;
+                case UrlRedirectsType.ManualWildcard:
+                    return RedirectRuleType.Regex;
+                default:
+                    return RedirectRuleType.ExactMatch;
+            }
+        }
+
         private static bool IsMigratedRedirectRuleActive(int contentId)
         {
             if(contentId == 0)
-            {
                 return false;
-            }
 
             var contentLoader = ServiceLocator.Current.GetInstance<IContentLoader>();
             var isContentDeleted = contentLoader.TryGet<IContent>(new ContentReference(contentId), out var content) == false ||
