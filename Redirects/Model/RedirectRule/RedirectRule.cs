@@ -6,18 +6,12 @@ using EPiServer.Security;
 namespace Forte.Redirects.Model.RedirectRule
 {
     public enum RedirectRuleType { ExactMatch = 1, Regex = 2, Wildcard = 3}
-    
     public enum RedirectType {Permanent = 1, Temporary = 2}
     public enum RedirectOrigin { System = 1, Manual = 2, Import = 3}
     
     [EPiServerDataStore(AutomaticallyRemapStore = true)]
     public class RedirectRule : IDynamicData
     {
-        public RedirectRule()
-        {
-            
-        }
-
         public void FromManual()
         {
             CreatedOn = DateTime.UtcNow;
@@ -26,7 +20,7 @@ namespace Forte.Redirects.Model.RedirectRule
         }
 
         public static RedirectRule NewFromManual(string oldPattern, string newPattern, RedirectType redirectType,
-            RedirectRuleType redirectRuleType, bool isActive, string createdBy, string notes)
+            RedirectRuleType redirectRuleType, bool isActive, string notes)
         {
             return new RedirectRule
             {
@@ -36,7 +30,8 @@ namespace Forte.Redirects.Model.RedirectRule
                 RedirectType = redirectType,
                 RedirectRuleType = redirectRuleType,
                 IsActive = isActive,
-                CreatedBy = createdBy,
+                CreatedBy = PrincipalInfo.CurrentPrincipal.Identity.Name,
+                CreatedOn = DateTime.SpecifyKind(DateTime.UtcNow, DateTimeKind.Utc),
                 Notes = notes
             };
         }
@@ -51,7 +46,9 @@ namespace Forte.Redirects.Model.RedirectRule
                 NewPattern = newPattern,
                 RedirectType = redirectType,
                 RedirectRuleType = redirectRuleType,
+                IsActive = true,
                 CreatedBy = PrincipalInfo.CurrentPrincipal.Identity.Name,
+                CreatedOn = DateTime.SpecifyKind(DateTime.UtcNow, DateTimeKind.Utc),
                 Notes = notes
             };
         }
@@ -66,8 +63,10 @@ namespace Forte.Redirects.Model.RedirectRule
                 ContentId = contentId,
                 RedirectType = redirectType,
                 RedirectRuleType = redirectRuleType,
+                IsActive = true,
                 CreatedBy = PrincipalInfo.CurrentPrincipal.Identity.Name,
-                Notes = notes
+                CreatedOn = DateTime.SpecifyKind(DateTime.UtcNow, DateTimeKind.Utc),
+                Notes = notes,
             };
         }
 

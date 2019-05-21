@@ -16,27 +16,10 @@ namespace Forte.Redirects.System
     {
         private const string OldUrlKey = "OLD_URL";
 
-        private readonly UrlResolver _urlResolver;
-        private readonly IContentVersionRepository _contentVersionRepository;
-        private readonly IContentRepository _contentRepository;
-        private readonly ILanguageBranchRepository _languageBranchRepository;
-
-        public SystemRedirectsEventsModule()
-        {
-            _urlResolver = ServiceLocator.Current.GetInstance<UrlResolver>();
-            _contentVersionRepository = ServiceLocator.Current.GetInstance<IContentVersionRepository>();
-            _contentRepository = ServiceLocator.Current.GetInstance<IContentRepository>();
-            _languageBranchRepository = ServiceLocator.Current.GetInstance<ILanguageBranchRepository>();
-        }
-        
-        public SystemRedirectsEventsModule(UrlResolver urlResolver, IContentVersionRepository contentVersionRepository,
-            IContentRepository contentRepository, ILanguageBranchRepository languageBranchRepository)
-        {
-            _urlResolver = urlResolver;
-            _contentVersionRepository = contentVersionRepository;
-            _contentRepository = contentRepository;
-            _languageBranchRepository = languageBranchRepository;
-        }
+        private Injected<UrlResolver> UrlResolver { get; set; }
+        private Injected<IContentVersionRepository> ContentVersionRepository { get; set; }
+        private Injected<IContentRepository> ContentRepository { get; set; }
+        private Injected<ILanguageBranchRepository> LanguageBranchRepository { get; set; }
 
         public void Initialize(InitializationEngine context)
         {
@@ -63,7 +46,8 @@ namespace Forte.Redirects.System
             if (Configuration.Configuration.AddAutomaticRedirects == false)
                 return;
 
-            var lastVersion = _contentVersionRepository
+            var lastVersion = ContentVersionRepository
+                .Service
                 .List(e.ContentLink)
                 .Where(p => p.Status == VersionStatus.PreviouslyPublished)
                 .OrderByDescending(p => p.Saved)
@@ -81,7 +65,7 @@ namespace Forte.Redirects.System
             if (oldUrl == newUrl)
                 return;
 
-            var lastVersionPageData = _contentRepository.Get<IContentData>(lastVersion.ContentLink) as PageData;
+            var lastVersionPageData = ContentRepository.Service.Get<IContentData>(lastVersion.ContentLink) as PageData;
             if (lastVersionPageData == null)
                 return;
 
@@ -105,9 +89,9 @@ namespace Forte.Redirects.System
                 return;
             }
             
-            foreach (var language in _languageBranchRepository.ListEnabled())
+            foreach (var language in LanguageBranchRepository.Service.ListEnabled())
             {
-                if (!(_contentRepository.Get<IContentData>(e.ContentLink, language.Culture) is PageData pageData))
+                if (!(ContentRepository.Service.Get<IContentData>(e.ContentLink, language.Culture) is PageData pageData))
                     continue;
 
                 var oldUrl = GetContentUrl(originalParent, language.Culture.Name, false);
@@ -119,6 +103,7 @@ namespace Forte.Redirects.System
         }
 
         private void SavingContentHandler(object sender, ContentEventArgs e)
+        
         {
             if (Configuration.Configuration.AddAutomaticRedirects == false)
                 return;
@@ -128,9 +113,13 @@ namespace Forte.Redirects.System
 
             // create redirects only if page is unpublished
             // because child objects may have been already published so their URL changes
-            if (_contentVersionRepository.List(e.ContentLink).Any(p => p.Status == VersionStatus.Published || p.Status == VersionStatus.PreviouslyPublished)) return;
+            if (ContentVersionRepository
+                .Service
+                .List(e.ContentLink)
+                .Any(p => p.Status == VersionStatus.Published || p.Status == VersionStatus.PreviouslyPublished))
+                return;
 
-            var oldUrl = _urlResolver.GetUrl(e.ContentLink, null);
+            var oldUrl = UrlResolver.Service.GetUrl(e.ContentLink, null);
 
             e.Items.Add(OldUrlKey, oldUrl);
         }
@@ -144,11 +133,11 @@ namespace Forte.Redirects.System
             if (oldUrl == null)
                 return;
 
-            var newUrl = _urlResolver.GetUrl(e.ContentLink, null);
+            var newUrl = UrlResolver.Service.GetUrl(e.ContentLink, null);
 
             if(newUrl != oldUrl)
             {
-                var pageData = _contentRepository.Get<IContentData>(e.ContentLink) as PageData;
+                var pageData = ContentRepository.Service.Get<IContentData>(e.ContentLink) as PageData;
                 SystemRedirectsActions.AddRedirects(pageData, oldUrl, SystemRedirectsHelper.GetCultureInfo(e), SystemRedirectReason.SavedContent);
             }
 
@@ -163,7 +152,7 @@ namespace Forte.Redirects.System
         private string GetContentUrl(ContentReference contentReference, string language, bool validateTemplate = true)
         {
             var arguments = new VirtualPathArguments {ValidateTemplate = validateTemplate};
-            return _urlResolver.GetVirtualPath(contentReference, language, arguments)?.VirtualPath;
+            return UrlResolver.Service.GetVirtualPath(contentReference, language, arguments)?.VirtualPath;
         }
     }
 }
