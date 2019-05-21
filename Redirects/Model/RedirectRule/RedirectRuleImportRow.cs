@@ -17,7 +17,7 @@ namespace Forte.Redirects.Model.RedirectRule
         public string RedirectRuleType { get; set; }
         
         [Index(4)]
-        public string CreatedBy { get; set; }
+        public string IsActive { get; set; }
         
         [Index(5)]
         public string Notes { get; set; }

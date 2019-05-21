@@ -45,7 +45,15 @@ namespace Forte.Redirects.Model.RedirectRule
 
         public static bool ParseIsActive(string redirectRuleDtoProperty)
         {
-            return bool.Parse(redirectRuleDtoProperty);
+            switch (redirectRuleDtoProperty)
+            {
+                case "0":
+                    return false;
+                case "1":
+                    return true;
+                default:
+                    return bool.Parse(redirectRuleDtoProperty);
+            }
         }
         
         public static bool? ParseIsActiveNullable(string value)

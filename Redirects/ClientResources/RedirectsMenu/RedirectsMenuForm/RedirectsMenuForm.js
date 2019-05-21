@@ -11,8 +11,8 @@
     "dijit/form/ValidationTextBox",
     "dijit/form/NumberTextBox",
     "dijit/form/Select",
-    "dijit/form/DateTextBox",
-],
+    "redirects/Moment",
+    ],
 
     function (
         declare,
@@ -27,7 +27,7 @@
         ValidationTextBox,
         NumberTextBox,
         Select,
-        DateTextBox,
+        moment,
     ) {
 
         return declare([_WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin], {
@@ -40,8 +40,6 @@
                 on(this.deleteButton, "click", () => this.onDeleteClick());
                 on(this.oldPatternTextBox, "change", () => this._isFormValid());
                 on(this.newPatternTextBox, "change", () => this._isFormValid());
-
-
             },
 
             _isFormValid: function () {
@@ -61,30 +59,33 @@
             },
 
             _updateEditMode: function (model) {
-                this.identityTextBox.set("value", model.identity);
                 this.oldPatternTextBox.set("value", model.oldPattern);
                 this.newPatternTextBox.set("value", model.newPattern);
                 this.redirectRuleTypeSelect.set("value", model.redirectRuleType);
                 this.redirectTypeSelect.set("value", model.redirectType);
-                this.isActiveSelect.set("value", model.isActive);
-                this.createdOnDateTextBox.set("value", model.createdOn);
+                this.isActiveSelect.set("value", model.isActive.toString());
+
+                this.createdOnTextBox.set("value", this._getLocalDateTime(model.createdOn));
                 this.createdByTextBox.set("value", model.createdBy);
                 this.notesTextarea.set("value", model.notes);
 
                 this.deleteButton.set("disabled", false);
 
-                this.createdOnDateTextBox.set("disabled", true);
+                this.createdOnTextBox.set("disabled", true);
                 this.createdByTextBox.set("disabled", true);
                 
                 document.getElementById("createdOnInputDiv").style.display = 'block';
                 document.getElementById("createdByInputDiv").style.display = 'block';
             },
 
+            _getLocalDateTime: function (utcDateTime) {
+                var localDateTime = moment(utcDateTime).local().format('DD-MM-YYYY HH:mm:ss');
+                return localDateTime.toString();
+            },
+
             _updateAddMode: function () {
-                this.identityTextBox.set("value", "");
                 this.oldPatternTextBox.set("value", "");
                 this.newPatternTextBox.set("value", "");
-                this.createdByTextBox.set("value", "");
                 this.notesTextarea.set("value", "");
                 this.deleteButton.set("disabled", true);
                 this.saveButton.set("disabled", true);
@@ -96,7 +97,6 @@
             _getModel: function () {
                 var model = {
                     id: this.id,
-                    identity: this.identityTextBox.get("value"),
                     oldPattern: this.oldPatternTextBox.get("value"),
                     newPattern: this.newPatternTextBox.get("value"),
                     redirectRuleType: this.redirectRuleTypeSelect.get("value"),

@@ -23,7 +23,6 @@ namespace Forte.RedirectTests.Tests
 
             Assert.Equal(redirectRuleDto.IsActive, redirectRule.IsActive);
             Assert.Equal(redirectRuleDto.Notes, redirectRule.Notes);
-
         }
 
         [Fact]

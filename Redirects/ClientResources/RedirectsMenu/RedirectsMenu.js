@@ -12,8 +12,10 @@ define("redirectsMenu/RedirectsMenu", [
     "dijit/form/TextBox",
 
     "redirectsMenu/RedirectsMenuViewModel",
+    "redirects/Moment",
     "redirectsMenu-grid/RedirectsMenuGrid",
     "redirectsMenu-form/RedirectsMenuForm",
+
 
     "xstyle/css!./RedirectsMenu.css",
 ], function (
@@ -30,6 +32,7 @@ define("redirectsMenu/RedirectsMenu", [
     TextBox,
 
     RedirectsMenuViewModel,
+    moment,
     RedirectsMenuGrid,
     RedirectsMenuForm
     ) {
@@ -199,14 +202,19 @@ define("redirectsMenu/RedirectsMenu", [
                     statusLabel.innerText = "Uploading file...";
                         var xhrRequest = xhr.post("/Redirects/Import", xhrArgs)
                             .then(function(data) {
-                                var date = new Date(data.TimeStamp);
-                                statusLabel.innerText = date.toLocaleString()+" - Imported redirects: " + data.ImportedCount;
+                                statusLabel.innerText = this._getLocalDateTime(data.TimeStamp)+" - Imported redirects: " + data.ImportedCount;
                             })
                             .otherwise(function(error) {
                                 statusLabel.innerText = "Temporary server error or file is in invalid format"
                             });
                         
                 }
-            }
+            },
+
+            _getLocalDateTime: function (utcDateTime) {
+                var localDateTime = moment(utcDateTime).local().format('DD-MM-YYYY HH:mm:ss');
+                return localDateTime.toString();
+            },
+            
         });
     });

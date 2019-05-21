@@ -1,6 +1,7 @@
 using System;
 using EPiServer.Data;
 using EPiServer.Data.Dynamic;
+using EPiServer.Security;
 
 namespace Forte.Redirects.Model.RedirectRule
 {
@@ -43,13 +44,13 @@ namespace Forte.Redirects.Model.RedirectRule
                 NewPattern = newPattern,
                 RedirectType = redirectType,
                 RedirectRuleType = redirectRuleType,
-                CreatedBy = createdBy,
+                CreatedBy = PrincipalInfo.CurrentPrincipal.Identity.Name,
                 Notes = notes
             };
         }
 
         public static RedirectRule NewFromSystem(string oldPattern, int contentId, RedirectType redirectType,
-            RedirectRuleType redirectRuleType, string createdBy, string notes)
+            RedirectRuleType redirectRuleType, string notes)
         {
             return new RedirectRule
             {
@@ -58,13 +59,13 @@ namespace Forte.Redirects.Model.RedirectRule
                 ContentId = contentId,
                 RedirectType = redirectType,
                 RedirectRuleType = redirectRuleType,
-                CreatedBy = createdBy,
+                CreatedBy = PrincipalInfo.CurrentPrincipal.Identity.Name,
                 Notes = notes
             };
         }
 
         public static RedirectRule NewFromImport(string oldPattern, string newPattern, RedirectType redirectType,
-            RedirectRuleType redirectRuleType, string createdBy, string notes)
+            RedirectRuleType redirectRuleType, bool isActive, string notes)
         {
             return new RedirectRule
             {
@@ -73,13 +74,15 @@ namespace Forte.Redirects.Model.RedirectRule
                 NewPattern = newPattern,
                 RedirectType = redirectType,
                 RedirectRuleType = redirectRuleType,
-                CreatedBy = createdBy,
+                IsActive = isActive,
+                CreatedOn = DateTime.SpecifyKind(DateTime.UtcNow, DateTimeKind.Utc),
+                CreatedBy = PrincipalInfo.CurrentPrincipal.Identity.Name,
                 Notes = notes
             };
         }
 
         public static RedirectRule NewFromImport(string oldPattern, int contentId, RedirectType redirectType,
-            RedirectRuleType redirectRuleType, string createdBy, string notes)
+            RedirectRuleType redirectRuleType, bool isActive, string notes)
         {
             return new RedirectRule
             {
@@ -88,7 +91,9 @@ namespace Forte.Redirects.Model.RedirectRule
                 ContentId = contentId,
                 RedirectType = redirectType,
                 RedirectRuleType = redirectRuleType,
-                CreatedBy = createdBy,
+                IsActive = isActive,
+                CreatedOn = DateTime.SpecifyKind(DateTime.UtcNow, DateTimeKind.Utc),
+                CreatedBy = PrincipalInfo.CurrentPrincipal.Identity.Name,
                 Notes = notes
             };
         }

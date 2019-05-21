@@ -12,7 +12,7 @@ namespace Forte.Redirects.Import
         public void Initialize(InitializationEngine context)
         {
             RouteTable.Routes.MapRoute(null,
-                "EpiserverRedirects/Import/",
+                "Redirects/Import/",
                 new {controller = "ImportRedirects", action = nameof(ImportRedirectsController.Import)});
         }
 

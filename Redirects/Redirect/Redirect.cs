@@ -5,6 +5,7 @@ using EPiServer.Web.Routing;
 using Forte.Redirects.Model;
 using Forte.Redirects.Model.RedirectRule;
 using Forte.Redirects.Request;
+using Forte.Redirects.Resolver;
 
 namespace Forte.Redirects.Redirect
 {

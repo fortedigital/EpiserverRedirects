@@ -24,8 +24,8 @@ namespace Forte.Redirects.Configuration
 
             context.Services.AddTransient<IRedirectRuleResolver>(c => new CompositeResolver(
                 new ExactMatchResolver(c.GetInstance<IQueryable<RedirectRule>>()),
-                new RegexResolver(c.GetInstance<IQueryable<RedirectRule>>()),
-                new WildcardResolver(c.GetInstance<IQueryable<RedirectRule>>())));
+                new RegexResolver(c.GetInstance<IQueryable<RedirectRule>>())/*,
+                new WildcardResolver(c.GetInstance<IQueryable<RedirectRule>>())*/));
         }
 
         public void Initialize(InitializationEngine context) { }

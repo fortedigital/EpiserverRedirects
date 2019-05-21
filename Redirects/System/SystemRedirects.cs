@@ -16,11 +16,11 @@ namespace Forte.Redirects.System
     {
         public static void AddRedirects(PageData pageData, string oldUrl, CultureInfo cultureInfo)
         {
-            AddRedirectsToDDS(pageData, oldUrl);
+            AddRedirects(pageData, oldUrl);
             HandleChildren(pageData, oldUrl, cultureInfo);
         }
         
-        private static void AddRedirectsToDDS(PageData pageData, string oldUrl)
+        private static void AddRedirects(PageData pageData, string oldUrl)
         {
             if (!(pageData.Status == VersionStatus.PreviouslyPublished || pageData.Status == VersionStatus.Published))
                 return;
@@ -30,7 +30,6 @@ namespace Forte.Redirects.System
                 pageData.ContentLink.ID,
                 RedirectType.Permanent,
                 RedirectRuleType.ExactMatch,
-                "",
                 "");
             
             var urlRedirectsService = ServiceLocator.Current.GetInstance<IRedirectRuleRepository>();
@@ -70,7 +69,7 @@ namespace Forte.Redirects.System
             foreach (var pageData in pageDataCollection)
             {
                 var oldChildUrl = Combine(oldUrl, pageData.URLSegment);
-                AddRedirectsToDDS(pageData, oldChildUrl);
+                AddRedirects(pageData, oldChildUrl);
                 HandleChildren(pageData, oldChildUrl, cultureInfo);
             }
         }

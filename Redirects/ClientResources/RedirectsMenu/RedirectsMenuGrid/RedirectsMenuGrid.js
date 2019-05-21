@@ -13,8 +13,7 @@
     "dijit/layout/_LayoutWidget",
     "dijit/form/Select",
     "dijit/form/DateTextBox",
-
-
+    
     "redirects/Moment", 
         "xstyle/css!./RedirectsMenuGrid.css"
 ],
@@ -174,7 +173,7 @@
                         { label: "All", value: 0},
                         { label: "ExactMatch", value: 1 },
                         { label: "Regex", value: 2 },
-                        { label: "Wildcard", value: 3 }
+/*                        { label: "Wildcard", value: 3 }*/
                     ]
                 });
             },
@@ -249,8 +248,8 @@
                         return "ExactMatch";
                     case 2:
                         return "Regex";
-                    case 3:
-                        return "Wildcard";
+/*                    case 3:
+                        return "Wildcard";*/
                     default:
                         return redirectRuleType;
                 }
@@ -270,14 +269,7 @@
             },
 
             _getIsActiveText: function (isActive) {
-                switch (isActive) {
-                    case "false":
-                        return "False";
-                    case "true":
-                        return "True";
-                    default:
-                        return isActive;
-                }
+                return isActive ? "True" : "False";
             },
 
             _getLocalDateTime: function (utcDateTime) {

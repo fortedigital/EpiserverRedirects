@@ -1,11 +1,6 @@
 ﻿<div>
     <div class="epi-formArea">
         <div class="epi-size10">
-            <input type = "hidden" name="identity"
-                   data-dojo-attach-point="identityTextBox"
-                   data-dojo-type="dijit/form/TextBox"
-                   id="identity"/>
-            
             <div class="epi-form-container__section__row">
                 <label for="oldPattern">Old pattern:</label>
                 <input class="form-input" type="text" name="oldUrl"
@@ -31,7 +26,7 @@
                         data-dojo-type="dijit/form/Select">
                     <option value=1 selected = "selected">ExactMatch</option>
                     <option value=2>Regex</option>
-                    <option value=3>Wildcard</option>
+<!--                    <option value=3>Wildcard</option>-->
                 </select>
             </div>
 
@@ -50,17 +45,17 @@
                 <select class="form-input" name="isActiveSelect"
                         data-dojo-attach-point="isActiveSelect"
                         data-dojo-type="dijit/form/Select">
-                    <option value="true" selected = "selected">Active</option>
-                    <option value="false">Not active</option>
+                    <option value=true selected = "selected">Active</option>
+                    <option value=false>Not active</option>
                 </select>
             </div>
 
             <div id ="createdOnInputDiv" class="epi-form-container__section__row">
                 <label for="createdOn">Created on:</label>
-                <dateTextBox class="form-input" name="createdOn"
-                          data-dojo-attach-point="createdOnDateTextBox"
-                          data-dojo-type="dijit/form/DateTextBox">
-                </dateTextBox>
+                <input class="form-input" name="createdOn"
+                          data-dojo-attach-point="createdOnTextBox"
+                          data-dojo-type="dijit/form/TextBox">
+                </input>
             </div>
 
             <div id ="createdByInputDiv" class="epi-form-container__section__row">

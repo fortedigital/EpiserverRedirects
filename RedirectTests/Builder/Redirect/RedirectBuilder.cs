@@ -5,6 +5,7 @@ using Forte.Redirects.Model;
 using Forte.Redirects.Model.RedirectRule;
 using Forte.Redirects.Redirect;
 using Forte.Redirects.Request;
+using Forte.Redirects.Resolver;
 using Moq;
 
 namespace Forte.RedirectTests.Builder.Redirect
