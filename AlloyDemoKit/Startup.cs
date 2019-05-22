@@ -7,6 +7,7 @@ using Owin;
 using System;
 using System.Web;
 using EPiServer.Forms.Internal;
+using Forte.EpiserverRedirects.AspNet;
 
 [assembly: OwinStartup(typeof(AlloyDemoKit.Startup))]
 
@@ -17,7 +18,7 @@ namespace AlloyDemoKit
 
         public void Configuration(IAppBuilder app)
         {
-            app.Use(typeof(Forte.Redirects.AspNet.RedirectMiddleware));
+            app.Use(typeof(RedirectMiddleware));
             // Add CMS integration for ASP.NET Identity
             app.AddCmsAspNetIdentity<ApplicationUser>();
 

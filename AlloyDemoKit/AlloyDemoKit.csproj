@@ -766,6 +766,22 @@
     <Content Include="modules\_protected\EPiServer.Forms.Samples\Views\Shared\EditorTemplates\FormModel.ascx" />
     <Content Include="modules\_protected\EPiServer.Marketing.Testing\abcapture\capture.js" />
     <Content Include="modules\_protected\EPiServer.Marketing.Testing\abcapture\phantomjs.exe" />
+    <Content Include="modules\_protected\Forte.EpiserverRedirects\ClientResources\moment.js" />
+    <Content Include="modules\_protected\Forte.EpiserverRedirects\ClientResources\RedirectsComponent\RedirectsComponent.css" />
+    <Content Include="modules\_protected\Forte.EpiserverRedirects\ClientResources\RedirectsComponent\RedirectsComponent.html" />
+    <Content Include="modules\_protected\Forte.EpiserverRedirects\ClientResources\RedirectsComponent\RedirectsComponent.js" />
+    <Content Include="modules\_protected\Forte.EpiserverRedirects\ClientResources\RedirectsComponent\RedirectsComponentGrid.js" />
+    <Content Include="modules\_protected\Forte.EpiserverRedirects\ClientResources\RedirectsMenu\RedirectsMenu.css" />
+    <Content Include="modules\_protected\Forte.EpiserverRedirects\ClientResources\RedirectsMenu\RedirectsMenu.html" />
+    <Content Include="modules\_protected\Forte.EpiserverRedirects\ClientResources\RedirectsMenu\RedirectsMenu.js" />
+    <Content Include="modules\_protected\Forte.EpiserverRedirects\ClientResources\RedirectsMenu\RedirectsMenuForm\RedirectsMenuForm.html" />
+    <Content Include="modules\_protected\Forte.EpiserverRedirects\ClientResources\RedirectsMenu\RedirectsMenuForm\RedirectsMenuForm.js" />
+    <Content Include="modules\_protected\Forte.EpiserverRedirects\ClientResources\RedirectsMenu\RedirectsMenuGrid\RedirectsMenuGrid.css" />
+    <Content Include="modules\_protected\Forte.EpiserverRedirects\ClientResources\RedirectsMenu\RedirectsMenuGrid\RedirectsMenuGrid.js" />
+    <Content Include="modules\_protected\Forte.EpiserverRedirects\ClientResources\RedirectsMenu\RedirectsMenuViewModel.js" />
+    <Content Include="modules\_protected\Forte.EpiserverRedirects\ClientResources\RedirectsMenu\RootContainer.js" />
+    <Content Include="modules\_protected\Forte.EpiserverRedirects\ClientResources\RedirectsModuleInitializer.js" />
+    <Content Include="modules\_protected\Forte.EpiserverRedirects\module.config" />
     <Content Include="modules\_protected\ImageProcessor.Web.Episerver.UI\ipepi.png" />
     <Content Include="NotFound.aspx" />
     <Content Include="Static\css\VisitorGroupUIOverrides.css" />
@@ -1078,9 +1094,9 @@
     <Folder Include="modules\_protected\EPiServer.Labs.LanguageManager\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Redirects\Redirects.csproj">
+    <ProjectReference Include="..\EpiserverRedirects\EpiserverRedirects.csproj">
       <Project>{c6d94213-59a2-4f0d-934d-d7ef24c100ea}</Project>
-      <Name>Redirects</Name>
+      <Name>EpiserverRedirects</Name>
     </ProjectReference>
   </ItemGroup>
   <ProjectExtensions>

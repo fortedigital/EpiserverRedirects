@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28010.2036
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Redirects", "Redirects\Redirects.csproj", "{C6D94213-59A2-4F0D-934D-D7EF24C100EA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EpiserverRedirects", "EpiserverRedirects\EpiserverRedirects.csproj", "{C6D94213-59A2-4F0D-934D-D7EF24C100EA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RedirectTests", "RedirectTests\RedirectTests.csproj", "{8975F6BC-1176-4DC9-9618-ED6CDC3241DE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EpiserverRedirects.Tests", "EpiserverRedirects.Tests\EpiserverRedirects.Tests.csproj", "{8975F6BC-1176-4DC9-9618-ED6CDC3241DE}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AlloyDemoKit", "AlloyDemoKit\AlloyDemoKit.csproj", "{6FA51284-08EC-4032-AF77-D6F2ECA790D4}"
 EndProject
