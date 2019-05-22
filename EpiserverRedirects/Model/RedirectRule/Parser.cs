@@ -69,14 +69,14 @@ namespace Forte.EpiserverRedirects.Model.RedirectRule
         public static DateTime? ParseCreatedOnFrom(string value)
         {
             if(DateTime.TryParse(value, out var createdOnFrom))
-                return createdOnFrom;
+                return createdOnFrom.ToUniversalTime();
             return null;
         }
 
         public static DateTime? ParseCreatedOnTo(string value)
         {
             if(DateTime.TryParse(value, out var createdOnTo))
-                return createdOnTo;
+                return createdOnTo.ToUniversalTime();
             return null;
         }
 

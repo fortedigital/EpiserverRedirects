@@ -89,10 +89,14 @@ define("redirectsMenu/RedirectsMenu", [
                 on(this.redirectsMenuGrid.redirectType, "change", (newValue) => this._onSearchChange({ redirectType: newValue }));
                 on(this.redirectsMenuGrid.redirectOrigin, "change", (newValue) => this._onSearchChange({ redirectOrigin: newValue }));
                 on(this.redirectsMenuGrid.isActive, "change", (newValue) => this._onSearchChange({ isActive: newValue }));
-                on(this.redirectsMenuGrid.createdOnFrom, "change", (newValue) => this._onSearchChange({ createdOnFrom: newValue }));
-                on(this.redirectsMenuGrid.createdOnTo, "change", (newValue) => this._onSearchChange({ createdOnTo: newValue }));
+                on(this.redirectsMenuGrid.createdOnFrom, "change", (newValue) => this._onSearchChange({ createdOnFrom: this._parseToUtcDateTime(newValue) }));
+                on(this.redirectsMenuGrid.createdOnTo, "change", (newValue) => this._onSearchChange({ createdOnTo: this._parseToUtcDateTime(newValue) }));
                 on(this.redirectsMenuGrid.createdBy, "change", (newValue) => this._onSearchChange({ createdBy: newValue }));
                 on(this.redirectsMenuGrid.notes, "change", (newValue) => this._onSearchChange({ notes: newValue }));
+            },
+            
+            _parseToUtcDateTime: function (localDate) {
+                return moment(localDate).utc().format();
             },
 
             _initializeForm: function () {
@@ -209,7 +213,6 @@ define("redirectsMenu/RedirectsMenu", [
                         statusLabel.innerText = _getLocalDateTime(data.TimeStamp) + " - Imported redirects: " + data.ImportedCount;
                     })
                     .otherwise(function (error) {
-                        debugger;
                         statusLabel.innerText = "Temporary server error or file is in invalid format"
                     });
 

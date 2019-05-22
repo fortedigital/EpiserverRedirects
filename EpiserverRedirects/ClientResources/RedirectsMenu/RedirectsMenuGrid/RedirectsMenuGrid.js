@@ -129,7 +129,8 @@
                         },
                         {
                             renderHeaderCell: (node) => {
-                                return [this.createdOnFrom.domNode, this.createdOnTo.domNode];
+                                node.appendChild(this.createdOnFrom.domNode);
+                                return this.createdOnTo.domNode;
                             },
                             children: [
                                 { field: 'createdOn', label: 'Created on', renderCell: (object, value, node) => node.append(this._getLocalDateTime(value)) }
