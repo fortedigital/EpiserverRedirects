@@ -42,6 +42,7 @@
 
             oldPattern: null,
             newPattern: null,
+            contentId: null,
             redirectRuleType: null,
             redirectType: null,
             redirectOrigin: null,
@@ -58,6 +59,7 @@
             init: function (store) {
                 this.oldPattern = new SearchBox();
                 this.newPattern = new SearchBox();
+                this.contentId = new SearchBox();
                 this.redirectRuleType = this._createRedirectRuleTypeSelect();
                 this.redirectType = this._createRedirectTypeSelect();
                 this.redirectOrigin = this._createRedirectOriginSelect();
@@ -83,6 +85,14 @@
                             },
                             children: [
                                 { field: 'newPattern', label: 'New pattern' }
+                            ]
+                        },
+                        {
+                            renderHeaderCell: (node) => {
+                                return this._getSearchDomNode(this.contentId);
+                            },
+                            children: [
+                                { field: 'contentId', label: 'Content Id' }
                             ]
                         },
                         {
@@ -173,7 +183,6 @@
                         { label: "All", value: 0},
                         { label: "ExactMatch", value: 1 },
                         { label: "Regex", value: 2 },
-/*                        { label: "Wildcard", value: 3 }*/
                     ]
                 });
             },
@@ -248,8 +257,6 @@
                         return "ExactMatch";
                     case 2:
                         return "Regex";
-/*                    case 3:
-                        return "Wildcard";*/
                     default:
                         return redirectRuleType;
                 }

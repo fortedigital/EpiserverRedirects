@@ -17,6 +17,7 @@ namespace Forte.Redirects.Mapper
             destination.Id = source.Id.ExternalId;
             destination.OldPattern = source.OldPattern;
             destination.NewPattern = source.NewPattern;
+            destination.ContentId = source.ContentId;
             destination.RedirectType = source.RedirectType;
             destination.RedirectRuleType = source.RedirectRuleType;
             destination.RedirectOrigin = source.RedirectOrigin;

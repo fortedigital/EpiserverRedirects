@@ -101,5 +101,12 @@ namespace Forte.Redirects.Model.RedirectRule
             Enum.TryParse<RedirectOrigin>(value, out var redirectOrigin);
             return redirectOrigin;
         }
+
+        public static int? ParseContentIdNullable(string value)
+        {
+            return int.TryParse(value, out var contentId)
+                ? contentId
+                : (int?) null;
+        }
     }
 }

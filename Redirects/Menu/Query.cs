@@ -12,6 +12,7 @@ namespace Forte.Redirects.Menu
     {
         public string OldPattern { get; set; }
         public string NewPattern { get; set; }
+        public int? ContentId { get; set; }
         public RedirectType? RedirectType{ get; set; }
         public RedirectRuleType? RedirectRuleType{ get; set; }
         public RedirectOrigin? RedirectOrigin{ get; set; }
@@ -37,6 +38,9 @@ namespace Forte.Redirects.Menu
 
             if (!string.IsNullOrEmpty(query.NewPattern))
                 redirectRules = redirectRules.Where(rr => rr.NewPattern.Contains(query.NewPattern));
+            
+            if (query.ContentId !=null)
+                redirectRules = redirectRules.Where(rr => rr.ContentId == query.ContentId);
 
             if (query.RedirectType != null)
                 redirectRules = redirectRules.Where(rr => rr.RedirectType == query.RedirectType);

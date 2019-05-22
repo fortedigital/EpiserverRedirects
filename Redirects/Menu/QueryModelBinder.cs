@@ -18,6 +18,7 @@ namespace Forte.Redirects.Menu
                 {
                     OldPattern = queryPropertiesDictionary["oldPattern"],
                     NewPattern = queryPropertiesDictionary["newPattern"],
+                    ContentId = Parser.ParseContentIdNullable(queryPropertiesDictionary["contentId"]),
                     RedirectType = Parser.ParseRedirectTypeNullable(queryPropertiesDictionary["redirectType"]),
                     RedirectRuleType = Parser.ParseRedirectRuleTypeNullable(queryPropertiesDictionary["redirectRuleType"]),
                     RedirectOrigin = Parser.ParseRedirectOriginNullable(queryPropertiesDictionary["redirectOrigin"]),

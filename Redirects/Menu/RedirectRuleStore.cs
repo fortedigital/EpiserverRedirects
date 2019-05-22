@@ -39,6 +39,8 @@ namespace Forte.Redirects.Menu
                 .Get(query)
                 .Select(_redirectRuleMapper.ModelToDto);
             
+            HttpContext.Response.Headers.Add("Content-Range", $"0/{redirects.Count()}");
+            
             return Rest(redirects);
         }
 

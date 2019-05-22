@@ -15,6 +15,8 @@ namespace Forte.Redirects.Model.RedirectRule
         [Required]
         public string NewPattern { get; set; }
         
+        public int? ContentId { get; set; }
+        
         [Required]
         public RedirectRuleType RedirectRuleType { get; set; }
         

@@ -84,6 +84,7 @@ define("redirectsMenu/RedirectsMenu", [
 
                 this.redirectsMenuGrid.oldPattern.onSearchBoxChange = (newValue) => this._onSearchChange({ oldPattern: newValue });
                 this.redirectsMenuGrid.newPattern.onSearchBoxChange = (newValue) => this._onSearchChange({ newPattern: newValue });
+                this.redirectsMenuGrid.contentId.onSearchBoxChange = (newValue) => this._onSearchChange({ contentId: newValue });
                 on(this.redirectsMenuGrid.redirectRuleType, "change", (newValue) => this._onSearchChange({ redirectRuleType: newValue }));
                 on(this.redirectsMenuGrid.redirectType, "change", (newValue) => this._onSearchChange({ redirectType: newValue }));
                 on(this.redirectsMenuGrid.redirectOrigin, "change", (newValue) => this._onSearchChange({ redirectOrigin: newValue }));

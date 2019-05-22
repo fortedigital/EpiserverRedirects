@@ -89,8 +89,7 @@ namespace Forte.Redirects.Migration
 
             return redirectRule;
         }
-
-        //TODO: verify how to map from old model
+        
         private static RedirectRuleType MapUrlRewriteTypeToRedirectRuleType(string urlRewriteModelType)
         {
             if (!Enum.TryParse(urlRewriteModelType, out UrlRedirectsType urlRedirectsType))
