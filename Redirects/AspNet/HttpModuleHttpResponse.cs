@@ -1,11 +1,11 @@
 using Forte.Redirects.Request;
 
-namespace Forte.RedirectsHttpModule
+namespace Forte.Redirects.AspNet
 {
     public class HttpModuleHttpResponse : IHttpResponse
     {
-        private readonly System.Web.HttpResponse _httpResponse;
-        public HttpModuleHttpResponse(System.Web.HttpResponse httpResponse)
+        private readonly global::System.Web.HttpResponse _httpResponse;
+        public HttpModuleHttpResponse(global::System.Web.HttpResponse httpResponse)
         {
             _httpResponse = httpResponse;
         }

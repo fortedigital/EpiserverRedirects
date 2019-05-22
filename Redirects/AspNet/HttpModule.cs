@@ -3,7 +3,7 @@ using System.Web;
 using EPiServer.ServiceLocation;
 using Forte.Redirects.Request;
 
-namespace Forte.RedirectsHttpModule
+namespace Forte.Redirects.AspNet
 {
     public class HttpModule : IHttpModule {
         
@@ -37,7 +37,7 @@ namespace Forte.RedirectsHttpModule
 
         public void Dispose()
         {
-            throw new System.NotImplementedException();
+            throw new global::System.NotImplementedException();
         }
     }
 }

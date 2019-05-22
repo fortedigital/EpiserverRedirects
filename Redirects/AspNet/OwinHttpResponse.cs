@@ -1,7 +1,7 @@
 using Forte.Redirects.Request;
 using Microsoft.Owin;
 
-namespace Forte.RedirectMiddleware
+namespace Forte.Redirects.AspNet
 {
     public class OwinHttpResponse : IHttpResponse
     {

@@ -17,7 +17,7 @@ namespace AlloyDemoKit
 
         public void Configuration(IAppBuilder app)
         {
-            app.Use(typeof(Forte.RedirectMiddleware.RedirectMiddleware));
+            app.Use(typeof(Forte.Redirects.AspNet.RedirectMiddleware));
             // Add CMS integration for ASP.NET Identity
             app.AddCmsAspNetIdentity<ApplicationUser>();
 

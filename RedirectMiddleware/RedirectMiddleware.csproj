@@ -116,9 +116,7 @@
         <Reference Include="System.Xml" />
     </ItemGroup>
     <ItemGroup>
-        <Compile Include="OwinHttpResponse.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
-        <Compile Include="RedirectMiddleware.cs" />
     </ItemGroup>
     <ItemGroup>
       <None Include="packages.config" />

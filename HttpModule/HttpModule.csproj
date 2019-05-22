@@ -106,8 +106,6 @@
         <Reference Include="System.Xml" />
     </ItemGroup>
     <ItemGroup>
-        <Compile Include="HttpModule.cs" />
-        <Compile Include="HttpModuleHttpResponse.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
     </ItemGroup>
     <ItemGroup>

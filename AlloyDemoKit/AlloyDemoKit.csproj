@@ -1078,9 +1078,9 @@
     <Folder Include="modules\_protected\EPiServer.Labs.LanguageManager\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\RedirectMiddleware\RedirectMiddleware.csproj">
-      <Project>{b91d5668-2f19-450f-b3b5-6c67f39092ce}</Project>
-      <Name>RedirectMiddleware</Name>
+    <ProjectReference Include="..\Redirects\Redirects.csproj">
+      <Project>{c6d94213-59a2-4f0d-934d-d7ef24c100ea}</Project>
+      <Name>Redirects</Name>
     </ProjectReference>
   </ItemGroup>
   <ProjectExtensions>
