@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<package>
+    <metadata>
+        <id>Forte.EpiserverRedirects</id>
+        <version>$version$</version>
+        <title>Forte.EpiserverRedirects</title>
+        <authors>Forte_ Digital</authors>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <description>Episerver plugin to manage redirects</description>
+        <projectUrl>https://github.com/fortedigital/EpiserverRedirects</projectUrl>
+        <dependencies>
+            <dependency id="EPiServer.CMS.Core" version="[11.11.0, 12)" />
+            <dependency id="EPiServer.Framework" version="[11.11.0, 12)" />
+            <dependency id="EPiServer.CMS.UI.Core" version="[11.13.1, 12)" />
+            <dependency id="Microsoft.Owin" version="[3.0.1, 4]" />
+            <dependency id="CsvHelper" version="[7, 12]" />
+        </dependencies>
+    </metadata>
+    <files>
+        <file src="bin/Forte.EpiserverRedirects.dll" target="lib\net45" />
+        <file src="bin/EpiserverRedirects.zip" target="content\modules\_protected\EpiserverRedirects" />
+    </files>
+</package>
