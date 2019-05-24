@@ -17,7 +17,7 @@
         </dependencies>
     </metadata>
     <files>
-        <file src="bin/$configuration$/Forte.EpiserverRedirects.dll" target="lib\net45" />
-        <file src="bin/$configuration$/EpiserverRedirects.zip" target="content\modules\_protected\EpiserverRedirects" />
+        <file src="bin/Forte.EpiserverRedirects.dll" target="lib\net45" />
+        <file src="bin/EpiserverRedirects.zip" target="content\modules\_protected\EpiserverRedirects" />
     </files>
 </package>

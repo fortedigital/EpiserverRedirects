@@ -129,8 +129,6 @@
                         },
                         {
                             renderHeaderCell: (node) => {
-                                debugger;
-                                //return [this.createdOnFrom.domNode, this.createdOnTo.domNode];
                                 node.appendChild(this.createdOnFrom.domNode);
                                 return this.createdOnTo.domNode;
                             },

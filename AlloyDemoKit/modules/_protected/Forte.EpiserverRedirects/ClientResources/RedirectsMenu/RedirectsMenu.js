@@ -213,7 +213,6 @@ define("redirectsMenu/RedirectsMenu", [
                         statusLabel.innerText = _getLocalDateTime(data.TimeStamp) + " - Imported redirects: " + data.ImportedCount;
                     })
                     .otherwise(function (error) {
-                        debugger;
                         statusLabel.innerText = "Temporary server error or file is in invalid format"
                     });
 

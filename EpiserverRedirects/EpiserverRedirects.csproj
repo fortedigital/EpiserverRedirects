@@ -37,5 +37,46 @@
       <Content Include="ClientResources\RedirectsModuleInitializer.js" />
       <Content Include="module.config" />
     </ItemGroup>
+    
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+        <DebugSymbols>true</DebugSymbols>
+        <DebugType>full</DebugType>
+        <Optimize>false</Optimize>
+        <OutputPath>bin\</OutputPath>
+        <DefineConstants>DEBUG;TRACE</DefineConstants>
+        <ErrorReport>prompt</ErrorReport>
+        <WarningLevel>4</WarningLevel>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+        <DebugType>pdbonly</DebugType>
+        <Optimize>true</Optimize>
+        <OutputPath>bin\</OutputPath>
+        <DefineConstants>TRACE</DefineConstants>
+        <ErrorReport>prompt</ErrorReport>
+        <WarningLevel>4</WarningLevel>
+    </PropertyGroup>
+    <PropertyGroup>
+        <ProjectDir Condition="'$(ProjectDir)' == ''">$(MSBuildProjectDirectory)</ProjectDir>
+        <SolutionDir Condition="'$(SolutionDir)' == ''">$(ProjectDir)</SolutionDir>
+        <!-- NOTE! This is different between cms versions, the zip file needs to be named the same in the package -->
+        <OutDir>$(OutputPath)</OutDir>
+        <zipFile>$(OutDir)\EpiserverRedirects.zip</zipFile>
+    </PropertyGroup>
+    <Target Name="CreateNugetPackage" AfterTargets="Build;Rebuild" Condition="'$(Configuration)' == 'Release' ">
+        <Message Text="Creating Nuget Package" />
+        <!-- Create the Versioned out dir for the client resources-->
+        <!-- Copy -->
+        <ItemGroup>
+            <ClientResources Include="$(ProjectDir)\ClientResources\**\*" />
+        </ItemGroup>
+        <Copy SourceFiles="$(ProjectDir)\module.config" DestinationFolder="$(TmpOutDir)\content" />
+        <Copy SourceFiles="@(ClientResources)" DestinationFiles="@(ClientResources -> '$(TmpOutDir)\content\ClientResources\%(RecursiveDir)%(Filename)%(Extension)')" />
+        <!-- Delete old Zip file -->
+        <Delete Files="$(zipFile)" />
+        <!-- Create the Zip file -->
+        <ZipDirectory SourceDirectory="$(TmpOutDir)\content" DestinationFile="$(zipFile)" Overwrite="true" />
+        <!-- Cleanup -->
+        <RemoveDir Directories="$(TmpOutDir)" />
+    </Target>
 
 </Project>
