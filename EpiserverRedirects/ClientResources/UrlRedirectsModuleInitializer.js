@@ -4,7 +4,7 @@
     //CMS
     "epi/_Module",
     "epi/routes"
-], function (
+], function(
     // Dojo
     declare,
     //CMS

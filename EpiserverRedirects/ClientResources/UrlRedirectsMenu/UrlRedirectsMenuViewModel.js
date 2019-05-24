@@ -3,7 +3,7 @@
     "dojo/_base/declare",
     "dojo/Stateful",
     "epi/dependency",
-], function (declare, Stateful, dependency) {
+],function (declare, Stateful, dependency) {
 
     return declare([Stateful], {
         store: null,
