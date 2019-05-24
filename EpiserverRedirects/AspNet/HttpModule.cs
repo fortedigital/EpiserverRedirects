@@ -33,11 +33,7 @@ namespace Forte.EpiserverRedirects.AspNet
                 await handler.Invoke(request, response);
             }
         }
-
-
-        public void Dispose()
-        {
-            throw new global::System.NotImplementedException();
-        }
+        
+        public void Dispose() { }
     }
 }
