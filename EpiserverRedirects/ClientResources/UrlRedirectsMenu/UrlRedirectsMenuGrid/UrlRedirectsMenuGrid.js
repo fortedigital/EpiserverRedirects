@@ -12,6 +12,8 @@
 
     "dijit/layout/_LayoutWidget",
     "dijit/form/Select",
+    'dijit/Menu',
+    'dijit/MenuItem',
 
     "xstyle/css!./UrlRedirectsMenuGrid.css"
 ],
@@ -29,7 +31,9 @@
         SearchBox,
 
         _LayoutWidget,
-        Select
+        Select,
+        Menu,
+        MenuItem
     ) {
 
         return declare([_LayoutWidget], {
@@ -97,6 +101,7 @@
                         }
                     ],
                     selectionMode: 'single',
+                    allowTextSelection: true,
                     cellNavigation: false,
                     store: store,
                     pagingLinks: 1,
@@ -106,6 +111,29 @@
                 }, this.domNode);
 
                 this.grid.set("queryOptions", { sort: [{ attribute: "oldUrl", descending: false }] });
+
+                var gridMenu = new Menu({
+                    targetNodeIds: [ this.grid.domNode ],
+                    selector: '.dgrid-content .dgrid-row'
+                });
+
+                var cellContext = null;
+
+                var menuItem = new MenuItem({
+                    label: "Copy to clipboard", onClick: dojo.hitch(this, function(){
+                        if(cellContext){
+                            this._copyCellTextToClipboard(cellContext);
+                        }
+                    })
+                });
+
+                gridMenu.addChild(menuItem);
+
+                window["gridMenu"] = gridMenu;
+
+                this.grid.on('.dgrid-content .dgrid-cell:contextmenu', dojo.hitch(this, function (event) {
+                    cellContext = this.grid.cell(event);
+                }));
             },
 
             clearSelection: function () {
@@ -130,6 +158,27 @@
                         { label: "ManualWildcard", value: "ManualWildcard" }
                     ]
                 });
+            },
+
+            _copyCellTextToClipboard: function(cell) {
+                var el = document.createElement('textarea');
+                el.value = cell.element.innerText;
+
+                document.body.appendChild(el);
+
+                el.focus();
+                el.select();
+
+                try
+                {
+                    document.execCommand('copy');
+                }
+                catch (error)
+                {
+                    console.log("Unable to copy to clipboard");
+                }
+
+                document.body.removeChild(el);
             },
 
             _createRedirectStatusCodeSelect: function () {
