@@ -1088,14 +1088,14 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Data" />
+    <Folder Include="App_Data\" />
     <Folder Include="ClientResources\Scripts\" />
     <Folder Include="Models\Register\" />
     <Folder Include="modules\_protected\EPiServer.Labs.LanguageManager\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\EpiserverRedirects\EpiserverRedirects.csproj">
-      <Project>{c6d94213-59a2-4f0d-934d-d7ef24c100ea}</Project>
+      <Project>{9c60816a-5c5c-4b8d-a736-e4a4f9883014}</Project>
       <Name>EpiserverRedirects</Name>
     </ProjectReference>
   </ItemGroup>
