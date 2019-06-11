@@ -14,7 +14,7 @@ namespace Forte.EpiserverRedirects.Tests.Tests.Resolver
             var resolver = RedirectRuleResolver()
                 .Create();
             
-            var redirect = await resolver.ResolveRedirectRule(UrlPath.Parse("/dummyPath"));
+            var redirect = await resolver.ResolveRedirectRuleAsync(UrlPath.Parse("/dummyPath"));
             
             Assert.Null(redirect?.Id);
         }
@@ -26,7 +26,7 @@ namespace Forte.EpiserverRedirects.Tests.Tests.Resolver
                 .WithRandomExistingRules(10)
                 .Create();
             
-            var redirect = await resolver.ResolveRedirectRule(UrlPath.Parse("/dummyPath"));
+            var redirect = await resolver.ResolveRedirectRuleAsync(UrlPath.Parse("/dummyPath"));
             
             Assert.Null(redirect?.Id);
         }
@@ -39,7 +39,7 @@ namespace Forte.EpiserverRedirects.Tests.Tests.Resolver
                 .WithRule(r => r.WithOldPath("/dummyPath"), out var expectedRule)
                 .Create();
             
-            var redirect = await resolver.ResolveRedirectRule(UrlPath.Parse(expectedRule.OldPattern));
+            var redirect = await resolver.ResolveRedirectRuleAsync(UrlPath.Parse(expectedRule.OldPattern));
             
             Assert.Equal(expectedRule.Id, redirect?.Id);
         }

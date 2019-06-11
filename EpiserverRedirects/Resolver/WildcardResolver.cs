@@ -15,7 +15,7 @@ namespace Forte.EpiserverRedirects.Resolver
             _redirectRuleResolverRepository = redirectRuleResolverRepository;
         }
 
-        public async Task<IRedirect> ResolveRedirectRule(UrlPath oldPath)
+        public async Task<IRedirect> ResolveRedirectRuleAsync(UrlPath oldPath)
         {
             var redirectRule = _redirectRuleResolverRepository
                 .Where(r=>r.RedirectRuleType == RedirectRuleType.Wildcard)

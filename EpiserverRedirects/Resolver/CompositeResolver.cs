@@ -15,10 +15,10 @@ namespace Forte.EpiserverRedirects.Resolver
             _resolvers.AddRange(resolvers);
         }
 
-        public async Task<IRedirect> ResolveRedirectRule(UrlPath oldPath)
+        public async Task<IRedirect> ResolveRedirectRuleAsync(UrlPath oldPath)
         {
             var redirectRule =  _resolvers
-                .Select(resolver => resolver.ResolveRedirectRule(oldPath))
+                .Select(resolver => resolver.ResolveRedirectRuleAsync(oldPath))
                 .FirstOrDefault(redirectResult => redirectResult != null);
             
             if (redirectRule == null)
