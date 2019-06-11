@@ -61,6 +61,7 @@
         <!-- NOTE! This is different between cms versions, the zip file needs to be named the same in the package -->
         <OutDir>$(OutputPath)</OutDir>
         <zipFile>$(OutDir)\EpiserverRedirects.zip</zipFile>
+        <RunPostBuildEvent>Always</RunPostBuildEvent>
     </PropertyGroup>
     <Target Name="CreateNugetPackage" AfterTargets="Build;Rebuild" Condition="'$(Configuration)' == 'Release' ">
         <Message Text="Creating Nuget Package" />
@@ -78,5 +79,7 @@
         <!-- Cleanup -->
         <RemoveDir Directories="$(TmpOutDir)" />
     </Target>
-
+    <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+      <Exec Command="copy_module_ui.bat" />
+    </Target>
 </Project>

@@ -33,8 +33,10 @@ namespace Forte.EpiserverRedirects.Model.RedirectRule
         public string Notes { get; set; }
         
         public string CreatedBy { get; set; }
-        
-        
+
+        public int Priority { get; set; }
+
+
         public RedirectRuleDto()
         {
             

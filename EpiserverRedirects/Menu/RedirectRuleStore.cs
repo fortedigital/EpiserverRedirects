@@ -52,7 +52,7 @@ namespace Forte.EpiserverRedirects.Menu
             var newRedirectRule = _redirectRuleMapper.DtoToModel(dto);
 
             newRedirectRule.FromManual();
-            
+
             newRedirectRule = _redirectRuleRepository.Add(newRedirectRule);
 
             var newRedirectRuleDto = _redirectRuleMapper.ModelToDto(newRedirectRule);

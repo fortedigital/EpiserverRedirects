@@ -45,6 +45,7 @@
             contentId: null,
             redirectRuleType: null,
             redirectType: null,
+            priority: null,
             redirectOrigin: null,
             isActive: null,
             createdOnFrom: null,
@@ -62,6 +63,7 @@
                 this.contentId = new SearchBox();
                 this.redirectRuleType = this._createRedirectRuleTypeSelect();
                 this.redirectType = this._createRedirectTypeSelect();
+                this.priority = new SearchBox();
                 this.redirectOrigin = this._createRedirectOriginSelect();
                 this.isActive = this._createIsActiveSelect();
                 this.createdOnFrom = this._createCreatedOnFromFilter();
@@ -109,6 +111,14 @@
                             },
                             children: [
                                 { field: 'redirectType', label: 'Redirect Type', renderCell: (object, value, node) => node.append(this._getRedirectTypeText(value)) }
+                            ]
+                        },
+                        {
+                            renderHeaderCell: (node) => {
+                                return this._getSearchDomNode(this.priority);
+                            },
+                            children: [
+                                { field: 'priority', label: 'Priority' }
                             ]
                         },
                         {

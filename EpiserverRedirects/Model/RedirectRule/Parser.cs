@@ -102,11 +102,15 @@ namespace Forte.EpiserverRedirects.Model.RedirectRule
             return redirectOrigin;
         }
 
-        public static int? ParseContentIdNullable(string value)
+        public static int? ParseContentIdNullable(string value) => ParseNullableInt(value);
+        public static int? ParsePriorityNullable(string value) => ParseNullableInt(value);
+        
+
+        private static int? ParseNullableInt(string value)
         {
-            return int.TryParse(value, out var contentId)
-                ? contentId
-                : (int?) null;
+            return int.TryParse(value, out var intValue)
+                ? intValue
+                : (int?)null;
         }
     }
 }
