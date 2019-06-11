@@ -8,5 +8,4 @@ namespace Forte.EpiserverRedirects.Resolver
     {
         Task<IRedirect> ResolveRedirectRuleAsync(UrlPath oldPath);
     }
-
 }

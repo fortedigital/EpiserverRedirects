@@ -29,14 +29,14 @@ namespace Forte.EpiserverRedirects.Resolver {
         {
             switch (redirectType)
             {
-                case Model.RedirectRule.RedirectType.Temporary:
-                    return 307;
                 case Model.RedirectRule.RedirectType.Permanent:
                     return 308;
+                case Model.RedirectRule.RedirectType.Temporary:
+                    return 307;
                 default:
                     return 308;
             }
         }
     }
-      
 }
+ 
