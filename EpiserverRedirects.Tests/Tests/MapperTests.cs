@@ -23,6 +23,8 @@ namespace Forte.EpiserverRedirects.Tests.Tests
 
             Assert.Equal(redirectRuleDto.IsActive, redirectRule.IsActive);
             Assert.Equal(redirectRuleDto.Notes, redirectRule.Notes);
+
+            Assert.Equal(redirectRuleDto.Priority, redirectRule.Priority);
         }
 
         [Fact]
@@ -45,6 +47,8 @@ namespace Forte.EpiserverRedirects.Tests.Tests
             
             Assert.Equal(redirectRule.IsActive, redirectRuleDto.IsActive);
             Assert.Equal(redirectRule.Notes, redirectRuleDto.Notes);
+
+            Assert.Equal(redirectRuleDto.Priority, redirectRule.Priority);
         }
     }
 }

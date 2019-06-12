@@ -13,9 +13,9 @@
     "dijit/layout/_LayoutWidget",
     "dijit/form/Select",
     "dijit/form/DateTextBox",
-    
-    "redirects/Moment", 
-        "xstyle/css!./RedirectsMenuGrid.css"
+
+    "redirects/Moment",
+    "xstyle/css!./RedirectsMenuGrid.css"
 ],
 
     function (
@@ -75,7 +75,7 @@
                     columns: [
                         {
                             renderHeaderCell: (node) => {
-                                return this._getSearchDomNode(this.oldPattern);
+                                node.appendChild(this._getSearchDomNode(this.oldPattern));
                             },
                             children: [
                                 { field: 'oldPattern', label: 'Old pattern' }
@@ -83,7 +83,7 @@
                         },
                         {
                             renderHeaderCell: (node) => {
-                                return this._getSearchDomNode(this.newPattern);
+                                node.appendChild(this._getSearchDomNode(this.newPattern));
                             },
                             children: [
                                 { field: 'newPattern', label: 'New pattern' }
@@ -91,7 +91,7 @@
                         },
                         {
                             renderHeaderCell: (node) => {
-                                return this._getSearchDomNode(this.contentId);
+                                node.appendChild(this._getSearchDomNode(this.contentId));
                             },
                             children: [
                                 { field: 'contentId', label: 'Content Id' }
@@ -99,7 +99,7 @@
                         },
                         {
                             renderHeaderCell: (node) => {
-                                return this.redirectRuleType.domNode;
+                                node.appendChild(this.redirectRuleType.domNode);
                             },
                             children: [
                                 { field: 'redirectRuleType', label: 'Redirect Rule Type', renderCell: (object, value, node) => node.append(this._getRedirectRuleTypeText(value)) }
@@ -107,7 +107,7 @@
                         },
                         {
                             renderHeaderCell: (node) => {
-                                return this.redirectType.domNode;
+                                node.appendChild(this.redirectType.domNode);
                             },
                             children: [
                                 { field: 'redirectType', label: 'Redirect Type', renderCell: (object, value, node) => node.append(this._getRedirectTypeText(value)) }
@@ -115,7 +115,7 @@
                         },
                         {
                             renderHeaderCell: (node) => {
-                                return this._getSearchDomNode(this.priority);
+                                node.appendChild(this._getSearchDomNode(this.priority));
                             },
                             children: [
                                 { field: 'priority', label: 'Priority' }
@@ -123,7 +123,7 @@
                         },
                         {
                             renderHeaderCell: (node) => {
-                                return this.redirectOrigin.domNode;
+                                node.appendChild(this.redirectOrigin.domNode);
                             },
                             children: [
                                 { field: 'redirectOrigin', label: 'Redirect Origin', renderCell: (object, value, node) => node.append(this._getRedirectOriginText(value)) }
@@ -131,7 +131,7 @@
                         },
                         {
                             renderHeaderCell: (node) => {
-                                return this.isActive.domNode;
+                                node.appendChild(this.isActive.domNode);
                             },
                             children: [
                                 { field: 'isActive', label: 'Is active', renderCell: (object, value, node) => node.append(this._getIsActiveText(value)) }
@@ -139,16 +139,17 @@
                         },
                         {
                             renderHeaderCell: (node) => {
+                                node.colSpan = 2;
                                 node.appendChild(this.createdOnFrom.domNode);
                                 return this.createdOnTo.domNode;
                             },
                             children: [
-                                { field: 'createdOn', label: 'Created on', renderCell: (object, value, node) => node.append(this._getLocalDateTime(value)) }
+                                { field: 'createdOn', label: 'Created on', colSpan: 2, renderCell: (object, value, node) => node.append(this._getLocalDateTime(value)) }
                             ]
                         },
                         {
                             renderHeaderCell: (node) => {
-                                return this._getSearchDomNode(this.createdBy);
+                                node.appendChild(this._getSearchDomNode(this.createdBy));
                             },
                             children: [
                                 { field: 'createdBy', label: 'Created by' }
@@ -156,7 +157,7 @@
                         },
                         {
                             renderHeaderCell: (node) => {
-                                return this._getSearchDomNode(this.notes);
+                                node.appendChild(this._getSearchDomNode(this.notes));
                             },
                             children: [
                                 { field: 'notes', label: 'Notes' }
@@ -187,11 +188,11 @@
                 this.grid.set("query", searchQueryModel);
             },
 
-            _createRedirectRuleTypeSelect: function() {
+            _createRedirectRuleTypeSelect: function () {
                 return new Select({
                     name: "redirectRuleTypeSelect",
                     options: [
-                        { label: "All", value: 0},
+                        { label: "All", value: 0 },
                         { label: "ExactMatch", value: 1 },
                         { label: "Regex", value: 2 },
                     ]
@@ -234,13 +235,15 @@
 
             _createCreatedOnFromFilter() {
                 return new DateTextBox({
-                        name: "createdOnFrom"
-                    });
+                    name: "createdOnFrom",
+                    style: "width: 49%;float:left"
+                });
             },
 
             _createCreatedOnToFilter() {
                 return new DateTextBox({
-                    name: "createdOnTo"
+                    name: "createdOnTo",
+                    style: "width: 49%;float:right"
                 });
             },
 
@@ -293,7 +296,6 @@
             _getLocalDateTime: function (utcDateTime) {
                 var localDateTime = moment(utcDateTime).local().format('DD-MM-YYYY HH:mm:ss');
                 return localDateTime.toString();
-            },
-
+            }
         });
     });

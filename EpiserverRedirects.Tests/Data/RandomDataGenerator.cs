@@ -26,7 +26,8 @@ namespace Forte.EpiserverRedirects.Tests.Data
                 RedirectType = RedirectType.Temporary,
                 CreatedBy = "user",
                 RedirectRuleType = RedirectRuleType.ExactMatch,
-                RedirectOrigin = RedirectOrigin.System
+                RedirectOrigin = RedirectOrigin.System,
+                Priority = RandomGenerator.Next(1, int.MaxValue)
             };
         }
         
@@ -43,7 +44,8 @@ namespace Forte.EpiserverRedirects.Tests.Data
                 RedirectType = RedirectType.Temporary,
                 CreatedBy = "user",
                 RedirectRuleType = RedirectRuleType.ExactMatch,
-                RedirectOrigin = RedirectOrigin.System
+                RedirectOrigin = RedirectOrigin.System,
+                Priority = RandomGenerator.Next(1, int.MaxValue)
             };
         }
         
