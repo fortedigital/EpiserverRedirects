@@ -88,7 +88,7 @@ namespace Forte.EpiserverRedirects.Model.RedirectRule
                 CreatedOn = DateTime.SpecifyKind(DateTime.UtcNow, DateTimeKind.Utc),
                 CreatedBy = PrincipalInfo.CurrentPrincipal.Identity.Name,
                 Notes = notes,
-                Priority = priority ?? Settings.DefaultImportRedirectRulePriority
+                Priority = priority ?? Settings.DefaultRedirectRulePriority
             };
         }
 
@@ -106,7 +106,7 @@ namespace Forte.EpiserverRedirects.Model.RedirectRule
                 CreatedOn = DateTime.SpecifyKind(DateTime.UtcNow, DateTimeKind.Utc),
                 CreatedBy = PrincipalInfo.CurrentPrincipal.Identity.Name,
                 Notes = notes,
-                Priority = priority ?? Settings.DefaultImportRedirectRulePriority
+                Priority = priority ?? Settings.DefaultRedirectRulePriority
             };
         }
 
@@ -127,7 +127,6 @@ namespace Forte.EpiserverRedirects.Model.RedirectRule
         public string CreatedBy { get; set; }
         public string Notes { get; set; }
         public int Priority { get; set; }
-
     }
 
 }

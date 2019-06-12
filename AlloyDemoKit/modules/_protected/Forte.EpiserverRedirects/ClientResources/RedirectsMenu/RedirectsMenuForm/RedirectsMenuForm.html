@@ -39,6 +39,16 @@
                     <option value="2">Temporary</option>
                 </select>
             </div>
+            
+            <div class="epi-form-container__section__row">
+                <label for="priority">Priority:</label>
+                <input class="form-input" type="number" name="priority"
+                       required
+                       min="1" max="2147483647"
+                       data-dojo-props="intermediateChanges:true,constraints:{min:1,max:2147483647,places:0},"
+                       data-dojo-type="dijit/form/NumberTextBox"
+                       data-dojo-attach-point="priorityTextBox" id="priority" />
+            </div>
 
             <div class="epi-form-container__section__row">
                 <label for="isActive">Is active:</label>

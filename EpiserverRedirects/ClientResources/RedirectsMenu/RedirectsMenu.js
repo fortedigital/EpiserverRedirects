@@ -8,6 +8,7 @@ define("redirectsMenu/RedirectsMenu", [
     "dijit/_TemplatedMixin",
     "dijit/_WidgetsInTemplateMixin",
     "dijit/form/Button",
+    "dojox/form/Uploader",
     "dijit/Dialog",
     "dijit/form/TextBox",
 
@@ -28,6 +29,7 @@ define("redirectsMenu/RedirectsMenu", [
     _TemplatedMixin,
     _WidgetsInTemplateMixin,
     Button,
+    Uploader,
     Dialog,
     TextBox,
 
@@ -35,7 +37,7 @@ define("redirectsMenu/RedirectsMenu", [
     moment,
     RedirectsMenuGrid,
     RedirectsMenuForm
-    ) {
+) {
         return declare([_WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin], {
             templateString: template,
             redirectsMenuViewModel: null,
@@ -55,11 +57,11 @@ define("redirectsMenu/RedirectsMenu", [
                 on(this.editButton, "click", this._onEditClick.bind(this));
                 on(this.deleteButton, "click", this._onDeleteClick.bind(this));
                 on(this.refreshButton, "click", this._refreshView.bind(this));
-/*                on(this.simulateFindButton, "click", this._onSimulateFindClick.bind(this));
-                on(this.simulateResetButton, "click", this._onSimulateResetClick.bind(this));*/
+                /*                on(this.simulateFindButton, "click", this._onSimulateFindClick.bind(this));
+                                on(this.simulateResetButton, "click", this._onSimulateResetClick.bind(this));*/
                 on(this.uploadFormSubmit, "click", this._onImportSubmit.bind(this));
                 on(this.fileUploader, "change", this._onUploaderChange.bind(this));
-                
+
                 this.deleteButton.set('disabled', true);
                 this.editButton.set('disabled', true);
 
@@ -95,7 +97,7 @@ define("redirectsMenu/RedirectsMenu", [
                 on(this.redirectsMenuGrid.createdBy, "change", (newValue) => this._onSearchChange({ createdBy: newValue }));
                 on(this.redirectsMenuGrid.notes, "change", (newValue) => this._onSearchChange({ notes: newValue }));
             },
-            
+
             _parseToUtcDateTime: function (localDate) {
                 return moment(localDate).utc().format();
             },
@@ -137,7 +139,6 @@ define("redirectsMenu/RedirectsMenu", [
 
             _onSaveForm: function (model) {
                 var mode = this.redirectsMenuViewModel.get("mode");
-
                 if (mode === "edit") {
                     this.redirectsMenuViewModel.updateRedirectRule(model)
                         .then(response => this._refreshView(), error => this._handleError(error));
@@ -171,22 +172,22 @@ define("redirectsMenu/RedirectsMenu", [
                 this.redirectsMenuViewModel.set("searchQueryModel", newSearchQueryModel);
             },
 
-/*            _onSimulateFindClick: function () {
-                this._onSearchChange({ simulatedOldPattern: this.simulateOldPatternTextBox.get("value")});
+            /*            _onSimulateFindClick: function () {
+                            this._onSearchChange({ simulatedOldPattern: this.simulateOldPatternTextBox.get("value")});
+                        },
+            
+                        _onSimulateResetClick: function () {
+                            this.simulateOldPatternTextBox.set("value", "");
+                            this._onSearchChange({ simulatedOldPattern: ""});
+                        },*/
+
+            _onUploaderChange: function (fileArray) {
+                this.importStatus.innerText = fileArray && fileArray.length
+                    ? fileArray[0].name
+                    : "Select a file";
             },
 
-            _onSimulateResetClick: function () {
-                this.simulateOldPatternTextBox.set("value", "");
-                this._onSearchChange({ simulatedOldPattern: ""});
-            },*/
-
-            _onUploaderChange: function(fileArray) {
-                this.importStatus.innerText = fileArray && fileArray.length 
-                    ? fileArray[0].name  
-                    :"Select a file";
-            },
-
-            _onImportSubmit: function(event) {
+            _onImportSubmit: function (event) {
                 var statusLabel = this.importStatus;
                 if (!this.fileUploader._files || !this.fileUploader._files.length) {
                     statusLabel.innerText = "Select a file";

@@ -50,6 +50,8 @@
         },
 
         addRedirectRule: function (newModel) {
+            console.log(newModel);
+            newModel.dupa = 10;
             return this.store.add(newModel);
         },
 
