@@ -13,7 +13,7 @@
             <dependency id="EPiServer.Framework" version="[11.11.0, 12)" />
             <dependency id="EPiServer.CMS.UI.Core" version="[11.13.1, 12)" />
             <dependency id="Microsoft.Owin" version="[3.0.1, 5)" />
-            <dependency id="CsvHelper" version="7" />
+            <dependency id="CsvHelper" version="7.0" />
         </dependencies>
     </metadata>
     <files>
