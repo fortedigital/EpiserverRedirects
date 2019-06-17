@@ -57,8 +57,8 @@ define("redirectsMenu/RedirectsMenu", [
                 on(this.editButton, "click", this._onEditClick.bind(this));
                 on(this.deleteButton, "click", this._onDeleteClick.bind(this));
                 on(this.refreshButton, "click", this._refreshView.bind(this));
-                /*                on(this.simulateFindButton, "click", this._onSimulateFindClick.bind(this));
-                                on(this.simulateResetButton, "click", this._onSimulateResetClick.bind(this));*/
+                /*on(this.simulateFindButton, "click", this._onSimulateFindClick.bind(this));
+                on(this.simulateResetButton, "click", this._onSimulateResetClick.bind(this));*/
                 on(this.uploadFormSubmit, "click", this._onImportSubmit.bind(this));
                 on(this.fileUploader, "change", this._onUploaderChange.bind(this));
 
@@ -172,14 +172,16 @@ define("redirectsMenu/RedirectsMenu", [
                 this.redirectsMenuViewModel.set("searchQueryModel", newSearchQueryModel);
             },
 
-            /*            _onSimulateFindClick: function () {
-                            this._onSearchChange({ simulatedOldPattern: this.simulateOldPatternTextBox.get("value")});
-                        },
+            /*
+             _onSimulateFindClick: function () {
+                this._onSearchChange({ simulatedOldPattern: this.simulateOldPatternTextBox.get("value")});
+             },
             
-                        _onSimulateResetClick: function () {
-                            this.simulateOldPatternTextBox.set("value", "");
-                            this._onSearchChange({ simulatedOldPattern: ""});
-                        },*/
+             _onSimulateResetClick: function () {
+                this.simulateOldPatternTextBox.set("value", "");
+                this._onSearchChange({ simulatedOldPattern: ""});
+             },
+             */
 
             _onUploaderChange: function (fileArray) {
                 this.importStatus.innerText = fileArray && fileArray.length
