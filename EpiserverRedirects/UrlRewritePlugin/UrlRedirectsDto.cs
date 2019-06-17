@@ -16,7 +16,7 @@ namespace Forte.EpiserverRedirects.UrlRewritePlugin
             int priority, RedirectStatusCode redirectStatusCode)
         {
             Id = id;
-            OldUrl = oldUrl;
+            OldUrl = oldUrl.NormalizePath();
             NewUrl = newUrl;
             ContentId = contentId;
             Type = type;

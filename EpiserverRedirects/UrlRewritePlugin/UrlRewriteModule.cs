@@ -17,7 +17,7 @@ namespace Forte.EpiserverRedirects.UrlRewritePlugin
     public class UrlRewriteModule : IInitializableModule
     {
         private const string _oldUrlKey = "OLD_URL";
-        
+
         private Injected<UrlResolver> UrlResolver { get; set; }
         private Injected<IContentVersionRepository> ContentVersionRepository { get; set; }
         private Injected<IContentRepository> ContentRepository { get; set; }
@@ -39,7 +39,7 @@ namespace Forte.EpiserverRedirects.UrlRewritePlugin
             {
                 return;
             }
-                
+
             var lastVersion = ContentVersionRepository.Service
                 .List(e.ContentLink)
                 .Where(p => p.Status == VersionStatus.PreviouslyPublished)
@@ -52,7 +52,7 @@ namespace Forte.EpiserverRedirects.UrlRewritePlugin
             }
 
             var oldUrl = GetContentUrl(lastVersion.ContentLink, lastVersion.LanguageBranch);
-            
+
             if (oldUrl == null)
             {
                 return;
@@ -63,7 +63,7 @@ namespace Forte.EpiserverRedirects.UrlRewritePlugin
             {
                 return;
             }
-            
+
             var lastVersionPageData = ContentRepository.Service.Get<IContentData>(lastVersion.ContentLink) as PageData;
             if (lastVersionPageData == null)
             {
@@ -75,7 +75,7 @@ namespace Forte.EpiserverRedirects.UrlRewritePlugin
 
         private string GetContentUrl(ContentReference contentReference, string language, bool validateTemplate = true)
         {
-            var arguments = new VirtualPathArguments {ValidateTemplate = validateTemplate};
+            var arguments = new VirtualPathArguments { ValidateTemplate = validateTemplate };
             return UrlResolver.Service.GetVirtualPath(contentReference, language, arguments)?.VirtualPath;
         }
 
@@ -93,7 +93,7 @@ namespace Forte.EpiserverRedirects.UrlRewritePlugin
         {
             if (Configuration.AddAutomaticRedirects == false)
                 return;
-            
+
             if (!(e.Content is IChangeTrackable)) return;
 
             var originalParent = (e as MoveContentEventArgs)?.OriginalParent;
@@ -104,7 +104,7 @@ namespace Forte.EpiserverRedirects.UrlRewritePlugin
                 // however, DO redirect when moving to waste basket, because restore may be to another place 
                 return;
             }
-            
+
             foreach (var language in LanguageBranchRepository.Service.ListEnabled())
             {
                 if (!(ContentRepository.Service.Get<IContentData>(e.ContentLink, language.Culture) is PageData pageData)) continue;
@@ -112,7 +112,7 @@ namespace Forte.EpiserverRedirects.UrlRewritePlugin
                 var oldUrl = GetContentUrl(originalParent, language.Culture.Name, false);
                 if (oldUrl == null)
                 {
-                    continue;                    
+                    continue;
                 }
 
                 RedirectHelper.AddRedirects(pageData, oldUrl + pageData.URLSegment, language.Culture);
@@ -123,7 +123,7 @@ namespace Forte.EpiserverRedirects.UrlRewritePlugin
         {
             if (Configuration.AddAutomaticRedirects == false)
                 return;
-            
+
             var transition = (e as SaveContentEventArgs)?.Transition;
             if (transition.Value.CurrentStatus == VersionStatus.NotCreated) return;
 
@@ -140,16 +140,16 @@ namespace Forte.EpiserverRedirects.UrlRewritePlugin
         {
             if (Configuration.AddAutomaticRedirects == false)
                 return;
-            
+
             var oldUrl = e.Items[_oldUrlKey]?.ToString();
             if (oldUrl == null)
             {
                 return;
             }
-            
+
             var newUrl = UrlResolver.Service.GetUrl(e.ContentLink);
 
-            if(newUrl != oldUrl)
+            if (newUrl != oldUrl)
             {
                 var pageData = ContentRepository.Service.Get<IContentData>(e.ContentLink) as PageData;
 
@@ -161,7 +161,7 @@ namespace Forte.EpiserverRedirects.UrlRewritePlugin
 
         private void DeletedContentHandler(object sender, ContentEventArgs e)
         {
-            RedirectHelper.DeleteRedirects(e.ContentLink, ((DeleteContentEventArgs) e).DeletedDescendents);
+            RedirectHelper.DeleteRedirects(e.ContentLink, ((DeleteContentEventArgs)e).DeletedDescendents);
         }
 
         private static CultureInfo GetCultureInfo(ContentEventArgs e)

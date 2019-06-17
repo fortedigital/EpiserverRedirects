@@ -4,10 +4,7 @@
     {
         public static string NormalizePath(this string str)
         {
-            str = str[0] != '/' ? '/' + str : str;
-            str = str.TrimEnd('/');
-            
-            return str;
+            return '/' + str.Trim('/');
         }
     }
 }
