@@ -35,9 +35,9 @@ namespace Forte.EpiserverRedirects.UrlRewritePlugin
             var urlRewriteModel = urlRedirectsDto.MapToUrlRewriteModel();
 
             var redirectAlreadyExist = store.Items<UrlRewriteModel>()
-                .Any(x => x.OldUrl == urlRewriteModel.OldUrl);
+                .FirstOrDefault(x => x.OldUrl == urlRewriteModel.OldUrl);
 
-            if (redirectAlreadyExist)
+            if (redirectAlreadyExist != null)
             {
                 throw new ApplicationException($"Redirect with this oldUrl: {urlRedirectsDto.OldUrl} already exist");
             }
