@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28010.2036
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29001.49
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EpiserverRedirects", "EpiserverRedirects\EpiserverRedirects.csproj", "{4E0AE2DE-6A25-4B65-BB52-D75F2EB0ABDE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EpiserverRedirects.Tests", "EpiserverRedirects.Tests\EpiserverRedirects.Tests.csproj", "{8975F6BC-1176-4DC9-9618-ED6CDC3241DE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{4E0AE2DE-6A25-4B65-BB52-D75F2EB0ABDE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4E0AE2DE-6A25-4B65-BB52-D75F2EB0ABDE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4E0AE2DE-6A25-4B65-BB52-D75F2EB0ABDE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8975F6BC-1176-4DC9-9618-ED6CDC3241DE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8975F6BC-1176-4DC9-9618-ED6CDC3241DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8975F6BC-1176-4DC9-9618-ED6CDC3241DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8975F6BC-1176-4DC9-9618-ED6CDC3241DE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

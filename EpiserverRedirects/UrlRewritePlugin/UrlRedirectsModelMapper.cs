@@ -2,7 +2,7 @@
 
 namespace Forte.EpiserverRedirects.UrlRewritePlugin
 {
-    internal static class UrlRedirectsModelMapper
+    public static class UrlRedirectsModelMapper
     {
         public static UrlRedirectsDto MapToUrlRedirectsDto(this UrlRewriteModel urlRewriteModel)
         {
