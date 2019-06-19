@@ -11,8 +11,9 @@
     "dijit/form/ValidationTextBox",
     "dijit/form/NumberTextBox",
     "dijit/form/Select",
-    "redirects/Moment",
-    ],
+    "dijit/form/Textarea",
+    "redirects/Moment"
+],
 
     function (
         declare,
@@ -27,6 +28,7 @@
         ValidationTextBox,
         NumberTextBox,
         Select,
+        TextArea,
         moment,
     ) {
 
@@ -40,10 +42,11 @@
                 on(this.deleteButton, "click", () => this.onDeleteClick());
                 on(this.oldPatternTextBox, "change", () => this._isFormValid());
                 on(this.newPatternTextBox, "change", () => this._isFormValid());
+                on(this.priorityTextBox, "change", () => this._isFormValid());
             },
 
             _isFormValid: function () {
-                this.saveButton.set("disabled", !this.newPatternTextBox.isValid() || !this.oldPatternTextBox.isValid());
+                this.saveButton.set("disabled", !this.newPatternTextBox.isValid() || !this.oldPatternTextBox.isValid() || !this.priorityTextBox.isValid());
             },
 
             updateView: function (model, mode) {
@@ -63,6 +66,7 @@
                 this.newPatternTextBox.set("value", model.newPattern);
                 this.redirectRuleTypeSelect.set("value", model.redirectRuleType);
                 this.redirectTypeSelect.set("value", model.redirectType);
+                this.priorityTextBox.set("value", model.priority);
                 this.isActiveSelect.set("value", model.isActive.toString());
 
                 this.createdOnTextBox.set("value", this._getLocalDateTime(model.createdOn));
@@ -73,7 +77,7 @@
 
                 this.createdOnTextBox.set("disabled", true);
                 this.createdByTextBox.set("disabled", true);
-                
+
                 document.getElementById("createdOnInputDiv").style.display = 'block';
                 document.getElementById("createdByInputDiv").style.display = 'block';
             },
@@ -86,6 +90,7 @@
             _updateAddMode: function () {
                 this.oldPatternTextBox.set("value", "");
                 this.newPatternTextBox.set("value", "");
+                this.priorityTextBox.set("value", 100);
                 this.notesTextarea.set("value", "");
                 this.deleteButton.set("disabled", true);
                 this.saveButton.set("disabled", true);
@@ -99,12 +104,12 @@
                     id: this.id,
                     oldPattern: this.oldPatternTextBox.get("value"),
                     newPattern: this.newPatternTextBox.get("value"),
+                    priority: this.priorityTextBox.get("value"),
                     redirectRuleType: this.redirectRuleTypeSelect.get("value"),
                     redirectType: this.redirectTypeSelect.get("value"),
                     isActive: this.isActiveSelect.get("value"),
                     notes: this.notesTextarea.get("value"),
                 };
-
                 return model;
             },
 

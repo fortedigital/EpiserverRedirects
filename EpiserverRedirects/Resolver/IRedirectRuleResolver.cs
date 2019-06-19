@@ -6,7 +6,6 @@ namespace Forte.EpiserverRedirects.Resolver
 {
     public interface IRedirectRuleResolver
     {
-        Task<IRedirect> ResolveRedirectRule(UrlPath oldPath);
+        Task<IRedirect> ResolveRedirectRuleAsync(UrlPath oldPath);
     }
-
 }

@@ -45,11 +45,15 @@ namespace Forte.EpiserverRedirects.Import
                 ? RedirectRule.NewFromImport(redirectRow.OldPattern, redirectRow.NewPattern,
                     Parser.ParseRedirectType(redirectRow.RedirectType),
                     Parser.ParseRedirectRuleType(redirectRow.RedirectRuleType),
-                    Parser.ParseIsActive(redirectRow.IsActive), redirectRow.Notes)
+                    Parser.ParseIsActive(redirectRow.IsActive), 
+                    redirectRow.Notes,
+                    redirectRow.Priority)
                 : RedirectRule.NewFromImport(redirectRow.OldPattern, contentLink.ID,
                     Parser.ParseRedirectType(redirectRow.RedirectType),
                     Parser.ParseRedirectRuleType(redirectRow.RedirectRuleType),
-                    Parser.ParseIsActive(redirectRow.IsActive), redirectRow.Notes);
+                    Parser.ParseIsActive(redirectRow.IsActive), 
+                    redirectRow.Notes, 
+                    redirectRow.Priority);
         }
 
         private ContentReference GetContentLink(IEnumerable<Uri> siteUrls, string redirectRoute)

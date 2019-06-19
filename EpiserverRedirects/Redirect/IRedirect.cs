@@ -9,6 +9,7 @@ namespace Forte.EpiserverRedirects.Redirect
     public interface IRedirect
     {
         Identity Id { get; }
+        int Priority { get; }
 
         void Execute(Uri request, IHttpResponse httpResponse, IUrlResolver contentUrlResolver,
             IResponseStatusCodeResolver responseStatusCodeResolver);

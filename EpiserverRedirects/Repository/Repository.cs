@@ -36,6 +36,7 @@ namespace Forte.EpiserverRedirects.Repository
             redirectRuleToUpdate.RedirectRuleType = redirectRule.RedirectRuleType;
             redirectRuleToUpdate.IsActive = redirectRule.IsActive;
             redirectRuleToUpdate.Notes = redirectRule.Notes;
+            redirectRuleToUpdate.Priority = redirectRule.Priority;
         }
 
         public IEnumerator<RedirectRule> GetEnumerator()

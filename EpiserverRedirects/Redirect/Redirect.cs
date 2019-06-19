@@ -11,6 +11,8 @@ namespace Forte.EpiserverRedirects.Redirect
     public abstract class Redirect : IRedirect
     {
         public Identity Id => RedirectRule.Id;
+        public int Priority => RedirectRule.Priority;
+
         protected RedirectRule RedirectRule { get; }
 
         protected Redirect(RedirectRule redirectRule)

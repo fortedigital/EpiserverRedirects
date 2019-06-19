@@ -19,6 +19,7 @@ namespace Forte.EpiserverRedirects.Model.RedirectRule
         
         [Required]
         public RedirectRuleType RedirectRuleType { get; set; }
+        public int? Priority { get; set; }
         
         [Required]
         public RedirectType RedirectType { get; set; }
@@ -33,8 +34,9 @@ namespace Forte.EpiserverRedirects.Model.RedirectRule
         public string Notes { get; set; }
         
         public string CreatedBy { get; set; }
-        
-        
+
+
+
         public RedirectRuleDto()
         {
             

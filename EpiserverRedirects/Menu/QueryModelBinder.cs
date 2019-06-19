@@ -27,6 +27,7 @@ namespace Forte.EpiserverRedirects.Menu
                     CreatedOnTo = Parser.ParseCreatedOnTo(queryPropertiesDictionary["createdOnTo"]),
                     CreatedBy = queryPropertiesDictionary["createdBy"],
                     Notes = queryPropertiesDictionary["notes"],
+                    Priority = Parser.ParsePriorityNullable(queryPropertiesDictionary["priority"]),
                     SortColumns = Parser.ParseSortColumns(queryPropertiesDictionary.ToString()),
                     Range = ItemRange.ReadHeaderFrom(request)
                 };

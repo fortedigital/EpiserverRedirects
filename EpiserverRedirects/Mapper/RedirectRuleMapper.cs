@@ -25,6 +25,7 @@ namespace Forte.EpiserverRedirects.Mapper
             destination.Notes = source.Notes;
             destination.CreatedOn = DateTime.SpecifyKind(source.CreatedOn, DateTimeKind.Utc);
             destination.CreatedBy = source.CreatedBy;
+            destination.Priority = source.Priority;
 
             return destination;
         }
@@ -39,6 +40,7 @@ namespace Forte.EpiserverRedirects.Mapper
             destination.RedirectRuleType = source.RedirectRuleType;
             destination.IsActive = source.IsActive;
             destination.Notes = source.Notes;
+            destination.Priority = (source.Priority.HasValue && source.Priority > 0) ? source.Priority.Value : Configuration.Configuration.DefaultRedirectRulePriority;
 
             return destination;
         }

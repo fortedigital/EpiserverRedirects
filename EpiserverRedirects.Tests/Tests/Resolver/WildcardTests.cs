@@ -14,7 +14,7 @@ namespace Forte.EpiserverRedirects.Tests.Tests.Resolver
             var resolver = WildcardResolver()
                 .Create();
             
-            var redirect = await resolver.ResolveRedirectRule(UrlPath.Parse("/dummyPath"));
+            var redirect = await resolver.ResolveRedirectRuleAsync(UrlPath.Parse("/dummyPath"));
             Assert.Null(redirect?.Id);
         }
     }
