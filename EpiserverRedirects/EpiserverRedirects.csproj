@@ -12,17 +12,14 @@
     <DisableFastUpToDateCheck>true</DisableFastUpToDateCheck>
   </PropertyGroup>
 
-  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-    <DebugType>full</DebugType>
-  </PropertyGroup>
+    <ItemGroup>
+      <PackageReference Include="CsvHelper" Version="12.1.2" />
+      <PackageReference Include="EPiServer.CMS.UI.Core" Version="11.19.1" />
+      <PackageReference Include="EPiServer.Framework" Version="11.11.3" />
+      <PackageReference Include="Microsoft.Owin" Version="4.0.1" />
+      <PackageReference Include="Moment.js" Version="2.24.0" />
+    </ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="CsvHelper" Version="12.1.2" />
-    <PackageReference Include="EPiServer.CMS.UI.Core" Version="11.19.2" />
-    <PackageReference Include="EPiServer.Framework" Version="11.11.3" />
-    <PackageReference Include="Microsoft.Owin" Version="4.0.1" />
-    <PackageReference Include="Moment.js" Version="2.24.0" />
-  </ItemGroup>
 
   <ItemGroup>
     <Content Include="ClientResources\RedirectsComponent\RedirectsComponent.css" />

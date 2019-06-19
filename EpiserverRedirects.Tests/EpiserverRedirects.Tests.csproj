@@ -53,8 +53,8 @@
           <HintPath>..\packages\EPiServer.CMS.AspNet.11.11.3\lib\net461\EPiServer.Cms.AspNet.dll</HintPath>
           <Private>True</Private>
         </Reference>
-        <Reference Include="EPiServer.Cms.Shell.UI, Version=11.19.2.0, Culture=neutral, PublicKeyToken=8fe83dea738b45b7">
-          <HintPath>..\packages\EPiServer.CMS.UI.Core.11.19.2\lib\net461\EPiServer.Cms.Shell.UI.dll</HintPath>
+        <Reference Include="EPiServer.Cms.Shell.UI, Version=11.19.1.0, Culture=neutral, PublicKeyToken=8fe83dea738b45b7">
+          <HintPath>..\packages\EPiServer.CMS.UI.Core.11.19.1\lib\net461\EPiServer.Cms.Shell.UI.dll</HintPath>
           <Private>True</Private>
         </Reference>
         <Reference Include="EPiServer.Configuration, Version=11.11.3.0, Culture=neutral, PublicKeyToken=8fe83dea738b45b7">
@@ -97,16 +97,16 @@
           <HintPath>..\packages\EPiServer.CMS.Core.11.11.3\lib\net461\EPiServer.LinkAnalyzer.dll</HintPath>
           <Private>True</Private>
         </Reference>
-        <Reference Include="EPiServer.Shell, Version=11.19.2.0, Culture=neutral, PublicKeyToken=8fe83dea738b45b7">
-          <HintPath>..\packages\EPiServer.CMS.UI.Core.11.19.2\lib\net461\EPiServer.Shell.dll</HintPath>
+        <Reference Include="EPiServer.Shell, Version=11.19.1.0, Culture=neutral, PublicKeyToken=8fe83dea738b45b7">
+          <HintPath>..\packages\EPiServer.CMS.UI.Core.11.19.1\lib\net461\EPiServer.Shell.dll</HintPath>
           <Private>True</Private>
         </Reference>
-        <Reference Include="EPiServer.Shell.UI, Version=11.19.2.0, Culture=neutral, PublicKeyToken=8fe83dea738b45b7">
-          <HintPath>..\packages\EPiServer.CMS.UI.Core.11.19.2\lib\net461\EPiServer.Shell.UI.dll</HintPath>
+        <Reference Include="EPiServer.Shell.UI, Version=11.19.1.0, Culture=neutral, PublicKeyToken=8fe83dea738b45b7">
+          <HintPath>..\packages\EPiServer.CMS.UI.Core.11.19.1\lib\net461\EPiServer.Shell.UI.dll</HintPath>
           <Private>True</Private>
         </Reference>
-        <Reference Include="EPiServer.UI, Version=11.19.2.0, Culture=neutral, PublicKeyToken=8fe83dea738b45b7">
-          <HintPath>..\packages\EPiServer.CMS.UI.Core.11.19.2\lib\net461\EPiServer.UI.dll</HintPath>
+        <Reference Include="EPiServer.UI, Version=11.19.1.0, Culture=neutral, PublicKeyToken=8fe83dea738b45b7">
+          <HintPath>..\packages\EPiServer.CMS.UI.Core.11.19.1\lib\net461\EPiServer.UI.dll</HintPath>
           <Private>True</Private>
         </Reference>
         <Reference Include="EPiServer.Web.WebControls, Version=11.11.3.0, Culture=neutral, PublicKeyToken=8fe83dea738b45b7">
