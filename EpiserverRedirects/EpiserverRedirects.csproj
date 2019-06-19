@@ -60,7 +60,7 @@
         <SolutionDir Condition="'$(SolutionDir)' == ''">$(ProjectDir)</SolutionDir>
         <!-- NOTE! This is different between cms versions, the zip file needs to be named the same in the package -->
         <OutDir>$(OutputPath)</OutDir>
-        <zipFile>$(OutDir)\EpiserverRedirects.zip</zipFile>
+        <zipFile>$(OutDir)\Forte.EpiserverRedirects.zip</zipFile>
     </PropertyGroup>
     <Target Name="CreateNugetPackage" AfterTargets="Build;Rebuild" Condition="'$(Configuration)' == 'Release' ">
         <Message Text="Creating Nuget Package" />
