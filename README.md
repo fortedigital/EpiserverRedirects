@@ -44,7 +44,7 @@ b) For HttpModule:
    <configuration> 
    <system.web> 
     <httpModules> 
-     <add type= "Forte.EpiserverRedirects.AspNet.HttpModule, EpiserverRedirects" name="HttpModule" /> 
+     <add name="HttpModule" type="Forte.EpiserverRedirects.AspNet.HttpModule, Forte.EpiserverRedirects" />
     </httpModules> 
    </system.web> 
   </configuration>
