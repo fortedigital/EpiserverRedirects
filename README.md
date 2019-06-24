@@ -42,11 +42,11 @@ b) For HttpModule:
 
   ```xml
    <configuration> 
-   <system.web> 
-    <httpModules> 
-     <add name="HttpModule" type="Forte.EpiserverRedirects.AspNet.HttpModule, Forte.EpiserverRedirects" />
-    </httpModules> 
-   </system.web> 
+   <system.webServer> 
+    <modules> 
+     <add name="Redirects" type="Forte.EpiserverRedirects.AspNet.HttpModule, Forte.EpiserverRedirects" />
+    </modules> 
+   </system.webServer> 
   </configuration>
   ```
 

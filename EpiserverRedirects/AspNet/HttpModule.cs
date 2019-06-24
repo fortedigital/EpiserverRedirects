@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using System.Web;
 using EPiServer.ServiceLocation;
 using Forte.EpiserverRedirects.Request;
@@ -16,12 +17,13 @@ namespace Forte.EpiserverRedirects.AspNet
             _requestHandlerFactory = () => ServiceLocator.Current.GetInstance<RequestHandler>();
         }
         
-        public void Init(HttpApplication context)
+        public void Init(HttpApplication application)
         {
-            context.EndRequest += RedirectRequest;
+            var onEndRequestHelper = new EventHandlerTaskAsyncHelper(RedirectRequest);
+            application.AddOnEndRequestAsync(onEndRequestHelper.BeginEventHandler, onEndRequestHelper.EndEventHandler);
         }
 
-        private async void RedirectRequest(object sender, EventArgs e)
+        private async Task RedirectRequest(object sender, EventArgs e)
         {
             var app = (HttpApplication) sender;
             var context = app.Context;
