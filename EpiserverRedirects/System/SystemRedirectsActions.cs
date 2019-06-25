@@ -47,9 +47,16 @@ namespace Forte.EpiserverRedirects.System
             var redirectRuleRepository = ServiceLocator.Current.GetInstance<IRedirectRuleRepository>();
 
             var deletedDescendantsIds = deletedDescendants.Select(x => x.ID).ToList();
-
-            var redirectsToDelete = redirectRuleRepository
+            
+            // Episerver DDS doe not handle query with Contains and empty collection
+            var redirectsToDelete = deletedDescendantsIds.Any()
+                
+                ? redirectRuleRepository
                 .Where(x => deletedContent.ID == x.ContentId || deletedDescendantsIds.Contains(x.ContentId.Value))
+                .Select(x => x.Id.ExternalId)
+                .ToList()
+
+                : redirectRuleRepository.Where(x => deletedContent.ID == x.ContentId )
                 .Select(x => x.Id.ExternalId)
                 .ToList();
 
