@@ -1,5 +1,20 @@
 # EPiAutoAlias for EPiServer
 
+The module has the possibility to automatically manage redirects in solution. Key features:
+ - Allow editors to manage redirects from old urls, add redirects from some legacy addresses etc.,
+    - This is possible via user interface (adding new "Redirects" tab in Episerver panel top menu)
+ - Import redirects from file,
+    - To import redirects, in "Redirects" tab upload a CSV file containing two columns: old url and the new url (just URL paths, without the domains). When uploading files multiple times, duplicate redirections are overwritten. 
+ - Create redirects automatically. 
+    - There is automatic redirect created every time the path to a published page changes, taking into account different scenarios:
+        - changing URL Segment of a page,
+        - changing URL segment of any ancestor (either published or not),
+        - changing parent of the page, moving the page in content structure,
+        - moving any ancestor of the page in content structure,
+        - restoring from trash to a different location than original, or when URL of this location changed.
+
+
+
 Basic installation scenario
 ------------
 1. The package can be found in official NuGet repository.
