@@ -71,7 +71,7 @@ There are two ways to manage redirections:
 1. **Using user interface**
 2. **Using public interface**
 
-a) For version 1.x.x, using ```IUrlRedirectsServoce```:
+a) For version 1.x.x, using ```IUrlRedirectsService```:
 
 ```       c#
           public interface IUrlRedirectsService
