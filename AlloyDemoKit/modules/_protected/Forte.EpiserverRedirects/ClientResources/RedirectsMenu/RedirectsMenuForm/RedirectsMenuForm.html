@@ -13,10 +13,18 @@
             <div class="epi-form-container__section__row">
                 <label for="newPattern">New pattern:</label>
                 <input class="form-input" type="text" name="newUrl"
-                       required="true"
                        data-dojo-props="intermediateChanges:true"
                        data-dojo-type="dijit/form/ValidationTextBox"
                        data-dojo-attach-point="newPatternTextBox" id="newPattern" />
+            </div>
+
+            <div class="epi-form-container__section__row">
+                <label for="contentId">Content Id:</label>
+                <input class="form-input" type="number" name="contentId"
+                       min="1" max="2147483647"
+                       data-dojo-props="intermediateChanges:true,constraints:{min:1,max:2147483647,places:0},"
+                       data-dojo-type="dijit/form/NumberTextBox"
+                       data-dojo-attach-point="contentIdTextBox" id="contentId" />
             </div>
 
             <div class="epi-form-container__section__row">

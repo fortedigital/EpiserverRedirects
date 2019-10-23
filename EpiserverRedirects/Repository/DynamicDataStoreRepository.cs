@@ -58,5 +58,19 @@ namespace Forte.EpiserverRedirects.Repository
                 return false;
             }
         }
+
+        public override bool ClearAll()
+        {
+            try
+            {
+                DynamicDataStore.DeleteAll();
+                
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
     }
 }

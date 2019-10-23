@@ -60,5 +60,9 @@
         deleteRedirectRule: function (id) {
             return this.store.remove(id);
         },
+        
+        clearRedirectRules: function() {
+            return this.store.remove("00000000-0000-0000-0000-000000000000");
+        }
     });
 });

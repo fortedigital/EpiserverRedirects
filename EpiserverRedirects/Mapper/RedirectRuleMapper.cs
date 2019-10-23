@@ -40,6 +40,7 @@ namespace Forte.EpiserverRedirects.Mapper
             destination.RedirectRuleType = source.RedirectRuleType;
             destination.IsActive = source.IsActive;
             destination.Notes = source.Notes;
+            destination.ContentId = source.ContentId;
             destination.Priority = (source.Priority.HasValue && source.Priority > 0) ? source.Priority.Value : Configuration.Configuration.DefaultRedirectRulePriority;
 
             return destination;
