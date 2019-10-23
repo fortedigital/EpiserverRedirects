@@ -1,17 +1,18 @@
 ﻿using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using EPiServer;
 using Forte.EpiserverRedirects.Model;
 using Forte.EpiserverRedirects.Model.RedirectRule;
 using Forte.EpiserverRedirects.Redirect;
 
 namespace Forte.EpiserverRedirects.Resolver
 {
-    public class RegexResolver : IRedirectRuleResolver
+    public class RegexResolver : BaseRuleResolver, IRedirectRuleResolver
     {
         private readonly IQueryable<RedirectRule> _redirectRuleResolverRepository;
 
-        public RegexResolver(IQueryable<RedirectRule> redirectRuleResolverRepository)
+        public RegexResolver(IQueryable<RedirectRule> redirectRuleResolverRepository, IContentLoader contentLoader) : base(contentLoader)
         {
             _redirectRuleResolverRepository = redirectRuleResolverRepository;
         }
@@ -26,9 +27,7 @@ namespace Forte.EpiserverRedirects.Resolver
                     .AsEnumerable()
                     .FirstOrDefault(r => Regex.IsMatch(oldPath.ToString(), r.OldPattern.ToString(), RegexOptions.IgnoreCase));
 
-                var redirectRule = (rule != null) ? new ExactMatchRedirect(rule) : new NullRedirectRule() as IRedirect;
-
-                return redirectRule;
+                return ResolveRule(rule, r => new ExactMatchRedirect(r));
             });
         }
     }

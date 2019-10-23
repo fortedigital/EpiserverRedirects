@@ -1,4 +1,6 @@
+using EPiServer;
 using Forte.EpiserverRedirects.Resolver;
+using Moq;
 
 namespace Forte.EpiserverRedirects.Tests.Builder.WithRepository.Resolver
 {
@@ -9,7 +11,7 @@ namespace Forte.EpiserverRedirects.Tests.Builder.WithRepository.Resolver
         public override RegexResolver Create()
         {
             CreateRepository();
-            return new RegexResolver(RedirectRuleRepository);
+            return new RegexResolver(RedirectRuleRepository, Mock.Of<IContentLoader>());
         }
     }
 }
