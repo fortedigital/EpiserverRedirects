@@ -1,4 +1,5 @@
 using System.Linq;
+using EPiServer;
 using EPiServer.Framework;
 using EPiServer.Framework.Initialization;
 using EPiServer.ServiceLocation;
@@ -22,8 +23,8 @@ namespace Forte.EpiserverRedirects.Configuration
             context.Services.AddTransient<IRedirectRuleMapper, RedirectRuleMapper>();
 
             context.Services.AddTransient<IRedirectRuleResolver>(c => new CompositeResolver(
-                new ExactMatchResolver(c.GetInstance<IQueryable<RedirectRule>>()),
-                new RegexResolver(c.GetInstance<IQueryable<RedirectRule>>())/*,
+                new ExactMatchResolver(c.GetInstance<IQueryable<RedirectRule>>(), c.GetInstance<IContentLoader>()),
+                new RegexResolver(c.GetInstance<IQueryable<RedirectRule>>(), c.GetInstance<IContentLoader>())/*,
                 new WildcardResolver(c.GetInstance<IQueryable<RedirectRule>>())*/));
         }
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using EPiServer;
 using Forte.EpiserverRedirects.Model;
 using Forte.EpiserverRedirects.Model.RedirectRule;
 using Forte.EpiserverRedirects.Redirect;
@@ -8,11 +9,11 @@ using Forte.EpiserverRedirects.Redirect;
 namespace Forte.EpiserverRedirects.Resolver
 {
     [Obsolete]
-    public class WildcardResolver : IRedirectRuleResolver
+    public class WildcardResolver : BaseRuleResolver, IRedirectRuleResolver
     {
         private readonly IQueryable<RedirectRule> _redirectRuleResolverRepository;
 
-        public WildcardResolver(IQueryable<RedirectRule> redirectRuleResolverRepository)
+        public WildcardResolver(IQueryable<RedirectRule> redirectRuleResolverRepository, IContentLoader contentLoader) : base(contentLoader)
         {
             _redirectRuleResolverRepository = redirectRuleResolverRepository;
         }
@@ -26,9 +27,7 @@ namespace Forte.EpiserverRedirects.Resolver
                     .OrderBy(r => r.Priority)
                     .FirstOrDefault();
 
-                var redirectRule = (rule != null) ? new WildcardRedirect(rule) : new NullRedirectRule() as IRedirect;
-
-                return redirectRule;
+                return ResolveRule(rule, r => new WildcardRedirect(r));
             });
         }
         
