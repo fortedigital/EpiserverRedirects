@@ -5,6 +5,7 @@
     "epi/dependency",
 ], function (declare, Stateful, dependency) {
 
+    var clearAllGuid = "00000000-0000-0000-0000-000000000000";
     return declare([Stateful], {
         store: null,
 
@@ -62,7 +63,7 @@
         },
         
         clearRedirectRules: function() {
-            return this.store.remove("00000000-0000-0000-0000-000000000000");
+            return this.store.remove(clearAllGuid);
         }
     });
 });
