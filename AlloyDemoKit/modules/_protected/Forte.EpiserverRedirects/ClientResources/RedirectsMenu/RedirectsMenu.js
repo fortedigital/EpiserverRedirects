@@ -57,6 +57,7 @@ define("redirectsMenu/RedirectsMenu", [
                 on(this.editButton, "click", this._onEditClick.bind(this));
                 on(this.deleteButton, "click", this._onDeleteClick.bind(this));
                 on(this.refreshButton, "click", this._refreshView.bind(this));
+                on(this.clearAllButton, "click", this._onClearAllClick.bind(this));
                 /*on(this.simulateFindButton, "click", this._onSimulateFindClick.bind(this));
                 on(this.simulateResetButton, "click", this._onSimulateResetClick.bind(this));*/
                 on(this.uploadFormSubmit, "click", this._onImportSubmit.bind(this));
@@ -121,6 +122,12 @@ define("redirectsMenu/RedirectsMenu", [
             _onDeleteClick: function () {
                 this.redirectsMenuViewModel.set("mode", "");
                 this.redirectsMenuViewModel.deleteRedirectRule(this.selectedModel.id).then((response) => this._refreshView());
+            },
+            
+            _onClearAllClick: function() {
+                if (window.confirm("Do you really want to clear all redirect rules?")) {
+                    this.redirectsMenuViewModel.clearRedirectRules().then((r) => this._refreshView());
+                }
             },
 
             _onEditClick: function () {

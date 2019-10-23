@@ -60,5 +60,12 @@ namespace Forte.EpiserverRedirects.Tests.Repository
             
             return redirectRule != null && _redirectsHashSet.Remove(redirectRule);
         }
+
+        public override bool ClearAll()
+        {
+            _redirectsHashSet.Clear();
+
+            return true;
+        }
     }
 }

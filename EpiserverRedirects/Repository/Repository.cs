@@ -13,6 +13,7 @@ namespace Forte.EpiserverRedirects.Repository
         RedirectRule Add(RedirectRule redirectRule);
         RedirectRule Update(RedirectRule redirectRule);
         bool Delete(Guid id);
+        bool ClearAll();
     }
 
     public abstract class RedirectRuleRepository : IRedirectRuleRepository
@@ -26,6 +27,7 @@ namespace Forte.EpiserverRedirects.Repository
         public abstract RedirectRule Update(RedirectRule redirectRule);
 
         public abstract bool Delete(Guid id);
+        public abstract bool ClearAll();
 
         protected static void WriteToModel(RedirectRule redirectRule, RedirectRule redirectRuleToUpdate)
         {
@@ -37,6 +39,7 @@ namespace Forte.EpiserverRedirects.Repository
             redirectRuleToUpdate.IsActive = redirectRule.IsActive;
             redirectRuleToUpdate.Notes = redirectRule.Notes;
             redirectRuleToUpdate.Priority = redirectRule.Priority;
+            redirectRuleToUpdate.ContentId = redirectRule.ContentId;
         }
 
         public IEnumerator<RedirectRule> GetEnumerator()

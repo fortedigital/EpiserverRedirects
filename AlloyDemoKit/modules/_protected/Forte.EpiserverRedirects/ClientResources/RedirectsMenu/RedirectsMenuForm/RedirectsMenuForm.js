@@ -42,11 +42,12 @@
                 on(this.deleteButton, "click", () => this.onDeleteClick());
                 on(this.oldPatternTextBox, "change", () => this._isFormValid());
                 on(this.newPatternTextBox, "change", () => this._isFormValid());
+                on(this.contentIdTextBox, "change", () => this._isFormValid());
                 on(this.priorityTextBox, "change", () => this._isFormValid());
             },
 
             _isFormValid: function () {
-                this.saveButton.set("disabled", !this.newPatternTextBox.isValid() || !this.oldPatternTextBox.isValid() || !this.priorityTextBox.isValid());
+                this.saveButton.set("disabled", (!this.newPatternTextBox.get("value") && !this.contentIdTextBox.get("value")) || !this.oldPatternTextBox.isValid() || !this.priorityTextBox.isValid());
             },
 
             updateView: function (model, mode) {
@@ -64,6 +65,7 @@
             _updateEditMode: function (model) {
                 this.oldPatternTextBox.set("value", model.oldPattern);
                 this.newPatternTextBox.set("value", model.newPattern);
+                this.contentIdTextBox.set("value", model.contentId);
                 this.redirectRuleTypeSelect.set("value", model.redirectRuleType);
                 this.redirectTypeSelect.set("value", model.redirectType);
                 this.priorityTextBox.set("value", model.priority);
@@ -90,6 +92,7 @@
             _updateAddMode: function () {
                 this.oldPatternTextBox.set("value", "");
                 this.newPatternTextBox.set("value", "");
+                this.contentIdTextBox.set("value", "");
                 this.priorityTextBox.set("value", 100);
                 this.notesTextarea.set("value", "");
                 this.deleteButton.set("disabled", true);
@@ -104,6 +107,7 @@
                     id: this.id,
                     oldPattern: this.oldPatternTextBox.get("value"),
                     newPattern: this.newPatternTextBox.get("value"),
+                    contentId: this.contentIdTextBox.get("value"),
                     priority: this.priorityTextBox.get("value"),
                     redirectRuleType: this.redirectRuleTypeSelect.get("value"),
                     redirectType: this.redirectTypeSelect.get("value"),

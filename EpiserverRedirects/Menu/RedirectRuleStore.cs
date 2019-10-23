@@ -14,6 +14,7 @@ namespace Forte.EpiserverRedirects.Menu
     {
         private readonly IRedirectRuleRepository _redirectRuleRepository;
         private readonly IRedirectRuleMapper _redirectRuleMapper;
+        private readonly Guid _clearAllGuid = Guid.Parse("00000000-0000-0000-0000-000000000000");
 
         public RedirectRuleStore(IRedirectRuleRepository redirectRuleRepository, IRedirectRuleMapper redirectRuleMapper)
         {
@@ -75,7 +76,10 @@ namespace Forte.EpiserverRedirects.Menu
         [HttpDelete]
         public ActionResult Delete(Guid id)
         {
-            var deletedSuccessfully = _redirectRuleRepository.Delete(id);
+            var deletedSuccessfully = id == _clearAllGuid
+                ? _redirectRuleRepository.ClearAll()
+                : _redirectRuleRepository.Delete(id);
+            
             return deletedSuccessfully
                 ? Rest(HttpStatusCode.OK)
                 : Rest(HttpStatusCode.Conflict);
