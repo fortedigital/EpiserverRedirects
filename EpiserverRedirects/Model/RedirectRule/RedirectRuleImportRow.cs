@@ -1,4 +1,3 @@
-using System.Web.Caching;
 using CsvHelper.Configuration.Attributes;
 
 namespace Forte.EpiserverRedirects.Model.RedirectRule
@@ -22,9 +21,11 @@ namespace Forte.EpiserverRedirects.Model.RedirectRule
         
         [Index(5)]
         public string Notes { get; set; }
-
-        [Optional]
-        [Index(6)]
+        
+        [Index(6), Optional]
         public byte? Priority { get; set; }
+        
+        [Index(7), Optional]
+        public string MatchToContent { get; set; }
     }
 }

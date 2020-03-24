@@ -46,7 +46,7 @@ namespace Forte.EpiserverRedirects.Model.RedirectRule
             return null;
         }
 
-        public static bool ParseIsActive(string redirectRuleDtoProperty)
+        public static bool ParseBoolean(string redirectRuleDtoProperty)
         {
             switch (redirectRuleDtoProperty)
             {
@@ -59,7 +59,7 @@ namespace Forte.EpiserverRedirects.Model.RedirectRule
             }
         }
         
-        public static bool? ParseIsActiveNullable(string value)
+        public static bool? ParseNullableBoolean(string value)
         {
             if (bool.TryParse(value, out var isActive))
                 return isActive;
