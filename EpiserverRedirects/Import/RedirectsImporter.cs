@@ -34,30 +34,34 @@ namespace Forte.EpiserverRedirects.Import
 
         private RedirectRule CreateRedirectRule(RedirectRuleImportRow redirectRow)
         {
-            var siteUrls = _siteDefinitionRepository
-                .List()
-                .Select(x => x.SiteUrl)
-                .ToList();
+            var matchToContent = Parser.ParseNullableBoolean(redirectRow.MatchToContent) ?? false;
 
-            var contentLink = GetContentLink(siteUrls, redirectRow.NewPattern);
-
+            var contentLink = matchToContent
+                ? ResolveContentLink(redirectRow.NewPattern)
+                : null;
+            
             return contentLink == null
                 ? RedirectRule.NewFromImport(redirectRow.OldPattern, redirectRow.NewPattern,
                     Parser.ParseRedirectType(redirectRow.RedirectType),
                     Parser.ParseRedirectRuleType(redirectRow.RedirectRuleType),
-                    Parser.ParseIsActive(redirectRow.IsActive), 
+                    Parser.ParseBoolean(redirectRow.IsActive), 
                     redirectRow.Notes,
                     redirectRow.Priority)
                 : RedirectRule.NewFromImport(redirectRow.OldPattern, contentLink.ID,
                     Parser.ParseRedirectType(redirectRow.RedirectType),
                     Parser.ParseRedirectRuleType(redirectRow.RedirectRuleType),
-                    Parser.ParseIsActive(redirectRow.IsActive), 
+                    Parser.ParseBoolean(redirectRow.IsActive), 
                     redirectRow.Notes, 
                     redirectRow.Priority);
         }
 
-        private ContentReference GetContentLink(IEnumerable<Uri> siteUrls, string redirectRoute)
+        private ContentReference ResolveContentLink(string redirectRoute)
         {
+            var siteUrls = _siteDefinitionRepository
+                .List()
+                .Select(x => x.SiteUrl)
+                .ToList();
+            
             foreach (var siteUrl in siteUrls)
             {
                 var content = _urlResolver.Route(new UrlBuilder($"{siteUrl}/{redirectRoute}"));

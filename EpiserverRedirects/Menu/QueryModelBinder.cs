@@ -22,7 +22,7 @@ namespace Forte.EpiserverRedirects.Menu
                     RedirectType = Parser.ParseRedirectTypeNullable(queryPropertiesDictionary["redirectType"]),
                     RedirectRuleType = Parser.ParseRedirectRuleTypeNullable(queryPropertiesDictionary["redirectRuleType"]),
                     RedirectOrigin = Parser.ParseRedirectOriginNullable(queryPropertiesDictionary["redirectOrigin"]),
-                    IsActive = Parser.ParseIsActiveNullable(queryPropertiesDictionary["isActive"]),
+                    IsActive = Parser.ParseNullableBoolean(queryPropertiesDictionary["isActive"]),
                     CreatedOnFrom = Parser.ParseCreatedOnFrom(queryPropertiesDictionary["createdOnFrom"]),
                     CreatedOnTo = Parser.ParseCreatedOnTo(queryPropertiesDictionary["createdOnTo"]),
                     CreatedBy = queryPropertiesDictionary["createdBy"],

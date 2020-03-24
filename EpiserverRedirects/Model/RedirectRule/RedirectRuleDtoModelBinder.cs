@@ -26,7 +26,7 @@ namespace Forte.EpiserverRedirects.Model.RedirectRule
                     RedirectType = Parser.ParseRedirectType(redirectRuleDtoProperties["redirectType"]),
                     Priority = Parser.ParsePriorityNullable(redirectRuleDtoProperties["priority"]),
                     RedirectRuleType = Parser.ParseRedirectRuleType(redirectRuleDtoProperties["redirectRuleType"]),
-                    IsActive = Parser.ParseIsActive(redirectRuleDtoProperties["isActive"]),
+                    IsActive = Parser.ParseBoolean(redirectRuleDtoProperties["isActive"]),
                     Notes = redirectRuleDtoProperties["notes"]
                 };
             }
