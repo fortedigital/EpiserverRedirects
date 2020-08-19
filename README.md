@@ -108,7 +108,9 @@ For version 2.x.x:
 Import redirects from CSV file
 -------------
 
-To import redirects, in "Redirects" tab upload a CSV file containing columns:
+To import redirects, in "Redirects" tab upload a CSV file in the following format (no columns headers, semicolon as the delimiter)
+
+Columns:
 - old URL (just URL paths, without the domains)
 - new URL (just URL paths, without the domains)
 - type (Pernament or Temporary)
