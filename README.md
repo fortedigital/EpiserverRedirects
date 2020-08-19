@@ -118,5 +118,11 @@ To import redirects, in "Redirects" tab upload a CSV file containing columns:
 - priority (int)
 - match to content (TRUE or FALSE) TRUE enforces that redirect is to URL, not to the ContentReference
 
+Example:  
+```
+/easee;/elbillader/;Permanent;ExactMatch;TRUE;COMMENT;1;FALSE  
+/fondet;/los-fondet/;Permanent;ExactMatch;TRUE;COMMENT;1;FALSE
+```
+
  When uploading files multiple times, duplicate redirections are overwritten. 
 
