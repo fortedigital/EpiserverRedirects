@@ -3,8 +3,7 @@
 The module has the possibility to automatically manage redirects in solution. Key features:
  - Allow editors to manage redirects from old urls, add redirects from some legacy addresses etc.,
     - This is possible via user interface (adding new "Redirects" tab in Episerver panel top menu)
- - Import redirects from file,
-    - To import redirects, in "Redirects" tab upload a CSV file containing two columns: old url and the new url (just URL paths, without the domains). When uploading files multiple times, duplicate redirections are overwritten. 
+ - Import redirects from file - see section `Import redirects from CSV file`
  - Create redirects automatically. 
     - There is automatic redirect created every time the path to a published page changes, taking into account different scenarios:
         - changing URL Segment of a page,
@@ -104,3 +103,20 @@ For version 1.x.x:
 
 For version 2.x.x:
  `Forte.EpiserverRedirects.Configuration.AddAutomaticRedirects` flag to `false`.
+
+
+Import redirects from CSV file
+-------------
+
+To import redirects, in "Redirects" tab upload a CSV file containing columns:
+- old URL (just URL paths, without the domains)
+- new URL (just URL paths, without the domains)
+- type (Pernament or Temporary)
+- rule type (ExactMatch or Regex)
+- is active (TRUE or FALSE)
+- comment
+- priority (int)
+- match to content (TRUE or FALSE) TRUE enforces that redirect is to URL, not to the ContentReference
+
+ When uploading files multiple times, duplicate redirections are overwritten. 
+
