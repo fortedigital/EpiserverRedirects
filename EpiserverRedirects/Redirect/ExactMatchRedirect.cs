@@ -13,7 +13,7 @@ namespace Forte.EpiserverRedirects.Redirect
         {
             var newUrl = RedirectRule.NewPattern;
 
-            return newUrl;
+            return Configuration.Configuration.PreserveQueryString ? newUrl + request.Query : newUrl;
         }
     }
 }
