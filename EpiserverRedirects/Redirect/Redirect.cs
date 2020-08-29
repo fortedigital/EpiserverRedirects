@@ -25,16 +25,17 @@ namespace Forte.EpiserverRedirects.Redirect
         public void Execute(Uri request, IHttpResponse response, IUrlResolver contentUrlResolver, IResponseStatusCodeResolver responseStatusCodeResolver)
         {
             var newUrl = RedirectRule.ContentId != null
-                ? GetPathFromContentId(contentUrlResolver)
+                ? GetPathFromContentId(contentUrlResolver, request)
                     : GetPathWithoutContentId(request);
-            
+
             RedirectResponse(response, responseStatusCodeResolver, newUrl);
         }
 
-        private string GetPathFromContentId(IUrlResolver contentUrlResolver)
+        private string GetPathFromContentId(IUrlResolver contentUrlResolver, Uri request)
         {
             var contentReference = new ContentReference(RedirectRule.ContentId.Value);
-            return contentUrlResolver.GetUrl(contentReference, null);
+            var newUrl = contentUrlResolver.GetUrl(contentReference, null);
+            return Configuration.Configuration.PreserveQueryString ? newUrl + request.Query : newUrl;
         }
 
         private void RedirectResponse(IHttpResponse httpResponse, IResponseStatusCodeResolver responseStatusCodeResolver, string newUrl)
