@@ -14,6 +14,9 @@ namespace Forte.EpiserverRedirects.Import
             RouteTable.Routes.MapRoute(null,
                 "Forte.EpiserverRedirects/Import/",
                 new {controller = "ImportRedirects", action = nameof(ImportRedirectsController.Import)});
+            RouteTable.Routes.MapRoute(null,
+                "Forte.EpiserverRedirects/GetTemplate/",
+                new {controller = "ImportRedirects", action = nameof(ImportRedirectsController.GetTemplate)});
         }
 
         public void Uninitialize(InitializationEngine context)

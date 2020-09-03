@@ -62,6 +62,7 @@ define("redirectsMenu/RedirectsMenu", [
                 on(this.simulateResetButton, "click", this._onSimulateResetClick.bind(this));*/
                 on(this.uploadFormSubmit, "click", this._onImportSubmit.bind(this));
                 on(this.fileUploader, "change", this._onUploaderChange.bind(this));
+                //on(this.downloadTemplateButton, "click", this._onDownloadTemplateClick.bind(this));
 
                 this.deleteButton.set('disabled', true);
                 this.editButton.set('disabled', true);
@@ -190,6 +191,20 @@ define("redirectsMenu/RedirectsMenu", [
              },
              */
 
+            _onDownloadTemplateClick: function () {
+                var xhrArgs = {
+                    headers: {
+                        'Content-Type': 'application/octet-stream'
+                    },
+                    handleAs: "json"
+                };
+                var xhrRequest = xhr.get("/Forte.EpiserverRedirects/GetTemplate", xhrArgs)
+                    .then()
+                    .otherwise(function (error) {
+                        statusLabel.innerText = "Temporary server error. Please try again later.\r\n" + error;
+                    });
+            },
+            
             _onUploaderChange: function (fileArray) {
                 this.importStatus.innerText = fileArray && fileArray.length
                     ? fileArray[0].name

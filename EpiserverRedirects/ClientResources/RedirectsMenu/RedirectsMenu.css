@@ -39,3 +39,7 @@
     background-color: #f2dede;
     border-color: #ebccd1;
 }
+
+.button-link {
+    display: block;
+}

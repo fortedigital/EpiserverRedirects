@@ -15,9 +15,18 @@
                 <p class="redirect-importer-description">Select a file, and click "upload". File shoud be in CSV format 
                     and consist of two columns: old URL and new URL.
                 </p>
-                    <input name="uploadedFile" multiple="false" type="file" data-dojo-type="dojox/form/Uploader"
+                <span class="dijit dijitReset dijitInline dijitButton">
+                    <span class="dijitReset dijitInline dijitButtonNode">
+                        <span class="dijitReset dijitStretch dijitButtonContents">
+                            <span class="dijitReset dijitInline dijitButtonText">
+                                <a href="/Forte.EpiserverRedirects/GetTemplate" class="button-link">Download CSV template</a>
+                            </span>
+                        </span>
+                    </span>
+                </span>
+                <input name="uploadedFile" multiple="false" type="file" data-dojo-type="dojox/form/Uploader"
                            data-dojo-attach-point="fileUploader" label="Select CSV file" id="redirectsUploader" />
-                    <input type="button" label="Submit" data-dojo-type="dijit/form/Button" data-dojo-attach-point="uploadFormSubmit" />
+                <input type="button" label="Submit" data-dojo-type="dijit/form/Button" data-dojo-attach-point="uploadFormSubmit" />
                 <span name="importStatus" value="" data-dojo-attach-point="importStatus">Select a file</span>
             </div>
                      
