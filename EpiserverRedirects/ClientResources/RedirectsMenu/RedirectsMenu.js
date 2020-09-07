@@ -62,7 +62,6 @@ define("redirectsMenu/RedirectsMenu", [
                 on(this.simulateResetButton, "click", this._onSimulateResetClick.bind(this));*/
                 on(this.uploadFormSubmit, "click", this._onImportSubmit.bind(this));
                 on(this.fileUploader, "change", this._onUploaderChange.bind(this));
-                //on(this.downloadTemplateButton, "click", this._onDownloadTemplateClick.bind(this));
 
                 this.deleteButton.set('disabled', true);
                 this.editButton.set('disabled', true);
@@ -190,20 +189,6 @@ define("redirectsMenu/RedirectsMenu", [
                 this._onSearchChange({ simulatedOldPattern: ""});
              },
              */
-
-            _onDownloadTemplateClick: function () {
-                var xhrArgs = {
-                    headers: {
-                        'Content-Type': 'application/octet-stream'
-                    },
-                    handleAs: "json"
-                };
-                var xhrRequest = xhr.get("/Forte.EpiserverRedirects/GetTemplate", xhrArgs)
-                    .then()
-                    .otherwise(function (error) {
-                        statusLabel.innerText = "Temporary server error. Please try again later.\r\n" + error;
-                    });
-            },
             
             _onUploaderChange: function (fileArray) {
                 this.importStatus.innerText = fileArray && fileArray.length
@@ -231,17 +216,16 @@ define("redirectsMenu/RedirectsMenu", [
                 statusLabel.innerText = "Uploading file...";
                 var xhrRequest = xhr.post("/Forte.EpiserverRedirects/Import", xhrArgs)
                     .then(function (data) {
+                        statusLabel.innerText = data.errorMessage || _getLocalDateTime(data.timeStamp) + " - Imported redirects: " + data.importedCount;
+
                         function _getLocalDateTime(utcDateTime) {
                             var localDateTime = moment(utcDateTime).local().format('DD-MM-YYYY HH:mm:ss');
                             return localDateTime.toString();
                         }
-
-                        statusLabel.innerText = _getLocalDateTime(data.TimeStamp) + " - Imported redirects: " + data.ImportedCount;
                     })
-                    .otherwise(function (error) {
-                        statusLabel.innerText = "Temporary server error or file is in invalid format"
-                    });
-
+                    .otherwise(function () {
+                        statusLabel.innerText = "Temporary server error or file is in invalid format";
+                    })
             },
         });
     });

@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Globalization;
-using System.IO;
-using System.Net;
-using System.Net.Mime;
 using System.Web;
 using System.Web.Mvc;
 using CsvHelper;
+using EPiServer.Shell.Web;
 using Forte.EpiserverRedirects.Model.RedirectRule;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using MissingFieldException = System.MissingFieldException;
 
 namespace Forte.EpiserverRedirects.Import
@@ -16,6 +15,10 @@ namespace Forte.EpiserverRedirects.Import
     {
         private readonly RedirectsLoader _redirectDefinitionsLoader;
         private readonly RedirectsImporter _redirectsImporter;
+        private static readonly JsonSerializerSettings SerializerSettings = new JsonSerializerSettings
+        {
+            ContractResolver = new CamelCasePropertyNamesContractResolver()
+        };
 
         public ImportRedirectsController(RedirectsLoader redirectDefinitionsLoader, RedirectsImporter redirectsImporter)
         {
@@ -27,66 +30,43 @@ namespace Forte.EpiserverRedirects.Import
         public ActionResult Import(HttpPostedFileBase uploadedFile)
         {
             if (uploadedFile == null)
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "No file specified");
-            
+                return CreateJsonErrorResult("No file specified");
+
             try
             {
                 var redirectDefinitions = _redirectDefinitionsLoader.Load(uploadedFile);
 
                 _redirectsImporter.ImportRedirects(redirectDefinitions);
-                return Json(new
+                return CreateJsonResult(new
                 {
                     TimeStamp = DateTime.SpecifyKind(DateTime.UtcNow, DateTimeKind.Utc).ToString("O"),
                     ImportedCount = redirectDefinitions.Count
                 });
             }
-            catch (Exception e) when (e is MissingFieldException)
+            catch (CsvHelperException e)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "File is in invalid format");
+                var missingFieldIndex = e.ReadingContext.CurrentIndex;
+                var missingFieldName = RedirectRuleImportRow.FieldNames[missingFieldIndex];
+                var errorMessage =
+                    $"Row: '{e.ReadingContext.RawRecord.TrimEnd("\n").TrimEnd("\r")}' is invalid. Field: '{missingFieldName}' at index: '{missingFieldIndex}' is missing";
+                return CreateJsonErrorResult(errorMessage);
+            }
+            catch (MissingFieldException e)
+            {
+                return CreateJsonErrorResult("File is in invalid format");
             }
         }
 
-        [HttpGet]
-        public ActionResult GetTemplate()
+        private ActionResult CreateJsonErrorResult(string message)
         {
-            var csvTemplateFileData = CreateCsvTemplateFileData();
-
-            const string csvTemplateFileName = "CsvTemplate.csv";
-            var contentDispositionHeader = new ContentDisposition
-            {
-                FileName = csvTemplateFileName,
-                Inline = false,
-            };
-            Response.AppendHeader("Content-Disposition", contentDispositionHeader.ToString());
-
-            var fileMimeType = MimeMapping.GetMimeMapping(contentDispositionHeader.FileName);
-
-            return File(csvTemplateFileData, fileMimeType);
+            var data = new { ErrorMessage = message };
+            return CreateJsonResult(data);
         }
 
-        private static byte[] CreateCsvTemplateFileData()
+        private ActionResult CreateJsonResult(object data)
         {
-            using (var memoryStream = new MemoryStream())
-            {
-                using (var writer = new StreamWriter(memoryStream))
-                using (var csvWriter = new CsvWriter(writer, new CsvHelper.Configuration.Configuration{CultureInfo = CultureInfo.InvariantCulture}))
-                {    
-                    csvWriter.WriteHeader<RedirectRuleImportRow>();
-                }
-                return ReadAllBytes(memoryStream);
-            }
-        }
-
-        private static byte[] ReadAllBytes(Stream stream)
-        {
-            if (stream is MemoryStream memoryStream)
-                return memoryStream.ToArray();
-
-            using (var newMemoryStream = new MemoryStream())
-            {
-                stream.CopyTo(newMemoryStream);
-                return newMemoryStream.ToArray();
-            }
+            var json = JsonConvert.SerializeObject(data, SerializerSettings);
+            return this.Content(json, "application/json");
         }
     }
 }

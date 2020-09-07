@@ -10,6 +10,7 @@ namespace Forte.EpiserverRedirects.Repository
     public interface IRedirectRuleRepository : IQueryable<RedirectRule>
     {
         RedirectRule GetById(Guid id);
+        IEnumerable<RedirectRule> GetAll();
         RedirectRule Add(RedirectRule redirectRule);
         RedirectRule Update(RedirectRule redirectRule);
         bool Delete(Guid id);
@@ -19,13 +20,10 @@ namespace Forte.EpiserverRedirects.Repository
     public abstract class RedirectRuleRepository : IRedirectRuleRepository
     {
         protected IQueryable<RedirectRule> Items { private get; set; }
-
         public abstract RedirectRule GetById(Guid id);
-
+        public abstract IEnumerable<RedirectRule> GetAll();
         public abstract RedirectRule Add(RedirectRule redirectRule);
-
         public abstract RedirectRule Update(RedirectRule redirectRule);
-
         public abstract bool Delete(Guid id);
         public abstract bool ClearAll();
 
