@@ -189,7 +189,7 @@ define("redirectsMenu/RedirectsMenu", [
                 this._onSearchChange({ simulatedOldPattern: ""});
              },
              */
-
+            
             _onUploaderChange: function (fileArray) {
                 this.importStatus.innerText = fileArray && fileArray.length
                     ? fileArray[0].name
@@ -216,17 +216,16 @@ define("redirectsMenu/RedirectsMenu", [
                 statusLabel.innerText = "Uploading file...";
                 var xhrRequest = xhr.post("/Forte.EpiserverRedirects/Import", xhrArgs)
                     .then(function (data) {
+                        statusLabel.innerText = data.errorMessage || _getLocalDateTime(data.timeStamp) + " - Imported redirects: " + data.importedCount;
+
                         function _getLocalDateTime(utcDateTime) {
                             var localDateTime = moment(utcDateTime).local().format('DD-MM-YYYY HH:mm:ss');
                             return localDateTime.toString();
                         }
-
-                        statusLabel.innerText = _getLocalDateTime(data.TimeStamp) + " - Imported redirects: " + data.ImportedCount;
                     })
-                    .otherwise(function (error) {
-                        statusLabel.innerText = "Temporary server error or file is in invalid format"
-                    });
-
+                    .otherwise(function () {
+                        statusLabel.innerText = "Temporary server error or file is in invalid format";
+                    })
             },
         });
     });

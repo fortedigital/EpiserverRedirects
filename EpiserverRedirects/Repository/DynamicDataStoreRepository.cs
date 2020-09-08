@@ -1,4 +1,6 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using EPiServer.Data.Dynamic;
 using Forte.EpiserverRedirects.Model.RedirectRule;
@@ -21,6 +23,11 @@ namespace Forte.EpiserverRedirects.Repository
             InitItems();
         }
 
+        public override IEnumerable<RedirectRule> GetAll()
+        {
+            return DynamicDataStore.Items<RedirectRule>();
+        }
+        
         public override RedirectRule GetById(Guid id)
         {
             return DynamicDataStore.Items<RedirectRule>().FirstOrDefault(r => r.Id.ExternalId == id);
