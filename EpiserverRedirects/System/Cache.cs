@@ -1,7 +1,6 @@
 ﻿using System.Linq;
 using EPiServer;
 using EPiServer.Framework.Cache;
-using NotImplementedException = System.NotImplementedException;
 
 namespace Forte.EpiserverRedirects.System
 {

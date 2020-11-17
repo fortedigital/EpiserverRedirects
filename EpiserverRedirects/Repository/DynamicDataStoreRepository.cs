@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using EPiServer.Data.Dynamic;
 using Forte.EpiserverRedirects.Model.RedirectRule;
@@ -12,18 +10,13 @@ namespace Forte.EpiserverRedirects.Repository
         private readonly DynamicDataStoreFactory _dynamicDataStoreFactory;
         private DynamicDataStore DynamicDataStore => _dynamicDataStoreFactory.CreateStore(typeof(RedirectRule));
 
-        private void InitItems()
-        {
-            Items = DynamicDataStore.Items<RedirectRule>();
-        }
         
         public DynamicDataStoreRepository(DynamicDataStoreFactory dynamicDataStoreFactory)
         {
             _dynamicDataStoreFactory = dynamicDataStoreFactory;
-            InitItems();
         }
 
-        public override IEnumerable<RedirectRule> GetAll()
+        public override IQueryable<RedirectRule> GetAll()
         {
             return DynamicDataStore.Items<RedirectRule>();
         }
