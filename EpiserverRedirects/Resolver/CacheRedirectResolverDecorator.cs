@@ -9,27 +9,30 @@ namespace Forte.EpiserverRedirects.Resolver
     public class CacheRedirectResolverDecorator : IRedirectRuleResolver
     {
         private readonly IRedirectRuleResolver _redirectRuleResolver;
-        private readonly IRuleRedirectCache _ruleRedirectCache;
+        private readonly ICache<IRedirect> _cache;
+        public const string CacheRegionKey = "Forte.EpiserverRedirects";
 
         public CacheRedirectResolverDecorator(
             IRedirectRuleResolver redirectRuleResolver,
-            IRuleRedirectCache ruleRedirectCache)
+            ICache<IRedirect> cache)
         {
             _redirectRuleResolver = redirectRuleResolver ?? throw new ArgumentNullException(nameof(redirectRuleResolver));
-            _ruleRedirectCache = ruleRedirectCache?? throw  new ArgumentNullException(nameof(ruleRedirectCache));
+            _cache = cache?? throw  new ArgumentNullException(nameof(cache));
         }
 
 
         public async Task<IRedirect> ResolveRedirectRuleAsync(UrlPath oldPath)
         {
-            if (_ruleRedirectCache.TryGet(oldPath, out var redirect))
+            if (_cache.TryGet(FormatCacheKey(oldPath), out var redirect))
             {
                 return redirect;
             }
 
             redirect = await _redirectRuleResolver.ResolveRedirectRuleAsync(oldPath);
-            _ruleRedirectCache.Add(oldPath, redirect);
+            _cache.Add(FormatCacheKey(oldPath), redirect, CacheRegionKey);
             return redirect;
         }
+        
+        private static string FormatCacheKey(UrlPath path) => $"{CacheRegionKey}_{path}";
     }
 }

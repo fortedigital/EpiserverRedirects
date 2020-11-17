@@ -9,6 +9,7 @@ using EPiServer.Framework.Initialization;
 using EPiServer.ServiceLocation;
 using EPiServer.Web.Routing;
 using Forte.EpiserverRedirects.Model.RedirectRule;
+using Forte.EpiserverRedirects.Repository;
 
 namespace Forte.EpiserverRedirects.System
 {
@@ -22,7 +23,7 @@ namespace Forte.EpiserverRedirects.System
         private Injected<IContentVersionRepository> ContentVersionRepository { get; set; }
         private Injected<IContentRepository> ContentRepository { get; set; }
         private Injected<ILanguageBranchRepository> LanguageBranchRepository { get; set; }
-        private Injected<IRuleRedirectCache> RuleRedirectCache { get; set; }
+        private Injected<ICacheRemover> CacheRemover { get; set; }
 
         public void Initialize(InitializationEngine context)
         {
@@ -176,7 +177,7 @@ namespace Forte.EpiserverRedirects.System
             DynamicDataStore.UnregisterItemDeletedEventHandler(redirectRuleDynamicDataStoreName, HandleClearCache);
             DynamicDataStore.UnregisterItemSavedEventHandler(redirectRuleDynamicDataStoreName, HandleClearCache);
         }
-        
-        private void HandleClearCache(object s, ItemEventArgs e) => RuleRedirectCache.Service.RemoveAll();
+
+        private void HandleClearCache(object s, ItemEventArgs e) => CacheRemover.Service.Remove(RepositoryCacheDecorator.CacheKey);
     }
 }
