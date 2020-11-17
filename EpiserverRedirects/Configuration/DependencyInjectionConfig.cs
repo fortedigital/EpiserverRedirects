@@ -8,6 +8,7 @@ using Forte.EpiserverRedirects.Model.RedirectRule;
 using Forte.EpiserverRedirects.Repository;
 using Forte.EpiserverRedirects.Request;
 using Forte.EpiserverRedirects.Resolver;
+using Forte.EpiserverRedirects.System;
 
 namespace Forte.EpiserverRedirects.Configuration
 {
@@ -22,10 +23,20 @@ namespace Forte.EpiserverRedirects.Configuration
 
             context.Services.AddTransient<IRedirectRuleMapper, RedirectRuleMapper>();
 
-            context.Services.AddTransient<IRedirectRuleResolver>(c => new CompositeResolver(
+            context.Services.AddTransient<IRuleRedirectCache, RuleRedirectCache>();
+
+            context.Services.AddTransient<IRedirectRuleResolver>(c
+                => new CacheRedirectResolverDecorator(
+                    CreateCompositeRuleResolver(c),
+                    c.GetInstance<IRuleRedirectCache>()));
+        }
+
+        private IRedirectRuleResolver CreateCompositeRuleResolver(IServiceLocator c)
+        {
+            return new CompositeResolver(
                 new ExactMatchResolver(c.GetInstance<IQueryable<RedirectRule>>(), c.GetInstance<IContentLoader>()),
-                new RegexResolver(c.GetInstance<IQueryable<RedirectRule>>(), c.GetInstance<IContentLoader>())/*,
-                new WildcardResolver(c.GetInstance<IQueryable<RedirectRule>>())*/));
+                new RegexResolver(c.GetInstance<IQueryable<RedirectRule>>(), c.GetInstance<IContentLoader>()
+                    /*,new WildcardResolver(c.GetInstance<IQueryable<RedirectRule>>())*/));
         }
 
         public void Initialize(InitializationEngine context) { }

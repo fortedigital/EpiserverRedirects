@@ -34,6 +34,8 @@ namespace Forte.EpiserverRedirects.Tests.Repository
             return redirectRule;
         }
 
+        public override IEnumerable<RedirectRule> GetAll() => _redirectsHashSet;
+        
         public override RedirectRule Add(RedirectRule redirectRule)
         {            
             redirectRule.Id = Identity.NewIdentity();

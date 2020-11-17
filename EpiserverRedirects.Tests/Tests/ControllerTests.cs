@@ -30,6 +30,7 @@ namespace Forte.EpiserverRedirects.Tests.Tests
             var restController = RedirectRuleController()
                 .WithExplicitExistingRules(existingRules)
                 .WithMapper(r => r == rule1 ? dto1 : r == rule2 ? dto2 : null)
+                .WithHttpResponseHeaders()
                 .Create();
             var resolvedRules = restController
                 .Get()
@@ -60,6 +61,7 @@ namespace Forte.EpiserverRedirects.Tests.Tests
 
             var restController = RedirectRuleController()
                 .WithRandomExistingRules(rulesCount)
+                .WithHttpResponseHeaders()
                 .Create();
 
             var randomIndex = new Random().Next(rulesCount);
@@ -100,6 +102,7 @@ namespace Forte.EpiserverRedirects.Tests.Tests
         {
             var rulesCount = 10;
             var restController = RedirectRuleController()
+                .WithHttpResponseHeaders()
                 .WithRandomExistingRules(rulesCount)
                 .Create();
 

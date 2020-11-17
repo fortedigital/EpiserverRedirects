@@ -62,24 +62,5 @@ namespace Forte.EpiserverRedirects.Tests.Tests
                     statusCodeResolver.GetHttpResponseStatusCode(redirectRule.RedirectType)),
                 Times.Once);
         }
-        
-        [Fact]
-        public async void Given_WildcardRedirectRule_ToRedirectResult_ReturnsCorrectResult()
-        {
-            var wildcardRedirect = Redirect()
-                .WithWildcardRedirectRule(out var redirectRule, "*oldPattern*", "newPattern/{1}")
-                .WithHttp_1_1_ResponseStatusCodeResolver(out var statusCodeResolver)
-                .WithHttpRequest(out var httpRequest, "/requestPath/oldPattern")
-                .WithHttpResponseMock(out var httpResponseMock)
-                .WithUrlResolver(out var urlResolver)
-                .Create();
-            
-            wildcardRedirect.Execute(httpRequest, httpResponseMock.Object, urlResolver, statusCodeResolver);
-
-            throw new NotImplementedException();
-            //httpContextMoq.Verify(r => r.Redirect("/requestPath/newPattern/oldPattern",
-            //        statusCodeResolver.GetHttpResponseStatusCode(redirectRule.RedirectType)),
-             //   Times.Once);
-        }
     }
 }
