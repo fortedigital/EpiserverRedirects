@@ -1,15 +1,19 @@
 ﻿using System.Linq;
 using EPiServer;
 using EPiServer.Framework.Cache;
+using NotImplementedException = System.NotImplementedException;
 
 namespace Forte.EpiserverRedirects.System
 {
-    internal class Cache<T> : ICache<T> where T : class
+    internal class CacheRemover : ICacheRemover
     {
-        public void RemoveByRegion(string region) => CacheManager.Remove(region);
+        public virtual void RemoveByRegion(string region) => CacheManager.Remove(region);
         
-        public void Remove(string key)=> CacheManager.Remove(key);
-
+        public virtual void Remove(string key)=> CacheManager.Remove(key);
+    }
+    
+    internal class Cache<T> :CacheRemover,  ICache<T> where T : class
+    {
         public bool TryGet(string key, out T cachedItem)
         {
             cachedItem = CacheManager.Get(key) as T;

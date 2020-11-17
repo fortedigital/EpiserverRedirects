@@ -25,6 +25,7 @@ namespace Forte.EpiserverRedirects.Configuration
 
             context.Services.AddTransient<IRedirectRuleMapper, RedirectRuleMapper>();
 
+            context.Services.AddTransient<ICacheRemover, CacheRemover>();
             context.Services.AddTransient<ICache<IRedirect>, Cache<IRedirect>>();
             context.Services.AddTransient<ICache<IQueryable<RedirectRule>>, Cache<IQueryable<RedirectRule>>>();
 
