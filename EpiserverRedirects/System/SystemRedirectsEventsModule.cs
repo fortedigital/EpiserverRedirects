@@ -178,6 +178,6 @@ namespace Forte.EpiserverRedirects.System
             DynamicDataStore.UnregisterItemSavedEventHandler(redirectRuleDynamicDataStoreName, HandleClearCache);
         }
 
-        private void HandleClearCache(object s, ItemEventArgs e) => CacheRemover.Service.Remove(RedirectRuleCachedRepository.CacheKey);
+        private void HandleClearCache(object s, ItemEventArgs e) => CacheRemover.Service.Remove(RedirectRuleCachedRepositoryDecorator.CacheKey);
     }
 }

@@ -1,5 +1,6 @@
 using System.Linq;
 using EPiServer;
+using EPiServer.Data.Dynamic;
 using EPiServer.Framework;
 using EPiServer.Framework.Initialization;
 using EPiServer.ServiceLocation;
@@ -18,13 +19,16 @@ namespace Forte.EpiserverRedirects.Configuration
         public void ConfigureContainer(ServiceConfigurationContext context)
         {
             context.Services.AddScoped<RequestHandler>();
-            context.Services.AddTransient<IRedirectRuleRepository, RedirectRuleCachedRepository>();
+
+            context.Services.AddTransient<IRedirectRuleRepository>(c =>
+                new RedirectRuleCachedRepositoryDecorator(new DynamicDataStoreRepository(c.GetInstance<DynamicDataStoreFactory>()),
+                    c.GetInstance<ICache<RedirectRule[]>>()));
             context.Services.AddTransient<IResponseStatusCodeResolver, Http_1_1_ResponseStatusCodeResolver>();
 
             context.Services.AddTransient<IRedirectRuleMapper, RedirectRuleMapper>();
 
             context.Services.AddTransient<ICacheRemover, CacheRemover>();
-            context.Services.AddTransient<ICache<IQueryable<RedirectRule>>, Cache<IQueryable<RedirectRule>>>();
+            context.Services.AddTransient<ICache<RedirectRule[]>, Cache<RedirectRule[]>>();
             context.Services.AddTransient(CreateCompositeRuleResolver);
         }
 
