@@ -36,6 +36,7 @@ namespace Forte.EpiserverRedirects.Menu
         public ActionResult Get(Query query = null)
         {
             var redirects = _redirectRuleRepository
+                .GetAll()
                 .GetPageFromQuery(out var allRedirectsCount, query)
                 .Select(_redirectRuleMapper.ModelToDto);
             

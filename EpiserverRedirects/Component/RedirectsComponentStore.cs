@@ -22,6 +22,7 @@ namespace Forte.EpiserverRedirects.Component
         public ActionResult Get(int contentId, string filter)
         {
             var result = _redirectRuleRepository
+                .GetAll()
                 .Where(item => item.OldPattern.Contains(filter))
                 .Where(item => item.ContentId == contentId);
 

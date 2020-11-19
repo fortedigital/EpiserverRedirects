@@ -221,6 +221,7 @@
         </Reference>
     </ItemGroup>
     <ItemGroup>
+        <Compile Include="Builder\HttpContextBuilder.cs" />
         <Compile Include="Builder\Redirect\RedirectBuilder.cs" />
         <Compile Include="Builder\WithRepository\BaseWithRepositoryBuilder.cs" />
         <Compile Include="Builder\WithRepository\ControllerBuilder.cs" />

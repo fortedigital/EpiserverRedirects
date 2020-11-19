@@ -5,14 +5,15 @@ using EPiServer;
 using Forte.EpiserverRedirects.Model;
 using Forte.EpiserverRedirects.Model.RedirectRule;
 using Forte.EpiserverRedirects.Redirect;
+using Forte.EpiserverRedirects.Repository;
 
 namespace Forte.EpiserverRedirects.Resolver
 {
     public class RegexResolver : BaseRuleResolver, IRedirectRuleResolver
     {
-        private readonly IQueryable<RedirectRule> _redirectRuleResolverRepository;
+        private readonly IRedirectRuleRepository _redirectRuleResolverRepository;
 
-        public RegexResolver(IQueryable<RedirectRule> redirectRuleResolverRepository, IContentLoader contentLoader) : base(contentLoader)
+        public RegexResolver(IRedirectRuleRepository redirectRuleResolverRepository, IContentLoader contentLoader) : base(contentLoader)
         {
             _redirectRuleResolverRepository = redirectRuleResolverRepository;
         }
@@ -22,6 +23,7 @@ namespace Forte.EpiserverRedirects.Resolver
             return Task.Run(() =>
             {
                 var rule = _redirectRuleResolverRepository
+                    .GetAll()
                     .Where(r => r.IsActive && r.RedirectRuleType == RedirectRuleType.Regex)
                     .OrderBy(x=> x.Priority)
                     .AsEnumerable()

@@ -14,18 +14,12 @@ namespace Forte.EpiserverRedirects.Tests.Repository
         public TestRepository()
         {
             _redirectsHashSet = new HashSet<RedirectRule>();
-            InitItems();
         }
         public TestRepository(HashSet<RedirectRule> redirectsCollection)
         {
             _redirectsHashSet = redirectsCollection;
-            InitItems();
         }
 
-        private void InitItems()
-        {
-            Items = _redirectsHashSet.AsQueryable();
-        }
 
         public override RedirectRule GetById(Guid id)
         {
@@ -34,6 +28,8 @@ namespace Forte.EpiserverRedirects.Tests.Repository
             return redirectRule;
         }
 
+        public override IQueryable<RedirectRule> GetAll() => _redirectsHashSet.AsQueryable();
+        
         public override RedirectRule Add(RedirectRule redirectRule)
         {            
             redirectRule.Id = Identity.NewIdentity();

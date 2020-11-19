@@ -5,7 +5,6 @@ using System.Linq;
 using EPiServer;
 using EPiServer.Core;
 using EPiServer.ServiceLocation;
-using Forte.EpiserverRedirects.Menu;
 using Forte.EpiserverRedirects.Model;
 using Forte.EpiserverRedirects.Model.RedirectRule;
 using Forte.EpiserverRedirects.Repository;
@@ -52,13 +51,16 @@ namespace Forte.EpiserverRedirects.System
             var redirectsToDelete = deletedDescendantsIds.Any()
                 
                 ? redirectRuleRepository
-                .Where(x => deletedContent.ID == x.ContentId || deletedDescendantsIds.Contains(x.ContentId.Value))
-                .Select(x => x.Id.ExternalId)
-                .ToList()
+                    .GetAll()
+                    .Where(x => deletedContent.ID == x.ContentId || deletedDescendantsIds.Contains(x.ContentId.Value))
+                    .Select(x => x.Id.ExternalId)
+                    .ToList()
 
-                : redirectRuleRepository.Where(x => deletedContent.ID == x.ContentId )
-                .Select(x => x.Id.ExternalId)
-                .ToList();
+                : redirectRuleRepository
+                    .GetAll()
+                    .Where(x => deletedContent.ID == x.ContentId )
+                    .Select(x => x.Id.ExternalId)
+                    .ToList();
 
             foreach (var redirect in redirectsToDelete)
             {
