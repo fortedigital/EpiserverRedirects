@@ -25,8 +25,9 @@ namespace Forte.EpiserverRedirects.System
         private Injected<IContentRepository> ContentRepository { get; set; }
         private Injected<ILanguageBranchRepository> LanguageBranchRepository { get; set; }
         private Injected<ICacheRemover> CacheRemover { get; set; }
-        
-        private  Injected<ICacheConfiguration> CacheConfiguration { get; set; }
+        private Injected<IRedirectRuleRepository> RedirectRuleRepository { get; set; }
+
+        private Injected<ICacheConfiguration> CacheConfiguration { get; set; }
 
         public void Initialize(InitializationEngine context)
         {
@@ -38,6 +39,7 @@ namespace Forte.EpiserverRedirects.System
             events.DeletedContent += DeletedContentHandler;
 
             RegisterRedirectDynamicStoreCacheHandlers();
+            InitializeRedirectCache();
         }
 
         public void Uninitialize(InitializationEngine context)
@@ -171,7 +173,7 @@ namespace Forte.EpiserverRedirects.System
             {
                 return;
             }
-            
+
             var redirectRuleDynamicDataStoreName = DynamicDataStoreFactory.Instance.GetStoreNameForType(typeof(RedirectRule));
             DynamicDataStore.RegisterDeletedAllEventHandler(redirectRuleDynamicDataStoreName, HandleClearCache);
             DynamicDataStore.RegisterItemDeletedEventHandler(redirectRuleDynamicDataStoreName, HandleClearCache);
@@ -184,7 +186,7 @@ namespace Forte.EpiserverRedirects.System
             {
                 return;
             }
-            
+
             var redirectRuleDynamicDataStoreName = DynamicDataStoreFactory.Instance.GetStoreNameForType(typeof(RedirectRule));
             DynamicDataStore.UnregisterDeletedAllEventHandler(redirectRuleDynamicDataStoreName, HandleClearCache);
             DynamicDataStore.UnregisterItemDeletedEventHandler(redirectRuleDynamicDataStoreName, HandleClearCache);
@@ -201,6 +203,14 @@ namespace Forte.EpiserverRedirects.System
             if (CacheConfiguration.Service.IsUrlRedirectCacheEnabled)
             {
                 CacheRemover.Service.RemoveByRegion(CacheRedirectResolverDecorator.CacheRegionKey);
+            }
+        }
+
+        private void InitializeRedirectCache()
+        {
+            if (CacheConfiguration.Service.IsAllRedirectsCacheEnabled)
+            {
+                RedirectRuleRepository.Service.GetAll();
             }
         }
     }
