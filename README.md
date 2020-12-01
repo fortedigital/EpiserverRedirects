@@ -105,6 +105,18 @@ For version 2.x.x:
  `Forte.EpiserverRedirects.Configuration.AddAutomaticRedirects` flag to `false`.
 
 
+ Cache configuration
+-------------
+It is possible to enable caching of redirects. It is disabled by default. Default EpiServer mechanism is used to manage cache and enable it to work in distributed environment. There are two levels of cache:
+1. **Cache all redirect entries**
+2. **Cache redirect response for given url**
+ 
+To enable cache add following entries to ```appSettings``` in ``` web.config``` file:
+```xml
+    <add key="Forte.EpiserverRedirects:AllRedirectCacheEnabled" value="true"/>
+    <add key="Forte.EpiserverRedirects:UrlRedirectCacheEnabled" value="true"/>
+```
+
 Import redirects from CSV file
 -------------
 

@@ -8,6 +8,7 @@ using EPiServer.Framework;
 using EPiServer.Framework.Initialization;
 using EPiServer.ServiceLocation;
 using EPiServer.Web.Routing;
+using Forte.EpiserverRedirects.Configuration;
 using Forte.EpiserverRedirects.Model.RedirectRule;
 using Forte.EpiserverRedirects.Repository;
 
@@ -24,6 +25,9 @@ namespace Forte.EpiserverRedirects.System
         private Injected<IContentRepository> ContentRepository { get; set; }
         private Injected<ILanguageBranchRepository> LanguageBranchRepository { get; set; }
         private Injected<ICacheRemover> CacheRemover { get; set; }
+        private Injected<IRedirectRuleRepository> RedirectRuleRepository { get; set; }
+
+        private Injected<ICacheConfiguration> CacheConfiguration { get; set; }
 
         public void Initialize(InitializationEngine context)
         {
@@ -35,6 +39,7 @@ namespace Forte.EpiserverRedirects.System
             events.DeletedContent += DeletedContentHandler;
 
             RegisterRedirectDynamicStoreCacheHandlers();
+            InitializeRedirectCache();
         }
 
         public void Uninitialize(InitializationEngine context)
@@ -96,7 +101,7 @@ namespace Forte.EpiserverRedirects.System
                 // however, DO redirect when moving to waste basket, because restore may be to another place 
                 return;
             }
-            
+
             foreach (var language in LanguageBranchRepository.Service.ListEnabled())
             {
                 if (!(ContentRepository.Service.Get<IContentData>(e.ContentLink, language.Culture) is PageData pageData))
@@ -164,6 +169,11 @@ namespace Forte.EpiserverRedirects.System
 
         private void RegisterRedirectDynamicStoreCacheHandlers()
         {
+            if (!CacheConfiguration.Service.IsAllRedirectsCacheEnabled && !CacheConfiguration.Service.IsUrlRedirectCacheEnabled)
+            {
+                return;
+            }
+
             var redirectRuleDynamicDataStoreName = DynamicDataStoreFactory.Instance.GetStoreNameForType(typeof(RedirectRule));
             DynamicDataStore.RegisterDeletedAllEventHandler(redirectRuleDynamicDataStoreName, HandleClearCache);
             DynamicDataStore.RegisterItemDeletedEventHandler(redirectRuleDynamicDataStoreName, HandleClearCache);
@@ -172,12 +182,36 @@ namespace Forte.EpiserverRedirects.System
 
         private void UnregisterRedirectDynamicStoreCacheHandlers()
         {
+            if (!CacheConfiguration.Service.IsAllRedirectsCacheEnabled && !CacheConfiguration.Service.IsUrlRedirectCacheEnabled)
+            {
+                return;
+            }
+
             var redirectRuleDynamicDataStoreName = DynamicDataStoreFactory.Instance.GetStoreNameForType(typeof(RedirectRule));
             DynamicDataStore.UnregisterDeletedAllEventHandler(redirectRuleDynamicDataStoreName, HandleClearCache);
             DynamicDataStore.UnregisterItemDeletedEventHandler(redirectRuleDynamicDataStoreName, HandleClearCache);
             DynamicDataStore.UnregisterItemSavedEventHandler(redirectRuleDynamicDataStoreName, HandleClearCache);
         }
 
-        private void HandleClearCache(object s, ItemEventArgs e) => CacheRemover.Service.Remove(RedirectRuleCachedRepositoryDecorator.CacheKey);
+        private void HandleClearCache(object s, ItemEventArgs e)
+        {
+            if (CacheConfiguration.Service.IsAllRedirectsCacheEnabled)
+            {
+                CacheRemover.Service.Remove(RedirectRuleCachedRepositoryDecorator.CacheKey);
+            }
+
+            if (CacheConfiguration.Service.IsUrlRedirectCacheEnabled)
+            {
+                CacheRemover.Service.RemoveByRegion(CacheRedirectResolverDecorator.CacheRegionKey);
+            }
+        }
+
+        private void InitializeRedirectCache()
+        {
+            if (CacheConfiguration.Service.IsAllRedirectsCacheEnabled)
+            {
+                RedirectRuleRepository.Service.GetAll();
+            }
+        }
     }
 }
