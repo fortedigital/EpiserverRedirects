@@ -31,7 +31,7 @@ namespace Forte.EpiserverRedirects.Configuration
 
         private void RegisterRedirectResolver(ServiceConfigurationContext context)
         {
-            if (Configuration.IsAllRedirectsCacheEnabled)
+            if (Configuration.IsUrlRedirectCacheEnabled)
             {
                 context.Services.AddTransient<ICache<IRedirect>, Cache<IRedirect>>();
                 context.Services.AddTransient<IRedirectRuleResolver>(
@@ -45,7 +45,7 @@ namespace Forte.EpiserverRedirects.Configuration
 
         private static void RegisterRepository(ServiceConfigurationContext context)
         {
-            if (Configuration.IsUrlRedirectCacheEnabled)
+            if (Configuration.IsAllRedirectsCacheEnabled)
             {
                 context.Services.AddTransient<ICache<RedirectRule[]>, Cache<RedirectRule[]>>();
                 context.Services.AddTransient<IRedirectRuleRepository>(c =>
