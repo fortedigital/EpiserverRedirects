@@ -10,6 +10,7 @@ namespace Forte.EpiserverRedirects.Repository
         public const string CacheKey = "Forte.EpiserverRedirects.RedirectRuleList";
         private readonly ICache<RedirectRule[]> _cache;
         private readonly IRedirectRuleRepository _redirectRuleRepository;
+        private static readonly object Locker = new object();
         
         public RedirectRuleCachedRepositoryDecorator(IRedirectRuleRepository redirectRuleRepository, ICache<RedirectRule[]> cache)
         {
@@ -21,14 +22,23 @@ namespace Forte.EpiserverRedirects.Repository
 
         public IQueryable<RedirectRule> GetAll()
         {
-            if (_cache.TryGet(CacheKey, out var array))
+            if (_cache.TryGet(CacheKey, out var redirectRulesFirstAttempt))
             {
-                return array.AsQueryable();
+                return redirectRulesFirstAttempt.AsQueryable();
             }
 
-            array = _redirectRuleRepository.GetAll().ToArray();
-            _cache.Add(CacheKey, array);
-            return array.AsQueryable();
+            lock(Locker)
+            {
+                if (_cache.TryGet(CacheKey, out var redirectRules))
+                {
+                    return redirectRules.AsQueryable();
+                }
+                
+                redirectRules = _redirectRuleRepository.GetAll().ToArray();
+                _cache.Add(CacheKey, redirectRules);
+                
+                return redirectRules.AsQueryable();
+            }
         }
 
         public RedirectRule Add(RedirectRule redirectRule) => _redirectRuleRepository.Add(redirectRule);
