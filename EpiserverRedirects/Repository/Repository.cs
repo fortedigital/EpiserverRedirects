@@ -39,8 +39,9 @@ namespace Forte.EpiserverRedirects.Repository
         protected static void EncodeSpacesInUrls(RedirectRule redirectRule)
         {
             if (redirectRule == null) return;
-            redirectRule.OldPattern = redirectRule.OldPattern.Replace(" ", "%20");
-            redirectRule.NewPattern = redirectRule.NewPattern.Replace(" ", "%20");
+            
+            redirectRule.OldPattern = redirectRule.OldPattern?.Replace(" ", "%20");
+            redirectRule.NewPattern = redirectRule.NewPattern?.Replace(" ", "%20");
         }
     }
 }
