@@ -28,6 +28,8 @@ namespace Forte.EpiserverRedirects.Repository
 
         public override RedirectRule Add(RedirectRule redirectRule)
         {     
+            EncodeSpacesInUrls(redirectRule);
+            
             DynamicDataStore.Save(redirectRule);
             return redirectRule;
         }
@@ -40,6 +42,7 @@ namespace Forte.EpiserverRedirects.Repository
                 throw new Exception("No existing redirect with this GUID");
             
             WriteToModel(redirectRule, redirectRuleToUpdate);
+            EncodeSpacesInUrls(redirectRuleToUpdate);
             
             DynamicDataStore.Save(redirectRuleToUpdate);
 
