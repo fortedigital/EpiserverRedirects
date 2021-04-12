@@ -9,28 +9,28 @@ namespace Forte.EpiserverRedirects.Model.RedirectRule
     public class RedirectRuleImportRow
     {
         [Index(0)]
-        public string OldPattern { get; private set; }
+        public string OldPattern { get; set; }
         
         [Index(1)]
-        public string NewPattern { get; private set; }
+        public string NewPattern { get; set; }
 
         [Index(2), Optional]
-        public int? ContentId { get; private set; }
+        public int? ContentId { get; set; }
         
         [Index(3)]
-        public string RedirectRuleType { get; private set; }
+        public string RedirectRuleType { get; set; }
         
         [Index(4)]
-        public string RedirectType { get; private set; }
+        public string RedirectType { get; set; }
         
         [Index(5), Optional]
-        public byte? Priority { get; private set; }
+        public byte? Priority { get; set; }
 
         [Index(6)]
-        public string IsActive { get; private set; }
+        public string IsActive { get; set; }
         
         [Index(7)]
-        public string Notes { get; private set; }
+        public string Notes { get; set; }
 
         public static string[] FieldNames => typeof(RedirectRuleImportRow).GetProperties().Where(
                 prop => Attribute.IsDefined(prop, typeof(IndexAttribute)))
