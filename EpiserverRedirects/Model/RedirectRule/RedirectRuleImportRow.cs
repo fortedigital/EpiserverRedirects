@@ -9,28 +9,28 @@ namespace Forte.EpiserverRedirects.Model.RedirectRule
     public class RedirectRuleImportRow
     {
         [Index(0)]
-        public string OldPattern { get; set; }
+        public string OldPattern { get; private set; }
         
         [Index(1)]
-        public string NewPattern { get; set; }
+        public string NewPattern { get; private set; }
 
-        [Index(2)]
-        public string RedirectType { get; set; }
+        [Index(2), Optional]
+        public int? ContentId { get; private set; }
         
         [Index(3)]
-        public string RedirectRuleType { get; set; }
+        public string RedirectRuleType { get; private set; }
         
         [Index(4)]
-        public string IsActive { get; set; }
+        public string RedirectType { get; private set; }
         
-        [Index(5)]
-        public string Notes { get; set; }
+        [Index(5), Optional]
+        public byte? Priority { get; private set; }
+
+        [Index(6)]
+        public string IsActive { get; private set; }
         
-        [Index(6), Optional]
-        public byte? Priority { get; set; }
-        
-        [Index(7), Optional]
-        public string MatchToContent { get; set; }
+        [Index(7)]
+        public string Notes { get; private set; }
 
         public static string[] FieldNames => typeof(RedirectRuleImportRow).GetProperties().Where(
                 prop => Attribute.IsDefined(prop, typeof(IndexAttribute)))
@@ -47,12 +47,12 @@ namespace Forte.EpiserverRedirects.Model.RedirectRule
             {
                 OldPattern = redirectRule.OldPattern,
                 NewPattern = redirectRule.NewPattern,
-                RedirectRuleType = redirectRule.RedirectRuleType.ToString(),
+                ContentId = redirectRule.ContentId,
                 RedirectType = redirectRule.RedirectType.ToString(),
+                RedirectRuleType = redirectRule.RedirectRuleType.ToString(),
                 Priority = Convert.ToByte(redirectRule.Priority),
                 IsActive = redirectRule.IsActive.ToString().ToUpper(),
-                Notes = redirectRule.Notes,
-                MatchToContent = redirectRule.ContentId.HasValue.ToString().ToUpper(),
+                Notes = redirectRule.Notes
             };
         }
     }
