@@ -13,7 +13,7 @@ namespace Forte.EpiserverRedirects.Import
     {
         private readonly IRedirectRuleRepository _redirectRuleRepository;
         
-        public RedirectsImporter(IRedirectRuleRepository redirectRuleRepository, ISiteDefinitionRepository siteDefinitionRepository, IUrlResolver urlResolver)
+        public RedirectsImporter(IRedirectRuleRepository redirectRuleRepository)
         {
             _redirectRuleRepository = redirectRuleRepository;
         }
