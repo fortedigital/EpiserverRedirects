@@ -26,21 +26,21 @@ namespace Forte.EpiserverRedirects.Model.RedirectRule
         
         [Index(5), Optional]
         public byte? Priority { get; set; }
-        
+
         [Index(6)]
-        public string RedirectOrigin { get; set; }
+        public string IsActive { get; set; }
 
         [Index(7)]
-        public string IsActive { get; set; }
+        public string Notes { get; set; }
         
         [Index(8)]
-        public string CreatedOn { get; set; }
+        public string RedirectOrigin { get; set; }
         
         [Index(9)]
-        public string CreatedBy { get; set; }
+        public string CreatedOn { get; set; }
         
         [Index(10)]
-        public string Notes { get; set; }
+        public string CreatedBy { get; set; }
         
         public static RedirectRuleExportRow CreateFromRedirectRule(RedirectRule redirectRule)
         {
