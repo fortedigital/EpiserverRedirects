@@ -40,20 +40,5 @@ namespace Forte.EpiserverRedirects.Model.RedirectRule
                 .Index)
             .Select(property => property.Name)
             .ToArray();
-        
-        public static RedirectRuleImportRow CreateFromRedirectRule(RedirectRule redirectRule)
-        {
-            return new RedirectRuleImportRow
-            {
-                OldPattern = redirectRule.OldPattern,
-                NewPattern = redirectRule.NewPattern,
-                ContentId = redirectRule.ContentId,
-                RedirectType = redirectRule.RedirectType.ToString(),
-                RedirectRuleType = redirectRule.RedirectRuleType.ToString(),
-                Priority = Convert.ToByte(redirectRule.Priority),
-                IsActive = redirectRule.IsActive.ToString().ToUpper(),
-                Notes = redirectRule.Notes
-            };
-        }
     }
 }
