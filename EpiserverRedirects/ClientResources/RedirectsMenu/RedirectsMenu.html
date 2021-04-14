@@ -12,8 +12,9 @@
 
             <div class="redirect-importer">
                 <h2 class="redirect-importer-header">Import redirects from CSV file</h2>
-                <p class="redirect-importer-description">Select a file, and click "upload". File shoud be in CSV format 
-                    and consist of two columns: old URL and new URL.
+                <p class="redirect-importer-description">Select a file, and click "upload". File shoud be in CSV format
+                    and consist of following columns: old URL, new URL, Contend Id, Redirect Rule Type,
+                    Redirect Type, Priority, Is active, Notes.
                 </p>
                 <span class="dijit dijitReset dijitInline dijitButton">
                     <span class="dijitReset dijitInline dijitButtonNode">
@@ -29,7 +30,7 @@
                 <input type="button" label="Submit" data-dojo-type="dijit/form/Button" data-dojo-attach-point="uploadFormSubmit" />
                 <span name="importStatus" value="" data-dojo-attach-point="importStatus">Select a file</span>
             </div>
-                     
+
             <div class="menu-container">
                 <div class="url-redirect-grid-container">
                     <button data-dojo-type="dijit/form/Button" data-dojo-attach-point="addButton" type="button">Add new</button>
