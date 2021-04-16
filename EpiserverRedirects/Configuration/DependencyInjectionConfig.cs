@@ -3,6 +3,7 @@ using EPiServer.Data.Dynamic;
 using EPiServer.Framework;
 using EPiServer.Framework.Initialization;
 using EPiServer.ServiceLocation;
+using Forte.EpiserverRedirects.Encoder;
 using Forte.EpiserverRedirects.Mapper;
 using Forte.EpiserverRedirects.Model.RedirectRule;
 using Forte.EpiserverRedirects.Redirect;
@@ -22,6 +23,7 @@ namespace Forte.EpiserverRedirects.Configuration
 
             context.Services.AddTransient<IResponseStatusCodeResolver, Http_1_1_ResponseStatusCodeResolver>();
             context.Services.AddTransient<IRedirectRuleMapper, RedirectRuleMapper>();
+            context.Services.AddTransient<IUrlPathEncoder, UrlPathSpaceEncoder>();
 
             context.Services.AddTransient<ICacheRemover, CacheRemover>();
             context.Services.AddTransient<ICacheConfiguration, CacheConfiguration>();
