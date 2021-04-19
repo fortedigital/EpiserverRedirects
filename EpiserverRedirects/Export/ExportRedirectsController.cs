@@ -54,7 +54,7 @@ namespace Forte.EpiserverRedirects.Export
                 {
                     var redirectRules = _redirectRuleRepository
                         .GetAll()
-                        .Select(RedirectRuleImportRow.CreateFromRedirectRule);
+                        .Select(RedirectRuleExportRow.CreateFromRedirectRule);
                     
                     csvWriter.WriteRecords(redirectRules);
                 }
