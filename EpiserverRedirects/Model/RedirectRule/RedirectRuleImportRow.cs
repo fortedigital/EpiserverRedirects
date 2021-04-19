@@ -14,23 +14,23 @@ namespace Forte.EpiserverRedirects.Model.RedirectRule
         [Index(1)]
         public string NewPattern { get; set; }
 
-        [Index(2)]
-        public string RedirectType { get; set; }
+        [Index(2), Optional]
+        public int? ContentId { get; set; }
         
         [Index(3)]
         public string RedirectRuleType { get; set; }
         
         [Index(4)]
+        public string RedirectType { get; set; }
+        
+        [Index(5), Optional]
+        public byte? Priority { get; set; }
+
+        [Index(6)]
         public string IsActive { get; set; }
         
-        [Index(5)]
+        [Index(7)]
         public string Notes { get; set; }
-        
-        [Index(6), Optional]
-        public byte? Priority { get; set; }
-        
-        [Index(7), Optional]
-        public string MatchToContent { get; set; }
 
         public static string[] FieldNames => typeof(RedirectRuleImportRow).GetProperties().Where(
                 prop => Attribute.IsDefined(prop, typeof(IndexAttribute)))
@@ -40,20 +40,5 @@ namespace Forte.EpiserverRedirects.Model.RedirectRule
                 .Index)
             .Select(property => property.Name)
             .ToArray();
-        
-        public static RedirectRuleImportRow CreateFromRedirectRule(RedirectRule redirectRule)
-        {
-            return new RedirectRuleImportRow
-            {
-                OldPattern = redirectRule.OldPattern,
-                NewPattern = redirectRule.NewPattern,
-                RedirectRuleType = redirectRule.RedirectRuleType.ToString(),
-                RedirectType = redirectRule.RedirectType.ToString(),
-                Priority = Convert.ToByte(redirectRule.Priority),
-                IsActive = redirectRule.IsActive.ToString().ToUpper(),
-                Notes = redirectRule.Notes,
-                MatchToContent = redirectRule.ContentId.HasValue.ToString().ToUpper(),
-            };
-        }
     }
 }
