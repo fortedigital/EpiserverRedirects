@@ -68,7 +68,9 @@ namespace Forte.EpiserverRedirects.Model
             if (path.Length > 1)
                 path = path.TrimEnd('/');
 
-            return path;
+            var encodedPath = Uri.EscapeUriString(path);
+            
+            return encodedPath;
         }
 
         public static bool operator ==(UrlPath a, UrlPath b)
