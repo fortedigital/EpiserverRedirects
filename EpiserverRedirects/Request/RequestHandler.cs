@@ -2,6 +2,7 @@ using System;
 using System.Threading.Tasks;
 using EPiServer.Web.Routing;
 using Forte.EpiserverRedirects.Model;
+using Forte.EpiserverRedirects.Redirect;
 using Forte.EpiserverRedirects.Resolver;
 
 namespace Forte.EpiserverRedirects.Request
@@ -26,6 +27,13 @@ namespace Forte.EpiserverRedirects.Request
             var requestPath = UrlPath.FromUri(request);
 
             var redirectRule = await _redirectRuleResolver.ResolveRedirectRuleAsync(requestPath);
+
+            if (redirectRule is NullRedirectRule)
+            {
+                var requestPathEncoded = UrlPath.FromUrlPathEncode(requestPath);
+                
+                redirectRule = await _redirectRuleResolver.ResolveRedirectRuleAsync(requestPathEncoded);
+            }
 
             redirectRule?.Execute(request, response, _urlResolver, _responseStatusCodeResolver);
         }
