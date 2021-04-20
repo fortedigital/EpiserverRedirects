@@ -28,13 +28,6 @@ namespace Forte.EpiserverRedirects.Request
 
             var redirectRule = await _redirectRuleResolver.ResolveRedirectRuleAsync(requestPath);
 
-            if (redirectRule is NullRedirectRule)
-            {
-                var requestPathEncoded = UrlPath.FromUrlPathEncode(requestPath);
-                
-                redirectRule = await _redirectRuleResolver.ResolveRedirectRuleAsync(requestPathEncoded);
-            }
-
             redirectRule?.Execute(request, response, _urlResolver, _responseStatusCodeResolver);
         }
     }

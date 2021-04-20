@@ -1,4 +1,5 @@
 using System;
+using System.Web;
 
 namespace Forte.EpiserverRedirects.Model
 {
@@ -52,15 +53,7 @@ namespace Forte.EpiserverRedirects.Model
                 throw new ArgumentException(InvalidRelativePathExceptionMessage, e);
             }
         }
-
-        public static UrlPath FromUrlPathEncode(UrlPath urlPath)
-        {
-            var path = urlPath.ToString();
-            var encodedUri = Uri.EscapeUriString(path);
-            
-            return Parse(encodedUri);
-        }
-
+        
         private UrlPath(string oldPath)
         {
             Path = new Uri(oldPath, UriKind.Relative);
@@ -77,6 +70,11 @@ namespace Forte.EpiserverRedirects.Model
                 path = path.TrimEnd('/');
 
             return path;
+        }
+
+        public static string EnsurePathEncoding(string path)
+        {
+            return path != null ? Uri.EscapeUriString(HttpUtility.UrlDecode(path)) : path;
         }
 
         public static bool operator ==(UrlPath a, UrlPath b)

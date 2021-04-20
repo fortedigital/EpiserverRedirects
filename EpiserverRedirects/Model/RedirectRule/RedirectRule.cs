@@ -1,4 +1,5 @@
 using System;
+using System.Web;
 using EPiServer.Data;
 using EPiServer.Data.Dynamic;
 using EPiServer.Security;
@@ -109,12 +110,22 @@ namespace Forte.EpiserverRedirects.Model.RedirectRule
                 Priority = priority ?? Settings.DefaultRedirectRulePriority
             };
         }
-
+        
         public Identity Id { get; set; }
 
         public int? ContentId { get; set; }
-        public string OldPattern { get; set; }
-        public string NewPattern { get; set; }
+        
+        public string OldPattern
+        {
+            get => UrlPath.EnsurePathEncoding(_oldPattern);
+            set => _oldPattern = UrlPath.EnsurePathEncoding(value);
+        }
+
+        public string NewPattern
+        {
+            get => UrlPath.EnsurePathEncoding(_newPattern);
+            set => _newPattern = UrlPath.EnsurePathEncoding(value);
+        }
 
         public RedirectRuleType RedirectRuleType { get; set; }
 
@@ -127,6 +138,10 @@ namespace Forte.EpiserverRedirects.Model.RedirectRule
         public string CreatedBy { get; set; }
         public string Notes { get; set; }
         public int Priority { get; set; }
+
+        private string _oldPattern;
+
+        private string _newPattern;
     }
 
 }
