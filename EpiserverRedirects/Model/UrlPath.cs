@@ -1,4 +1,5 @@
 using System;
+using System.Web;
 
 namespace Forte.EpiserverRedirects.Model
 {
@@ -69,6 +70,11 @@ namespace Forte.EpiserverRedirects.Model
                 path = path.TrimEnd('/');
 
             return path;
+        }
+
+        public static string EnsurePathEncoding(string path)
+        {
+            return path != null ? Uri.EscapeUriString(HttpUtility.UrlDecode(path)) : path;
         }
 
         public static bool operator ==(UrlPath a, UrlPath b)

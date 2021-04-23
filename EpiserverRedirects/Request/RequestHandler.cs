@@ -24,7 +24,7 @@ namespace Forte.EpiserverRedirects.Request
         public async Task Invoke(Uri request, IHttpResponse response)
         {
             var requestPath = UrlPath.FromUri(request);
-            
+
             var redirectRule = await _redirectRuleResolver.ResolveRedirectRuleAsync(requestPath);
 
             redirectRule?.Execute(request, response, _urlResolver, _responseStatusCodeResolver);

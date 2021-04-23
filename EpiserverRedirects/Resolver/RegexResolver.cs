@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using EPiServer;
@@ -22,12 +23,14 @@ namespace Forte.EpiserverRedirects.Resolver
         {
             return Task.Run(() =>
             {
+                var encodedOldPath = Uri.EscapeUriString(oldPath.ToString());
+                
                 var rule = _redirectRuleResolverRepository
                     .GetAll()
                     .Where(r => r.IsActive && r.RedirectRuleType == RedirectRuleType.Regex)
                     .OrderBy(x=> x.Priority)
                     .AsEnumerable()
-                    .FirstOrDefault(r => Regex.IsMatch(oldPath.ToString(), r.OldPattern.ToString(), RegexOptions.IgnoreCase));
+                    .FirstOrDefault(r => Regex.IsMatch(encodedOldPath, r.OldPattern, RegexOptions.IgnoreCase));
 
                 return ResolveRule(rule, r => new ExactMatchRedirect(r));
             });
