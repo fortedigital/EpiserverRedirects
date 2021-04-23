@@ -81,8 +81,8 @@ namespace Forte.EpiserverRedirects.Model.RedirectRule
             return new RedirectRule
             {
                 RedirectOrigin = RedirectOrigin.Import,
-                OldPattern = oldPattern,
-                NewPattern = newPattern,
+                OldPattern = UrlPath.ExtractRelativePath(oldPattern),
+                NewPattern = UrlPath.ExtractRelativePath(newPattern),
                 RedirectType = redirectType,
                 RedirectRuleType = redirectRuleType,
                 IsActive = isActive,
@@ -99,7 +99,7 @@ namespace Forte.EpiserverRedirects.Model.RedirectRule
             return new RedirectRule
             {
                 RedirectOrigin = RedirectOrigin.Import,
-                OldPattern = oldPattern,
+                OldPattern = UrlPath.ExtractRelativePath(oldPattern),
                 ContentId = contentId,
                 RedirectType = redirectType,
                 RedirectRuleType = redirectRuleType,
