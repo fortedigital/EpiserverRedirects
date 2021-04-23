@@ -114,6 +114,8 @@ namespace Forte.EpiserverRedirects.Model.RedirectRule
         public Identity Id { get; set; }
 
         public int? ContentId { get; set; }
+
+        private string _oldPattern;
         
         public string OldPattern
         {
@@ -121,6 +123,8 @@ namespace Forte.EpiserverRedirects.Model.RedirectRule
             set => _oldPattern = UrlPath.EnsurePathEncoding(value);
         }
 
+        private string _newPattern;
+        
         public string NewPattern
         {
             get => UrlPath.EnsurePathEncoding(_newPattern);
@@ -138,10 +142,6 @@ namespace Forte.EpiserverRedirects.Model.RedirectRule
         public string CreatedBy { get; set; }
         public string Notes { get; set; }
         public int Priority { get; set; }
-
-        private string _oldPattern;
-
-        private string _newPattern;
     }
 
 }
