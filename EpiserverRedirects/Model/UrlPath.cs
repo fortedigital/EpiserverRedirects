@@ -6,6 +6,7 @@ namespace Forte.EpiserverRedirects.Model
     public class UrlPath : IEquatable<UrlPath>
     {
         private const string InvalidRelativePathExceptionMessage = "Entered path is not a valid relative path.";
+        private const string InvalidUrlExceptionMessage = "Entered url is not valid.";
         private Uri Path { get; }
            
         public static UrlPath Parse(string oldPath)
@@ -34,6 +35,23 @@ namespace Forte.EpiserverRedirects.Model
                 Console.WriteLine(InvalidRelativePathExceptionMessage + e);
                 urlPath = null;
                 return false;
+            }
+        }
+
+        public static string ExtractRelativePath(string url)
+        {
+            try
+            {
+                var isAbsoluteUriParseOk = Uri.TryCreate(url.Trim(), UriKind.Absolute, out var uri);
+                var path = isAbsoluteUriParseOk ? uri.LocalPath : url;
+                var normalizedPath = NormalizePath(path);
+
+                return normalizedPath;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw new ArgumentException(InvalidUrlExceptionMessage, e);
             }
         }
         

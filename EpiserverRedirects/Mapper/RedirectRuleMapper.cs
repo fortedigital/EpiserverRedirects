@@ -34,8 +34,8 @@ namespace Forte.EpiserverRedirects.Mapper
         {
             var destination = new RedirectRule();
             destination.Id = source.Id;
-            destination.OldPattern = UrlPath.NormalizePath(source.OldPattern);
-            destination.NewPattern = source.NewPattern;
+            destination.OldPattern = UrlPath.ExtractRelativePath(source.OldPattern);
+            destination.NewPattern = UrlPath.ExtractRelativePath(source.NewPattern);
             destination.RedirectType = source.RedirectType;
             destination.RedirectRuleType = source.RedirectRuleType;
             destination.IsActive = source.IsActive;
