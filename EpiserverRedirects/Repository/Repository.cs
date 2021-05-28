@@ -10,6 +10,7 @@ namespace Forte.EpiserverRedirects.Repository
         IQueryable<RedirectRule> GetAll();
         RedirectRule Add(RedirectRule redirectRule);
         RedirectRule Update(RedirectRule redirectRule);
+        bool RemoveAllDuplicates();
         bool Delete(Guid id);
         bool ClearAll();
     }
@@ -20,6 +21,7 @@ namespace Forte.EpiserverRedirects.Repository
         public abstract IQueryable<RedirectRule> GetAll();
         public abstract RedirectRule Add(RedirectRule redirectRule);
         public abstract RedirectRule Update(RedirectRule redirectRule);
+        public abstract bool RemoveAllDuplicates();
         public abstract bool Delete(Guid id);
         public abstract bool ClearAll();
 

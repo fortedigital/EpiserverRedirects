@@ -45,6 +45,8 @@ namespace Forte.EpiserverRedirects.Repository
 
         public RedirectRule Update(RedirectRule redirectRule) => _redirectRuleRepository.Update(redirectRule);
 
+        public bool RemoveAllDuplicates() => _redirectRuleRepository.RemoveAllDuplicates();
+        
         public bool Delete(Guid id) => _redirectRuleRepository.Delete(id);
 
         public bool ClearAll() => _redirectRuleRepository.ClearAll();

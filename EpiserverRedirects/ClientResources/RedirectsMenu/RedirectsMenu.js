@@ -58,6 +58,7 @@ define("redirectsMenu/RedirectsMenu", [
                 on(this.deleteButton, "click", this._onDeleteClick.bind(this));
                 on(this.refreshButton, "click", this._refreshView.bind(this));
                 on(this.clearAllButton, "click", this._onClearAllClick.bind(this));
+                on(this.removeDuplicatesButton, "click", this._onRemoveDuplicatesClick.bind(this));
                 /*on(this.simulateFindButton, "click", this._onSimulateFindClick.bind(this));
                 on(this.simulateResetButton, "click", this._onSimulateResetClick.bind(this));*/
                 on(this.uploadFormSubmit, "click", this._onImportSubmit.bind(this));
@@ -127,6 +128,17 @@ define("redirectsMenu/RedirectsMenu", [
             _onClearAllClick: function() {
                 if (window.confirm("Do you really want to clear all redirect rules?")) {
                     this.redirectsMenuViewModel.clearRedirectRules().then((r) => this._refreshView());
+                }
+            },
+
+            _onRemoveDuplicatesClick: function() {
+                if (window.confirm("Do you really want to remove all duplicates?")) {
+                    var removeDuplicatesStatus = this.removeDuplicatesStatus;
+                    removeDuplicatesStatus.innerText = "Removing duplicates...";
+                    this.redirectsMenuViewModel.removeDuplicateRules().then((r) => {
+                        removeDuplicatesStatus.innerText = "Duplicates removed.";
+                        this._refreshView()
+                    });
                 }
             },
 

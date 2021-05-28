@@ -38,16 +38,18 @@
                     <button data-dojo-type="dijit/form/Button" data-dojo-attach-point="deleteButton" type="button">Delete</button>
                     <button data-dojo-type="dijit/form/Button" data-dojo-attach-point="refreshButton" type="button">Refresh</button>
                     <button data-dojo-type="dijit/form/Button" data-dojo-attach-point="clearAllButton" type="button">Clear all</button>
-<!--                    <div class="epi-formArea">
-                        <label>Simulate Wildcard redirect:</label>
-                        <input class="form-input" type="text" name="simulateOldUrl"
-                               data-dojo-props="intermediateChanges:true"
-                               data-dojo-type="dijit/form/TextBox"
-                               placeHolder="Old Url"
-                               data-dojo-attach-point="simulateOldUrlTextBox" id="simulateOldUrl" />
-                        <button data-dojo-type="dijit/form/Button" data-dojo-attach-point="simulateFindButton" type="button">Find</button>
-                        <button data-dojo-type="dijit/form/Button" data-dojo-attach-point="simulateResetButton" type="button">Reset</button>
-                    </div>-->
+                    <button data-dojo-type="dijit/form/Button" data-dojo-attach-point="removeDuplicatesButton" type="button">Remove duplicates</button>
+                    <span name="removeDuplicatesStatus" value="" data-dojo-attach-point="removeDuplicatesStatus"></span>
+                    <!--                    <div class="epi-formArea">
+                                            <label>Simulate Wildcard redirect:</label>
+                                            <input class="form-input" type="text" name="simulateOldUrl"
+                                                   data-dojo-props="intermediateChanges:true"
+                                                   data-dojo-type="dijit/form/TextBox"
+                                                   placeHolder="Old Url"
+                                                   data-dojo-attach-point="simulateOldUrlTextBox" id="simulateOldUrl" />
+                                            <button data-dojo-type="dijit/form/Button" data-dojo-attach-point="simulateFindButton" type="button">Find</button>
+                                            <button data-dojo-type="dijit/form/Button" data-dojo-attach-point="simulateResetButton" type="button">Reset</button>
+                                        </div>-->
                     <div class="url-redirect-grid" data-dojo-type="redirectsMenu-grid/RedirectsMenuGrid" data-dojo-attach-point="redirectsMenuGrid">
                     </div>
                 </div>
