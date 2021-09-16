@@ -28,7 +28,6 @@ namespace Forte.EpiserverRedirects.Resolver
                     .GetAll()
                     .Where(r => r.IsActive && r.RedirectRuleType == RedirectRuleType.ExactMatch)
                     .OrderBy(x => x.Priority)
-                    .AsEnumerable()
                     .FirstOrDefault(r => r.OldPattern == encodedOldPath);
 
                 return ResolveRule(rule, r => new ExactMatchRedirect(r));
