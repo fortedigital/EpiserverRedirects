@@ -42,6 +42,11 @@ namespace Forte.EpiserverRedirects.Model
         {
             try
             {
+                if (string.IsNullOrEmpty(url))
+                {
+                    return url;
+                }
+                
                 var isAbsoluteUriParseOk = Uri.TryCreate(url.Trim(), UriKind.Absolute, out var uri);
                 var path = isAbsoluteUriParseOk ? uri.LocalPath : url;
                 var normalizedPath = NormalizePath(path);
