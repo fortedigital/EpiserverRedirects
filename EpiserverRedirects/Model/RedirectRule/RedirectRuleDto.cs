@@ -1,18 +1,18 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
 
 namespace Forte.EpiserverRedirects.Model.RedirectRule
 {
     [ModelBinder(typeof(RedirectRuleDtoModelBinder))]
-    public class RedirectRuleDto
+    public class RedirectRuleDto : IValidatableObject
     {
         public Guid? Id { get; set; }
         
         [Required]
         public string OldPattern { get; set; }
         
-        [Required]
         public string NewPattern { get; set; }
         
         public int? ContentId { get; set; }
@@ -52,6 +52,16 @@ namespace Forte.EpiserverRedirects.Model.RedirectRule
             Id = guid;
             OldPattern = pattern;
             NewPattern = newUrl;
+        }
+
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            if (string.IsNullOrEmpty(NewPattern) && ContentId.HasValue == false)
+            {
+                yield return new ValidationResult(
+                    $"Value of {nameof(NewPattern)} or {nameof(ContentId)} has to be set",
+                    new[] {nameof(NewPattern), nameof(ContentId)});
+            }
         }
     }
 }
