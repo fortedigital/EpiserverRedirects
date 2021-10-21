@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Web;
 using System.Web.Mvc;
@@ -16,7 +17,7 @@ namespace Forte.EpiserverRedirects.Model.RedirectRule
 
             try
             {
-                return new RedirectRuleDto
+                var redirectRule = new RedirectRuleDto
                 {
                     //TODO: no id passing
                     Id = Parser.ParseIdentity(redirectRuleDtoProperties),
@@ -29,13 +30,26 @@ namespace Forte.EpiserverRedirects.Model.RedirectRule
                     IsActive = Parser.ParseBoolean(redirectRuleDtoProperties["isActive"]),
                     Notes = redirectRuleDtoProperties["notes"]
                 };
+
+                var validationResult = new List<ValidationResult>();
+                if (Validator.TryValidateObject(redirectRule, new ValidationContext(redirectRule), validationResult, true))
+                {
+                    return redirectRule;
+                }
+                
+                foreach (var vr in validationResult)
+                {
+                    bindingContext.ModelState.AddModelError(string.Join(",", vr.MemberNames), vr.ErrorMessage);
+                }
+
+                return redirectRule;
             }
             catch
             {
                 throw new Exception("Failed to parse json from http request body " + jsonBody);
             }
         }
-        
+
         private static string GetBody(HttpRequestBase request)
         {
             var inputStream = request.InputStream;
