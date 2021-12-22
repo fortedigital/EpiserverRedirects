@@ -84,7 +84,12 @@ namespace Forte.EpiserverRedirects.Model
 
         public static string NormalizePath(string path)
         {
-            path = path.Trim();
+            path = path?.Trim();
+            if (string.IsNullOrEmpty(path))
+            {
+                return string.Empty;
+            }
+
             path = path[0] == '/'
                 ? path
                 : '/' + path;

@@ -231,6 +231,7 @@
         <Compile Include="Data\RedirectRuleTestDataBuilder.cs" />
         <Compile Include="Data\RandomDataGenerator.cs" />
         <Compile Include="Mapper\RedirectRuleTestMapper.cs" />
+        <Compile Include="Model\UrlPathTests.cs" />
         <Compile Include="Repository\TestRepository.cs" />
         <Compile Include="RestExtensions\RestExtensions.cs" />
         <Compile Include="Tests\ControllerTests.cs" />
