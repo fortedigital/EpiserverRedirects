@@ -61,7 +61,7 @@ namespace Forte.EpiserverRedirects.System
 
             var lastVersion = ContentVersionRepository
                 .Service
-                .List(e.ContentLink)
+                .List(e.ContentLink, e.Content.LanguageBranch())
                 .Where(p => p.Status == VersionStatus.PreviouslyPublished)
                 .OrderByDescending(p => p.Saved)
                 .FirstOrDefault();
