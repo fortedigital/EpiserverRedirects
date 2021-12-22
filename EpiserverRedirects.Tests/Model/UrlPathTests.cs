@@ -8,7 +8,9 @@ namespace Forte.EpiserverRedirects.Tests.Model
         [InlineData("/some/path/", "/some/path")]
         [InlineData("some/path/", "/some/path")]
         [InlineData("some/path", "/some/path")]
+        [InlineData(" some/path ", "/some/path")]
         [InlineData("", "")]
+        [InlineData(" ", "")]
         [InlineData(null, "")]
         [Theory]
         public void GivenInputPath_WhenNormalize_ReturnsExpectedResult(string inputPath, string expectedResult)
