@@ -9,12 +9,11 @@ namespace Forte.EpiserverRedirects.Redirect
         public RegexRedirect(RedirectRule redirectRule) : base(redirectRule)
         {
         }
-        
-        protected override string GetPathWithoutContentId(Uri request)
+
+        protected override string GetPathWithoutContentId(Uri request, bool shouldPreserveQueryString)
         {
-            var newUrl = Regex.Replace(request.ToString(), RedirectRule.OldPattern,
+            return Regex.Replace(request.ToString(), RedirectRule.OldPattern,
                 RedirectRule.NewPattern, RegexOptions.IgnoreCase);
-            return newUrl;
         }
     }
 }

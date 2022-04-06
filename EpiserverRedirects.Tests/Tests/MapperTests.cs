@@ -1,5 +1,3 @@
-using Forte.EpiserverRedirects.Mapper;
-using Forte.EpiserverRedirects.Model;
 using Forte.EpiserverRedirects.Tests.Data;
 using Xunit;
 

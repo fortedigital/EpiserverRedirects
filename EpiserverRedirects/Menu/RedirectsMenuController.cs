@@ -1,11 +1,12 @@
-﻿using System.Web.Mvc;
-using EPiServer.Shell.Navigation;
+﻿using EPiServer.Shell.Navigation;
 using EPiServer.Shell.Web.Mvc;
+using Forte.EpiserverRedirects.Configuration;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Forte.EpiserverRedirects.Menu
 {
     [Authorize(Roles = "CmsEditors, CmsAdmins")]
-    public class RedirectsMenuController: Controller
+    public class RedirectsMenuController: Microsoft.AspNetCore.Mvc.Controller
     {
         private readonly IBootstrapper _bootstrapper;
 
@@ -17,9 +18,9 @@ namespace Forte.EpiserverRedirects.Menu
         [MenuItem(MenuPaths.Global + "/redirects",
            SortIndex = SortIndex.Last + 20,
            Text = "Redirects")]
-        public ActionResult Index()
+        public Microsoft.AspNetCore.Mvc.ActionResult Index()
         {
-            var viewModel = _bootstrapper.CreateViewModel("RedirectsMenu", ControllerContext, "Forte.EpiserverRedirects");
+            var viewModel = _bootstrapper.CreateViewModel("RedirectsMenu", ControllerContext, Constants.ModuleName);
 
             return View(_bootstrapper.BootstrapperViewName,
                 viewModel);

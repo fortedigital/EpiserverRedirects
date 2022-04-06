@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using EPiServer.Cms.Shell.UI.Components;
 using Forte.EpiserverRedirects.Model;
 using Forte.EpiserverRedirects.Redirect;
 

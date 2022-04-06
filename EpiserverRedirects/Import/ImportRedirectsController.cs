@@ -1,9 +1,10 @@
 ﻿using System;
-using System.Web;
-using System.Web.Mvc;
 using CsvHelper;
-using EPiServer.Shell.Web;
+using Forte.EpiserverRedirects.Configuration;
 using Forte.EpiserverRedirects.Model.RedirectRule;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using MissingFieldException = System.MissingFieldException;
@@ -27,7 +28,8 @@ namespace Forte.EpiserverRedirects.Import
         }
 
         [HttpPost]
-        public ActionResult Import(HttpPostedFileBase uploadedFile)
+        [Route(Constants.BaseRoutePath + "/Import")]
+        public ActionResult Import(IFormFile uploadedFile)
         {
             if (uploadedFile == null)
                 return CreateJsonErrorResult("No file specified");
@@ -45,13 +47,13 @@ namespace Forte.EpiserverRedirects.Import
             }
             catch (CsvHelperException e)
             {
-                var missingFieldIndex = e.ReadingContext.CurrentIndex;
+                var missingFieldIndex = e.Context.Reader.CurrentIndex;
                 var missingFieldName = RedirectRuleImportRow.FieldNames[missingFieldIndex];
                 var errorMessage =
-                    $"Row: '{e.ReadingContext.RawRecord.TrimEnd("\n").TrimEnd("\r")}' is invalid. Field: '{missingFieldName}' at index: '{missingFieldIndex}' is missing";
+                    $"Row: '{e.Context.Parser.RawRecord.TrimEnd('\r', '\n')}' is invalid. Field: '{missingFieldName}' at index: '{missingFieldIndex}' is missing";
                 return CreateJsonErrorResult(errorMessage);
             }
-            catch (MissingFieldException e)
+            catch (MissingFieldException)
             {
                 return CreateJsonErrorResult("File is in invalid format");
             }
@@ -66,7 +68,7 @@ namespace Forte.EpiserverRedirects.Import
         private ActionResult CreateJsonResult(object data)
         {
             var json = JsonConvert.SerializeObject(data, SerializerSettings);
-            return this.Content(json, "application/json");
+            return Content(json, "application/json");
         }
     }
 }

@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Linq;
-using Castle.Core.Internal;
 using CsvHelper.Configuration.Attributes;
-using Settings = Forte.EpiserverRedirects.Configuration.Configuration;
-
 
 namespace Forte.EpiserverRedirects.Model.RedirectRule
 {

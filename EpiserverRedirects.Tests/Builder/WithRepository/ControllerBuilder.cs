@@ -1,12 +1,5 @@
 using System;
-using System.Collections.Specialized;
-using System.Security.Principal;
-using System.Web;
 using System.Web.Mvc;
-using System.Web.Routing;
-using Forte.EpiserverRedirects.Mapper;
-using Forte.EpiserverRedirects.Menu;
-using Forte.EpiserverRedirects.Model.RedirectRule;
 using Forte.EpiserverRedirects.Tests.Mapper;
 using Moq;
 

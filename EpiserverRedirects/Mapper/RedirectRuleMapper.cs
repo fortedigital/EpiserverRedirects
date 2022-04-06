@@ -1,47 +1,54 @@
 using System;
+using Forte.EpiserverRedirects.Configuration;
 using Forte.EpiserverRedirects.Model;
 using Forte.EpiserverRedirects.Model.RedirectRule;
 
 namespace Forte.EpiserverRedirects.Mapper
 {
-    public class RedirectRuleMapper : BaseRedirectRuleMapper
+    public class RedirectRuleMapper : IRedirectRuleMapper
     {
-        public RedirectRuleMapper() : base(ModelToDtoDelegate, DtoToModelDelegate)
-        {
-        }
-        
+        private readonly RedirectsOptions _options;
 
-        private static RedirectRuleDto ModelToDtoDelegate(RedirectRule source)
+        public RedirectRuleMapper(RedirectsOptions options)
         {
-            var destination = new RedirectRuleDto();
-            destination.Id = source.Id.ExternalId;
-            destination.OldPattern = source.OldPattern;
-            destination.NewPattern = source.NewPattern;
-            destination.ContentId = source.ContentId;
-            destination.RedirectType = source.RedirectType;
-            destination.RedirectRuleType = source.RedirectRuleType;
-            destination.RedirectOrigin = source.RedirectOrigin;
-            destination.IsActive = source.IsActive;
-            destination.Notes = source.Notes;
-            destination.CreatedOn = DateTime.SpecifyKind(source.CreatedOn, DateTimeKind.Utc);
-            destination.CreatedBy = source.CreatedBy;
-            destination.Priority = source.Priority;
+            _options = options;
+        }
+
+        public RedirectRuleDto ModelToDto(RedirectRule source)
+        {
+            var destination = new RedirectRuleDto
+            {
+                Id = source.Id.ExternalId,
+                OldPattern = source.OldPattern,
+                NewPattern = source.NewPattern,
+                ContentId = source.ContentId,
+                RedirectType = source.RedirectType,
+                RedirectRuleType = source.RedirectRuleType,
+                RedirectOrigin = source.RedirectOrigin,
+                IsActive = source.IsActive,
+                Notes = source.Notes,
+                CreatedOn = DateTime.SpecifyKind(source.CreatedOn, DateTimeKind.Utc),
+                CreatedBy = source.CreatedBy,
+                Priority = source.Priority
+            };
 
             return destination;
         }
 
-        private static RedirectRule DtoToModelDelegate(RedirectRuleDto source)
+        public RedirectRule DtoToModel(RedirectRuleDto source)
         {
-            var destination = new RedirectRule();
-            destination.Id = source.Id;
-            destination.OldPattern = UrlPath.ExtractRelativePath(source.OldPattern);
-            destination.NewPattern = UrlPath.ExtractRelativePath(source.NewPattern);
-            destination.RedirectType = source.RedirectType;
-            destination.RedirectRuleType = source.RedirectRuleType;
-            destination.IsActive = source.IsActive;
-            destination.Notes = source.Notes;
-            destination.ContentId = source.ContentId;
-            destination.Priority = (source.Priority.HasValue && source.Priority > 0) ? source.Priority.Value : Configuration.Configuration.DefaultRedirectRulePriority;
+            var destination = new RedirectRule
+            {
+                Id = source.Id,
+                OldPattern = UrlPath.ExtractRelativePath(source.OldPattern),
+                NewPattern = UrlPath.ExtractRelativePath(source.NewPattern),
+                RedirectType = source.RedirectType,
+                RedirectRuleType = source.RedirectRuleType,
+                IsActive = source.IsActive,
+                Notes = source.Notes,
+                ContentId = source.ContentId,
+                Priority = (source.Priority.HasValue && source.Priority > 0) ? source.Priority.Value : _options.DefaultRedirectRulePriority
+            };
 
             return destination;
         }

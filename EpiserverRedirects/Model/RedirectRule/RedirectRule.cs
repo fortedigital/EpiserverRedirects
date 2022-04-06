@@ -1,9 +1,7 @@
 using System;
-using System.Web;
 using EPiServer.Data;
 using EPiServer.Data.Dynamic;
 using EPiServer.Security;
-using Settings = Forte.EpiserverRedirects.Configuration.Configuration;
 
 namespace Forte.EpiserverRedirects.Model.RedirectRule
 {
@@ -40,7 +38,7 @@ namespace Forte.EpiserverRedirects.Model.RedirectRule
         }
 
         public static RedirectRule NewFromSystem(string oldPattern, string newPattern, RedirectType redirectType,
-            RedirectRuleType redirectRuleType, string notes)
+            RedirectRuleType redirectRuleType, string notes, int priority)
         {
             return new RedirectRule
             {
@@ -53,12 +51,12 @@ namespace Forte.EpiserverRedirects.Model.RedirectRule
                 CreatedBy = PrincipalInfo.CurrentPrincipal.Identity.Name,
                 CreatedOn = DateTime.SpecifyKind(DateTime.UtcNow, DateTimeKind.Utc),
                 Notes = notes,
-                Priority = Settings.SystemRedirectRulePriority
+                Priority = priority
             };
         }
 
         public static RedirectRule NewFromSystem(string oldPattern, int contentId, RedirectType redirectType,
-            RedirectRuleType redirectRuleType, string notes)
+            RedirectRuleType redirectRuleType, string notes, int priority)
         {
             return new RedirectRule
             {
@@ -71,12 +69,12 @@ namespace Forte.EpiserverRedirects.Model.RedirectRule
                 CreatedBy = PrincipalInfo.CurrentPrincipal.Identity.Name,
                 CreatedOn = DateTime.SpecifyKind(DateTime.UtcNow, DateTimeKind.Utc),
                 Notes = notes,
-                Priority = Settings.SystemRedirectRulePriority
+                Priority = priority
             };
         }
 
         public static RedirectRule NewFromImport(string oldPattern, string newPattern, RedirectType redirectType,
-            RedirectRuleType redirectRuleType, bool isActive, string notes, int? priority)
+            RedirectRuleType redirectRuleType, bool isActive, string notes, int priority)
         {
             return new RedirectRule
             {
@@ -89,12 +87,12 @@ namespace Forte.EpiserverRedirects.Model.RedirectRule
                 CreatedOn = DateTime.SpecifyKind(DateTime.UtcNow, DateTimeKind.Utc),
                 CreatedBy = PrincipalInfo.CurrentPrincipal.Identity.Name,
                 Notes = notes,
-                Priority = priority ?? Settings.DefaultRedirectRulePriority
+                Priority = priority
             };
         }
 
         public static RedirectRule NewFromImport(string oldPattern, int contentId, RedirectType redirectType,
-            RedirectRuleType redirectRuleType, bool isActive, string notes, int? priority)
+            RedirectRuleType redirectRuleType, bool isActive, string notes, int priority)
         {
             return new RedirectRule
             {
@@ -107,7 +105,7 @@ namespace Forte.EpiserverRedirects.Model.RedirectRule
                 CreatedOn = DateTime.SpecifyKind(DateTime.UtcNow, DateTimeKind.Utc),
                 CreatedBy = PrincipalInfo.CurrentPrincipal.Identity.Name,
                 Notes = notes,
-                Priority = priority ?? Settings.DefaultRedirectRulePriority
+                Priority = priority
             };
         }
         

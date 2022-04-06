@@ -1,11 +1,11 @@
 using System;
 using System.Linq;
 using System.Net;
-using System.Web.Mvc;
 using EPiServer.Shell.Services.Rest;
 using Forte.EpiserverRedirects.Mapper;
 using Forte.EpiserverRedirects.Model.RedirectRule;
 using Forte.EpiserverRedirects.Repository;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Forte.EpiserverRedirects.Menu
 {
@@ -22,7 +22,7 @@ namespace Forte.EpiserverRedirects.Menu
             _redirectRuleMapper = redirectRuleMapper;
         }
 
-        public ActionResult Get(Guid id)
+        public Microsoft.AspNetCore.Mvc.ActionResult Get(Guid id)
         {
             var redirect = _redirectRuleRepository.GetById(id);
 
@@ -33,7 +33,7 @@ namespace Forte.EpiserverRedirects.Menu
         }
         
         [HttpGet]
-        public ActionResult Get(Query query = null)
+        public Microsoft.AspNetCore.Mvc.ActionResult Get(Query query = null)
         {
             var redirects = _redirectRuleRepository
                 .GetAll()
@@ -46,7 +46,7 @@ namespace Forte.EpiserverRedirects.Menu
         }
 
         [HttpPost]
-        public ActionResult Post(RedirectRuleDto dto)
+        public Microsoft.AspNetCore.Mvc.ActionResult Post(RedirectRuleDto dto)
         {
             if (!ViewData.ModelState.IsValid)
                 return null;
@@ -62,7 +62,7 @@ namespace Forte.EpiserverRedirects.Menu
         }
 
         [HttpPut]
-        public ActionResult Put(RedirectRuleDto dto)
+        public Microsoft.AspNetCore.Mvc.ActionResult Put(RedirectRuleDto dto)
         {
             if (!ViewData.ModelState.IsValid)
                 return null;
@@ -75,7 +75,7 @@ namespace Forte.EpiserverRedirects.Menu
         }
         
         [HttpDelete]
-        public ActionResult Delete(Guid id)
+        public Microsoft.AspNetCore.Mvc.ActionResult Delete(Guid id)
         {
             var deletedSuccessfully = id == _clearAllGuid
                 ? _redirectRuleRepository.ClearAll()

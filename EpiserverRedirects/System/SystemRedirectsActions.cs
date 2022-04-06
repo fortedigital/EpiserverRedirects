@@ -14,13 +14,13 @@ namespace Forte.EpiserverRedirects.System
     public static class SystemRedirectsActions
     {
         public static void AddRedirects(PageData pageData, string oldUrl, CultureInfo cultureInfo,
-            SystemRedirectReason systemRedirectReason)
+            SystemRedirectReason systemRedirectReason, int priority)
         {
-            AddRedirects(pageData, oldUrl, systemRedirectReason);
-            HandleChildren(pageData, oldUrl, cultureInfo, systemRedirectReason);
+            AddRedirects(pageData, oldUrl, systemRedirectReason, priority);
+            HandleChildren(pageData, oldUrl, cultureInfo, systemRedirectReason, priority);
         }
 
-        private static void AddRedirects(PageData pageData, string oldUrl, SystemRedirectReason systemRedirectReason)
+        private static void AddRedirects(PageData pageData, string oldUrl, SystemRedirectReason systemRedirectReason, int priority)
         {
             if (!(pageData.Status == VersionStatus.PreviouslyPublished || pageData.Status == VersionStatus.Published))
                 return;
@@ -30,7 +30,8 @@ namespace Forte.EpiserverRedirects.System
                 pageData.ContentLink.ID,
                 RedirectType.Permanent,
                 RedirectRuleType.ExactMatch,
-                SystemRedirectsHelper.GetSystemRedirectReason(systemRedirectReason));
+                SystemRedirectsHelper.GetSystemRedirectReason(systemRedirectReason),
+                priority);
 
             var redirectRuleRepository = ServiceLocator.Current.GetInstance<IRedirectRuleRepository>();
 
@@ -38,27 +39,26 @@ namespace Forte.EpiserverRedirects.System
             {
                 redirectRuleRepository.Add(redirectRule);
             }
-            catch (ApplicationException) { }
+            catch (ApplicationException)
+            {
+            }
         }
 
         public static void DeleteRedirects(ContentReference deletedContent, IEnumerable<ContentReference> deletedDescendants)
         {
             var redirectRuleRepository = ServiceLocator.Current.GetInstance<IRedirectRuleRepository>();
-
             var deletedDescendantsIds = deletedDescendants.Select(x => x.ID).ToList();
-            
+
             // Episerver DDS doe not handle query with Contains and empty collection
             var redirectsToDelete = deletedDescendantsIds.Any()
-                
                 ? redirectRuleRepository
                     .GetAll()
                     .Where(x => deletedContent.ID == x.ContentId || (x.ContentId.HasValue && deletedDescendantsIds.Contains(x.ContentId.Value)))
                     .Select(x => x.Id.ExternalId)
                     .ToList()
-
                 : redirectRuleRepository
                     .GetAll()
-                    .Where(x => deletedContent.ID == x.ContentId )
+                    .Where(x => deletedContent.ID == x.ContentId)
                     .Select(x => x.Id.ExternalId)
                     .ToList();
 
@@ -68,20 +68,18 @@ namespace Forte.EpiserverRedirects.System
             }
         }
 
-        private static void HandleChildren(PageData data, string oldUrl, CultureInfo cultureInfo,
-            SystemRedirectReason systemRedirectReason)
+        private static void HandleChildren(PageData data, string oldUrl, CultureInfo cultureInfo, SystemRedirectReason systemRedirectReason, int priority)
         {
             var languageSelector = new LanguageSelector(cultureInfo.Name);
-            var pageDataCollection = DataFactory.Instance.GetChildren(data.PageLink, languageSelector);
+            var contentRepository = ServiceLocator.Current.GetInstance<IContentRepository>();
+            var pageDataCollection = contentRepository.GetChildren<PageData>(data.PageLink, languageSelector);
 
             foreach (var pageData in pageDataCollection)
             {
                 var oldChildUrl = SystemRedirectsHelper.Combine(oldUrl, pageData.URLSegment);
-                AddRedirects(pageData, oldChildUrl, systemRedirectReason);
-                HandleChildren(pageData, oldChildUrl, cultureInfo, systemRedirectReason);
+                AddRedirects(pageData, oldChildUrl, systemRedirectReason, priority);
+                HandleChildren(pageData, oldChildUrl, cultureInfo, systemRedirectReason, priority);
             }
         }
-
-
     }
 }

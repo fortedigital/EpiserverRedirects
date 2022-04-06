@@ -1,5 +1,4 @@
 using EPiServer;
-using Forte.EpiserverRedirects.Resolver;
 using Moq;
 
 namespace Forte.EpiserverRedirects.Tests.Builder.WithRepository.Resolver

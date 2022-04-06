@@ -2,24 +2,24 @@
 using EPiServer;
 using EPiServer.Framework.Cache;
 
-namespace Forte.EpiserverRedirects.System
+namespace Forte.EpiserverRedirects.Caching
 {
     internal class CacheRemover : ICacheRemover
     {
         public virtual void RemoveByRegion(string region) => CacheManager.Remove(region);
-        
+
         public virtual void Remove(string key)=> CacheManager.Remove(key);
     }
-    
-    internal class Cache<T> :CacheRemover,  ICache<T> where T : class
+
+    internal class Cache : CacheRemover, ICache
     {
-        public bool TryGet(string key, out T cachedItem)
+        public bool TryGet<T>(string key, out T cachedItem) where T : class
         {
             cachedItem = CacheManager.Get(key) as T;
             return cachedItem != null;
         }
 
-        public void Add(string key, T cachedItem, string region) => CacheManager.Insert(key, cachedItem, CreateCachePolicy(region));
+        public void Add<T>(string key, T cachedItem, string region) where T : class => CacheManager.Insert(key, cachedItem, CreateCachePolicy(region));
 
         private static CacheEvictionPolicy CreateCachePolicy(string region)
         {

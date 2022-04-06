@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Specialized;
-using System.Security.Principal;
 using System.Web;
-using System.Web.Mvc;
-using System.Web.Routing;
 using Moq;
 
 namespace Forte.EpiserverRedirects.Tests.Builder

@@ -1,4 +1,3 @@
-using System;
 using Forte.EpiserverRedirects.Tests.Builder.Redirect;
 using Moq;
 using Xunit;

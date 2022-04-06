@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using Forte.EpiserverRedirects.Model.RedirectRule;
-using Forte.EpiserverRedirects.Repository;
 using Forte.EpiserverRedirects.Tests.Data;
 using Forte.EpiserverRedirects.Tests.Repository;
 

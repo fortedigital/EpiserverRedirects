@@ -1,20 +1,21 @@
 ﻿using System;
-using System.Web.Mvc;
+using System.Threading.Tasks;
 using EPiServer.Shell.Services.Rest;
 using Forte.EpiserverRedirects.Model.RedirectRule;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace Forte.EpiserverRedirects.Menu
 {
     public class QueryModelBinder : IModelBinder
     {
-        public object BindModel(ControllerContext controllerContext, ModelBindingContext bindingContext)
+        public Task BindModelAsync(ModelBindingContext bindingContext)
         {
-            var request = controllerContext.HttpContext.Request;
-            var queryPropertiesDictionary = request.QueryString;
+            var request = bindingContext.HttpContext.Request;
+            var queryPropertiesDictionary = request.Query;
 
             try
             {
-                return new Query
+                var model = new Query
                 {
                     OldPattern = queryPropertiesDictionary["oldPattern"],
                     NewPattern = queryPropertiesDictionary["newPattern"],
@@ -31,12 +32,15 @@ namespace Forte.EpiserverRedirects.Menu
                     SortColumns = Parser.ParseSortColumns(queryPropertiesDictionary.ToString()),
                     Range = ItemRange.ReadHeaderFrom(request)
                 };
+
+                bindingContext.Result = ModelBindingResult.Success(model);
+
+                return Task.CompletedTask;
             }
             catch
             {
                 throw new Exception("Failed to parse query string from http request");
             }
         }
-
     }
 }

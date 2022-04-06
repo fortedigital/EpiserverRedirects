@@ -1,86 +1,52 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
-  <PropertyGroup>
-    <TargetFramework>net461</TargetFramework>
-    <RootNamespace>Forte.EpiserverRedirects</RootNamespace>
-    <AssemblyName>Forte.EpiserverRedirects</AssemblyName>
-    <PackageVersion>2.0.0</PackageVersion>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-  </PropertyGroup>
-
-  <PropertyGroup>
-    <DisableFastUpToDateCheck>true</DisableFastUpToDateCheck>
-  </PropertyGroup>
-
+    <PropertyGroup>
+        <TargetFramework>net5.0</TargetFramework>
+        <RootNamespace>Forte.EpiserverRedirects</RootNamespace>
+        <AssemblyName>Forte.EpiserverRedirects</AssemblyName>
+        <PackageVersion>3.0.0</PackageVersion>
+    </PropertyGroup>
+    <PropertyGroup>
+        <DisableFastUpToDateCheck>true</DisableFastUpToDateCheck>
+    </PropertyGroup>
     <ItemGroup>
-      <PackageReference Include="CsvHelper" Version="12.1.2" />
-      <PackageReference Include="EPiServer.CMS.UI.Core" Version="11.19.1" />
-      <PackageReference Include="EPiServer.Framework" Version="11.11.3" />
-      <PackageReference Include="Microsoft.Owin" Version="4.0.1" />
-      <PackageReference Include="Moment.js" Version="2.24.0" />
+        <PackageReference Include="CsvHelper" Version="27.2.1" />
+        <!-- TODO: Delete maybe? -->
+        <PackageReference Include="Moment.js" Version="2.29.2" />
     </ItemGroup>
-
-
-  <ItemGroup>
-    <Content Include="ClientResources\RedirectsComponent\RedirectsComponent.css" />
-    <Content Include="ClientResources\RedirectsComponent\RedirectsComponent.html" />
-    <Content Include="ClientResources\RedirectsComponent\RedirectsComponent.js" />
-    <Content Include="ClientResources\RedirectsComponent\RedirectsComponentGrid.js" />
-    <Content Include="ClientResources\RedirectsMenu\RootContainer.js" />
-    <Content Include="ClientResources\RedirectsMenu\RedirectsMenu.css" />
-    <Content Include="ClientResources\RedirectsMenu\RedirectsMenu.html" />
-    <Content Include="ClientResources\RedirectsMenu\RedirectsMenu.js" />
-    <Content Include="ClientResources\RedirectsMenu\RedirectsMenuForm\RedirectsMenuForm.html" />
-    <Content Include="ClientResources\RedirectsMenu\RedirectsMenuForm\RedirectsMenuForm.js" />
-    <Content Include="ClientResources\RedirectsMenu\RedirectsMenuGrid\RedirectsMenuGrid.css" />
-    <Content Include="ClientResources\RedirectsMenu\RedirectsMenuGrid\RedirectsMenuGrid.js" />
-    <Content Include="ClientResources\RedirectsMenu\RedirectsMenuViewModel.js" />
-    <Content Include="ClientResources\RedirectsModuleInitializer.js" />
-    <Content Include="module.config" />
-  </ItemGroup>
-
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup>
-    <ProjectDir Condition="'$(ProjectDir)' == ''">$(MSBuildProjectDirectory)</ProjectDir>
-    <SolutionDir Condition="'$(SolutionDir)' == ''">$(ProjectDir)</SolutionDir>
-    <!-- NOTE! This is different between cms versions, the zip file needs to be named the same in the package -->
-    <OutDir>$(OutputPath)</OutDir>
-        <zipFile>$(OutDir)\Forte.EpiserverRedirects.zip</zipFile>
-    <RunPostBuildEvent>Always</RunPostBuildEvent>
-  </PropertyGroup>
-  <Target Name="CreateNugetPackage" AfterTargets="Build;Rebuild" Condition="'$(Configuration)' == 'Release' ">
-    <Message Text="Creating Nuget Package" />
-    <!-- Create the Versioned out dir for the client resources-->
-    <!-- Copy -->
     <ItemGroup>
-      <ClientResources Include="$(ProjectDir)\ClientResources\**\*" />
+        <PackageReference Include="EPiServer.CMS.UI.Core" Version="[12.0.3,13.0)" />
+        <PackageReference Include="EPiServer.CMS.AspNetCore.Routing" Version="[12.0.3,13.0)" />
+        <PackageReference Include="EPiServer.Framework" Version="[12.0.3,13.0)" />
     </ItemGroup>
-    <Copy SourceFiles="$(ProjectDir)\module.config" DestinationFolder="$(TmpOutDir)\content" />
-    <Copy SourceFiles="@(ClientResources)" DestinationFiles="@(ClientResources -> '$(TmpOutDir)\content\ClientResources\%(RecursiveDir)%(Filename)%(Extension)')" />
-    <!-- Delete old Zip file -->
-    <Delete Files="$(zipFile)" />
-    <!-- Create the Zip file -->
-    <ZipDirectory SourceDirectory="$(TmpOutDir)\content" DestinationFile="$(zipFile)" Overwrite="true" />
-    <!-- Cleanup -->
-    <RemoveDir Directories="$(TmpOutDir)" />
-  </Target>
-  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="copy_module_ui.bat" />
-  </Target>
+    <ItemGroup>
+        <FrameworkReference Include="Microsoft.AspNetCore.App" />
+    </ItemGroup>
+    <PropertyGroup>
+        <OutputPath>bin\$(Configuration)</OutputPath>
+        <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    </PropertyGroup>
+    <PropertyGroup>
+        <ProjectDir Condition="'$(ProjectDir)' == ''">$(MSBuildProjectDirectory)</ProjectDir>
+        <SolutionDir Condition="'$(SolutionDir)' == ''">$(ProjectDir)</SolutionDir>
+        <TmpOutDir Condition="'$(TmpOutDir)' == ''">$(OutputPath)/temp</TmpOutDir>
+        <!-- NOTE! This is different between cms versions, the zip file needs to be named the same in the package -->
+        <ZipFile>$(OutputPath)\Forte.EpiserverRedirects.zip</ZipFile>
+        <RunPostBuildEvent>Always</RunPostBuildEvent>
+    </PropertyGroup>
+    <Target Name="CreateNugetPackage" AfterTargets="Build;Rebuild" Condition="'$(Configuration)' == 'Release' ">
+        <Message Text="Creating Nuget Package" />
+        <!-- Create the Versioned out dir for the client resources-->
+        <!-- Copy -->
+        <ItemGroup>
+            <ClientResources Include="$(ProjectDir)\ClientResources\**\*" />
+        </ItemGroup>
+        <Copy SourceFiles="$(ProjectDir)\module.config" DestinationFolder="$(TmpOutDir)\content" />
+        <Copy SourceFiles="@(ClientResources)" DestinationFiles="@(ClientResources -> '$(TmpOutDir)\content\ClientResources\%(RecursiveDir)%(Filename)%(Extension)')" />
+        <!-- Delete old Zip file -->
+        <Delete Files="$(ZipFile)" />
+        <!-- Create the Zip file -->
+        <ZipDirectory SourceDirectory="$(TmpOutDir)\content" DestinationFile="$(ZipFile)" Overwrite="true" />
+        <!-- Cleanup -->
+        <RemoveDir Directories="$(TmpOutDir)" />
+    </Target>
 </Project>

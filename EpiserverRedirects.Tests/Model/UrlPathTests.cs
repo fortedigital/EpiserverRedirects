@@ -1,5 +1,4 @@
-﻿using Forte.EpiserverRedirects.Model;
-using Xunit;
+﻿using Xunit;
 
 namespace Forte.EpiserverRedirects.Tests.Model
 {

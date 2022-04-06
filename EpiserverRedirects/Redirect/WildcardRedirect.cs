@@ -10,7 +10,7 @@ namespace Forte.EpiserverRedirects.Redirect
         {
         }
 
-        protected override string GetPathWithoutContentId(Uri request)
+        protected override string GetPathWithoutContentId(Uri request, bool shouldPreserveQueryString)
         {
             var newUrl = "   ";
 

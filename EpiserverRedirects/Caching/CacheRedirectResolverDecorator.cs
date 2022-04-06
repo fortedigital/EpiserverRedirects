@@ -3,19 +3,18 @@ using System.Threading.Tasks;
 using Forte.EpiserverRedirects.Model;
 using Forte.EpiserverRedirects.Redirect;
 using Forte.EpiserverRedirects.Resolver;
-using Forte.EpiserverRedirects.System;
 
-namespace Forte.EpiserverRedirects
+namespace Forte.EpiserverRedirects.Caching
 {
     public class CacheRedirectResolverDecorator : IRedirectRuleResolver
     {
         private readonly IRedirectRuleResolver _redirectRuleResolver;
-        private readonly ICache<IRedirect> _cache;
+        private readonly ICache _cache;
         public const string CacheRegionKey = "Forte.EpiserverRedirects.IRedirect";
 
         public CacheRedirectResolverDecorator(
             IRedirectRuleResolver redirectRuleResolver,
-            ICache<IRedirect> cache)
+            ICache cache)
         {
             _redirectRuleResolver = redirectRuleResolver ?? throw new ArgumentNullException(nameof(redirectRuleResolver));
             _cache = cache ?? throw new ArgumentNullException(nameof(cache));
@@ -24,7 +23,7 @@ namespace Forte.EpiserverRedirects
 
         public async Task<IRedirect> ResolveRedirectRuleAsync(UrlPath oldPath)
         {
-            if (_cache.TryGet(FormatCacheKey(oldPath), out var redirect))
+            if (_cache.TryGet<IRedirect>(FormatCacheKey(oldPath), out var redirect))
             {
                 return redirect;
             }

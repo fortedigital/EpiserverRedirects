@@ -1,6 +1,4 @@
 using System;
-using Forte.EpiserverRedirects.Mapper;
-using Forte.EpiserverRedirects.Model.RedirectRule;
 
 namespace Forte.EpiserverRedirects.Tests.Mapper
 {

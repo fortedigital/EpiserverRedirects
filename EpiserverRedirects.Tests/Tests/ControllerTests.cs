@@ -1,11 +1,8 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using Forte.EpiserverRedirects.Model.RedirectRule;
 using Forte.EpiserverRedirects.Tests.Builder.WithRepository;
 using Forte.EpiserverRedirects.Tests.Data;
-using Forte.EpiserverRedirects.Tests.RestExtensions;
 using Xunit;
 
 namespace Forte.EpiserverRedirects.Tests.Tests

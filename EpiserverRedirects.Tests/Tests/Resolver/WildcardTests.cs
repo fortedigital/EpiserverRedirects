@@ -1,5 +1,4 @@
-﻿using Forte.EpiserverRedirects.Model;
-using Forte.EpiserverRedirects.Tests.Builder.WithRepository.Resolver;
+﻿using Forte.EpiserverRedirects.Tests.Builder.WithRepository.Resolver;
 using Xunit;
 
 namespace Forte.EpiserverRedirects.Tests.Tests.Resolver

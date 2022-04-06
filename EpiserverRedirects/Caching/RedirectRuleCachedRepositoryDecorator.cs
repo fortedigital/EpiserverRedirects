@@ -1,18 +1,18 @@
 ﻿using System;
 using System.Linq;
 using Forte.EpiserverRedirects.Model.RedirectRule;
-using Forte.EpiserverRedirects.System;
+using Forte.EpiserverRedirects.Repository;
 
-namespace Forte.EpiserverRedirects.Repository
+namespace Forte.EpiserverRedirects.Caching
 {
     public class RedirectRuleCachedRepositoryDecorator : IRedirectRuleRepository
     {
         public const string CacheKey = "Forte.EpiserverRedirects.RedirectRuleList";
-        private readonly ICache<RedirectRule[]> _cache;
+        private readonly ICache _cache;
         private readonly IRedirectRuleRepository _redirectRuleRepository;
         private static readonly object Locker = new object();
         
-        public RedirectRuleCachedRepositoryDecorator(IRedirectRuleRepository redirectRuleRepository, ICache<RedirectRule[]> cache)
+        public RedirectRuleCachedRepositoryDecorator(IRedirectRuleRepository redirectRuleRepository, ICache cache)
         {
             _cache = cache;
             _redirectRuleRepository = redirectRuleRepository;
@@ -22,14 +22,14 @@ namespace Forte.EpiserverRedirects.Repository
 
         public IQueryable<RedirectRule> GetAll()
         {
-            if (_cache.TryGet(CacheKey, out var redirectRulesFirstAttempt))
+            if (_cache.TryGet<RedirectRule[]>(CacheKey, out var redirectRulesFirstAttempt))
             {
                 return redirectRulesFirstAttempt.AsQueryable();
             }
 
             lock(Locker)
             {
-                if (_cache.TryGet(CacheKey, out var redirectRules))
+                if (_cache.TryGet<RedirectRule[]>(CacheKey, out var redirectRules))
                 {
                     return redirectRules.AsQueryable();
                 }
