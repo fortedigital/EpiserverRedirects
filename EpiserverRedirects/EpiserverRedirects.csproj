@@ -17,7 +17,7 @@
       <PackageReference Include="EPiServer.CMS.UI.Core" Version="11.19.1" />
       <PackageReference Include="EPiServer.Framework" Version="11.11.3" />
       <PackageReference Include="Microsoft.Owin" Version="4.0.1" />
-      <PackageReference Include="Moment.js" Version="2.24.0" />
+      <PackageReference Include="Moment.js" Version="2.29.2" />
     </ItemGroup>
 
 
