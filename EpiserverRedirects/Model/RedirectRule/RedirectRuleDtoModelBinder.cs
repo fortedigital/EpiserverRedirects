@@ -11,9 +11,9 @@ namespace Forte.EpiserverRedirects.Model.RedirectRule
 {
     public class RedirectRuleDtoModelBinder : IModelBinder
     {
-        public Task BindModelAsync(ModelBindingContext bindingContext)
+        public async Task BindModelAsync(ModelBindingContext bindingContext)
         {
-            var jsonBody = GetBody(bindingContext.HttpContext.Request);
+            var jsonBody = await GetBody(bindingContext.HttpContext.Request);
             var redirectRuleDtoProperties = JsonConvert.DeserializeObject<Dictionary<string,string>>(jsonBody);
 
             try
@@ -36,7 +36,7 @@ namespace Forte.EpiserverRedirects.Model.RedirectRule
                 if (Validator.TryValidateObject(redirectRule, new ValidationContext(redirectRule), validationResult, true))
                 {
                     bindingContext.Result = ModelBindingResult.Success(redirectRule);
-                    return Task.CompletedTask;
+                    return;
                 }
 
                 foreach (var vr in validationResult)
@@ -45,7 +45,6 @@ namespace Forte.EpiserverRedirects.Model.RedirectRule
                 }
 
                 bindingContext.Result = ModelBindingResult.Failed();
-                return Task.CompletedTask;
             }
             catch
             {
@@ -53,15 +52,11 @@ namespace Forte.EpiserverRedirects.Model.RedirectRule
             }
         }
 
-        private static string GetBody(HttpRequest request)
+        private static async Task<string> GetBody(HttpRequest request)
         {
-            var inputStream = request.Body;
-            inputStream.Position = 0;
+            using var reader = new StreamReader(request.Body);
 
-            using var reader = new StreamReader(inputStream);
-            var body = reader.ReadToEnd();
-
-            return body;
+            return await reader.ReadToEndAsync();
         }
     }
 }

@@ -2,10 +2,10 @@
 {
     public class Constants
     {
-        public const string ModuleName = "Forte.EpiServerRedirects";
+        public const string ModuleName = "Forte.EpiserverRedirects";
 
-        public const string BaseRoutePath = "Forte.EpiServerRedirects";
+        public const string BaseRoutePath = "Forte.EpiserverRedirects";
 
-        public const string AppSettingsRootSectionName = "Forte.EpiServerRedirects";
+        public const string AppSettingsRootSectionName = "Forte.EpiserverRedirects";
     }
 }

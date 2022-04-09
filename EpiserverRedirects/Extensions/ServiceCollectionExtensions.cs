@@ -8,6 +8,7 @@ using Forte.EpiserverRedirects.Caching;
 using Forte.EpiserverRedirects.Configuration;
 using Forte.EpiserverRedirects.Events;
 using Forte.EpiserverRedirects.Extensions;
+using Forte.EpiserverRedirects.Import;
 using Forte.EpiserverRedirects.Mapper;
 using Forte.EpiserverRedirects.Repository;
 using Forte.EpiserverRedirects.Request;
@@ -27,6 +28,8 @@ namespace Microsoft.Extensions.DependencyInjection
 
             services.AddScoped<RequestHandler>();
             services.AddTransient<IRedirectRuleMapper, RedirectRuleMapper>();
+            services.AddTransient<RedirectsLoader>();
+            services.AddTransient<RedirectsImporter>();
 
             if (redirectsOptions.AddAutomaticRedirects)
             {

@@ -27,7 +27,7 @@ namespace Forte.EpiserverRedirects.Export
         }
 
         [HttpGet]
-        [Route(Constants.BaseRoutePath + "/Import")]
+        [Route(Constants.BaseRoutePath + "/Export")]
         public ActionResult Export()
         {
             var csvTemplateFileData = CreateExportFileData();
