@@ -17,11 +17,12 @@
 }
 
 .url-redirect-grid-container .dgrid .dgrid-scroller {
-    margin-top: 55px;
+    margin-top: 100px !important;
+    margin-bottom: 30px !important;
 }
 
 .url-redirect-grid-container .dgrid .dgrid-header {
-    height: 55px;
+    height: 100px !important;
 }
 
 .url-redirect-grid-container .dgrid .dijitTextBox {

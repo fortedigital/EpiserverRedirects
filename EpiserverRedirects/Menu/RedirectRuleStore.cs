@@ -26,22 +26,25 @@ namespace Forte.EpiserverRedirects.Menu
         {
             var redirect = _redirectRuleRepository.GetById(id);
 
-            if (redirect == null)
-                return null;
-            
-            return Rest(_redirectRuleMapper.ModelToDto(redirect));
+            return redirect == null ? null : Rest(_redirectRuleMapper.ModelToDto(redirect));
         }
-        
+
         [HttpGet]
         public ActionResult Get(Query query = null)
         {
             var redirects = _redirectRuleRepository
                 .GetAll()
                 .GetPageFromQuery(out var allRedirectsCount, query)
-                .Select(_redirectRuleMapper.ModelToDto);
-            
-            HttpContext.Response.Headers.Add("Content-Range", $"0/{allRedirectsCount}");
-            
+                .Select(_redirectRuleMapper.ModelToDto)
+                .ToList();
+
+            var itemRange = new ItemRange
+            {
+                Total = allRedirectsCount
+            };
+
+            itemRange.AddHeaderTo(HttpContext.Response);
+
             return Rest(redirects);
         }
 
@@ -50,14 +53,12 @@ namespace Forte.EpiserverRedirects.Menu
         {
             if (!ViewData.ModelState.IsValid)
                 return null;
-            
+
             var newRedirectRule = _redirectRuleMapper.DtoToModel(dto);
-
             newRedirectRule.FromManual();
-
             newRedirectRule = _redirectRuleRepository.Add(newRedirectRule);
-
             var newRedirectRuleDto = _redirectRuleMapper.ModelToDto(newRedirectRule);
+
             return Rest(newRedirectRuleDto);
         }
 
@@ -66,21 +67,21 @@ namespace Forte.EpiserverRedirects.Menu
         {
             if (!ViewData.ModelState.IsValid)
                 return null;
-            
+
             var updatedRedirectRule = _redirectRuleMapper.DtoToModel(dto);
             updatedRedirectRule = _redirectRuleRepository.Update(updatedRedirectRule);
-            
             var updatedRedirectRuleDto = _redirectRuleMapper.ModelToDto(updatedRedirectRule);
+
             return Rest(updatedRedirectRuleDto);
         }
-        
+
         [HttpDelete]
         public ActionResult Delete(Guid id)
         {
             var deletedSuccessfully = id == _clearAllGuid
                 ? _redirectRuleRepository.ClearAll()
                 : _redirectRuleRepository.Delete(id);
-            
+
             return deletedSuccessfully
                 ? Rest(HttpStatusCode.OK)
                 : Rest(HttpStatusCode.Conflict);

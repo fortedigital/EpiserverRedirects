@@ -29,7 +29,7 @@ namespace Forte.EpiserverRedirects.Menu
                     CreatedBy = queryPropertiesDictionary["createdBy"],
                     Notes = queryPropertiesDictionary["notes"],
                     Priority = Parser.ParsePriorityNullable(queryPropertiesDictionary["priority"]),
-                    SortColumns = Parser.ParseSortColumns(queryPropertiesDictionary.ToString()),
+                    SortColumns = Parser.ParseSortColumns(request.QueryString.Value),
                     Range = ItemRange.ReadHeaderFrom(request)
                 };
 
