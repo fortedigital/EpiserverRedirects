@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using EPiServer.Data;
+using Forte.EpiserverRedirects.Model.RedirectRule;
+using Forte.EpiserverRedirects.Repository;
 
 namespace Forte.EpiserverRedirects.Tests.Repository
 {

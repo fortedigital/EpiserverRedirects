@@ -1,8 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
+using Forte.EpiserverRedirects.Model.RedirectRule;
 using Forte.EpiserverRedirects.Tests.Builder.WithRepository;
 using Forte.EpiserverRedirects.Tests.Data;
+using Forte.EpiserverRedirects.Tests.RestExtensions;
 using Xunit;
 
 namespace Forte.EpiserverRedirects.Tests.Tests
@@ -29,6 +32,7 @@ namespace Forte.EpiserverRedirects.Tests.Tests
                 .WithMapper(r => r == rule1 ? dto1 : r == rule2 ? dto2 : null)
                 .WithHttpResponseHeaders()
                 .Create();
+
             var resolvedRules = restController
                 .Get()
                 .GetEntitiesFromActionResult();

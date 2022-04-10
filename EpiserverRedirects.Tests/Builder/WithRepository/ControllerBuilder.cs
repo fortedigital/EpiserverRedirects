@@ -1,6 +1,9 @@
 using System;
-using System.Web.Mvc;
-using Forte.EpiserverRedirects.Tests.Mapper;
+using Forte.EpiserverRedirects.Configuration;
+using Forte.EpiserverRedirects.Mapper;
+using Forte.EpiserverRedirects.Menu;
+using Forte.EpiserverRedirects.Model.RedirectRule;
+using Microsoft.AspNetCore.Mvc;
 using Moq;
 
 namespace Forte.EpiserverRedirects.Tests.Builder.WithRepository
@@ -9,12 +12,16 @@ namespace Forte.EpiserverRedirects.Tests.Builder.WithRepository
     {
         protected override ControllerBuilder ThisBuilder => this;
 
-        private IRedirectRuleMapper _redirectRuleMapper = new RedirectRuleMapper();
+        private IRedirectRuleMapper _redirectRuleMapper = new RedirectRuleMapper(new RedirectsOptions { DefaultRedirectRulePriority = 100 });
         private readonly Mock<ControllerContext> _controllerContext = new Mock<ControllerContext>();
 
         public ControllerBuilder WithMapper(Func<RedirectRule, RedirectRuleDto> mapper)
         {
-            _redirectRuleMapper = new RedirectRuleTestMapper(mapper);
+            var mock = new Mock<IRedirectRuleMapper>();
+
+            mock.Setup(ruleMapper => ruleMapper.ModelToDto(It.IsAny<RedirectRule>())).Returns(mapper);
+
+            _redirectRuleMapper = mock.Object;
             return this;
         }
         
@@ -25,7 +32,8 @@ namespace Forte.EpiserverRedirects.Tests.Builder.WithRepository
                 .WithResponse()
                 .WithResponseHeaders()
                 .Build();
-            _controllerContext.Setup(cc => cc.HttpContext).Returns(httpContext);
+
+            _controllerContext.Object.HttpContext = httpContext;
 
             return this;
         }

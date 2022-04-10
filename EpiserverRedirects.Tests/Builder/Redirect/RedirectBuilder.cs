@@ -1,6 +1,9 @@
 using System;
 using EPiServer.Core;
 using EPiServer.Web.Routing;
+using Forte.EpiserverRedirects.Model.RedirectRule;
+using Forte.EpiserverRedirects.Redirect;
+using Forte.EpiserverRedirects.Request;
 using Moq;
 
 namespace Forte.EpiserverRedirects.Tests.Builder.Redirect
@@ -11,27 +14,15 @@ namespace Forte.EpiserverRedirects.Tests.Builder.Redirect
         private readonly RedirectRule _redirectRule = new RedirectRule();
         internal RedirectBuilder() { }
 
-        public RedirectBuilder WithHttp_1_0_ResponseStatusCodeResolver(out IResponseStatusCodeResolver responseStatusCodeResolver)
-        {
-            responseStatusCodeResolver = new Http_1_0_ResponseStatusCodeResolver();
-            return this;
-        }
-        
-        public RedirectBuilder WithHttp_1_1_ResponseStatusCodeResolver(out IResponseStatusCodeResolver responseStatusCodeResolver)
-        {
-            responseStatusCodeResolver = new Http_1_1_ResponseStatusCodeResolver();
-            return this;
-        }
-        
         public RedirectBuilder WithHttpRequest(out Uri request, string requestPath)
         {
             request = HttpRequest(requestPath);
             return this;
         }
         
-        public RedirectBuilder WithHttpResponseMock(out Mock<IHttpResponse> httpResponseMock)
+        public RedirectBuilder WithHttpResponseMock(out Mock<IRedirectHttpResponse> httpResponseMock)
         {
-            httpResponseMock = new Mock<IHttpResponse>();
+            httpResponseMock = new Mock<IRedirectHttpResponse>();
             return this;
         }
         

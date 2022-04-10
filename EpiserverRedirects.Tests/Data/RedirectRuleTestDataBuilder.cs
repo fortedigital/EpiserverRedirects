@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Forte.EpiserverRedirects.Model;
+using Forte.EpiserverRedirects.Model.RedirectRule;
 
 namespace Forte.EpiserverRedirects.Tests.Data
 {
