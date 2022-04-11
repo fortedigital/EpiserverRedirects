@@ -71,18 +71,6 @@ namespace Forte.EpiserverRedirects.Tests.Builder.Redirect
             return this;
         }
         
-        public RedirectBuilder WithWildcardRedirectRule(out RedirectRule redirectRule, string oldPattern, string newPattern)
-        {
-            _redirectRule.RedirectRuleType = RedirectRuleType.Wildcard;
-            _redirectRule.OldPattern = oldPattern;
-            _redirectRule.NewPattern = newPattern;
-
-            redirectRule = _redirectRule;
-
-            _redirect = new WildcardRedirect(_redirectRule);
-            return this;
-        }
-        
         public IRedirect Create() => _redirect;
     }
 }

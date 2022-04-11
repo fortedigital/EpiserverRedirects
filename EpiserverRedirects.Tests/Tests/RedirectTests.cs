@@ -9,7 +9,7 @@ namespace Forte.EpiserverRedirects.Tests.Tests
         private static RedirectBuilder Redirect() => new RedirectBuilder();
 
         [Fact]
-        public async void Given_ContentIdRedirectRule_ToRedirectResult_ReturnsCorrectResult()
+        public void Given_ContentIdRedirectRule_ToRedirectResult_ReturnsCorrectResult()
         {
             var contentRedirect = Redirect()
                 .WithContentRedirectRule(out var redirectRule)
@@ -24,7 +24,7 @@ namespace Forte.EpiserverRedirects.Tests.Tests
         }
         
         [Fact]
-        public async void Given_ExactMatchRedirectRule_ToRedirectResult_ReturnsCorrectResult()
+        public void Given_ExactMatchRedirectRule_ToRedirectResult_ReturnsCorrectResult()
         {
             var exactMatchRedirect = Redirect()
                 .WithExactMatchRedirectRule(out var redirectRule, "newUrl")
@@ -39,7 +39,7 @@ namespace Forte.EpiserverRedirects.Tests.Tests
         }
         
         [Fact]
-        public async void Given_RegexRedirectRule_ToRedirectResult_ReturnsCorrectResult()
+        public void Given_RegexRedirectRule_ToRedirectResult_ReturnsCorrectResult()
         {
             var regexRedirect = Redirect()
                 .WithRegexRedirectRule(out var redirectRule, "(oldPattern)", "newPattern/$1")
