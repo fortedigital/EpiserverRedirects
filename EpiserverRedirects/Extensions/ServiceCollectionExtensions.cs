@@ -23,9 +23,23 @@ namespace Microsoft.Extensions.DependencyInjection
         public static IServiceCollection AddEpiserverRedirects(this IServiceCollection services, IConfiguration configuration)
         {
             var redirectsOptions = configuration.GetSection<RedirectsOptions>(Constants.AppSettingsRootSectionName);
+
+            return AddEpiserverRedirectsInternal(services, redirectsOptions);
+        }
+
+        public static IServiceCollection AddEpiserverRedirects(this IServiceCollection services, Action<RedirectsOptions> configureAction)
+        {
+            var redirectsOptions = new RedirectsOptions();
+
+            configureAction?.Invoke(redirectsOptions);
+
+            return AddEpiserverRedirectsInternal(services, redirectsOptions);
+        }
+
+        private static IServiceCollection AddEpiserverRedirectsInternal(IServiceCollection services, RedirectsOptions redirectsOptions)
+        {
             services.AddSingleton(redirectsOptions);
             services.AddSingleton(redirectsOptions.Caching);
-
             services.AddScoped<RequestHandler>();
             services.AddTransient<IRedirectRuleMapper, RedirectRuleMapper>();
             services.AddTransient<RedirectsLoader>();
@@ -45,7 +59,6 @@ namespace Microsoft.Extensions.DependencyInjection
 
             if (redirectsOptions.Caching.AllRedirectsCacheEnabled)
             {
-
                 services.AddTransient<IRedirectRuleRepository>(
                     provider => new RedirectRuleCachedRepositoryDecorator(
                         new DynamicDataStoreRepository(provider.GetService<DynamicDataStoreFactory>()),

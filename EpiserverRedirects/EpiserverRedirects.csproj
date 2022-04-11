@@ -10,8 +10,6 @@
     </PropertyGroup>
     <ItemGroup>
         <PackageReference Include="CsvHelper" Version="27.2.1" />
-        <!-- TODO: Delete maybe? -->
-        <PackageReference Include="Moment.js" Version="2.29.2" />
     </ItemGroup>
     <ItemGroup>
         <PackageReference Include="EPiServer.CMS.UI.Core" Version="[12.0.3,13.0)" />
