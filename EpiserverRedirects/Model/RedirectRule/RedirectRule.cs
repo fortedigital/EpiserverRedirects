@@ -5,7 +5,7 @@ using EPiServer.Security;
 
 namespace Forte.EpiserverRedirects.Model.RedirectRule
 {
-    public enum RedirectRuleType { ExactMatch = 1, Regex = 2, Wildcard = 3 }
+    public enum RedirectRuleType { ExactMatch = 1, Regex = 2 }
     public enum RedirectType { Permanent = 1, Temporary = 2 }
     public enum RedirectOrigin { System = 1, Manual = 2, Import = 3 }
 

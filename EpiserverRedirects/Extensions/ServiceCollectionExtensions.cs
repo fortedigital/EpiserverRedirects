@@ -7,37 +7,24 @@ using EPiServer.Shell.Modules;
 using Forte.EpiserverRedirects.Caching;
 using Forte.EpiserverRedirects.Configuration;
 using Forte.EpiserverRedirects.Events;
-using Forte.EpiserverRedirects.Extensions;
 using Forte.EpiserverRedirects.Import;
 using Forte.EpiserverRedirects.Mapper;
 using Forte.EpiserverRedirects.Repository;
 using Forte.EpiserverRedirects.Request;
 using Forte.EpiserverRedirects.Resolver;
-using Microsoft.Extensions.Configuration;
+using Forte.EpiserverRedirects.System;
 
 // ReSharper disable once CheckNamespace
 namespace Microsoft.Extensions.DependencyInjection
 {
     public static class ServiceCollectionExtensions
     {
-        public static IServiceCollection AddEpiserverRedirects(this IServiceCollection services, IConfiguration configuration)
-        {
-            var redirectsOptions = configuration.GetSection<RedirectsOptions>(Constants.AppSettingsRootSectionName);
-
-            return AddEpiserverRedirectsInternal(services, redirectsOptions);
-        }
-
-        public static IServiceCollection AddEpiserverRedirects(this IServiceCollection services, Action<RedirectsOptions> configureAction)
+        public static IServiceCollection AddEpiserverRedirects(this IServiceCollection services, Action<RedirectsOptions> configureAction = null)
         {
             var redirectsOptions = new RedirectsOptions();
 
             configureAction?.Invoke(redirectsOptions);
 
-            return AddEpiserverRedirectsInternal(services, redirectsOptions);
-        }
-
-        private static IServiceCollection AddEpiserverRedirectsInternal(IServiceCollection services, RedirectsOptions redirectsOptions)
-        {
             services.AddSingleton(redirectsOptions);
             services.AddSingleton(redirectsOptions.Caching);
             services.AddScoped<RequestHandler>();
@@ -48,6 +35,7 @@ namespace Microsoft.Extensions.DependencyInjection
             if (redirectsOptions.AddAutomaticRedirects)
             {
                 services.AddSingleton<AutomaticRedirectsEventsRegistry>();
+                services.AddTransient<SystemRedirectsActions>();
             }
 
             if (redirectsOptions.Caching.AllRedirectsCacheEnabled || redirectsOptions.Caching.UrlRedirectCacheEnabled)
@@ -90,6 +78,8 @@ namespace Microsoft.Extensions.DependencyInjection
                             });
                     }
                 });
+
+            EventsHandlersScopeConfiguration.IsAutomaticRedirectsDisabled = redirectsOptions.AddAutomaticRedirects == false;
 
             return services;
         }

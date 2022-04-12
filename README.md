@@ -19,49 +19,27 @@ Basic installation scenario
 1. The package can be found in the official NuGet repository.
    ```Install-Package Forte.EpiserverRedirects```
 
+2. Register services in your Startup class and provide an optional configure action:
 
-2. Register services in your Startup class:
-
-   a) by providing `Microsoft.Extensions.Configuration.IConfiguration` object:
-
-    ```c#
-    services.AddEpiserverRedirects(_configuration);
-    ```
-
-   b) by providing configure action:
-
-    ```c#
+```c#
+public void ConfigureServices(IServiceCollection services)
+{
+    // (...)
     services.AddEpiserverRedirects(options => ...);
-    ```
+    // (...)
+}
+```
 
 3. Configure the application in your Startup class:
 
 ```c#
-app.UseEpiserverRedirects();
+public void Configure(IApplicationBuilder app)
+{
+    // (...)
+    app.UseEpiserverRedirects();
+    // (...)
+}
 ```
-
-Configuration
--------------
-
-When using the first method of registering services, you can change options using your configuration provider.
-
-An example for `appsettings.json`:
-
- ```json
- {
-   "Forte.EpiserverRedirects": {
-     "Caching": {
-       "UrlRedirectCacheEnabled": false,
-       "AllRedirectsCacheEnabled": false
-     },
-     "PreserveQueryString": false,
-     "AddAutomaticRedirects": true,
-     "SystemRedirectRulePriority": 100,
-     "DefaultRedirectRulePriority": 100
-   }
- }
- ```
-
 
 Cache
 -------------
@@ -70,7 +48,21 @@ The default EPiServer mechanism is used to manage cache and enable it to work in
 1. **Cache all redirect entries**
 2. **Cache redirect response for given URL**
 
-Caching is disabled by default. You can change this through the configuration (see the previous section).
+Caching is disabled by default. You can change this through the configuration.
+
+Automatic redirects
+------------
+
+Creating automatic redirects on various content events is enabled by default. You can disable it globally through the configuration.
+
+There is also a possibility to temporarily disable this functionality by using `DisabledAutomaticRedirectsScope`:
+
+```c#
+using (new DisabledAutomaticRedirectsScope())
+{
+    // (...)
+}
+```
 
 Manage Redirections
 ------------

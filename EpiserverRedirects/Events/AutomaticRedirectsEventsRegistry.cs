@@ -17,16 +17,18 @@ namespace Forte.EpiserverRedirects.Events
         private readonly IContentRepository _contentRepository;
         private readonly IContentVersionRepository _contentVersionRepository;
         private readonly ILanguageBranchRepository _languageBranchRepository;
+        private readonly SystemRedirectsActions _systemRedirectsActions;
         private readonly UrlResolver _urlResolver;
         private readonly RedirectsOptions _redirectsOptions;
 
         public AutomaticRedirectsEventsRegistry(IContentEvents contentEvents, IContentRepository contentRepository, IContentVersionRepository contentVersionRepository,
-            ILanguageBranchRepository languageBranchRepository, UrlResolver urlResolver, RedirectsOptions redirectsOptions)
+            ILanguageBranchRepository languageBranchRepository, SystemRedirectsActions systemRedirectsActions, UrlResolver urlResolver, RedirectsOptions redirectsOptions)
         {
             _contentEvents = contentEvents;
             _contentRepository = contentRepository;
             _contentVersionRepository = contentVersionRepository;
             _languageBranchRepository = languageBranchRepository;
+            _systemRedirectsActions = systemRedirectsActions;
             _urlResolver = urlResolver;
             _redirectsOptions = redirectsOptions;
         }
@@ -42,6 +44,9 @@ namespace Forte.EpiserverRedirects.Events
 
         private void MovedContentHandler(object sender, ContentEventArgs e)
         {
+            if (EventsHandlersScopeConfiguration.IsAutomaticRedirectsDisabled)
+                return;
+
             if (!(e.Content is IChangeTrackable))
                 return;
 
@@ -62,7 +67,7 @@ namespace Forte.EpiserverRedirects.Events
                 if (oldUrl == null)
                     continue;
 
-                SystemRedirectsActions.AddRedirects(
+                _systemRedirectsActions.AddRedirects(
                     pageData,
                     oldUrl + pageData.URLSegment,
                     language.Culture,
@@ -73,6 +78,9 @@ namespace Forte.EpiserverRedirects.Events
 
         private void PublishedContentHandler(object sender, ContentEventArgs e)
         {
+            if (EventsHandlersScopeConfiguration.IsAutomaticRedirectsDisabled)
+                return;
+
             var lastVersion = _contentVersionRepository
                 .List(e.ContentLink, e.Content.LanguageBranch())
                 .Where(p => p.Status == VersionStatus.PreviouslyPublished)
@@ -97,7 +105,7 @@ namespace Forte.EpiserverRedirects.Events
             if (lastVersionPageData == null)
                 return;
 
-            SystemRedirectsActions.AddRedirects(
+            _systemRedirectsActions.AddRedirects(
                 lastVersionPageData,
                 oldUrl,
                 SystemRedirectsHelper.GetCultureInfo(e),
@@ -107,6 +115,9 @@ namespace Forte.EpiserverRedirects.Events
 
         private void SavingContentHandler(object sender, ContentEventArgs e)
         {
+            if (EventsHandlersScopeConfiguration.IsAutomaticRedirectsDisabled)
+                return;
+
             var transition = ((SaveContentEventArgs) e).Transition;
 
             if (transition.CurrentStatus == VersionStatus.NotCreated) return;
@@ -124,6 +135,9 @@ namespace Forte.EpiserverRedirects.Events
 
         private void SavedContentHandler(object sender, ContentEventArgs e)
         {
+            if (EventsHandlersScopeConfiguration.IsAutomaticRedirectsDisabled)
+                return;
+
             var oldUrl = e.Items[OldUrlKey]?.ToString();
 
             if (oldUrl == null)
@@ -135,7 +149,7 @@ namespace Forte.EpiserverRedirects.Events
             {
                 var pageData = _contentRepository.Get<IContentData>(e.ContentLink) as PageData;
 
-                SystemRedirectsActions.AddRedirects(
+                _systemRedirectsActions.AddRedirects(
                     pageData,
                     oldUrl,
                     SystemRedirectsHelper.GetCultureInfo(e),
@@ -146,9 +160,12 @@ namespace Forte.EpiserverRedirects.Events
             e.Items.Remove(OldUrlKey);
         }
 
-        private static void DeletedContentHandler(object sender, ContentEventArgs e)
+        private void DeletedContentHandler(object sender, ContentEventArgs e)
         {
-            SystemRedirectsActions.DeleteRedirects(e.ContentLink, ((DeleteContentEventArgs) e).DeletedDescendents);
+            if (EventsHandlersScopeConfiguration.IsAutomaticRedirectsDisabled)
+                return;
+
+            _systemRedirectsActions.DeleteRedirects(e.ContentLink, ((DeleteContentEventArgs) e).DeletedDescendents);
         }
 
         private string GetContentUrl(ContentReference contentReference, string language, bool validateTemplate = true)
