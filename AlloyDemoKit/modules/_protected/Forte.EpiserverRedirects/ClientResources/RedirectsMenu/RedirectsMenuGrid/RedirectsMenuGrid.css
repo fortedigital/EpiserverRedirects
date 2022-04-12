@@ -1,0 +1,62 @@
+﻿
+.dgrid {
+    height: 100%;
+}
+
+.dgrid .dgrid-row-table {
+    background-color: inherit;
+    margin: 0;
+}
+
+.dgrid-spacer-row {
+    display: none;
+}
+
+.dgrid .dgrid-selected {
+    background: #c7d500 !important;
+}
+
+.url-redirect-grid-container .dgrid .dgrid-scroller {
+    margin-top: 55px;
+}
+
+.url-redirect-grid-container .dgrid .dgrid-header {
+    height: 55px;
+}
+
+.url-redirect-grid-container .dgrid .dijitTextBox {
+    margin: 0;
+    width: 100%;
+}
+
+.url-redirect-grid-container .dgrid .dgrid-column-0-0 {
+    padding: 3px !important;
+}
+
+.url-redirect-grid-container .dgrid .dgrid-column-0-1 {
+    padding: 3px !important;
+}
+
+.url-redirect-grid-container .dgrid .dgrid-column-0-2 {
+    padding: 3px !important;
+}
+
+.url-redirect-grid-container .dgrid .dgrid-column-0-3 {
+    padding: 3px !important;
+}
+
+.url-redirect-grid-container .dgrid .dgrid-column-0-4 {
+    padding: 3px !important;
+}
+
+.url-redirect-grid-container .dgrid .dijitSelect {
+    width: 100%;
+    margin: 0;
+}
+
+.url-redirect-grid-container .dgrid .epi-gadgetInnerToolbar {
+    background: inherit;
+    padding: 0;
+}
+
+

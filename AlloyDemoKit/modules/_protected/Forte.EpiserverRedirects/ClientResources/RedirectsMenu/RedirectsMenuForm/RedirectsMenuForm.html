@@ -1,0 +1,106 @@
+﻿<div>
+    <div class="epi-formArea">
+        <div class="epi-size10">
+            <div class="epi-form-container__section__row">
+                <label for="oldPattern">Old pattern:</label>
+                <input class="form-input" type="text" name="oldUrl"
+                       required="true"
+                       data-dojo-props="intermediateChanges:true"
+                       data-dojo-type="dijit/form/ValidationTextBox"
+                       data-dojo-attach-point="oldPatternTextBox" id="oldPattern" />
+            </div>
+
+            <div class="epi-form-container__section__row">
+                <label for="newPattern">New pattern:</label>
+                <input class="form-input" type="text" name="newUrl"
+                       data-dojo-props="intermediateChanges:true"
+                       data-dojo-type="dijit/form/ValidationTextBox"
+                       data-dojo-attach-point="newPatternTextBox" id="newPattern" />
+            </div>
+
+            <div class="epi-form-container__section__row">
+                <label for="contentId">Content Id:</label>
+                <input class="form-input" type="number" name="contentId"
+                       min="1" max="2147483647"
+                       data-dojo-props="intermediateChanges:true,constraints:{min:1,max:2147483647,places:0},"
+                       data-dojo-type="dijit/form/NumberTextBox"
+                       data-dojo-attach-point="contentIdTextBox" id="contentId" />
+            </div>
+
+            <div class="epi-form-container__section__row">
+                <label for="redirectRuleType">Redirect Rule type:</label>
+                <select class="form-input" name="redirectRuleTypeSelect"
+                        data-dojo-attach-point="redirectRuleTypeSelect"
+                        data-dojo-type="dijit/form/Select">
+                    <option value=1 selected = "selected">ExactMatch</option>
+                    <option value=2>Regex</option>
+<!--                    <option value=3>Wildcard</option>-->
+                </select>
+            </div>
+
+            <div class="epi-form-container__section__row">
+                <label for="redirectType">Redirect type:</label>
+                <select class="form-input" name="redirectTypeSelect"
+                        data-dojo-attach-point="redirectTypeSelect"
+                        data-dojo-type="dijit/form/Select">
+                    <option value="1" selected = "selected">Permanent</option>
+                    <option value="2">Temporary</option>
+                </select>
+            </div>
+            
+            <div class="epi-form-container__section__row">
+                <label for="priority">Priority:</label>
+                <input class="form-input" type="number" name="priority"
+                       required
+                       min="1" max="2147483647"
+                       data-dojo-props="intermediateChanges:true,constraints:{min:1,max:2147483647,places:0},"
+                       data-dojo-type="dijit/form/NumberTextBox"
+                       data-dojo-attach-point="priorityTextBox" id="priority" />
+            </div>
+
+            <div class="epi-form-container__section__row">
+                <label for="isActive">Is active:</label>
+                <select class="form-input" name="isActiveSelect"
+                        data-dojo-attach-point="isActiveSelect"
+                        data-dojo-type="dijit/form/Select">
+                    <option value=true selected = "selected">Active</option>
+                    <option value=false>Not active</option>
+                </select>
+            </div>
+
+            <div id ="createdOnInputDiv" class="epi-form-container__section__row">
+                <label for="createdOn">Created on:</label>
+                <input class="form-input" name="createdOn"
+                          data-dojo-attach-point="createdOnTextBox"
+                          data-dojo-type="dijit/form/TextBox">
+                </input>
+            </div>
+
+            <div id ="createdByInputDiv" class="epi-form-container__section__row">
+                <label for="createdBy">Created by:</label>
+                <input class="form-input" name="createdBy"
+                          data-dojo-attach-point="createdByTextBox"
+                          data-dojo-type="dijit/form/TextBox">
+                </input>
+            </div>
+            
+            <div class="epi-form-container__section__row">
+                <label for="notes">Notes:</label>
+                <textarea class="form-input" name="notes"
+                        data-dojo-attach-point="notesTextarea"
+                        data-dojo-type="dijit/form/Textarea">
+                </textarea>
+            </div>
+
+            <div data-dojo-attach-point="duplicateAlert" class="alert-danger">
+                <span>Unable to save because of duplicate old url</span>
+            </div>
+
+        </div>
+        <div class="epi-buttonContainer">
+            <button class="Salt" data-dojo-type="dijit/form/Button" data-dojo-attach-point="saveButton" type="button">Save</button>
+            <button data-dojo-type="dijit/form/Button" data-dojo-attach-point="deleteButton" type="button">Delete</button>
+            <button data-dojo-type="dijit/form/Button" data-dojo-attach-point="cancelButton" type="button">Cancel</button>
+        </div>
+    </div>
+</div>
