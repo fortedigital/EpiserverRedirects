@@ -13,9 +13,9 @@ using Forte.EpiserverRedirects.Repository;
 using Forte.EpiserverRedirects.Request;
 using Forte.EpiserverRedirects.Resolver;
 using Forte.EpiserverRedirects.System;
+using Microsoft.Extensions.DependencyInjection;
 
-// ReSharper disable once CheckNamespace
-namespace Microsoft.Extensions.DependencyInjection
+namespace Forte.EpiserverRedirects.Extensions
 {
     public static class ServiceCollectionExtensions
     {

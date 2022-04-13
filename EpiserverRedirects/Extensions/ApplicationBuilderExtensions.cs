@@ -3,10 +3,10 @@ using Forte.EpiserverRedirects.Configuration;
 using Forte.EpiserverRedirects.Events;
 using Forte.EpiserverRedirects.Middleware;
 using Forte.EpiserverRedirects.Repository;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 
-// ReSharper disable once CheckNamespace
-namespace Microsoft.AspNetCore.Builder
+namespace Forte.EpiserverRedirects.Extensions
 {
     public static class ApplicationBuilderExtensions
     {
