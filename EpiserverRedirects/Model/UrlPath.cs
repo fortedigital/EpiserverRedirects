@@ -95,7 +95,9 @@ namespace Forte.EpiserverRedirects.Model
                 : '/' + path;
 
             if (path.Length > 1)
+            {
                 path = path.TrimEnd('/');
+            }
 
             return path;
         }
@@ -117,27 +119,51 @@ namespace Forte.EpiserverRedirects.Model
 
         private bool Equals(UrlPath other, StringComparison stringComparison)
         {
-            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(null, other))
+            {
+                return false;
+            }
 
-            if (ReferenceEquals(this, other)) return true;
+            if (ReferenceEquals(this, other))
+            {
+                return true;
+            }
 
             return string.Equals(Path.OriginalString, other.Path.OriginalString, stringComparison);
         }
 
         public bool Equals(UrlPath other)
         {
-            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(null, other))
+            {
+                return false;
+            }
 
-            if (ReferenceEquals(this, other)) return true;
+            if (ReferenceEquals(this, other))
+            {
+                return true;
+            }
 
             return string.Equals(Path.OriginalString, other.Path.OriginalString, StringComparison.Ordinal);
         }
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != GetType()) return false;
+            if (ReferenceEquals(null, obj))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+
+            if (obj.GetType() != GetType())
+            {
+                return false;
+            }
+
             return Equals((UrlPath) obj);
         }
         

@@ -15,7 +15,9 @@ namespace Forte.EpiserverRedirects.Model.RedirectRule
         public static RedirectType? ParseRedirectTypeNullable(string value)
         {
             if(string.IsNullOrEmpty(value) || value == "0")
+            {
                 return null;
+            }
 
             Enum.TryParse<RedirectType>(value, out var redirectType);
             return redirectType;
@@ -30,7 +32,9 @@ namespace Forte.EpiserverRedirects.Model.RedirectRule
         public static RedirectRuleType? ParseRedirectRuleTypeNullable(string value)
         {
             if(string.IsNullOrEmpty(value) || value == "0")
+            {
                 return null;
+            }
 
             Enum.TryParse<RedirectRuleType>(value, out var redirectRuleType);
             return redirectRuleType;
@@ -39,10 +43,15 @@ namespace Forte.EpiserverRedirects.Model.RedirectRule
         public static Guid? ParseIdentity(Dictionary<string, string> redirectRuleDtoProperties)
         {
             if (!redirectRuleDtoProperties.TryGetValue("id", out var guidString))
+            {
                 return null;
-            
+            }
+
             if(Guid.TryParse(guidString, out var guid))
+            {
                 return guid;
+            }
+
             return null;
         }
 
@@ -62,21 +71,30 @@ namespace Forte.EpiserverRedirects.Model.RedirectRule
         public static bool? ParseNullableBoolean(string value)
         {
             if (bool.TryParse(value, out var isActive))
+            {
                 return isActive;
+            }
+
             return null;
         }
 
         public static DateTime? ParseCreatedOnFrom(string value)
         {
             if(DateTime.TryParse(value, out var createdOnFrom))
+            {
                 return createdOnFrom.ToUniversalTime();
+            }
+
             return null;
         }
 
         public static DateTime? ParseCreatedOnTo(string value)
         {
             if(DateTime.TryParse(value, out var createdOnTo))
+            {
                 return createdOnTo.ToUniversalTime();
+            }
+
             return null;
         }
 
@@ -96,7 +114,9 @@ namespace Forte.EpiserverRedirects.Model.RedirectRule
         public static RedirectOrigin? ParseRedirectOriginNullable(string value)
         {
             if(string.IsNullOrEmpty(value) || value == "0")
+            {
                 return null;
+            }
 
             Enum.TryParse<RedirectOrigin>(value, out var redirectOrigin);
             return redirectOrigin;

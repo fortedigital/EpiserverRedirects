@@ -71,7 +71,9 @@ namespace Forte.EpiserverRedirects.Export
         private static byte[] ReadAllBytes(Stream stream)
         {
             if (stream is MemoryStream memoryStream)
+            {
                 return memoryStream.ToArray();
+            }
 
             using (var newMemoryStream = new MemoryStream())
             {

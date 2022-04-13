@@ -23,7 +23,10 @@ namespace Forte.EpiserverRedirects.Resolver
                 return new NullRedirectRule();
             }
 
-            if (!rule.ContentId.HasValue) return constructRedirect(rule);
+            if (!rule.ContentId.HasValue)
+            {
+                return constructRedirect(rule);
+            }
 
             if (!_contentLoader.TryGet<PageData>(new ContentReference(rule.ContentId.Value), out var content))
             {

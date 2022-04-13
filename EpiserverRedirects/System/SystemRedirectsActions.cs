@@ -12,10 +12,10 @@ namespace Forte.EpiserverRedirects.System
 {
     public class SystemRedirectsActions
     {
-        private readonly IContentRepository _contentRepository;
+        private readonly IContentLoader _contentRepository;
         private readonly IRedirectRuleRepository _redirectRuleRepository;
 
-        public SystemRedirectsActions(IContentRepository contentRepository, IRedirectRuleRepository redirectRuleRepository)
+        public SystemRedirectsActions(IContentLoader contentRepository, IRedirectRuleRepository redirectRuleRepository)
         {
             _contentRepository = contentRepository;
             _redirectRuleRepository = redirectRuleRepository;
@@ -31,7 +31,9 @@ namespace Forte.EpiserverRedirects.System
         private void AddRedirects(PageData pageData, string oldUrl, SystemRedirectReason systemRedirectReason, int priority)
         {
             if (!(pageData.Status == VersionStatus.PreviouslyPublished || pageData.Status == VersionStatus.Published))
+            {
                 return;
+            }
 
             var redirectRule = RedirectRule.NewFromSystem(
                 UrlPath.NormalizePath(oldUrl),

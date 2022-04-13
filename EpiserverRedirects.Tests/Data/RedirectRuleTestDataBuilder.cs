@@ -69,7 +69,9 @@ namespace Forte.EpiserverRedirects.Tests.Data
                 var randomRedirectRule = GetRandomRedirectRuleFromData();
 
                 if (_alreadyChangedRedirectRulesGuids.Contains(randomRedirectRule.Id.ExternalId))
+                {
                     continue;
+                }
 
                 changeDataAction.Invoke(randomRedirectRule);
                 _alreadyChangedRedirectRulesGuids.Add(randomRedirectRule.Id.ExternalId);

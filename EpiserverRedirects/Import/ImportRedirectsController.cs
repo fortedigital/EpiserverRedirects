@@ -32,7 +32,9 @@ namespace Forte.EpiserverRedirects.Import
         public ActionResult Import(IFormFile uploadedFile)
         {
             if (uploadedFile == null)
+            {
                 return CreateJsonErrorResult("No file specified");
+            }
 
             try
             {

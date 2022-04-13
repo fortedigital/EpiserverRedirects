@@ -21,8 +21,14 @@ namespace Forte.EpiserverRedirects.Events
         private readonly UrlResolver _urlResolver;
         private readonly RedirectsOptions _redirectsOptions;
 
-        public AutomaticRedirectsEventsRegistry(IContentEvents contentEvents, IContentRepository contentRepository, IContentVersionRepository contentVersionRepository,
-            ILanguageBranchRepository languageBranchRepository, SystemRedirectsActions systemRedirectsActions, UrlResolver urlResolver, RedirectsOptions redirectsOptions)
+        public AutomaticRedirectsEventsRegistry(
+            IContentEvents contentEvents,
+            IContentRepository contentRepository,
+            IContentVersionRepository contentVersionRepository,
+            ILanguageBranchRepository languageBranchRepository,
+            SystemRedirectsActions systemRedirectsActions,
+            UrlResolver urlResolver,
+            RedirectsOptions redirectsOptions)
         {
             _contentEvents = contentEvents;
             _contentRepository = contentRepository;
@@ -45,27 +51,37 @@ namespace Forte.EpiserverRedirects.Events
         private void MovedContentHandler(object sender, ContentEventArgs e)
         {
             if (EventsHandlersScopeConfiguration.IsAutomaticRedirectsDisabled)
+            {
                 return;
+            }
 
             if (!(e.Content is IChangeTrackable))
+            {
                 return;
+            }
 
             var originalParent = (e as MoveContentEventArgs)?.OriginalParent;
 
             if (originalParent == ContentReference.WasteBasket)
                 // do not create when restoring, cause not need to do redirects from waste basket.
                 // however, DO redirect when moving to waste basket, because restore may be to another place
+            {
                 return;
+            }
 
             foreach (var language in _languageBranchRepository.ListEnabled())
             {
                 if (!(_contentRepository.Get<IContentData>(e.ContentLink, language.Culture) is PageData pageData))
+                {
                     continue;
+                }
 
                 var oldUrl = GetContentUrl(originalParent, language.Culture.Name, false);
 
                 if (oldUrl == null)
+                {
                     continue;
+                }
 
                 _systemRedirectsActions.AddRedirects(
                     pageData,
@@ -79,7 +95,9 @@ namespace Forte.EpiserverRedirects.Events
         private void PublishedContentHandler(object sender, ContentEventArgs e)
         {
             if (EventsHandlersScopeConfiguration.IsAutomaticRedirectsDisabled)
+            {
                 return;
+            }
 
             var lastVersion = _contentVersionRepository
                 .List(e.ContentLink, e.Content.LanguageBranch())
@@ -88,22 +106,30 @@ namespace Forte.EpiserverRedirects.Events
                 .FirstOrDefault();
 
             if (lastVersion == null)
+            {
                 return;
+            }
 
             var oldUrl = GetContentUrl(lastVersion.ContentLink, lastVersion.LanguageBranch);
 
             if (oldUrl == null)
+            {
                 return;
+            }
 
             var newUrl = GetContentUrl(e.ContentLink, e.Content.LanguageBranch());
 
             if (oldUrl == newUrl)
+            {
                 return;
+            }
 
             var lastVersionPageData = _contentRepository.Get<IContentData>(lastVersion.ContentLink) as PageData;
 
             if (lastVersionPageData == null)
+            {
                 return;
+            }
 
             _systemRedirectsActions.AddRedirects(
                 lastVersionPageData,
@@ -116,18 +142,25 @@ namespace Forte.EpiserverRedirects.Events
         private void SavingContentHandler(object sender, ContentEventArgs e)
         {
             if (EventsHandlersScopeConfiguration.IsAutomaticRedirectsDisabled)
+            {
                 return;
+            }
 
             var transition = ((SaveContentEventArgs) e).Transition;
 
-            if (transition.CurrentStatus == VersionStatus.NotCreated) return;
+            if (transition.CurrentStatus == VersionStatus.NotCreated)
+            {
+                return;
+            }
 
             // create redirects only if page is unpublished
             // because child objects may have been already published so their URL changes
             if (_contentVersionRepository
                 .List(e.ContentLink)
                 .Any(p => p.Status == VersionStatus.Published || p.Status == VersionStatus.PreviouslyPublished))
+            {
                 return;
+            }
 
             var oldUrl = _urlResolver.GetUrl(e.ContentLink, null);
             e.Items.Add(OldUrlKey, oldUrl);
@@ -136,12 +169,16 @@ namespace Forte.EpiserverRedirects.Events
         private void SavedContentHandler(object sender, ContentEventArgs e)
         {
             if (EventsHandlersScopeConfiguration.IsAutomaticRedirectsDisabled)
+            {
                 return;
+            }
 
             var oldUrl = e.Items[OldUrlKey]?.ToString();
 
             if (oldUrl == null)
+            {
                 return;
+            }
 
             var newUrl = _urlResolver.GetUrl(e.ContentLink, null);
 
@@ -163,7 +200,9 @@ namespace Forte.EpiserverRedirects.Events
         private void DeletedContentHandler(object sender, ContentEventArgs e)
         {
             if (EventsHandlersScopeConfiguration.IsAutomaticRedirectsDisabled)
+            {
                 return;
+            }
 
             _systemRedirectsActions.DeleteRedirects(e.ContentLink, ((DeleteContentEventArgs) e).DeletedDescendents);
         }

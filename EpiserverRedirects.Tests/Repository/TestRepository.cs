@@ -44,8 +44,10 @@ namespace Forte.EpiserverRedirects.Tests.Repository
                 _redirectsHashSet.FirstOrDefault(r => r.Id == redirectRule.Id);
             
             if(redirectRuleToUpdate==null)
+            {
                 throw new KeyNotFoundException("No existing redirect with this GUID");
-            
+            }
+
             WriteToModel(redirectRule, redirectRuleToUpdate);
             return redirectRule;
         }

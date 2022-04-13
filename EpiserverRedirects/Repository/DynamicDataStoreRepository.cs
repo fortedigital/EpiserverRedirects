@@ -37,8 +37,10 @@ namespace Forte.EpiserverRedirects.Repository
             var redirectRuleToUpdate = GetById(redirectRule.Id.ExternalId);
             
             if(redirectRuleToUpdate==null)
+            {
                 throw new Exception("No existing redirect with this GUID");
-            
+            }
+
             WriteToModel(redirectRule, redirectRuleToUpdate);
             
             DynamicDataStore.Save(redirectRuleToUpdate);

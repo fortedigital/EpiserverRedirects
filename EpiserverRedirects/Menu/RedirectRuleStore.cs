@@ -51,7 +51,9 @@ namespace Forte.EpiserverRedirects.Menu
         public ActionResult Post(RedirectRuleDto dto)
         {
             if (!ViewData.ModelState.IsValid)
+            {
                 return null;
+            }
 
             var newRedirectRule = _redirectRuleMapper.DtoToModel(dto);
             newRedirectRule.FromManual();
@@ -65,7 +67,9 @@ namespace Forte.EpiserverRedirects.Menu
         public ActionResult Put(RedirectRuleDto dto)
         {
             if (!ViewData.ModelState.IsValid)
+            {
                 return null;
+            }
 
             var updatedRedirectRule = _redirectRuleMapper.DtoToModel(dto);
             updatedRedirectRule = _redirectRuleRepository.Update(updatedRedirectRule);
