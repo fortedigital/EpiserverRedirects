@@ -51,6 +51,8 @@ namespace Forte.EpiserverRedirects.Extensions
                     provider => new RedirectRuleCachedRepositoryDecorator(
                         new DynamicDataStoreRepository(provider.GetService<DynamicDataStoreFactory>()),
                         provider.GetService<ICache>()));
+
+                services.AddHostedService<CacheWarmupHostedService>();
             }
             else
             {
