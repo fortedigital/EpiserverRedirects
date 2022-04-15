@@ -5,13 +5,40 @@ using EPiServer.Security;
 
 namespace Forte.EpiserverRedirects.Model.RedirectRule
 {
-    public enum RedirectRuleType { ExactMatch = 1, Regex = 2 }
-    public enum RedirectType { Permanent = 1, Temporary = 2 }
-    public enum RedirectOrigin { System = 1, Manual = 2, Import = 3 }
-
     [EPiServerDataStore(AutomaticallyRemapStore = true)]
     public class RedirectRule : IDynamicData
     {
+        private string _oldPattern;
+        private string _newPattern;
+
+        public Identity Id { get; set; }
+
+        public int? ContentId { get; set; }
+
+        public string OldPattern
+        {
+            get => UrlPath.EnsurePathEncoding(_oldPattern);
+            set => _oldPattern = UrlPath.EnsurePathEncoding(value);
+        }
+
+        public string NewPattern
+        {
+            get => UrlPath.EnsurePathEncoding(_newPattern);
+            set => _newPattern = UrlPath.EnsurePathEncoding(value);
+        }
+
+        public RedirectRuleType RedirectRuleType { get; set; }
+
+        public RedirectType RedirectType { get; set; }
+
+        public RedirectOrigin RedirectOrigin { get; set; }
+        public DateTime CreatedOn { get; set; }
+
+        public bool IsActive { get; set; }
+        public string CreatedBy { get; set; }
+        public string Notes { get; set; }
+        public int Priority { get; set; }
+
         public void FromManual()
         {
             CreatedOn = DateTime.UtcNow;
@@ -108,38 +135,5 @@ namespace Forte.EpiserverRedirects.Model.RedirectRule
                 Priority = priority
             };
         }
-        
-        public Identity Id { get; set; }
-
-        public int? ContentId { get; set; }
-
-        private string _oldPattern;
-        
-        public string OldPattern
-        {
-            get => UrlPath.EnsurePathEncoding(_oldPattern);
-            set => _oldPattern = UrlPath.EnsurePathEncoding(value);
-        }
-
-        private string _newPattern;
-        
-        public string NewPattern
-        {
-            get => UrlPath.EnsurePathEncoding(_newPattern);
-            set => _newPattern = UrlPath.EnsurePathEncoding(value);
-        }
-
-        public RedirectRuleType RedirectRuleType { get; set; }
-
-        public RedirectType RedirectType { get; set; }
-
-        public RedirectOrigin RedirectOrigin { get; set; }
-        public DateTime CreatedOn { get; set; }
-
-        public bool IsActive { get; set; }
-        public string CreatedBy { get; set; }
-        public string Notes { get; set; }
-        public int Priority { get; set; }
     }
-
 }

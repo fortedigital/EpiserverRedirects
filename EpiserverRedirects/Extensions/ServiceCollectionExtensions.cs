@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using EPiServer;
-using EPiServer.Data.Dynamic;
 using EPiServer.ServiceLocation;
 using EPiServer.Shell.Modules;
 using Forte.EpiserverRedirects.Caching;
@@ -19,7 +18,7 @@ namespace Forte.EpiserverRedirects.Extensions
 {
     public static class ServiceCollectionExtensions
     {
-        public static IServiceCollection AddEpiserverRedirects(this IServiceCollection services, Action<RedirectsOptions> configureAction = null)
+        public static EpiserverRedirectsConfiguration ConfigureEpiserverRedirects(this IServiceCollection services, Action<RedirectsOptions> configureAction = null)
         {
             var redirectsOptions = new RedirectsOptions();
 
@@ -40,23 +39,7 @@ namespace Forte.EpiserverRedirects.Extensions
 
             if (redirectsOptions.Caching.AllRedirectsCacheEnabled || redirectsOptions.Caching.UrlRedirectCacheEnabled)
             {
-                services.AddSingleton<CachingEventsRegistry>();
-                services.AddTransient<ICacheRemover, CacheRemover>();
                 services.AddTransient<ICache, Cache>();
-            }
-
-            if (redirectsOptions.Caching.AllRedirectsCacheEnabled)
-            {
-                services.AddTransient<IRedirectRuleRepository>(
-                    provider => new RedirectRuleCachedRepositoryDecorator(
-                        new DynamicDataStoreRepository(provider.GetService<DynamicDataStoreFactory>()),
-                        provider.GetService<ICache>()));
-
-                services.AddHostedService<CacheWarmupHostedService>();
-            }
-            else
-            {
-                services.AddTransient<IRedirectRuleRepository, DynamicDataStoreRepository>();
             }
 
             if (redirectsOptions.Caching.UrlRedirectCacheEnabled)
@@ -83,7 +66,7 @@ namespace Forte.EpiserverRedirects.Extensions
 
             EventsHandlersScopeConfiguration.IsAutomaticRedirectsDisabled = redirectsOptions.AddAutomaticRedirects == false;
 
-            return services;
+            return new EpiserverRedirectsConfiguration(services, redirectsOptions);
         }
 
         private static IRedirectRuleResolver GetCompositeRuleResolver(IServiceProvider provider)

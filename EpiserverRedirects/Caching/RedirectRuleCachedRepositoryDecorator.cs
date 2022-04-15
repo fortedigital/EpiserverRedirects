@@ -11,7 +11,7 @@ namespace Forte.EpiserverRedirects.Caching
         private readonly ICache _cache;
         private readonly IRedirectRuleRepository _redirectRuleRepository;
         private static readonly object Locker = new object();
-        
+
         public RedirectRuleCachedRepositoryDecorator(IRedirectRuleRepository redirectRuleRepository, ICache cache)
         {
             _cache = cache;
@@ -27,26 +27,56 @@ namespace Forte.EpiserverRedirects.Caching
                 return redirectRulesFirstAttempt.AsQueryable();
             }
 
-            lock(Locker)
+            lock (Locker)
             {
                 if (_cache.TryGet<RedirectRule[]>(CacheKey, out var redirectRules))
                 {
                     return redirectRules.AsQueryable();
                 }
-                
+
                 redirectRules = _redirectRuleRepository.GetAll().ToArray();
                 _cache.Add(CacheKey, redirectRules);
-                
+
                 return redirectRules.AsQueryable();
             }
         }
 
-        public RedirectRule Add(RedirectRule redirectRule) => _redirectRuleRepository.Add(redirectRule);
+        public RedirectRule Add(RedirectRule redirectRule)
+        {
+            var rule = _redirectRuleRepository.Add(redirectRule);
+            ClearCache();
 
-        public RedirectRule Update(RedirectRule redirectRule) => _redirectRuleRepository.Update(redirectRule);
+            return rule;
+        }
 
-        public bool Delete(Guid id) => _redirectRuleRepository.Delete(id);
+        public RedirectRule Update(RedirectRule redirectRule)
+        {
+            var rule = _redirectRuleRepository.Update(redirectRule);
+            ClearCache();
 
-        public bool ClearAll() => _redirectRuleRepository.ClearAll();
+            return rule;
+        }
+
+        public bool Delete(Guid id)
+        {
+            var result = _redirectRuleRepository.Delete(id);
+            ClearCache();
+
+            return result;
+        }
+
+        public bool ClearAll()
+        {
+            var result = _redirectRuleRepository.ClearAll();
+            ClearCache();
+
+            return result;
+        }
+
+        private void ClearCache()
+        {
+            _cache.Remove(CacheKey);
+            _cache.RemoveByRegion(CacheRedirectResolverDecorator.CacheRegionKey);
+        }
     }
 }

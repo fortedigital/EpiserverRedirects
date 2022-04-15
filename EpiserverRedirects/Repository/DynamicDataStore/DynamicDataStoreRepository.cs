@@ -3,14 +3,13 @@ using System.Linq;
 using EPiServer.Data.Dynamic;
 using Forte.EpiserverRedirects.Model.RedirectRule;
 
-namespace Forte.EpiserverRedirects.Repository
+namespace Forte.EpiserverRedirects.Repository.DynamicDataStore
 {
     public class DynamicDataStoreRepository : RedirectRuleRepository
     {
         private readonly DynamicDataStoreFactory _dynamicDataStoreFactory;
-        private DynamicDataStore DynamicDataStore => _dynamicDataStoreFactory.CreateStore(typeof(RedirectRule));
+        private EPiServer.Data.Dynamic.DynamicDataStore DynamicDataStore => _dynamicDataStoreFactory.CreateStore(typeof(RedirectRule));
 
-        
         public DynamicDataStoreRepository(DynamicDataStoreFactory dynamicDataStoreFactory)
         {
             _dynamicDataStoreFactory = dynamicDataStoreFactory;
@@ -20,29 +19,29 @@ namespace Forte.EpiserverRedirects.Repository
         {
             return DynamicDataStore.Items<RedirectRule>();
         }
-        
+
         public override RedirectRule GetById(Guid id)
         {
             return DynamicDataStore.Items<RedirectRule>().FirstOrDefault(r => r.Id.ExternalId == id);
         }
 
         public override RedirectRule Add(RedirectRule redirectRule)
-        {     
+        {
             DynamicDataStore.Save(redirectRule);
+
             return redirectRule;
         }
 
         public override RedirectRule Update(RedirectRule redirectRule)
         {
             var redirectRuleToUpdate = GetById(redirectRule.Id.ExternalId);
-            
-            if(redirectRuleToUpdate==null)
+
+            if (redirectRuleToUpdate == null)
             {
                 throw new Exception("No existing redirect with this GUID");
             }
 
             WriteToModel(redirectRule, redirectRuleToUpdate);
-            
             DynamicDataStore.Save(redirectRuleToUpdate);
 
             return redirectRuleToUpdate;
@@ -53,6 +52,7 @@ namespace Forte.EpiserverRedirects.Repository
             try
             {
                 DynamicDataStore.Delete(id);
+
                 return true;
             }
             catch
@@ -66,7 +66,7 @@ namespace Forte.EpiserverRedirects.Repository
             try
             {
                 DynamicDataStore.DeleteAll();
-                
+
                 return true;
             }
             catch
