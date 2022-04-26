@@ -1,10 +1,11 @@
+﻿using EpiserverRedirects.SqlServer.Extensions;
 using Forte.EpiserverRedirects.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Forte.EpiserverRedirects.StartupPlayground
+namespace TestApp
 {
     public class Startup
     {
@@ -28,7 +29,11 @@ namespace Forte.EpiserverRedirects.StartupPlayground
                         options.SystemRedirectRulePriority = 80;
                         options.DefaultRedirectRulePriority = 100;
                     })
-                .AddDynamicDataStoreRepository();
+                .AddSqlServerRepository("connectionString",
+                    builder =>
+                    {
+                        // Extra stuff
+                    });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
