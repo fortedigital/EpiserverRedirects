@@ -76,7 +76,7 @@ namespace Forte.EpiserverRedirects.Caching
         private void ClearCache()
         {
             _cache.Remove(CacheKey);
-            _cache.RemoveByRegion(CacheRedirectResolverDecorator.CacheRegionKey);
+            _cache.RemoveByMasterKey(CacheRedirectResolverDecorator.CacheMasterKey);
         }
     }
 }
