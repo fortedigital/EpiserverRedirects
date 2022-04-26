@@ -33,7 +33,7 @@ namespace Forte.EpiserverRedirects.Caching
 
             if (_options.UrlRedirectCacheEnabled)
             {
-                _cacheRemover.RemoveByRegion(CacheRedirectResolverDecorator.CacheRegionKey);
+                _cacheRemover.RemoveByMasterKey(CacheRedirectResolverDecorator.CacheMasterKey);
             }
         }
     }

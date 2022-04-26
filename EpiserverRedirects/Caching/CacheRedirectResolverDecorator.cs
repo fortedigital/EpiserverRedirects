@@ -10,7 +10,7 @@ namespace Forte.EpiserverRedirects.Caching
     {
         private readonly IRedirectRuleResolver _redirectRuleResolver;
         private readonly ICache _cache;
-        public const string CacheRegionKey = "Forte.EpiserverRedirects.IRedirect";
+        public const string CacheMasterKey = "Forte.EpiserverRedirects.IRedirect";
 
         public CacheRedirectResolverDecorator(
             IRedirectRuleResolver redirectRuleResolver,
@@ -29,10 +29,10 @@ namespace Forte.EpiserverRedirects.Caching
             }
 
             redirect = await _redirectRuleResolver.ResolveRedirectRuleAsync(oldPath);
-            _cache.Add(FormatCacheKey(oldPath), redirect, CacheRegionKey);
+            _cache.Add(FormatCacheKey(oldPath), redirect, CacheMasterKey);
             return redirect;
         }
 
-        private static string FormatCacheKey(UrlPath path) => $"{CacheRegionKey}_{path}";
+        private static string FormatCacheKey(UrlPath path) => $"{CacheMasterKey}_{path}";
     }
 }

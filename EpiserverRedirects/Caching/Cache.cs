@@ -6,17 +6,20 @@ namespace Forte.EpiserverRedirects.Caching
 {
     internal class Cache : CacheRemover, ICache
     {
-        public bool TryGet<T>(string key, out T cachedItem) where T : class
+        public bool TryGet<T>(string key, out T item) where T : class
         {
-            cachedItem = CacheManager.Get(key) as T;
-            return cachedItem != null;
+            item = CacheManager.Get(key) as T;
+
+            return item != null;
         }
 
-        public void Add<T>(string key, T cachedItem, string region) where T : class => CacheManager.Insert(key, cachedItem, CreateCachePolicy(region));
+        public void Add<T>(string key, T item, string masterKey) where T : class => CacheManager.Insert(key, item, CreateCachePolicy(masterKey));
 
-        private static CacheEvictionPolicy CreateCachePolicy(string region)
+        private static CacheEvictionPolicy CreateCachePolicy(string masterKey)
         {
-            return string.IsNullOrWhiteSpace(region) ? CacheEvictionPolicy.Empty : new CacheEvictionPolicy(Enumerable.Empty<string>(), new[] {region});
+            return string.IsNullOrWhiteSpace(masterKey)
+                ? CacheEvictionPolicy.Empty
+                : new CacheEvictionPolicy(Enumerable.Empty<string>(), new[] {masterKey});
         }
     }
 }

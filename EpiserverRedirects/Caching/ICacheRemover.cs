@@ -2,7 +2,7 @@ namespace Forte.EpiserverRedirects.Caching
 {
     public interface ICacheRemover
     {
-        void RemoveByRegion(string region);
+        void RemoveByMasterKey(string masterKey);
         
         void Remove(string key);
     }
