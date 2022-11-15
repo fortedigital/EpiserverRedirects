@@ -25,18 +25,18 @@ namespace Forte.EpiserverRedirects.Import
             }
         }
 
-        private RedirectRule CreateRedirectRule(RedirectRuleImportRow redirectRow)
+        private RedirectRuleModel CreateRedirectRule(RedirectRuleImportRow redirectRow)
         {
             var matchToContent = redirectRow.ContentId.HasValue;
             
             return matchToContent == false
-                ? RedirectRule.NewFromImport(redirectRow.OldPattern, redirectRow.NewPattern,
+                ? RedirectRuleModel.NewFromImport(redirectRow.OldPattern, redirectRow.NewPattern,
                     Parser.ParseRedirectType(redirectRow.RedirectType),
                     Parser.ParseRedirectRuleType(redirectRow.RedirectRuleType),
                     Parser.ParseBoolean(redirectRow.IsActive),
                     redirectRow.Notes,
                     redirectRow.Priority ?? _options.DefaultRedirectRulePriority)
-                : RedirectRule.NewFromImport(redirectRow.OldPattern, redirectRow.ContentId.Value,
+                : RedirectRuleModel.NewFromImport(redirectRow.OldPattern, redirectRow.ContentId.Value,
                     Parser.ParseRedirectType(redirectRow.RedirectType),
                     Parser.ParseRedirectRuleType(redirectRow.RedirectRuleType),
                     Parser.ParseBoolean(redirectRow.IsActive),

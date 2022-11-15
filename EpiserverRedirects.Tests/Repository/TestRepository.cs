@@ -1,44 +1,68 @@
+using Forte.EpiserverRedirects.Model.RedirectRule;
+using Forte.EpiserverRedirects.Repository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using EPiServer.Data;
-using Forte.EpiserverRedirects.Model.RedirectRule;
-using Forte.EpiserverRedirects.Repository;
+using System.Text.RegularExpressions;
 
 namespace Forte.EpiserverRedirects.Tests.Repository
 {
-    public class TestRepository : RedirectRuleRepository
+    public class TestRepository : IRedirectRuleRepository
     {
-        private readonly HashSet<RedirectRule> _redirectsHashSet;
+        private readonly HashSet<RedirectRuleModel> _redirectsHashSet;
         
         public TestRepository()
         {
-            _redirectsHashSet = new HashSet<RedirectRule>();
+            _redirectsHashSet = new HashSet<RedirectRuleModel>();
         }
-        public TestRepository(HashSet<RedirectRule> redirectsCollection)
+
+        public TestRepository(HashSet<RedirectRuleModel> redirectsCollection)
         {
             _redirectsHashSet = redirectsCollection;
         }
 
-
-        public override RedirectRule GetById(Guid id)
+        public RedirectRuleModel GetById(Guid id)
         {
             var redirectRule =
                 _redirectsHashSet.FirstOrDefault(r => r.Id == id);
             return redirectRule;
         }
 
-        public override IQueryable<RedirectRule> GetAll() => _redirectsHashSet.AsQueryable();
-        
-        public override RedirectRule Add(RedirectRule redirectRule)
-        {            
-            redirectRule.Id = Identity.NewIdentity();
-            _redirectsHashSet.Add(redirectRule);
+        public IList<RedirectRuleModel> GetAll() => _redirectsHashSet.ToList();
 
+        public IList<RedirectRuleModel> Query(out int total, RedirectRuleQuery query)
+        {
+            total = _redirectsHashSet.Count;
+            return _redirectsHashSet.ToList();
+        }
+
+        public IList<RedirectRuleModel> GetByContent(IList<int> contentIds) => _redirectsHashSet.ToList();
+
+        public RedirectRuleModel FindRegexMatch(string patern)
+        {
+            return _redirectsHashSet
+                .Where(r => r.IsActive && r.RedirectRuleType == RedirectRuleType.Regex)
+                .OrderBy(x => x.Priority)
+                .AsEnumerable()
+                .FirstOrDefault(r => Regex.IsMatch(patern, r.OldPattern, RegexOptions.IgnoreCase));
+        }
+
+        public RedirectRuleModel FindExactMatch(string patern)
+        {
+            return _redirectsHashSet
+                .Where(r => r.IsActive && r.RedirectRuleType == RedirectRuleType.ExactMatch)
+                .OrderBy(x => x.Priority)
+                .FirstOrDefault(r => r.OldPattern == patern);
+        }
+
+        public RedirectRuleModel Add(RedirectRuleModel redirectRule)
+        {
+            redirectRule.Id = Guid.NewGuid();
+            _redirectsHashSet.Add(redirectRule);
             return redirectRule;
         }
 
-        public override RedirectRule Update(RedirectRule redirectRule)
+        public RedirectRuleModel Update(RedirectRuleModel redirectRule)
         {
             var redirectRuleToUpdate =
                 _redirectsHashSet.FirstOrDefault(r => r.Id == redirectRule.Id);
@@ -52,18 +76,31 @@ namespace Forte.EpiserverRedirects.Tests.Repository
             return redirectRule;
         }
 
-        public override bool Delete(Guid id)
+        public bool Delete(Guid id)
         {
-            var redirectRule = _redirectsHashSet.FirstOrDefault(r => r.Id.ExternalId == id);
+            var redirectRule = _redirectsHashSet.FirstOrDefault(r => r.Id == id);
             
             return redirectRule != null && _redirectsHashSet.Remove(redirectRule);
         }
 
-        public override bool ClearAll()
+        public bool ClearAll()
         {
             _redirectsHashSet.Clear();
 
             return true;
+        }
+
+        protected static void WriteToModel(RedirectRuleModel redirectRule, RedirectRuleModel redirectRuleToUpdate)
+        {
+            redirectRuleToUpdate.Id = redirectRule.Id;
+            redirectRuleToUpdate.OldPattern = redirectRule.OldPattern;
+            redirectRuleToUpdate.NewPattern = redirectRule.NewPattern;
+            redirectRuleToUpdate.RedirectType = redirectRule.RedirectType;
+            redirectRuleToUpdate.RedirectRuleType = redirectRule.RedirectRuleType;
+            redirectRuleToUpdate.IsActive = redirectRule.IsActive;
+            redirectRuleToUpdate.Notes = redirectRule.Notes;
+            redirectRuleToUpdate.Priority = redirectRule.Priority;
+            redirectRuleToUpdate.ContentId = redirectRule.ContentId;
         }
     }
 }

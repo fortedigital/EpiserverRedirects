@@ -19,7 +19,7 @@ namespace Forte.EpiserverRedirects.Tests.Tests
         {
             var rule1 = RandomDataGenerator.CreateRandomRedirectRule();
             var rule2 = RandomDataGenerator.CreateRandomRedirectRule();
-            var existingRules = new HashSet<RedirectRule>
+            var existingRules = new HashSet<RedirectRuleModel>
             {
                 rule1,
                 rule2
@@ -47,8 +47,11 @@ namespace Forte.EpiserverRedirects.Tests.Tests
                 .WithRandomExistingRules()
                 .Create();
 
-            var redirectDto = new RedirectRuleDto("randomOldPath", "randomNewPath");
-
+            var redirectDto = new RedirectRuleDto
+            {
+                OldPattern = "randomOldPath",
+                NewPattern = "randomNewPath"
+            };
             var newRedirect = restController.Post(redirectDto).GetEntityFromActionResult();
             var expectedRedirect = restController.Get(newRedirect.Id.Value).GetEntityFromActionResult();
 
@@ -90,9 +93,13 @@ namespace Forte.EpiserverRedirects.Tests.Tests
                 .WithRandomExistingRules()
                 .Create();
 
-            var redirectDto = new RedirectRuleDto(Guid.NewGuid(), "/NonExistentOldPath", "/randomNewUrl",
-                RedirectType.Temporary);
-
+            var redirectDto = new RedirectRuleDto
+            {
+                Id = Guid.NewGuid(),
+                OldPattern = "/NonExistentOldPath",
+                NewPattern = "/randomNewUrl",
+                RedirectType = RedirectType.Temporary
+            };
             Assert.Throws<KeyNotFoundException>(() => restController.Put(redirectDto));
         }
 

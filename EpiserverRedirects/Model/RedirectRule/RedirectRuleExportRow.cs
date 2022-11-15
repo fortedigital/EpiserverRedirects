@@ -38,7 +38,7 @@ namespace Forte.EpiserverRedirects.Model.RedirectRule
         [Index(10)]
         public string CreatedBy { get; set; }
         
-        public static RedirectRuleExportRow CreateFromRedirectRule(RedirectRule redirectRule)
+        public static RedirectRuleExportRow CreateFromRedirectRule(RedirectRuleModel redirectRule)
         {
             return new RedirectRuleExportRow
             {

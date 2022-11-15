@@ -1,20 +1,21 @@
-using System;
 using EPiServer.Core;
-using EPiServer.Data;
 using EPiServer.Web.Routing;
 using Forte.EpiserverRedirects.Model.RedirectRule;
 using Forte.EpiserverRedirects.Request;
+using System;
+
 
 namespace Forte.EpiserverRedirects.Redirect
 {
     public abstract class Redirect : IRedirect
     {
-        public Identity Id => RedirectRule.Id;
+        public Guid? Id => RedirectRule.Id;
+
         public int Priority => RedirectRule.Priority;
 
-        protected RedirectRule RedirectRule { get; }
+        protected RedirectRuleModel RedirectRule { get; }
 
-        protected Redirect(RedirectRule redirectRule)
+        protected Redirect(RedirectRuleModel redirectRule)
         {
             RedirectRule = redirectRule;
         }

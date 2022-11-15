@@ -1,10 +1,13 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using Forte.EpiserverRedirects.Repository;
 using Microsoft.Extensions.Hosting;
 
+
 namespace Forte.EpiserverRedirects.Caching
 {
+    [Obsolete("No need to use, as we do not store all rules in cache. We cache only matches.")]
     public class CacheWarmupHostedService : IHostedService
     {
         private readonly IRedirectRuleRepository _redirectRuleRepository;
@@ -16,7 +19,8 @@ namespace Forte.EpiserverRedirects.Caching
 
         public Task StartAsync(CancellationToken cancellationToken)
         {
-            _redirectRuleRepository.GetAll();
+            // TURNED OFF - no warming up needed
+            // _redirectRuleRepository.GetAll();
 
             return Task.CompletedTask;
         }

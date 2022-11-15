@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
-using EpiserverRedirects.SqlServer.Design;
+using Forte.EpiserverRedirects.SqlServer.Design;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
-namespace EpiserverRedirects.SqlServer.Services
+namespace Forte.EpiserverRedirects.SqlServer.Services
 {
     internal class MigrationService : IHostedService
     {

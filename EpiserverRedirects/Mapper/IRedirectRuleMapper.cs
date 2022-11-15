@@ -4,7 +4,7 @@ namespace Forte.EpiserverRedirects.Mapper
 {
     public interface IRedirectRuleMapper
     {
-        RedirectRuleDto ModelToDto(RedirectRule source);
-        RedirectRule DtoToModel(RedirectRuleDto source);
+        RedirectRuleDto ModelToDto(RedirectRuleModel source);
+        RedirectRuleModel DtoToModel(RedirectRuleDto source);
     }
 }

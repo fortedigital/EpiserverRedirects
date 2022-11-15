@@ -15,7 +15,7 @@ namespace Forte.EpiserverRedirects.Menu
 
             try
             {
-                var model = new Query
+                var model = new RedirectRuleQuery
                 {
                     OldPattern = queryPropertiesDictionary["oldPattern"],
                     NewPattern = queryPropertiesDictionary["newPattern"],

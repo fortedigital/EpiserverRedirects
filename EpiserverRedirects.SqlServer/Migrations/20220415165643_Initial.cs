@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace EpiserverRedirects.SqlServer.Migrations
+namespace Forte.EpiserverRedirects.SqlServer.Migrations
 {
     public partial class Initial : Migration
     {
@@ -11,7 +11,7 @@ namespace EpiserverRedirects.SqlServer.Migrations
                 name: "RedirectRules",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Id = table.Column<string>(type: "uniqueidentifier", nullable: false),
                     ContentId = table.Column<int>(type: "int", nullable: true),
                     OldPattern = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     NewPattern = table.Column<string>(type: "nvarchar(max)", nullable: true),

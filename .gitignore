@@ -287,3 +287,5 @@ __pycache__/
 
 # AlloyDemoKit blobs
 AlloyDemoKit/App_Data/blobs/**
+
+EpiserverRedirects/nuget.exe

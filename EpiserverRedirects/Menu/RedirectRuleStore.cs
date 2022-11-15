@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Net;
 using EPiServer.Shell.Services.Rest;
+using Forte.EpiserverRedirects.DynamicDataStore;
 using Forte.EpiserverRedirects.Mapper;
 using Forte.EpiserverRedirects.Model.RedirectRule;
 using Forte.EpiserverRedirects.Repository;
@@ -30,20 +31,14 @@ namespace Forte.EpiserverRedirects.Menu
         }
 
         [HttpGet]
-        public ActionResult Get(Query query = null)
+        public ActionResult Get(RedirectRuleQuery query = null)
         {
             var redirects = _redirectRuleRepository
-                .GetAll()
-                .GetPageFromQuery(out var allRedirectsCount, query)
-                .Select(_redirectRuleMapper.ModelToDto);
-
-            var itemRange = new ItemRange
-            {
-                Total = allRedirectsCount
-            };
-
+                .Query(out var total, query)
+                .Select(_redirectRuleMapper.ModelToDto)
+                .ToList();
+            var itemRange = new ItemRange { Total = total };
             itemRange.AddHeaderTo(HttpContext.Response);
-
             return Rest(redirects);
         }
 
@@ -56,7 +51,7 @@ namespace Forte.EpiserverRedirects.Menu
             }
 
             var newRedirectRule = _redirectRuleMapper.DtoToModel(dto);
-            newRedirectRule.FromManual();
+            RedirectRuleModel.FromManual(newRedirectRule);
             newRedirectRule = _redirectRuleRepository.Add(newRedirectRule);
             var newRedirectRuleDto = _redirectRuleMapper.ModelToDto(newRedirectRule);
 

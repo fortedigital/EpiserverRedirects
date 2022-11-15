@@ -35,7 +35,7 @@ namespace Forte.EpiserverRedirects.System
                 return;
             }
 
-            var redirectRule = RedirectRule.NewFromSystem(
+            var redirectRule = RedirectRuleModel.NewFromSystem(
                 UrlPath.NormalizePath(oldUrl),
                 pageData.ContentLink.ID,
                 RedirectType.Permanent,
@@ -54,24 +54,12 @@ namespace Forte.EpiserverRedirects.System
 
         public void DeleteRedirects(ContentReference deletedContent, IEnumerable<ContentReference> deletedDescendants)
         {
-            var deletedDescendantsIds = deletedDescendants.Select(x => x.ID).ToList();
-
-            // Episerver DDS doe not handle query with Contains and empty collection
-            var redirectsToDelete = deletedDescendantsIds.Any()
-                ? _redirectRuleRepository
-                    .GetAll()
-                    .Where(x => deletedContent.ID == x.ContentId || (x.ContentId.HasValue && deletedDescendantsIds.Contains(x.ContentId.Value)))
-                    .Select(x => x.Id.ExternalId)
-                    .ToList()
-                : _redirectRuleRepository
-                    .GetAll()
-                    .Where(x => deletedContent.ID == x.ContentId)
-                    .Select(x => x.Id.ExternalId)
-                    .ToList();
-
+            var contentIdsForDeletion = deletedDescendants.Select(x => x.ID).ToList();
+            contentIdsForDeletion.Add(deletedContent.ID);
+            var redirectsToDelete = _redirectRuleRepository.GetByContent(contentIdsForDeletion);
             foreach (var redirect in redirectsToDelete)
             {
-                _redirectRuleRepository.Delete(redirect);
+                _redirectRuleRepository.Delete(redirect.Id);
             }
         }
 
