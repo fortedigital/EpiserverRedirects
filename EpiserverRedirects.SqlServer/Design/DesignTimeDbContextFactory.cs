@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 
-namespace EpiserverRedirects.SqlServer.Design
+namespace Forte.EpiserverRedirects.SqlServer.Design
 {
     public class DesignTimeContextFactory : IDesignTimeDbContextFactory<SqlRedirectRulesDbContext>
     {

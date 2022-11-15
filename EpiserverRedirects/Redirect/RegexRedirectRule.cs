@@ -6,7 +6,7 @@ namespace Forte.EpiserverRedirects.Redirect
 {
     public class RegexRedirect : Redirect
     {
-        public RegexRedirect(RedirectRule redirectRule) : base(redirectRule)
+        public RegexRedirect(IRedirectRule redirectRule) : base(redirectRule)
         {
         }
 

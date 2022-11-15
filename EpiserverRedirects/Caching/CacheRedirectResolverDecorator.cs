@@ -8,9 +8,9 @@ namespace Forte.EpiserverRedirects.Caching
 {
     public class CacheRedirectResolverDecorator : IRedirectRuleResolver
     {
+        public const string CacheMasterKey = "Forte.EpiserverRedirects.IRedirect";
         private readonly IRedirectRuleResolver _redirectRuleResolver;
         private readonly ICache _cache;
-        public const string CacheMasterKey = "Forte.EpiserverRedirects.IRedirect";
 
         public CacheRedirectResolverDecorator(
             IRedirectRuleResolver redirectRuleResolver,

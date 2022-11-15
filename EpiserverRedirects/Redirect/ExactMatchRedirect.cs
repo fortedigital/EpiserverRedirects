@@ -5,7 +5,7 @@ namespace Forte.EpiserverRedirects.Redirect
 {
     public class ExactMatchRedirect : Redirect
     {
-        public ExactMatchRedirect(RedirectRule redirectRule) : base(redirectRule)
+        public ExactMatchRedirect(IRedirectRule redirectRule) : base(redirectRule)
         {
         }
 

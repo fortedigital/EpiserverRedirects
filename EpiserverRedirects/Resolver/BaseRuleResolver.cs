@@ -16,7 +16,7 @@ namespace Forte.EpiserverRedirects.Resolver
             _contentLoader = contentLoader;
         }
 
-        protected IRedirect ResolveRule<T>(RedirectRule rule, Func<RedirectRule, T> constructRedirect) where T : IRedirect
+        protected IRedirect ResolveRule<T>(IRedirectRule rule, Func<IRedirectRule, T> constructRedirect) where T : IRedirect
         {
             if (rule == null)
             {
@@ -38,7 +38,7 @@ namespace Forte.EpiserverRedirects.Resolver
             {
                 return new NullRedirectRule();
             }
-                        
+
             return constructRedirect(rule);
         }
     }

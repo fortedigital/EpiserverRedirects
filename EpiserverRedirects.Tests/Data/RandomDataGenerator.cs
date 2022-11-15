@@ -13,11 +13,11 @@ namespace Forte.EpiserverRedirects.Tests.Data
         
         private static readonly Random RandomGenerator = new Random();
         
-        public static RedirectRule CreateRandomRedirectRule()
+        public static RedirectRuleModel CreateRandomRedirectRule()
         {
-            return new RedirectRule
+            return new RedirectRuleModel
             {
-                Id = Guid.NewGuid(),
+                RuleId = Guid.NewGuid(),
                 OldPattern = UrlPath.NormalizePath(GetRandomPath()),
                 NewPattern = GetRandomPath(),
                 IsActive = true,
@@ -30,7 +30,7 @@ namespace Forte.EpiserverRedirects.Tests.Data
                 Priority = RandomGenerator.Next(1, int.MaxValue)
             };
         }
-        
+
         public static RedirectRuleDto CreateRandomRedirectRuleDto()
         {
             return new RedirectRuleDto

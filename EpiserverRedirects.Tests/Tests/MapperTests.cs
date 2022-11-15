@@ -16,11 +16,11 @@ namespace Forte.EpiserverRedirects.Tests.Tests
                 DefaultRedirectRulePriority = 100,
             };
 
-            var mapper = new RedirectRuleMapper(options);
+            var mapper = new RedirectRuleModelMapper(options);
             var redirectRuleDto = RandomDataGenerator.CreateRandomRedirectRuleDto();
             var redirectRule = mapper.DtoToModel(redirectRuleDto);
 
-            Assert.Equal(redirectRuleDto.Id, redirectRule.Id);
+            Assert.Equal(redirectRuleDto.Id, redirectRule.RuleId);
             Assert.Equal(UrlPath.NormalizePath(redirectRuleDto.OldPattern), redirectRule.OldPattern);
             Assert.Equal(UrlPath.NormalizePath(redirectRuleDto.NewPattern), redirectRule.NewPattern);
 
@@ -41,11 +41,11 @@ namespace Forte.EpiserverRedirects.Tests.Tests
                 DefaultRedirectRulePriority = 100,
             };
 
-            var mapper = new RedirectRuleMapper(options);
+            var mapper = new RedirectRuleModelMapper(options);
             var redirectRule = RandomDataGenerator.CreateRandomRedirectRule();
             var redirectRuleDto = mapper.ModelToDto(redirectRule);
 
-            Assert.Equal(redirectRule.Id, redirectRuleDto.Id);
+            Assert.Equal(redirectRule.RuleId, redirectRuleDto.Id);
             Assert.Equal(redirectRule.OldPattern, redirectRuleDto.OldPattern);
             Assert.Equal(redirectRule.NewPattern, redirectRuleDto.NewPattern);
 

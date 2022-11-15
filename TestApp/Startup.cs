@@ -1,4 +1,4 @@
-﻿using EpiserverRedirects.SqlServer.Extensions;
+﻿using Forte.EpiserverRedirects.SqlServer.Extensions;
 using Forte.EpiserverRedirects.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -23,16 +23,18 @@ namespace TestApp
                     {
                         options.Caching.AllRedirectsCacheEnabled = true;
                         options.Caching.UrlRedirectCacheEnabled = true;
-
                         options.PreserveQueryString = false;
                         options.AddAutomaticRedirects = false;
                         options.SystemRedirectRulePriority = 80;
                         options.DefaultRedirectRulePriority = 100;
-                    })
-                .AddSqlServerRepository("connectionString",
-                    builder =>
+                    },
+                    repositoryConfig =>
                     {
-                        // Extra stuff
+                        repositoryConfig.AddSqlServerRepository("connectionString",
+                            builder =>
+                            {
+                                // Extra stuff
+                            });
                     });
         }
 

@@ -7,9 +7,8 @@ namespace Forte.EpiserverRedirects.Redirect
 {
     public interface IRedirect
     {
-        Identity Id { get; }
+        Guid? Id { get; }
         int Priority { get; }
-
         void Execute(Uri requestUri, IRedirectHttpResponse redirectHttpResponse, IUrlResolver contentUrlResolver, bool shouldPreserveQueryString);
     }
 }

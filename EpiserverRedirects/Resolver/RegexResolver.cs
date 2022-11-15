@@ -21,19 +21,15 @@ namespace Forte.EpiserverRedirects.Resolver
 
         public Task<IRedirect> ResolveRedirectRuleAsync(UrlPath oldPath)
         {
-            return Task.Run(() =>
-            {
-                var encodedOldPath = Uri.EscapeUriString(oldPath.ToString());
-                
-                var rule = _redirectRuleResolverRepository
-                    .GetAll()
-                    .Where(r => r.IsActive && r.RedirectRuleType == RedirectRuleType.Regex)
-                    .OrderBy(x=> x.Priority)
-                    .AsEnumerable()
-                    .FirstOrDefault(r => Regex.IsMatch(encodedOldPath, r.OldPattern, RegexOptions.IgnoreCase));
-
-                return ResolveRule(rule, r => new ExactMatchRedirect(r));
-            });
+            var encodedOldPath = Uri.EscapeUriString(oldPath.ToString());
+            var rule = _redirectRuleResolverRepository
+                .GetAll()
+                .Where(r => r.IsActive && r.RedirectRuleType == RedirectRuleType.Regex)
+                .OrderBy(x => x.Priority)
+                .AsEnumerable()
+                .FirstOrDefault(r => Regex.IsMatch(encodedOldPath, r.OldPattern, RegexOptions.IgnoreCase));
+            var result = ResolveRule(rule, r => new ExactMatchRedirect(r));
+            return Task.FromResult(result);
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace EpiserverRedirects.SqlServer.Migrations
+namespace Forte.EpiserverRedirects.SqlServer.Migrations
 {
     public partial class Initial : Migration
     {
@@ -11,7 +11,7 @@ namespace EpiserverRedirects.SqlServer.Migrations
                 name: "RedirectRules",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    RuleId = table.Column<string>(type: "uniqueidentifier", nullable: false),
                     ContentId = table.Column<int>(type: "int", nullable: true),
                     OldPattern = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     NewPattern = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -26,13 +26,13 @@ namespace EpiserverRedirects.SqlServer.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_RedirectRules", x => x.Id);
+                    table.PrimaryKey("PK_RedirectRules", x => x.RuleId);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_RedirectRules_Id",
+                name: "IX_RedirectRules_RuleId",
                 table: "RedirectRules",
-                column: "Id",
+                column: "RuleId",
                 unique: true);
         }
 

@@ -9,12 +9,12 @@ namespace Forte.EpiserverRedirects.Redirect
 {
     public abstract class Redirect : IRedirect
     {
-        public Identity Id => RedirectRule.Id;
+        public Guid? Id => RedirectRule.RuleId;
         public int Priority => RedirectRule.Priority;
 
-        protected RedirectRule RedirectRule { get; }
+        protected IRedirectRule RedirectRule { get; }
 
-        protected Redirect(RedirectRule redirectRule)
+        protected Redirect(IRedirectRule redirectRule)
         {
             RedirectRule = redirectRule;
         }

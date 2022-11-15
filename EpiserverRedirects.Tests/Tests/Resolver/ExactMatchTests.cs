@@ -41,7 +41,7 @@ namespace Forte.EpiserverRedirects.Tests.Tests.Resolver
             
             var redirect = await resolver.ResolveRedirectRuleAsync(UrlPath.Parse(expectedRule.OldPattern));
             
-            Assert.Equal(expectedRule.Id, redirect?.Id);
+            Assert.Equal(expectedRule.RuleId, redirect?.Id);
         }
     }
 }
