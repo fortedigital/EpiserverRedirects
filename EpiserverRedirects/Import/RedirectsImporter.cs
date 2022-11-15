@@ -25,7 +25,7 @@ namespace Forte.EpiserverRedirects.Import
             }
         }
 
-        private RedirectRule CreateRedirectRule(RedirectRuleImportRow redirectRow)
+        private IRedirectRule CreateRedirectRule(RedirectRuleImportRow redirectRow)
         {
             var matchToContent = redirectRow.ContentId.HasValue;
             

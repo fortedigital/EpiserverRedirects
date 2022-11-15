@@ -61,12 +61,12 @@ namespace Forte.EpiserverRedirects.System
                 ? _redirectRuleRepository
                     .GetAll()
                     .Where(x => deletedContent.ID == x.ContentId || (x.ContentId.HasValue && deletedDescendantsIds.Contains(x.ContentId.Value)))
-                    .Select(x => x.Id.ExternalId)
+                    .Select(x => x.RuleId)
                     .ToList()
                 : _redirectRuleRepository
                     .GetAll()
                     .Where(x => deletedContent.ID == x.ContentId)
-                    .Select(x => x.Id.ExternalId)
+                    .Select(x => x.RuleId)
                     .ToList();
 
             foreach (var redirect in redirectsToDelete)

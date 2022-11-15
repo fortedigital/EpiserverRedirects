@@ -1,0 +1,24 @@
+﻿<?xml version="1.0"?>
+<package>
+	<metadata>
+		<id>Forte.EpiserverRedirects.SqlServer</id>
+		<version>$version$</version>
+		<title>Forte.EpiserverRedirects.SqlServer</title>
+		<authors>Forte_ Digital</authors>
+		<requireLicenseAcceptance>false</requireLicenseAcceptance>
+		<description>EpiserverRedirects additional library implementing SqlServer-based redirect rule store</description>
+		<projectUrl>https://github.com/fortedigital/EpiserverRedirects</projectUrl>
+		<dependencies>
+			<group targetFramework="net5.0">
+				<dependency id="Forte.EpiserverRedirects.EntityFramework" version="[3.0.0,3.999)" />
+				<dependency id="Microsoft.EntityFrameworkCore" version="[5.0.16,6.999)" />
+				<dependency id="Microsoft.EntityFrameworkCore.Relational" version="[5.0.16,6.999)" />
+				<dependency id="Microsoft.EntityFrameworkCore.Design" version="[5.0.16,6.999)" />
+				<dependency id="Microsoft.EntityFrameworkCore.SqlServer" version="[5.0.16,6.999)" />
+			</group>
+		</dependencies>
+	</metadata>
+	<files>
+		<file src="bin/Release/net5.0/Forte.EpiserverRedirects.SqlServer.dll" target="lib/net5.0" />
+	</files>
+</package>

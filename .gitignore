@@ -287,3 +287,7 @@ __pycache__/
 
 # AlloyDemoKit blobs
 AlloyDemoKit/App_Data/blobs/**
+
+EpiserverRedirects/nuget.exe
+EpiserverRedirects.EntityFramework/nuget.exe
+EpiserverRedirects.SqlServer/nuget.exe

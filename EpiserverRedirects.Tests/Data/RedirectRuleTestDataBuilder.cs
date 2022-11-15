@@ -63,18 +63,17 @@ namespace Forte.EpiserverRedirects.Tests.Data
         {
             RedirectRule changedRedirectRule;
 
-
             while (true)
             {
                 var randomRedirectRule = GetRandomRedirectRuleFromData();
 
-                if (_alreadyChangedRedirectRulesGuids.Contains(randomRedirectRule.Id.ExternalId))
+                if (_alreadyChangedRedirectRulesGuids.Contains(randomRedirectRule.RuleId))
                 {
                     continue;
                 }
 
                 changeDataAction.Invoke(randomRedirectRule);
-                _alreadyChangedRedirectRulesGuids.Add(randomRedirectRule.Id.ExternalId);
+                _alreadyChangedRedirectRulesGuids.Add(randomRedirectRule.RuleId);
                 
                 changedRedirectRule = randomRedirectRule;
                 break;
@@ -93,6 +92,5 @@ namespace Forte.EpiserverRedirects.Tests.Data
         {
             return _redirectsHashSet;
         }
-
     }
 }

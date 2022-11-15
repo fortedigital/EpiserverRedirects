@@ -9,38 +9,38 @@ namespace Forte.EpiserverRedirects.Model.RedirectRule
     public class RedirectRuleDto : IValidatableObject
     {
         public Guid? Id { get; set; }
-        
+
         [Required]
         public string OldPattern { get; set; }
-        
+
         public string NewPattern { get; set; }
-        
+
         public int? ContentId { get; set; }
-        
+
         [Required]
         public RedirectRuleType RedirectRuleType { get; set; }
+
         public int? Priority { get; set; }
-        
+
         [Required]
         public RedirectType RedirectType { get; set; }
-        
+
         public RedirectOrigin RedirectOrigin { get; set; }
-        
+
         [Required]
         public DateTime CreatedOn { get; set; }
-        
+
         [Required]
         public bool IsActive { get; set; }
+
         public string Notes { get; set; }
-        
+
         public string CreatedBy { get; set; }
-
-
 
         public RedirectRuleDto()
         {
-            
         }
+
         public RedirectRuleDto(string pattern, string newUrl)
         {
             OldPattern = pattern;

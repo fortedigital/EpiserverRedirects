@@ -58,7 +58,7 @@ namespace Forte.EpiserverRedirects.Tests.Builder.Redirect
             _redirect = new ExactMatchRedirect(_redirectRule);
             return this;
         }
-        
+
         public RedirectBuilder WithRegexRedirectRule(out RedirectRule redirectRule, string oldPattern, string newPattern)
         {
             _redirectRule.RedirectRuleType = RedirectRuleType.Regex;

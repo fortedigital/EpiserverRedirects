@@ -1,7 +1,7 @@
-﻿using EpiserverRedirects.EntityFramework.Repository;
+﻿using Forte.EpiserverRedirects.EntityFramework;
 using Microsoft.EntityFrameworkCore;
 
-namespace EpiserverRedirects.SqlServer.Design
+namespace Forte.EpiserverRedirects.SqlServer.Design
 {
     public class SqlRedirectRulesDbContext : RedirectRulesDbContext
     {

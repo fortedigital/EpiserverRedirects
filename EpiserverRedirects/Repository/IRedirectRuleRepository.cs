@@ -6,10 +6,10 @@ namespace Forte.EpiserverRedirects.Repository
 {
     public interface IRedirectRuleRepository
     {
-        RedirectRule GetById(Guid id);
-        IQueryable<RedirectRule> GetAll();
-        RedirectRule Add(RedirectRule redirectRule);
-        RedirectRule Update(RedirectRule redirectRule);
+        IRedirectRule GetById(Guid id);
+        IQueryable<IRedirectRule> GetAll();
+        IRedirectRule Add(IRedirectRule redirectRule);
+        IRedirectRule Update(IRedirectRule redirectRule);
         bool Delete(Guid id);
         bool ClearAll();
     }

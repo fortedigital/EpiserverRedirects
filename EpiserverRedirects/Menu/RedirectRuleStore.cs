@@ -43,7 +43,6 @@ namespace Forte.EpiserverRedirects.Menu
             };
 
             itemRange.AddHeaderTo(HttpContext.Response);
-
             return Rest(redirects);
         }
 
@@ -56,7 +55,7 @@ namespace Forte.EpiserverRedirects.Menu
             }
 
             var newRedirectRule = _redirectRuleMapper.DtoToModel(dto);
-            newRedirectRule.FromManual();
+            RedirectRule.FromManual(newRedirectRule);
             newRedirectRule = _redirectRuleRepository.Add(newRedirectRule);
             var newRedirectRuleDto = _redirectRuleMapper.ModelToDto(newRedirectRule);
 

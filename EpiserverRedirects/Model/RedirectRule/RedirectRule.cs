@@ -1,49 +1,29 @@
-using System;
-using EPiServer.Data;
-using EPiServer.Data.Dynamic;
 using EPiServer.Security;
+using System;
+
 
 namespace Forte.EpiserverRedirects.Model.RedirectRule
 {
-    [EPiServerDataStore(AutomaticallyRemapStore = true)]
-    public class RedirectRule : IDynamicData
+    public class RedirectRule : IRedirectRule
     {
-        private string _oldPattern;
-        private string _newPattern;
-
-        public Identity Id { get; set; }
-
+        public Guid RuleId { get; set; }
         public int? ContentId { get; set; }
-
-        public string OldPattern
-        {
-            get => UrlPath.EnsurePathEncoding(_oldPattern);
-            set => _oldPattern = UrlPath.EnsurePathEncoding(value);
-        }
-
-        public string NewPattern
-        {
-            get => UrlPath.EnsurePathEncoding(_newPattern);
-            set => _newPattern = UrlPath.EnsurePathEncoding(value);
-        }
-
+        public string OldPattern { get; set; }
+        public string NewPattern { get; set; }
         public RedirectRuleType RedirectRuleType { get; set; }
-
         public RedirectType RedirectType { get; set; }
-
         public RedirectOrigin RedirectOrigin { get; set; }
         public DateTime CreatedOn { get; set; }
-
         public bool IsActive { get; set; }
         public string CreatedBy { get; set; }
         public string Notes { get; set; }
         public int Priority { get; set; }
 
-        public void FromManual()
+        public static void FromManual(IRedirectRule item)
         {
-            CreatedOn = DateTime.UtcNow;
-            CreatedBy = PrincipalInfo.CurrentPrincipal.Identity.Name;
-            RedirectOrigin = RedirectOrigin.Manual;
+            item.CreatedOn = DateTime.UtcNow;
+            item.CreatedBy = PrincipalInfo.CurrentPrincipal.Identity.Name;
+            item.RedirectOrigin = RedirectOrigin.Manual;
         }
 
         public static RedirectRule NewFromManual(string oldPattern, string newPattern, RedirectType redirectType,

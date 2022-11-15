@@ -1,10 +1,10 @@
-﻿using System;
-using System.Linq;
-using EPiServer;
+﻿using EPiServer;
 using EPiServer.ServiceLocation;
 using EPiServer.Shell.Modules;
 using Forte.EpiserverRedirects.Caching;
 using Forte.EpiserverRedirects.Configuration;
+using Forte.EpiserverRedirects.DynamicData;
+using Forte.EpiserverRedirects.DynamicData.Internal;
 using Forte.EpiserverRedirects.Events;
 using Forte.EpiserverRedirects.Import;
 using Forte.EpiserverRedirects.Mapper;
@@ -13,16 +13,32 @@ using Forte.EpiserverRedirects.Request;
 using Forte.EpiserverRedirects.Resolver;
 using Forte.EpiserverRedirects.System;
 using Microsoft.Extensions.DependencyInjection;
+using System;
+using System.Linq;
+
 
 namespace Forte.EpiserverRedirects.Extensions
 {
     public static class ServiceCollectionExtensions
     {
-        public static EpiserverRedirectsConfiguration ConfigureEpiserverRedirects(this IServiceCollection services, Action<RedirectsOptions> configureAction = null)
+        public static IServiceCollection ConfigureEpiserverRedirects(
+            this IServiceCollection services,
+            Action<RedirectsOptions> configureAction = null,
+            Action<EpiserverRedirectsRepositoryConfiguration> configRepositoryAction = null)
         {
             var redirectsOptions = new RedirectsOptions();
-
             configureAction?.Invoke(redirectsOptions);
+
+            var repositoryConfig = new EpiserverRedirectsRepositoryConfiguration(services, redirectsOptions);
+            configRepositoryAction?.Invoke(repositoryConfig);
+
+            if (!services.Any(s => s.ServiceType == typeof(IRedirectRuleRepository)))
+            {
+                services.AddSingleton<ExtendedDynamicDataStoreFactory>();
+                services.AddSingleton<IDynamicDataRedirectRuleMapper, DynamicDataRedirectRuleMapper>();
+                services.AddTransient<IDynamicDataStore<DynamicDataRedirectRule>, DynamicDataStore<DynamicDataRedirectRule>>();
+                repositoryConfig.AddRepository<DynamicDataRepository>();
+            }
 
             services.AddSingleton(redirectsOptions);
             services.AddSingleton(redirectsOptions.Caching);
@@ -37,13 +53,9 @@ namespace Forte.EpiserverRedirects.Extensions
                 services.AddTransient<SystemRedirectsActions>();
             }
 
-            if (redirectsOptions.Caching.AllRedirectsCacheEnabled || redirectsOptions.Caching.UrlRedirectCacheEnabled)
-            {
-                services.AddTransient<ICache, Cache>();
-            }
-
             if (redirectsOptions.Caching.UrlRedirectCacheEnabled)
             {
+                services.AddTransient<ICache, Cache>();
                 services.AddTransient<IRedirectRuleResolver>(provider => new CacheRedirectResolverDecorator(GetCompositeRuleResolver(provider), provider.GetService<ICache>()));
             }
             else
@@ -65,8 +77,7 @@ namespace Forte.EpiserverRedirects.Extensions
                 });
 
             EventsHandlersScopeConfiguration.IsAutomaticRedirectsDisabled = redirectsOptions.AddAutomaticRedirects == false;
-
-            return new EpiserverRedirectsConfiguration(services, redirectsOptions);
+            return services;
         }
 
         private static IRedirectRuleResolver GetCompositeRuleResolver(IServiceProvider provider)

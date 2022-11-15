@@ -17,7 +17,7 @@ namespace Forte.EpiserverRedirects.Tests.Data
         {
             return new RedirectRule
             {
-                Id = Guid.NewGuid(),
+                RuleId = Guid.NewGuid(),
                 OldPattern = UrlPath.NormalizePath(GetRandomPath()),
                 NewPattern = GetRandomPath(),
                 IsActive = true,
@@ -30,7 +30,7 @@ namespace Forte.EpiserverRedirects.Tests.Data
                 Priority = RandomGenerator.Next(1, int.MaxValue)
             };
         }
-        
+
         public static RedirectRuleDto CreateRandomRedirectRuleDto()
         {
             return new RedirectRuleDto

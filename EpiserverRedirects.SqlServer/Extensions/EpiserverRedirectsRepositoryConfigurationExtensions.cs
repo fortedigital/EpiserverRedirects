@@ -1,24 +1,23 @@
-﻿using System;
-using EpiserverRedirects.EntityFramework.Extensions;
-using EpiserverRedirects.SqlServer.Design;
-using EpiserverRedirects.SqlServer.Services;
-using Forte.EpiserverRedirects.Configuration;
+﻿using Forte.EpiserverRedirects.Configuration;
+using Forte.EpiserverRedirects.EntityFramework.Extensions;
+using Forte.EpiserverRedirects.SqlServer.Design;
+using Forte.EpiserverRedirects.SqlServer.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
+using System;
 
-namespace EpiserverRedirects.SqlServer.Extensions
+namespace Forte.EpiserverRedirects.SqlServer.Extensions
 {
-    public static class EpiserverRedirectsConfigurationExtensions
+    public static class EpiserverRedirectsRepositoryConfigurationExtensions
     {
         public static IServiceCollection AddSqlServerRepository(
-            this EpiserverRedirectsConfiguration configuration,
+            this EpiserverRedirectsRepositoryConfiguration configuration,
             string connectionString,
             Action<SqlServerDbContextOptionsBuilder> sqlServerConfigureAction = null)
         {
             configuration.Services.AddHostedService<MigrationService>();
-
-            return configuration.AddEntityFrameworkRepository<SqlRedirectRulesDbContext>(
+            return configuration.AddEntityFrameworkContext<SqlRedirectRulesDbContext>(
                 dbContextBuilder => dbContextBuilder.UseSqlServer(
                     connectionString,
                     sqlServerBuilder => sqlServerConfigureAction?.Invoke(sqlServerBuilder)));

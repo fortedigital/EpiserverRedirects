@@ -25,7 +25,9 @@ Basic installation scenario
 public void ConfigureServices(IServiceCollection services)
 {
     // (...)
-    services.AddEpiserverRedirects(options => ...);
+    services.ConfigureEpiserverRedirects(
+        options => ...,       // configure caching, priority, etc
+        repoConfig => ... );  // configure custom rule store here. Skip to fallback to Dynamic Data Store.
     // (...)
 }
 ```
@@ -38,6 +40,25 @@ public void Configure(IApplicationBuilder app)
     // (...)
     app.UseEpiserverRedirects();
     // (...)
+}
+```
+
+4. Optional. Implement Forte.EpiserverRedirects.Repository.IRedirectRuleRepository interface in order to use your own rule store. Specify your implementation in configuration: Step 2.
+
+```c#
+public class CustomRuleStore : IRedirectRuleRepository
+{
+    public IQueryable<IRedirectRule> GetAll()
+	// (...)
+	public IRedirectRule GetById(Guid id)
+	// (...)
+	public IRedirectRule Add(IRedirectRule redirectRule)
+	// (...)
+	public IRedirectRule Update(IRedirectRule redirectRule)
+	// (...)
+	public bool Delete(Guid id)
+	// (...)
+	
 }
 ```
 
