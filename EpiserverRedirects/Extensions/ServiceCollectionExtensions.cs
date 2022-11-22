@@ -3,7 +3,7 @@ using EPiServer.ServiceLocation;
 using EPiServer.Shell.Modules;
 using Forte.EpiserverRedirects.Caching;
 using Forte.EpiserverRedirects.Configuration;
-using Forte.EpiserverRedirects.DynamicDataStore;
+using Forte.EpiserverRedirects.DynamicData;
 using Forte.EpiserverRedirects.Events;
 using Forte.EpiserverRedirects.Import;
 using Forte.EpiserverRedirects.Mapper;
@@ -33,9 +33,9 @@ namespace Forte.EpiserverRedirects.Extensions
 
             if (!services.Any(s => s.ServiceType == typeof(IRedirectRuleRepository)))
             {
-                services.AddSingleton<IDdsRedirectRuleMapper, DdsRedirectRuleMapper>();
-                services.AddTransient<IDynamicDataStore<DdsRedirectRule>, DynamicDataStoreImpl<DdsRedirectRule>>();
-                repositoryConfig.AddRepository<DdsRepository>();
+                services.AddSingleton<IDynamicDataRedirectRuleMapper, DynamicDataRedirectRuleMapper>();
+                services.AddTransient<IDynamicDataStore<DynamicDataRedirectRule>, DynamicDataStore<DynamicDataRedirectRule>>();
+                repositoryConfig.AddRepository<DynamicDataRepository>();
             }
 
             services.AddSingleton(redirectsOptions);

@@ -25,7 +25,9 @@ Basic installation scenario
 public void ConfigureServices(IServiceCollection services)
 {
     // (...)
-    services.AddEpiserverRedirects(options => ...);
+    services.ConfigureEpiserverRedirects(
+        options => ...,       // configure caching, priority, etc
+        repoConfig => ... );  // configure custom rule store. Skip to fallback to Dynamic Data Store.
     // (...)
 }
 ```

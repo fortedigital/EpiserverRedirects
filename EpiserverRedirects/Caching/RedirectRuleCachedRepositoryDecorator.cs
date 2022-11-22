@@ -1,6 +1,6 @@
-﻿using Forte.EpiserverRedirects.Model.RedirectRule;
+﻿using Forte.EpiserverRedirects.Model;
+using Forte.EpiserverRedirects.Model.RedirectRule;
 using Forte.EpiserverRedirects.Repository;
-using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 
@@ -30,13 +30,13 @@ namespace Forte.EpiserverRedirects.Caching
 
         public IList<RedirectRuleModel> GetAll() => _repository.GetAll();
 
-        public IList<RedirectRuleModel> Query(out int total, RedirectRuleQuery query) => _repository.Query(out total, query);
+        public SearchResult<RedirectRuleModel> Query(RedirectRuleQuery query) => _repository.Query(query);
 
         public IList<RedirectRuleModel> GetByContent(IList<int> contentIds) => _repository.GetByContent(contentIds);
 
-        public RedirectRuleModel FindRegexMatch(string patern)
+        public RedirectRuleModel FindRegexMatch(string pattern)
         {
-            if (patern == null)
+            if (pattern == null)
             {
                 return null;
             }
@@ -48,22 +48,21 @@ namespace Forte.EpiserverRedirects.Caching
                 _cache.Add(CacheKeyRegex, ruleSet);
             }
 
-            if (ruleSet.TryGetValue(patern, out var rule))
+            if (ruleSet.TryGetValue(pattern, out var rule))
             {
                 return rule;
             }
 
+            var matchedRule = _repository.FindRegexMatch(pattern);
             lock (Locker)
             {
-                if (ruleSet.TryGetValue(patern, out rule))
+                if (ruleSet.TryGetValue(pattern, out rule))
                 {
                     return rule;
                 }
 
-                var matchedRule = _repository.FindRegexMatch(patern);
-
                 // even if mactedRule is NULL - we save it to cache - to avoid searching for this NULL again
-                ruleSet.Add(patern, matchedRule);
+                ruleSet.Add(pattern, matchedRule);
                 return matchedRule;
             }
         }
@@ -87,14 +86,13 @@ namespace Forte.EpiserverRedirects.Caching
                 return rule;
             }
 
+            var matchedRule = _repository.FindExactMatch(patern);
             lock (Locker)
             {
                 if (ruleSet.TryGetValue(patern, out rule))
                 {
                     return rule;
                 }
-
-                var matchedRule = _repository.FindExactMatch(patern);
 
                 // even if mactedRule is NULL - we save it to cache - to avoid searching for this NULL again
                 ruleSet.Add(patern, matchedRule);

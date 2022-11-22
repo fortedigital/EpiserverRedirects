@@ -1,4 +1,5 @@
-﻿using Forte.EpiserverRedirects.Model.RedirectRule;
+﻿using Forte.EpiserverRedirects.Model;
+using Forte.EpiserverRedirects.Model.RedirectRule;
 using Forte.EpiserverRedirects.Repository;
 using System;
 using System.Collections.Generic;
@@ -8,8 +9,7 @@ using System.Text.RegularExpressions;
 
 namespace Forte.EpiserverRedirects.EntityFramework.Repository
 {
-    public class RedirectRulesRepository<TDbContext> : IRedirectRuleRepository
-        where TDbContext : IRedirectRulesDbContext
+    public class RedirectRulesRepository : IRedirectRuleRepository
     {
         private readonly IRedirectRulesDbContext _dbContext;
         private readonly IRedirectRuleMapper _mapper;
@@ -35,12 +35,10 @@ namespace Forte.EpiserverRedirects.EntityFramework.Repository
                 .ToList();
         }
 
-        public IList<RedirectRuleModel> Query(out int allRedirectsCount, RedirectRuleQuery query)
+        public SearchResult<RedirectRuleModel> Query(RedirectRuleQuery query)
         {
-            return _dbContext.RedirectRules
-                .ApplyQuery(out allRedirectsCount, query)
-                .Select(entity => _mapper.MapToModel(entity))
-                .ToList();
+            var result = _dbContext.RedirectRules.ApplyQuery(query);
+            return _mapper.MapSearchResult(result);
         }
 
         public IList<RedirectRuleModel> GetByContent(IList<int> contentIds)

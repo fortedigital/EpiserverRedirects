@@ -16,7 +16,7 @@ namespace Forte.EpiserverRedirects.EntityFramework.Extensions
         {
             configuration.Services.AddDbContext<IRedirectRulesDbContext, TDbContext>(dbOptionsBuilder);
             configuration.Services.AddSingleton<IRedirectRuleMapper, RedirectRuleMapper>();
-            return configuration.AddRepository<RedirectRulesRepository<TDbContext>>();
+            return configuration.AddRepository<RedirectRulesRepository>();
         }
     }
 }

@@ -1,12 +1,11 @@
-using System;
-using System.Linq;
-using System.Net;
 using EPiServer.Shell.Services.Rest;
-using Forte.EpiserverRedirects.DynamicDataStore;
 using Forte.EpiserverRedirects.Mapper;
 using Forte.EpiserverRedirects.Model.RedirectRule;
 using Forte.EpiserverRedirects.Repository;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Linq;
+using System.Net;
 
 namespace Forte.EpiserverRedirects.Menu
 {
@@ -33,13 +32,12 @@ namespace Forte.EpiserverRedirects.Menu
         [HttpGet]
         public ActionResult Get(RedirectRuleQuery query = null)
         {
-            var redirects = _redirectRuleRepository
-                .Query(out var total, query)
-                .Select(_redirectRuleMapper.ModelToDto)
-                .ToList();
-            var itemRange = new ItemRange { Total = total };
+            var queryResult = _redirectRuleRepository.Query(query);
+            var items = queryResult.Items
+                .Select(_redirectRuleMapper.ModelToDto);
+            var itemRange = new ItemRange { Total = queryResult.Total };
             itemRange.AddHeaderTo(HttpContext.Response);
-            return Rest(redirects);
+            return Rest(items);
         }
 
         [HttpPost]

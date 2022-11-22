@@ -1,19 +1,12 @@
-﻿using Forte.EpiserverRedirects.EntityFramework.Model;
+﻿using Forte.EpiserverRedirects.DynamicData;
+using Forte.EpiserverRedirects.EntityFramework.Model;
+using Forte.EpiserverRedirects.Model;
 using Forte.EpiserverRedirects.Model.RedirectRule;
 using System;
-
+using System.Linq;
 
 namespace Forte.EpiserverRedirects.EntityFramework.Repository
 {
-    public interface IRedirectRuleMapper
-    {
-        RedirectRuleEntity MapForSave(RedirectRuleModel item);
-
-        void MapForUpdate(RedirectRuleModel from, RedirectRuleEntity to);
-
-        RedirectRuleModel MapToModel(RedirectRuleEntity entity);
-    }
-
     public class RedirectRuleMapper : IRedirectRuleMapper
     {
         public RedirectRuleEntity MapForSave(RedirectRuleModel model)
@@ -74,6 +67,17 @@ namespace Forte.EpiserverRedirects.EntityFramework.Repository
                 CreatedBy = entity.CreatedBy,
                 Notes = entity.Notes,
                 Priority = entity.Priority
+            };
+        }
+
+        public SearchResult<RedirectRuleModel> MapSearchResult(SearchResult<RedirectRuleEntity> result)
+        {
+            return new SearchResult<RedirectRuleModel>
+            {
+                Total = result.Total,
+                Items = result.Items
+                    .Select(entity => MapToModel(entity))
+                    .ToList()
             };
         }
     }

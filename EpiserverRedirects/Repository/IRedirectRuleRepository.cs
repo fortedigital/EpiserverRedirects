@@ -1,3 +1,4 @@
+using Forte.EpiserverRedirects.Model;
 using Forte.EpiserverRedirects.Model.RedirectRule;
 using System;
 using System.Collections.Generic;
@@ -14,11 +15,11 @@ namespace Forte.EpiserverRedirects.Repository
 
         IList<RedirectRuleModel> GetAll();
 
-        IList<RedirectRuleModel> Query(out int total, RedirectRuleQuery query);
+        SearchResult<RedirectRuleModel> Query(RedirectRuleQuery query);
 
         IList<RedirectRuleModel> GetByContent(IList<int> contentIds);
 
-        RedirectRuleModel FindRegexMatch(string patern);
+        RedirectRuleModel FindRegexMatch(string pattern);
 
         RedirectRuleModel FindExactMatch(string patern);
 

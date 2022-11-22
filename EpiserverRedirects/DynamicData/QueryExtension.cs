@@ -1,20 +1,23 @@
 ﻿using EPiServer.Shell.Services.Rest;
+using Forte.EpiserverRedirects.Model;
 using Forte.EpiserverRedirects.Model.RedirectRule;
-using System.Collections.Generic;
 using System.Linq;
 
 
-namespace Forte.EpiserverRedirects.DynamicDataStore
+namespace Forte.EpiserverRedirects.DynamicData
 {
     public static class QueryExtension
     {
-        public static IEnumerable<DdsRedirectRule> ApplyQuery(this IQueryable<DdsRedirectRule> redirectRules,
-            out int allRedirectsCount, RedirectRuleQuery query = null)
+        public static SearchResult<DynamicDataRedirectRule> ApplyQuery(this IQueryable<DynamicDataRedirectRule> redirectRules,
+            RedirectRuleQuery query = null)
         {
             if (query == null)
             {
-                allRedirectsCount = redirectRules.Count();
-                return redirectRules.AsEnumerable();
+                return new SearchResult<DynamicDataRedirectRule>
+                {
+                    Total = redirectRules.Count(),
+                    Items = redirectRules.ToList()
+                };
             }
 
             if (!string.IsNullOrEmpty(query.OldPattern))
@@ -82,12 +85,14 @@ namespace Forte.EpiserverRedirects.DynamicDataStore
                 redirectRules = redirectRules.OrderBy(query.SortColumns);
             }
 
-            allRedirectsCount = redirectRules.Count();
-
-            return redirectRules
-                .ApplyRange(query.Range)
-                .Items
-                .AsEnumerable();
+            return new SearchResult<DynamicDataRedirectRule>
+            {
+                Total = redirectRules.Count(),
+                Items = redirectRules
+                    .ApplyRange(query.Range)
+                    .Items
+                    .ToList()
+            };
         }
     }
 }

@@ -1,27 +1,20 @@
 ﻿using EPiServer.Data;
-using EPiServer.Data.Entity;
+using Forte.EpiserverRedirects.Model;
 using Forte.EpiserverRedirects.Model.RedirectRule;
+using System.Linq;
 
-
-namespace Forte.EpiserverRedirects.DynamicDataStore
+namespace Forte.EpiserverRedirects.DynamicData
 {
-    public interface IDdsRedirectRuleMapper
+    public class DynamicDataRedirectRuleMapper : IDynamicDataRedirectRuleMapper
     {
-        DdsRedirectRule MapForSave(RedirectRuleModel item);
-        void MapForUpdate(RedirectRuleModel from, DdsRedirectRule to);
-        RedirectRuleModel MapToModel(DdsRedirectRule entity);
-    }
-
-    public class DdsRedirectRuleMapper : IDdsRedirectRuleMapper
-    {
-        public DdsRedirectRule MapForSave(RedirectRuleModel model)
+        public DynamicDataRedirectRule MapForSave(RedirectRuleModel model)
         {
             if (model == null)
             {
                 return null;
             }
 
-            return new DdsRedirectRule
+            return new DynamicDataRedirectRule
             {
                 Id = Identity.NewIdentity(),
                 ContentId = model.ContentId,
@@ -38,7 +31,7 @@ namespace Forte.EpiserverRedirects.DynamicDataStore
             };
         }
 
-        public void MapForUpdate(RedirectRuleModel from, DdsRedirectRule to)
+        public void MapForUpdate(RedirectRuleModel from, DynamicDataRedirectRule to)
         {
             to.OldPattern = from.OldPattern;
             to.NewPattern = from.NewPattern;
@@ -51,7 +44,7 @@ namespace Forte.EpiserverRedirects.DynamicDataStore
             to.ContentId = from.ContentId;
         }
 
-        public RedirectRuleModel MapToModel(DdsRedirectRule entity)
+        public RedirectRuleModel MapToModel(DynamicDataRedirectRule entity)
         {
             if (entity == null)
             {
@@ -72,6 +65,17 @@ namespace Forte.EpiserverRedirects.DynamicDataStore
                 CreatedBy = entity.CreatedBy,
                 Notes = entity.Notes,
                 Priority = entity.Priority
+            };
+        }
+
+        public SearchResult<RedirectRuleModel> MapSearchResult(SearchResult<DynamicDataRedirectRule> result)
+        {
+            return new SearchResult<RedirectRuleModel>
+            {
+                Total = result.Total,
+                Items = result.Items
+                    .Select(entity => MapToModel(entity))
+                    .ToList()
             };
         }
     }

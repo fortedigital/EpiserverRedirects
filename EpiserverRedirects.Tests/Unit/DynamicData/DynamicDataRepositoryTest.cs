@@ -1,56 +1,56 @@
-﻿using Forte.EpiserverRedirects.EntityFramework;
-using Forte.EpiserverRedirects.EntityFramework.Model;
-using Forte.EpiserverRedirects.EntityFramework.Repository;
+﻿using EPiServer.Data;
+using EPiServer.Shell.Search;
+using Forte.EpiserverRedirects.DynamicData;
+using Forte.EpiserverRedirects.Model;
 using Forte.EpiserverRedirects.Model.RedirectRule;
 using Forte.EpiserverRedirects.Repository;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Moq;
-using Moq.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Xunit;
 
 
-namespace EpiserverRedirects.EntityFramework.Tests.Repository
+namespace Forte.EpiserverRedirects.Tests.Unit.DynamicData
 {
-    public class RedirectRulesRepositoryTest
+    public class DynamicDataRepositoryTest
     {
         private readonly IRedirectRuleRepository _target;
-        private readonly Mock<IRedirectRulesDbContext> _dbContext;
-        private readonly Mock<IRedirectRuleMapper> _mapper;
-        private readonly Mock<DbSet<RedirectRuleEntity>> _dbSet;
+        private readonly Mock<IDynamicDataStore<DynamicDataRedirectRule>> _store;
+        private readonly Mock<IDynamicDataRedirectRuleMapper> _mapper;
 
         private readonly Guid _id1;
         private readonly Guid _id2;
         private readonly Guid _id3;
-        private readonly RedirectRuleEntity _entity1;
-        private readonly RedirectRuleEntity _entity2;
-        private readonly RedirectRuleEntity _entity3;
+        private readonly DynamicDataRedirectRule _entity1;
+        private readonly DynamicDataRedirectRule _entity2;
+        private readonly DynamicDataRedirectRule _entity3;
         private readonly RedirectRuleModel _model1;
         private readonly RedirectRuleModel _model2;
         private readonly RedirectRuleModel _model3;
 
-        public RedirectRulesRepositoryTest()
+        public DynamicDataRepositoryTest()
         {
-            _dbContext = new Mock<IRedirectRulesDbContext>(MockBehavior.Strict);
-            _mapper = new Mock<IRedirectRuleMapper>(MockBehavior.Strict);
-            _target = new RedirectRulesRepository(_dbContext.Object, _mapper.Object);
-            _dbSet = new Mock<DbSet<RedirectRuleEntity>>(MockBehavior.Strict);
+            _store = new Mock<IDynamicDataStore<DynamicDataRedirectRule>>(MockBehavior.Strict);
+            _mapper = new Mock<IDynamicDataRedirectRuleMapper>(MockBehavior.Strict);
+            _target = new DynamicDataRepository(_store.Object, _mapper.Object);
 
             _id1 = Guid.NewGuid();
             _id2 = Guid.NewGuid();
             _id3 = Guid.NewGuid();
-            _entity1 = new RedirectRuleEntity { Id = _id1, OldPattern = "One", ContentId = 1111 };
-            _entity2 = new RedirectRuleEntity { Id = _id2, OldPattern = "Two", ContentId = 2222 };
-            _entity3 = new RedirectRuleEntity { Id = _id3, OldPattern = "Three", ContentId = null };
+            _entity1 = new DynamicDataRedirectRule { Id = _id1, OldPattern = "One", ContentId = 1111 };
+            _entity2 = new DynamicDataRedirectRule { Id = _id2, OldPattern = "Two", ContentId = 2222 };
+            _entity3 = new DynamicDataRedirectRule { Id = _id3, OldPattern = "Three", ContentId = null };
             _model1 = new RedirectRuleModel();
             _model2 = new RedirectRuleModel();
             _model3 = new RedirectRuleModel();
-            _dbContext.Setup(o => o.RedirectRules).ReturnsDbSet(new List<RedirectRuleEntity> { _entity1, _entity2, _entity3 }, _dbSet);
+            _store.Setup(o => o.Items()).Returns((new List<DynamicDataRedirectRule> { _entity1, _entity2, _entity3 }).AsQueryable());
             _mapper.Setup(o => o.MapToModel(_entity1)).Returns(_model1);
             _mapper.Setup(o => o.MapToModel(_entity2)).Returns(_model2);
             _mapper.Setup(o => o.MapToModel(_entity3)).Returns(_model3);
+            _store.Setup(o => o.GetById(_id1)).Returns(_entity1);
+            _store.Setup(o => o.GetById(_id2)).Returns(_entity2);
+            _store.Setup(o => o.GetById(_id3)).Returns(_entity3);
         }
 
         [Fact]
@@ -65,9 +65,9 @@ namespace EpiserverRedirects.EntityFramework.Tests.Repository
         {
             var actual = _target.GetAll();
             Assert.Equal(3, actual.Count);
-            Assert.Contains(_model1, actual);
-            Assert.Contains(_model2, actual);
-            Assert.Contains(_model3, actual);
+            Assert.Same(_model1, actual[0]);
+            Assert.Same(_model2, actual[1]);
+            Assert.Same(_model3, actual[2]);
         }
 
         [Fact]
@@ -85,8 +85,8 @@ namespace EpiserverRedirects.EntityFramework.Tests.Repository
             var filter = new List<int> { 2222, 1111 };
             var actual = _target.GetByContent(filter);
             Assert.Equal(2, actual.Count);
-            Assert.Contains(_model1, actual);
-            Assert.Contains(_model2, actual);
+            Assert.Same(_model1, actual[0]);
+            Assert.Same(_model2, actual[1]);
         }
 
         [Fact]
@@ -101,17 +101,15 @@ namespace EpiserverRedirects.EntityFramework.Tests.Repository
         public void Given_Rule_Add_To_Store()
         {
             var input = new RedirectRuleModel();
-            var entity = new RedirectRuleEntity();
+            var entity = new DynamicDataRedirectRule();
             var model = new RedirectRuleModel();
             _mapper.Setup(o => o.MapForSave(input)).Returns(entity);
-            _dbSet.Setup(o => o.Add(entity)).Returns(null as EntityEntry<RedirectRuleEntity>).Verifiable();
-            _dbContext.Setup(o => o.SaveChanges()).Returns(0).Verifiable();
+            _store.Setup(o => o.Save(entity)).Returns(Identity.NewIdentity()).Verifiable();
             _mapper.Setup(o => o.MapToModel(entity)).Returns(model);
 
             var actual = _target.Add(input);
             Assert.Same(model, actual);
-            _dbSet.Verify();
-            _dbContext.Verify();
+            _store.Verify();
         }
 
         [Fact]
@@ -119,63 +117,56 @@ namespace EpiserverRedirects.EntityFramework.Tests.Repository
         {
             var input = new RedirectRuleModel { Id = _id1 };
             _mapper.Setup(o => o.MapForUpdate(input, _entity1)).Verifiable();
-            _dbSet.Setup(o => o.Update(_entity1)).Returns(null as EntityEntry<RedirectRuleEntity>).Verifiable();
-            _dbContext.Setup(o => o.SaveChanges()).Returns(0).Verifiable();
+            _store.Setup(o => o.Save(_entity1)).Returns(Identity.NewIdentity()).Verifiable();
 
             var actual = _target.Update(input);
             Assert.Same(_model1, actual);
             _mapper.Verify();
-            _dbSet.Verify();
-            _dbContext.Verify();
+            _store.Verify();
         }
 
         [Fact]
         public void Given_Rule_NotFound_During_Update()
         {
-            var input = new RedirectRuleModel { Id = Guid.NewGuid() };
-            Assert.Throws<ArgumentException>(() => _target.Update(input));
+            var id = Guid.NewGuid();
+            _store.Setup(o => o.GetById(id)).Returns(null as DynamicDataRedirectRule);
+            var input = new RedirectRuleModel { Id = id };
+            Assert.Throws<InvalidOperationException>(() => _target.Update(input));
         }
 
         [Fact]
         public void Given_Id_Delete_Rule_In_Store()
         {
-            _dbSet.Setup(o => o.Remove(_entity1)).Returns(null as EntityEntry<RedirectRuleEntity>).Verifiable();
-            _dbContext.Setup(o => o.SaveChanges()).Returns(0).Verifiable();
+            _store.Setup(o => o.Delete(_id1)).Verifiable();
 
             var actual = _target.Delete(_id1);
             Assert.True(actual);
-            _dbSet.Verify();
-            _dbContext.Verify();
-        }
-
-        [Fact]
-        public void Given_Delete_NonExistent_Returns_True()
-        {
-            var actual = _target.Delete(Guid.NewGuid());
-            Assert.True(actual);
+            _store.Verify();
         }
 
         [Fact]
         public void Given_Delete_Fails_Returns_False()
         {
-            _dbContext.Setup(o => o.SaveChanges()).Throws<InvalidOperationException>();
+            _store.Setup(o => o.Delete(_id1)).Throws<InvalidOperationException>();
 
             var actual = _target.Delete(_id1);
             Assert.False(actual);
         }
 
         [Fact]
-        public void Given_ClearAll_OnEmptySet()
+        public void Given_ClearAll_Returns_True()
         {
-            _dbContext.Setup(o => o.RedirectRules).ReturnsDbSet(new List<RedirectRuleEntity> {}, _dbSet);
+            _store.Setup(o => o.DeleteAll()).Verifiable();
+
             var actual = _target.ClearAll();
             Assert.True(actual);
+            _store.Verify();
         }
 
         [Fact]
         public void Given_ClearAll_Fails_Returns_False()
         {
-            _dbContext.Setup(o => o.SaveChanges()).Throws<InvalidOperationException>();
+            _store.Setup(o => o.DeleteAll()).Throws<InvalidOperationException>();
 
             var actual = _target.ClearAll();
             Assert.False(actual);

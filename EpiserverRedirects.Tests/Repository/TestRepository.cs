@@ -1,3 +1,5 @@
+using EPiServer.Shell.Search;
+using Forte.EpiserverRedirects.Model;
 using Forte.EpiserverRedirects.Model.RedirectRule;
 using Forte.EpiserverRedirects.Repository;
 using System;
@@ -30,10 +32,13 @@ namespace Forte.EpiserverRedirects.Tests.Repository
 
         public IList<RedirectRuleModel> GetAll() => _redirectsHashSet.ToList();
 
-        public IList<RedirectRuleModel> Query(out int total, RedirectRuleQuery query)
+        public SearchResult<RedirectRuleModel> Query(RedirectRuleQuery query)
         {
-            total = _redirectsHashSet.Count;
-            return _redirectsHashSet.ToList();
+            return new SearchResult<RedirectRuleModel>
+            {
+                Total = _redirectsHashSet.Count,
+                Items = _redirectsHashSet.ToList()
+            };
         }
 
         public IList<RedirectRuleModel> GetByContent(IList<int> contentIds) => _redirectsHashSet.ToList();

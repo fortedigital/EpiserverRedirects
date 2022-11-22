@@ -6,6 +6,7 @@
     <IsPackable>false</IsPackable>
 
     <AssemblyName>Forte.EpiserverRedirects.EntityFramework.Tests</AssemblyName>
+	<RootNamespace>Forte.EpiserverRedirects.EntityFramework.Tests</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

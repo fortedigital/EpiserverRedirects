@@ -4,24 +4,14 @@ using System;
 using System.Linq;
 
 
-namespace Forte.EpiserverRedirects.DynamicDataStore
+namespace Forte.EpiserverRedirects.DynamicData
 {
-    public interface IDynamicDataStore<T>
-        where T : IDynamicData
-    {
-        public IQueryable<T> Items();
-        public T GetById(Guid id);
-        public Identity Save(T item);
-        public void Delete(Guid id);
-        public void DeleteAll();
-    }
-
-    public class DynamicDataStoreImpl<T> : IDynamicDataStore<T>
+    public class DynamicDataStore<T> : IDynamicDataStore<T>
          where T : class, IDynamicData
     {
         private readonly EPiServer.Data.Dynamic.DynamicDataStore store;
 
-        public DynamicDataStoreImpl(DynamicDataStoreFactory ddsFactory)
+        public DynamicDataStore(DynamicDataStoreFactory ddsFactory)
         {
             this.store = ddsFactory.CreateStore(typeof(T));
         }

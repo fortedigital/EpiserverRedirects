@@ -1,3 +1,4 @@
+using Forte.EpiserverRedirects.Model;
 using Forte.EpiserverRedirects.Model.RedirectRule;
 using Forte.EpiserverRedirects.Repository;
 using System;
@@ -6,16 +7,16 @@ using System.Linq;
 using System.Text.RegularExpressions;
 
 
-namespace Forte.EpiserverRedirects.DynamicDataStore
+namespace Forte.EpiserverRedirects.DynamicData
 {
-    public class DdsRepository : IRedirectRuleRepository
+    public class DynamicDataRepository : IRedirectRuleRepository
     {
-        private readonly IDynamicDataStore<DdsRedirectRule> _ruleStore;
-        private readonly IDdsRedirectRuleMapper _mapper;
+        private readonly IDynamicDataStore<DynamicDataRedirectRule> _ruleStore;
+        private readonly IDynamicDataRedirectRuleMapper _mapper;
 
-        public DdsRepository(
-            IDynamicDataStore<DdsRedirectRule> ruleStore,
-            IDdsRedirectRuleMapper mapper)
+        public DynamicDataRepository(
+            IDynamicDataStore<DynamicDataRedirectRule> ruleStore,
+            IDynamicDataRedirectRuleMapper mapper)
         {
             _ruleStore = ruleStore;
             _mapper = mapper;
@@ -34,12 +35,10 @@ namespace Forte.EpiserverRedirects.DynamicDataStore
                 .ToList();
         }
 
-        public IList<RedirectRuleModel> Query(out int allRedirectsCount, RedirectRuleQuery query)
+        public SearchResult<RedirectRuleModel> Query(RedirectRuleQuery query)
         {
-            return _ruleStore.Items()
-                .ApplyQuery(out allRedirectsCount, query)
-                .Select(entity => _mapper.MapToModel(entity))
-                .ToList();
+            var result = _ruleStore.Items().ApplyQuery(query);
+            return _mapper.MapSearchResult(result);
         }
 
         public IList<RedirectRuleModel> GetByContent(IList<int> contentIds)

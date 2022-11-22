@@ -3,10 +3,10 @@ using EPiServer.Data.Dynamic;
 using Forte.EpiserverRedirects.Model.RedirectRule;
 using System;
 
-namespace Forte.EpiserverRedirects.DynamicDataStore
+namespace Forte.EpiserverRedirects.DynamicData
 {
     [EPiServerDataStore(AutomaticallyRemapStore = true)]
-    public class DdsRedirectRule : IDynamicData
+    public class DynamicDataRedirectRule : IDynamicData
     {
         public Identity Id { get; set; }
         public int? ContentId { get; set; }
