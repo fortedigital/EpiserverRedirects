@@ -54,17 +54,10 @@ public void Configure(IApplicationBuilder app)
 }
 ```
 
-4. Optional. Implement Forte.EpiserverRedirects.Repository.IRedirectRuleRepository interface in order to use your own rule store. Specify your implementation in configuration: Step 2.
-You may use the EpiserverRedirects.SqlServer package that comes with SqlServer implementation of the rule store or just refer to the generic EpiserverRedirects.EntityFramework package to implement rule store that works with your database.
-
-```c#
-public class CustomRuleStore : IRedirectRuleRepository
-{
-    // (...)
-    public IQueryable<IRedirectRule> GetAll()
-    // (...)
-}
-```
+Custom Rule Store
+-------------
+By default, redirect rules are stored in Dynamic Data Store. You can implement custom store using the `IRedirectRuleRepository` interface.
+Refer to the `EpiserverRedirects.SqlServer` package for SQL Server implementation or a more generic `EpiserverRedirects.EntityFramework` package.
 
 Cache
 -------------
