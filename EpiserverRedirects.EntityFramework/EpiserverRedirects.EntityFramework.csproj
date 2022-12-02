@@ -1,9 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <TargetFramework>net5.0</TargetFramework>
+        <TargetFramework>net6.0</TargetFramework>
         <AssemblyName>Forte.EpiserverRedirects.EntityFramework</AssemblyName>
         <RootNamespace>Forte.EpiserverRedirects.EntityFramework</RootNamespace>
-        <Version>3.0.0</Version>
+        <Version>$(MajorVersionNumber).$(MinorVersionNumber).$(BuildNumber)$(VersionSuffix)</Version>
     </PropertyGroup>
     <ItemGroup>
         <ProjectReference Include="..\EpiserverRedirects\EpiserverRedirects.csproj" />

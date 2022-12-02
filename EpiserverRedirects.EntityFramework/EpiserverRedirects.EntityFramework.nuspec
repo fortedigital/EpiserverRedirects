@@ -10,13 +10,13 @@
         <projectUrl>https://github.com/fortedigital/EpiserverRedirects</projectUrl>
         <dependencies>
             <group targetFramework="net5.0">
-                <dependency id="Forte.EpiserverRedirects" version="[3.0.0,3.999)" />
-                <dependency id="Microsoft.EntityFrameworkCore" version="[5.0.16,6.999)" />
-                <dependency id="Microsoft.EntityFrameworkCore.Relational" version="[5.0.16,6.999)" />
+                <dependency id="Forte.EpiserverRedirects" version="[3.0.0,4.0)" />
+                <dependency id="Microsoft.EntityFrameworkCore" version="[5.0.16,8.0)" />
+                <dependency id="Microsoft.EntityFrameworkCore.Relational" version="[5.0.16,8.0)" />
             </group>
         </dependencies>
     </metadata>
     <files>
-        <file src="bin/Release/net5.0/Forte.EpiserverRedirects.EntityFramework.dll" target="lib/net5.0" />
+        <file src="bin/Release/net6.0/Forte.EpiserverRedirects.EntityFramework.dll" target="lib/net6.0" />
     </files>
 </package>

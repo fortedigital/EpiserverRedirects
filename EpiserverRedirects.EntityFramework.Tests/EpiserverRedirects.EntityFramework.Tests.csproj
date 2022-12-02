@@ -1,9 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <IsPackable>false</IsPackable>
     <AssemblyName>Forte.EpiserverRedirects.EntityFramework.Tests</AssemblyName>
     <RootNamespace>Forte.EpiserverRedirects.EntityFramework.Tests</RootNamespace>
+    <Version>$(MajorVersionNumber).$(MinorVersionNumber).$(BuildNumber)$(VersionSuffix)</Version>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Moq" Version="4.13.1" />
