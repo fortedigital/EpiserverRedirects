@@ -25,7 +25,20 @@ Basic installation scenario
 public void ConfigureServices(IServiceCollection services)
 {
     // (...)
-    services.AddEpiserverRedirects(options => ...);
+    services.ConfigureEpiserverRedirects(
+        options =>
+        {
+            // configure caching, priority, etc
+            options.Caching.UrlRedirectCacheEnabled = true;
+            options.PreserveQueryString = false;
+            options.AddAutomaticRedirects = false;
+            options.SystemRedirectRulePriority = 80;
+            options.DefaultRedirectRulePriority = 100;
+        }
+        repoConfig =>
+        {
+            // configure custom rule store here. Skip to fallback to Dynamic Data Store.
+        });
     // (...)
 }
 ```
@@ -40,6 +53,11 @@ public void Configure(IApplicationBuilder app)
     // (...)
 }
 ```
+
+Custom Rule Store
+-------------
+By default, redirect rules are stored in Dynamic Data Store. You can implement custom store using the `IRedirectRuleRepository` interface.
+Refer to the `EpiserverRedirects.SqlServer` package for SQL Server implementation or a more generic `EpiserverRedirects.EntityFramework` package.
 
 Cache
 -------------

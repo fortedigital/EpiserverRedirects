@@ -1,0 +1,22 @@
+﻿<?xml version="1.0"?>
+<package>
+    <metadata>
+        <id>Forte.EpiserverRedirects.EntityFramework</id>
+        <version>$version$</version>
+        <title>Forte.EpiserverRedirects.EntityFramework</title>
+        <authors>Forte_ Digital</authors>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <description>EpiserverRedirects additional library for creating a custom, EF-based, redirect rules store</description>
+        <projectUrl>https://github.com/fortedigital/EpiserverRedirects</projectUrl>
+        <dependencies>
+            <group targetFramework="net5.0">
+                <dependency id="Forte.EpiserverRedirects" version="[3.0.0,4.0)" />
+                <dependency id="Microsoft.EntityFrameworkCore" version="[5.0.16,8.0)" />
+                <dependency id="Microsoft.EntityFrameworkCore.Relational" version="[5.0.16,8.0)" />
+            </group>
+        </dependencies>
+    </metadata>
+    <files>
+        <file src="bin/Release/net6.0/Forte.EpiserverRedirects.EntityFramework.dll" target="lib/net6.0" />
+    </files>
+</package>

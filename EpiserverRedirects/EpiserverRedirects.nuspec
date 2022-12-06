@@ -9,7 +9,7 @@
         <description>Episerver plugin to manage redirects</description>
         <projectUrl>https://github.com/fortedigital/EpiserverRedirects</projectUrl>
         <dependencies>
-            <group targetFramework="net5.0">
+            <group targetFramework="net6.0">
                 <dependency id="EPiServer.Framework" version="[12.0.3,13.0)" />
                 <dependency id="EPiServer.CMS.UI.Core" version="[12.0.3,13.0)" />
                 <dependency id="EPiServer.CMS.AspNetCore.Routing" version="[12.0.3,13.0)" />
@@ -24,9 +24,9 @@
         </contentFiles>
     </metadata>
     <files>
-        <file src="bin/Release/Forte.EpiserverRedirects.dll" target="lib/net5.0" />
+        <file src="bin/Release/Forte.EpiserverRedirects.dll" target="lib/net6.0" />
         <file src="bin/Release/Forte.EpiserverRedirects.zip"
               target="contentFiles/any/any/modules/_protected/Forte.EpiserverRedirects" />
-        <file src="InstallModule.targets" target="build/net5.0/Forte.EpiserverRedirects.targets" />
+        <file src="InstallModule.targets" target="build/net6.0/Forte.EpiserverRedirects.targets" />
     </files>
 </package>

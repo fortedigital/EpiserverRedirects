@@ -5,22 +5,22 @@ using Forte.EpiserverRedirects.Model.RedirectRule;
 
 namespace Forte.EpiserverRedirects.Mapper
 {
-    public class RedirectRuleMapper : IRedirectRuleMapper
+    public class RedirectRuleModelMapper : IRedirectRuleModelMapper
     {
         private readonly RedirectsOptions _options;
 
-        public RedirectRuleMapper(RedirectsOptions options)
+        public RedirectRuleModelMapper(RedirectsOptions options)
         {
             _options = options;
         }
 
-        public RedirectRuleDto ModelToDto(RedirectRule source)
+        public RedirectRuleDto ModelToDto(IRedirectRule source)
         {
             var destination = new RedirectRuleDto
             {
-                Id = source.Id.ExternalId,
-                OldPattern = source.OldPattern,
-                NewPattern = source.NewPattern,
+                Id = source.RuleId,
+                OldPattern = UrlPath.EnsurePathEncoding(source.OldPattern),
+                NewPattern = UrlPath.EnsurePathEncoding(source.NewPattern),
                 ContentId = source.ContentId,
                 RedirectType = source.RedirectType,
                 RedirectRuleType = source.RedirectRuleType,
@@ -35,13 +35,13 @@ namespace Forte.EpiserverRedirects.Mapper
             return destination;
         }
 
-        public RedirectRule DtoToModel(RedirectRuleDto source)
+        public IRedirectRule DtoToModel(RedirectRuleDto source)
         {
-            var destination = new RedirectRule
+            var destination = new RedirectRuleModel
             {
-                Id = source.Id,
-                OldPattern = UrlPath.ExtractRelativePath(source.OldPattern),
-                NewPattern = UrlPath.ExtractRelativePath(source.NewPattern),
+                RuleId = source.Id.GetValueOrDefault(),
+                OldPattern = UrlPath.EnsurePathEncoding(UrlPath.ExtractRelativePath(source.OldPattern)),
+                NewPattern = UrlPath.EnsurePathEncoding(UrlPath.ExtractRelativePath(source.NewPattern)),
                 RedirectType = source.RedirectType,
                 RedirectRuleType = source.RedirectRuleType,
                 IsActive = source.IsActive,

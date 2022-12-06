@@ -8,7 +8,7 @@ namespace Forte.EpiserverRedirects.Tests.Data
 {
     public class RedirectRuleTestDataBuilder
     {
-        private HashSet<RedirectRule> _redirectsHashSet = new HashSet<RedirectRule>();
+        private HashSet<RedirectRuleModel> _redirectsHashSet = new HashSet<RedirectRuleModel>();
         private readonly HashSet<Guid> _alreadyChangedRedirectRulesGuids = new HashSet<Guid>();
 
         public static RedirectRuleTestDataBuilder Start()
@@ -26,18 +26,18 @@ namespace Forte.EpiserverRedirects.Tests.Data
             }
         }
         
-        public void InitializeData(HashSet<RedirectRule> initializationData)
+        public void InitializeData(HashSet<RedirectRuleModel> initializationData)
         {
             _redirectsHashSet = initializationData;
         }  
         
-        public RedirectRule WithOldPath(string oldPath)
+        public RedirectRuleModel WithOldPath(string oldPath)
         {
             var redirectRule = ChangeData(r=>r.OldPattern = UrlPath.NormalizePath(oldPath));
             return redirectRule;
         }
         
-        public RedirectRule WithOldPathAndNewUrl(string oldPath, string newUrl)
+        public RedirectRuleModel WithOldPathAndNewUrl(string oldPath, string newUrl)
         {
             var redirectRule = ChangeData(r=>
             {
@@ -48,7 +48,7 @@ namespace Forte.EpiserverRedirects.Tests.Data
             return redirectRule;
         }
         
-        public RedirectRule WithOldPatternAndNewPattern(string oldPattern, string newPattern)
+        public RedirectRuleModel WithOldPatternAndNewPattern(string oldPattern, string newPattern)
         {
             var redirectRule = ChangeData(r=>
             {
@@ -59,22 +59,21 @@ namespace Forte.EpiserverRedirects.Tests.Data
             return redirectRule;
         }
 
-        private RedirectRule ChangeData(Action<RedirectRule> changeDataAction)
+        private RedirectRuleModel ChangeData(Action<RedirectRuleModel> changeDataAction)
         {
-            RedirectRule changedRedirectRule;
-
+            RedirectRuleModel changedRedirectRule;
 
             while (true)
             {
                 var randomRedirectRule = GetRandomRedirectRuleFromData();
 
-                if (_alreadyChangedRedirectRulesGuids.Contains(randomRedirectRule.Id.ExternalId))
+                if (_alreadyChangedRedirectRulesGuids.Contains(randomRedirectRule.RuleId))
                 {
                     continue;
                 }
 
                 changeDataAction.Invoke(randomRedirectRule);
-                _alreadyChangedRedirectRulesGuids.Add(randomRedirectRule.Id.ExternalId);
+                _alreadyChangedRedirectRulesGuids.Add(randomRedirectRule.RuleId);
                 
                 changedRedirectRule = randomRedirectRule;
                 break;
@@ -83,16 +82,15 @@ namespace Forte.EpiserverRedirects.Tests.Data
             return changedRedirectRule;
         }
 
-        private RedirectRule GetRandomRedirectRuleFromData()
+        private RedirectRuleModel GetRandomRedirectRuleFromData()
         {
             var randomIndex = new Random().Next(_redirectsHashSet.Count);
             return _redirectsHashSet.ElementAt(randomIndex);
         }
 
-        public HashSet<RedirectRule> GetData()
+        public HashSet<RedirectRuleModel> GetData()
         {
             return _redirectsHashSet;
         }
-
     }
 }

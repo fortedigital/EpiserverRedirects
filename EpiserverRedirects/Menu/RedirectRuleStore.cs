@@ -13,10 +13,10 @@ namespace Forte.EpiserverRedirects.Menu
     public class RedirectRuleStore : RestControllerBase
     {
         private readonly IRedirectRuleRepository _redirectRuleRepository;
-        private readonly IRedirectRuleMapper _redirectRuleMapper;
+        private readonly IRedirectRuleModelMapper _redirectRuleMapper;
         private readonly Guid _clearAllGuid = Guid.Parse("00000000-0000-0000-0000-000000000000");
 
-        public RedirectRuleStore(IRedirectRuleRepository redirectRuleRepository, IRedirectRuleMapper redirectRuleMapper)
+        public RedirectRuleStore(IRedirectRuleRepository redirectRuleRepository, IRedirectRuleModelMapper redirectRuleMapper)
         {
             _redirectRuleRepository = redirectRuleRepository;
             _redirectRuleMapper = redirectRuleMapper;
@@ -43,7 +43,6 @@ namespace Forte.EpiserverRedirects.Menu
             };
 
             itemRange.AddHeaderTo(HttpContext.Response);
-
             return Rest(redirects);
         }
 
@@ -56,7 +55,7 @@ namespace Forte.EpiserverRedirects.Menu
             }
 
             var newRedirectRule = _redirectRuleMapper.DtoToModel(dto);
-            newRedirectRule.FromManual();
+            RedirectRuleModel.FromManual(newRedirectRule);
             newRedirectRule = _redirectRuleRepository.Add(newRedirectRule);
             var newRedirectRuleDto = _redirectRuleMapper.ModelToDto(newRedirectRule);
 

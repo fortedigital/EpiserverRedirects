@@ -12,14 +12,14 @@ namespace Forte.EpiserverRedirects.Tests.Builder.WithRepository
     {
         protected override ControllerBuilder ThisBuilder => this;
 
-        private IRedirectRuleMapper _redirectRuleMapper = new RedirectRuleMapper(new RedirectsOptions { DefaultRedirectRulePriority = 100 });
+        private IRedirectRuleModelMapper _redirectRuleMapper = new RedirectRuleModelMapper(new RedirectsOptions { DefaultRedirectRulePriority = 100 });
         private readonly Mock<ControllerContext> _controllerContext = new Mock<ControllerContext>();
 
-        public ControllerBuilder WithMapper(Func<RedirectRule, RedirectRuleDto> mapper)
+        public ControllerBuilder WithMapper(Func<RedirectRuleModel, RedirectRuleDto> mapper)
         {
-            var mock = new Mock<IRedirectRuleMapper>();
+            var mock = new Mock<IRedirectRuleModelMapper>();
 
-            mock.Setup(ruleMapper => ruleMapper.ModelToDto(It.IsAny<RedirectRule>())).Returns(mapper);
+            mock.Setup(ruleMapper => ruleMapper.ModelToDto(It.IsAny<RedirectRuleModel>())).Returns(mapper);
 
             _redirectRuleMapper = mock.Object;
             return this;

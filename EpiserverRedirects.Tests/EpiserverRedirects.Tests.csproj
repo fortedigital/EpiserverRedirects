@@ -1,13 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <TargetFramework>net5.0</TargetFramework>
+        <TargetFramework>net6.0</TargetFramework>
         <OutputType>Library</OutputType>
         <RootNamespace>Forte.EpiserverRedirects.Tests</RootNamespace>
         <AssemblyName>Forte.EpiserverRedirects.Tests</AssemblyName>
+        <Version>$(MajorVersionNumber).$(MinorVersionNumber).$(BuildNumber)$(VersionSuffix)</Version>
     </PropertyGroup>
-    <ItemGroup>
-        <ProjectReference Include="..\EpiserverRedirects\EpiserverRedirects.csproj" />
-    </ItemGroup>
     <ItemGroup>
         <PackageReference Include="Moq" Version="4.10.1" />
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.11.0" />
@@ -20,5 +18,8 @@
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
             <PrivateAssets>all</PrivateAssets>
         </PackageReference>
+    </ItemGroup>
+    <ItemGroup>
+      <ProjectReference Include="..\EpiserverRedirects\EpiserverRedirects.csproj" />
     </ItemGroup>
 </Project>

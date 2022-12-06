@@ -1,5 +1,4 @@
-﻿using Forte.EpiserverRedirects.Caching;
-using Forte.EpiserverRedirects.Configuration;
+﻿using Forte.EpiserverRedirects.Configuration;
 using Forte.EpiserverRedirects.Events;
 using Forte.EpiserverRedirects.Middleware;
 using Microsoft.AspNetCore.Builder;
@@ -19,12 +18,6 @@ namespace Forte.EpiserverRedirects.Extensions
             {
                 var redirectsEventsRegistry = app.ApplicationServices.GetRequiredService<AutomaticRedirectsEventsRegistry>();
                 redirectsEventsRegistry.RegisterEvents();
-            }
-
-            if (redirectsOptions.Caching.AllRedirectsCacheEnabled || redirectsOptions.Caching.UrlRedirectCacheEnabled)
-            {
-                var cachingEventsRegistry = app.ApplicationServices.GetRequiredService<CachingEventsRegistry>();
-                cachingEventsRegistry.RegisterEvents();
             }
 
             return app;
