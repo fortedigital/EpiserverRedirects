@@ -1,6 +1,5 @@
 using System;
 using EPiServer.Core;
-using EPiServer.Data;
 using EPiServer.Web.Routing;
 using Forte.EpiserverRedirects.Model.RedirectRule;
 using Forte.EpiserverRedirects.Request;

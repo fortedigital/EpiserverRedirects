@@ -1,8 +1,6 @@
-﻿using EPiServer.ServiceLocation;
-using Forte.EpiserverRedirects.Caching;
+﻿using Forte.EpiserverRedirects.Caching;
 using Forte.EpiserverRedirects.Repository;
 using Microsoft.Extensions.DependencyInjection;
-
 
 namespace Forte.EpiserverRedirects.Configuration
 {
