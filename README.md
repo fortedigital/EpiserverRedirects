@@ -57,16 +57,14 @@ public void Configure(IApplicationBuilder app)
 Custom Rule Store
 -------------
 By default, redirect rules are stored in Dynamic Data Store. You can implement custom store using the `IRedirectRuleRepository` interface.
-Refer to the `EpiserverRedirects.SqlServer` package for SQL Server implementation or a more generic `EpiserverRedirects.EntityFramework` package.
+Refer to the `Forte.EpiserverRedirects.SqlServer` package for SQL Server implementation or a more generic `Forte.EpiserverRedirects.EntityFramework` package that can be helpful in order to implement custom, EF-based repositories.
 
 Cache
 -------------
 
-The default EPiServer mechanism is used to manage cache and enable it to work in a distributed environment. There are two levels of cache:
-1. **Cache all redirect entries**
-2. **Cache redirect response for given URL**
+The default EPiServer mechanism is used to manage cache and enable it to work in a distributed environment. In this package we leverage this mechanism to cache redirect response for a given URL.
 
-Caching is disabled by default. You can change this through the configuration.
+Please keep in mind that caching is disabled by default but you can change this through the configuration.
 
 Automatic redirects
 ------------
@@ -109,4 +107,3 @@ Example:
 /fondet;/los-fondet/;Permanent;ExactMatch;TRUE;COMMENT;1;FALSE
 ```
 When uploading files multiple times, duplicate redirections are overwritten.
-
