@@ -78,7 +78,7 @@ namespace Forte.EpiserverRedirects.Menu
                 rules = rules.Where(rr => rr.Priority <= query.Priority);
             }
 
-            ApplySorting(rules, query.SortColumns);
+            rules = ApplySorting(rules, query.SortColumns);
             allRedirectsCount = rules.Count();
             return rules
                 .ApplyRange(query.Range)
