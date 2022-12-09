@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <AssemblyName>Forte.EpiserverRedirects.EntityFramework</AssemblyName>
+        <RootNamespace>Forte.EpiserverRedirects.EntityFramework</RootNamespace>
+        <Version>$(MajorVersionNumber).$(MinorVersionNumber).$(BuildNumber)$(VersionSuffix)</Version>
+    </PropertyGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\EpiserverRedirects\EpiserverRedirects.csproj" />
+    </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.16" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="5.0.16" />
+    </ItemGroup>
+</Project>

@@ -5,15 +5,15 @@ namespace Forte.EpiserverRedirects.Redirect
 {
     public class ExactMatchRedirect : Redirect
     {
-        public ExactMatchRedirect(RedirectRule redirectRule) : base(redirectRule)
+        public ExactMatchRedirect(IRedirectRule redirectRule) : base(redirectRule)
         {
         }
 
-        protected override string GetPathWithoutContentId(Uri request)
+        protected override string GetPathWithoutContentId(Uri request, bool preserveQueryString)
         {
             var newUrl = RedirectRule.NewPattern;
 
-            return Configuration.Configuration.PreserveQueryString ? newUrl + request.Query : newUrl;
+            return preserveQueryString ? newUrl + request.Query : newUrl;
         }
     }
 }

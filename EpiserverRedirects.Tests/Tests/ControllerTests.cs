@@ -19,7 +19,7 @@ namespace Forte.EpiserverRedirects.Tests.Tests
         {
             var rule1 = RandomDataGenerator.CreateRandomRedirectRule();
             var rule2 = RandomDataGenerator.CreateRandomRedirectRule();
-            var existingRules = new HashSet<RedirectRule>
+            var existingRules = new HashSet<RedirectRuleModel>
             {
                 rule1,
                 rule2
@@ -32,6 +32,7 @@ namespace Forte.EpiserverRedirects.Tests.Tests
                 .WithMapper(r => r == rule1 ? dto1 : r == rule2 ? dto2 : null)
                 .WithHttpResponseHeaders()
                 .Create();
+
             var resolvedRules = restController
                 .Get()
                 .GetEntitiesFromActionResult();

@@ -1,18 +1,14 @@
 ﻿using System;
-using System.Collections.Specialized;
-using System.Security.Principal;
-using System.Web;
-using System.Web.Mvc;
-using System.Web.Routing;
+using Microsoft.AspNetCore.Http;
 using Moq;
 
 namespace Forte.EpiserverRedirects.Tests.Builder
 {
     public class HttpContextBuilder
     {
-        private readonly Mock<HttpContextBase> _httpContextBaseMock = new Mock<HttpContextBase>();
-        private readonly Lazy<Mock<HttpResponseBase>> _httpResponseMock = new Lazy<Mock<HttpResponseBase>>(() => new Mock<HttpResponseBase>());
-        private readonly Lazy<Mock<HttpRequestBase>> _httpRequestMock = new Lazy<Mock<HttpRequestBase>>(() => new Mock<HttpRequestBase>());
+        private readonly Mock<HttpContext> _httpContextBaseMock = new Mock<HttpContext>();
+        private readonly Lazy<Mock<HttpResponse>> _httpResponseMock = new Lazy<Mock<HttpResponse>>(() => new Mock<HttpResponse>());
+        private readonly Lazy<Mock<HttpRequest>> _httpRequestMock = new Lazy<Mock<HttpRequest>>(() => new Mock<HttpRequest>());
 
         public HttpContextBuilder WithRequest()
         {
@@ -28,10 +24,10 @@ namespace Forte.EpiserverRedirects.Tests.Builder
 
         public HttpContextBuilder WithResponseHeaders()
         {
-            _httpResponseMock.Value.SetupGet(res => res.Headers).Returns(new NameValueCollection());
+            _httpResponseMock.Value.SetupGet(res => res.Headers).Returns(new HeaderDictionary());
             return this;
         }
 
-        public HttpContextBase Build() => _httpContextBaseMock.Object;
+        public HttpContext Build() => _httpContextBaseMock.Object;
     }
 }

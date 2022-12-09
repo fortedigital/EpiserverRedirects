@@ -2,12 +2,15 @@
 using System.IO;
 using System.Linq;
 using System.Net.Mime;
-using System.Web;
-using System.Web.Mvc;
 using CsvHelper;
+using CsvHelper.Configuration;
+using EPiServer.Web;
+using Forte.EpiserverRedirects.Configuration;
 using Forte.EpiserverRedirects.Import;
 using Forte.EpiserverRedirects.Model.RedirectRule;
 using Forte.EpiserverRedirects.Repository;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Forte.EpiserverRedirects.Export
 {
@@ -15,13 +18,16 @@ namespace Forte.EpiserverRedirects.Export
     public class ExportRedirectsController : Controller
     {
         private readonly IRedirectRuleRepository _redirectRuleRepository;
+        private readonly IMimeTypeResolver _mimeTypeResolver;
 
-        public ExportRedirectsController(IRedirectRuleRepository redirectRuleRepository)
+        public ExportRedirectsController(IRedirectRuleRepository redirectRuleRepository, IMimeTypeResolver mimeTypeResolver)
         {
             _redirectRuleRepository = redirectRuleRepository;
+            _mimeTypeResolver = mimeTypeResolver;
         }
 
         [HttpGet]
+        [Route(Constants.BaseRoutePath + "/Export")]
         public ActionResult Export()
         {
             var csvTemplateFileData = CreateExportFileData();
@@ -32,9 +38,10 @@ namespace Forte.EpiserverRedirects.Export
                 FileName = csvTemplateFileName,
                 Inline = false,
             };
-            Response.AppendHeader("Content-Disposition", contentDispositionHeader.ToString());
 
-            var fileMimeType = MimeMapping.GetMimeMapping(contentDispositionHeader.FileName);
+            Response.Headers.Add("Content-Disposition", contentDispositionHeader.ToString());
+
+            var fileMimeType = _mimeTypeResolver.GetMimeMapping(contentDispositionHeader.FileName);
 
             return File(csvTemplateFileData, fileMimeType);
         }
@@ -44,18 +51,16 @@ namespace Forte.EpiserverRedirects.Export
             using (var memoryStream = new MemoryStream())
             {
                 using (var writer = new StreamWriter(memoryStream))
-                using (var csvWriter = new CsvWriter(writer,
-                    new CsvHelper.Configuration.Configuration
-                    {
-                        CultureInfo = CultureInfo.InvariantCulture,
-                        Delimiter = RedirectsLoader.Delimiter,
-                        HasHeaderRecord = false,
-                    }))
+                using (var csvWriter = new CsvWriter(writer, new CsvConfiguration(CultureInfo.CurrentCulture)
+                       {
+                            Delimiter = RedirectsLoader.Delimiter,
+                            HasHeaderRecord = false,
+                       }))
                 {
                     var redirectRules = _redirectRuleRepository
                         .GetAll()
                         .Select(RedirectRuleExportRow.CreateFromRedirectRule);
-                    
+
                     csvWriter.WriteRecords(redirectRules);
                 }
 
@@ -66,7 +71,9 @@ namespace Forte.EpiserverRedirects.Export
         private static byte[] ReadAllBytes(Stream stream)
         {
             if (stream is MemoryStream memoryStream)
+            {
                 return memoryStream.ToArray();
+            }
 
             using (var newMemoryStream = new MemoryStream())
             {

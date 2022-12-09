@@ -23,14 +23,14 @@ namespace Forte.EpiserverRedirects.Tests.Builder.WithRepository
             return ThisBuilder;
         }
 
-        public TBuilder WithExplicitExistingRules(HashSet<RedirectRule> existingRedirects)
+        public TBuilder WithExplicitExistingRules(HashSet<RedirectRuleModel> existingRedirects)
         {
             _redirectRuleTestDataBuilder.InitializeData(existingRedirects);
             return ThisBuilder;
         }
 
-        public TBuilder WithRule(Func<RedirectRuleTestDataBuilder, RedirectRule> redirectRuleTestDataBuilderFunc,
-            out RedirectRule redirectRule)
+        public TBuilder WithRule(Func<RedirectRuleTestDataBuilder, RedirectRuleModel> redirectRuleTestDataBuilderFunc,
+            out RedirectRuleModel redirectRule)
         {
             redirectRule = redirectRuleTestDataBuilderFunc.Invoke(_redirectRuleTestDataBuilder);
             return ThisBuilder;

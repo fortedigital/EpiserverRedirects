@@ -1,142 +1,109 @@
-# EPiAutoAlias for EPiServer
+# Redirects module for EPiServer
 
-The module has the possibility to automatically manage redirects in solution. Key features:
- - Allow editors to manage redirects from old urls, add redirects from some legacy addresses etc.,
-    - This is possible via user interface (adding new "Redirects" tab in Episerver panel top menu)
- - Import redirects from file - see section `Import redirects from CSV file`
- - Create redirects automatically. 
-    - There is automatic redirect created every time the path to a published page changes, taking into account different scenarios:
-        - changing URL Segment of a page,
-        - changing URL segment of any ancestor (either published or not),
-        - changing parent of the page, moving the page in content structure,
-        - moving any ancestor of the page in content structure,
-        - restoring from trash to a different location than original, or when URL of this location changed.
+The module has the possibility to automatically manage redirects in the solution. Key features:
+- Allow editors to manage redirects from old URLs, add redirects from some legacy addresses, etc.,
+   - This is possible via the user interface (adding new "Redirects" tab in the EPiServer panel top menu)
+- Import redirects from file - see section `Import redirects from CSV file`
+- Create redirects automatically.
+   - There is an automatic redirect created every time the path to a published page changes, taking into account different scenarios:
+      - changing the URL Segment of a page,
+      - changing the URL segment of any ancestor (either published or not),
+      - changing the parent of the page, moving the page in content structure,
+      - moving any ancestor of the page in content structure,
+      - restoring from trash to a different location than the original, or when the URL of this location changed.
 
 
 
 Basic installation scenario
 ------------
-1. The package can be found in official NuGet repository.
-```Install-Package Forte.EpiserverRedirects``` 
+1. The package can be found in the official NuGet repository.
+   ```Install-Package Forte.EpiserverRedirects```
 
-
-2. Configure module in web.config
-
-```xml
-  <episerver.shell>
-    <protectedModules rootPath="~/EPiServer/">
-      <add name="Forte.EpiserverRedirects">
-        <assemblies>
-          <add assembly="Forte.EpiserverRedirects" />
-        </assemblies>
-      </add>
-    </protectedModules>
-  </episerver.shell>
-```
-
-
-3. For version 1.x.x, add ```UrlRewriteMiddleware``` into Owin Pipeline in ```Startup``` class:
+2. Register services in your Startup class and provide an optional configure action:
 
 ```c#
-app.Use(typeof(UrlRewriteMiddleware));
+public void ConfigureServices(IServiceCollection services)
+{
+    // (...)
+    services.ConfigureEpiserverRedirects(
+        options =>
+        {
+            // configure caching, priority, etc
+            options.Caching.UrlRedirectCacheEnabled = true;
+            options.PreserveQueryString = false;
+            options.AddAutomaticRedirects = false;
+            options.SystemRedirectRulePriority = 80;
+            options.DefaultRedirectRulePriority = 100;
+        }
+        repoConfig =>
+        {
+            // configure custom rule store here. Skip to fallback to Dynamic Data Store.
+        });
+    // (...)
+}
 ```
 
+3. Configure the application in your Startup class:
 
-For version 2.x.x you can use both OwinMiddleware and HttpModule.
+```c#
+public void Configure(IApplicationBuilder app)
+{
+    // (...)
+    app.UseEpiserverRedirects();
+    // (...)
+}
+```
 
-a) For OwinMiddleware:
-  Add ```RedirectMiddleware``` into Owin Pipeline in ```Startup``` class
+Custom Rule Store
+-------------
+By default, redirect rules are stored in Dynamic Data Store. You can implement custom store using the `IRedirectRuleRepository` interface.
+Refer to the `Forte.EpiserverRedirects.SqlServer` package for SQL Server implementation or a more generic `Forte.EpiserverRedirects.EntityFramework` package that can be helpful in order to implement custom, EF-based repositories.
 
-  ```c#
-    app.Use(typeof(RedirectMiddleware));
-  ```
+Cache
+-------------
 
-b) For HttpModule:
-  Add ```HttpModule``` in web.config file
+The default EPiServer mechanism is used to manage cache and enable it to work in a distributed environment. In this package we leverage this mechanism to cache redirect response for a given URL.
 
-  ```xml
-   <configuration> 
-   <system.webServer> 
-    <modules> 
-     <add name="Redirects" type="Forte.EpiserverRedirects.AspNet.HttpModule, Forte.EpiserverRedirects" />
-    </modules> 
-   </system.webServer> 
-  </configuration>
-  ```
+Please keep in mind that caching is disabled by default but you can change this through the configuration.
+
+Automatic redirects
+------------
+
+Creating automatic redirects on various content events is enabled by default. You can disable it globally through the configuration.
+
+There is also a possibility to temporarily disable this functionality by using `DisabledAutomaticRedirectsScope`:
+
+```c#
+using (new DisabledAutomaticRedirectsScope())
+{
+    // (...)
+}
+```
 
 Manage Redirections
 ------------
 There are two ways to manage redirections:
 1. **Using user interface**
-2. **Using public interface**
-
-a) For version 1.x.x, using ```IUrlRedirectsService```:
-
-```       c#
-          public interface IUrlRedirectsService
-          {
-              IQueryable<UrlRewriteModel> GetAll();
-              UrlRedirectsDto Post(UrlRedirectsDto urlRedirectsDto);
-              UrlRedirectsDto Put(UrlRedirectsDto urlRedirectsDto);
-              void Delete(Guid id);
-          }
-```
-b) For version 2.x.x, using ```IRedirectRuleRepository```:
-    
-```     c#
-        public interface IRedirectRuleRepository : IQueryable<RedirectRule>
-        {
-            RedirectRule GetById(Guid id);
-            RedirectRule Add(RedirectRule redirectRule);
-            RedirectRule Update(RedirectRule redirectRule);
-            bool Delete(Guid id);
-        }
-```
-    
-Configuration
--------------
-
-There is possibility to disable adding redirects to moved content automatically. To do this, set
-
-For version 1.x.x:
- `Forte.EpiserverRedirects.UrlRewritePlugin.Configuration.AddAutomaticRedirects` flag to `false`.
-
-For version 2.x.x:
- `Forte.EpiserverRedirects.Configuration.AddAutomaticRedirects` flag to `false`.
-
-
- Cache configuration
--------------
-It is possible to enable caching of redirects. It is disabled by default. Default EpiServer mechanism is used to manage cache and enable it to work in distributed environment. There are two levels of cache:
-1. **Cache all redirect entries**
-2. **Cache redirect response for given url**
- 
-To enable cache add following entries to ```appSettings``` in ``` web.config``` file:
-```xml
-    <add key="Forte.EpiserverRedirects:AllRedirectCacheEnabled" value="true"/>
-    <add key="Forte.EpiserverRedirects:UrlRedirectCacheEnabled" value="true"/>
-```
+2. **By injecting ```IRedirectRuleRepository``` to your services**
 
 Import redirects from CSV file
 -------------
 
-To import redirects, in "Redirects" tab upload a CSV file in the following format (no columns headers, semicolon as the delimiter)
+To import redirects, in the "Redirects" tab upload a CSV file in the following format (no columns headers, semicolon as the delimiter)
 
 Columns:
 - old URL (just URL paths, without the domains)
 - new URL (just URL paths, without the domains)
-- type (Pernament or Temporary)
+- type (Permanent or Temporary)
 - rule type (ExactMatch or Regex)
 - is active (TRUE or FALSE)
 - comment
 - priority (int)
 - match to content (TRUE or FALSE) TRUE enforces that redirect is to URL, not to the ContentReference
 
-Example:  
+Example:
 ```
 /easee;/elbillader/;Permanent;ExactMatch;TRUE;COMMENT;1;FALSE  
 /fondet;/los-fondet/;Permanent;ExactMatch;TRUE;COMMENT;1;FALSE
 ```
-
- When uploading files multiple times, duplicate redirections are overwritten. 
-
+When uploading files multiple times, duplicate redirections are overwritten.

@@ -1,3 +1,4 @@
+using Forte.EpiserverRedirects.Configuration;
 using Forte.EpiserverRedirects.Mapper;
 using Forte.EpiserverRedirects.Model;
 using Forte.EpiserverRedirects.Tests.Data;
@@ -10,14 +11,19 @@ namespace Forte.EpiserverRedirects.Tests.Tests
         [Fact]
         public void Given_RedirectRuleDTO_Map_ReturnsRedirectRule()
         {
-            var mapper = new RedirectRuleMapper();
+            var options = new RedirectsOptions
+            {
+                DefaultRedirectRulePriority = 100,
+            };
+
+            var mapper = new RedirectRuleModelMapper(options);
             var redirectRuleDto = RandomDataGenerator.CreateRandomRedirectRuleDto();
             var redirectRule = mapper.DtoToModel(redirectRuleDto);
 
-            Assert.Equal(redirectRuleDto.Id, redirectRule.Id);
+            Assert.Equal(redirectRuleDto.Id, redirectRule.RuleId);
             Assert.Equal(UrlPath.NormalizePath(redirectRuleDto.OldPattern), redirectRule.OldPattern);
-            Assert.Equal(redirectRuleDto.NewPattern, redirectRule.NewPattern);
-            
+            Assert.Equal(UrlPath.NormalizePath(redirectRuleDto.NewPattern), redirectRule.NewPattern);
+
             Assert.Equal(redirectRuleDto.RedirectType, redirectRule.RedirectType);
             Assert.Equal(redirectRuleDto.RedirectRuleType, redirectRule.RedirectRuleType);
 
@@ -30,11 +36,16 @@ namespace Forte.EpiserverRedirects.Tests.Tests
         [Fact]
         public void Given_RedirectRule_Map_ReturnsRedirectRuleDto()
         {
-            var mapper = new RedirectRuleMapper();
+            var options = new RedirectsOptions
+            {
+                DefaultRedirectRulePriority = 100,
+            };
+
+            var mapper = new RedirectRuleModelMapper(options);
             var redirectRule = RandomDataGenerator.CreateRandomRedirectRule();
             var redirectRuleDto = mapper.ModelToDto(redirectRule);
 
-            Assert.Equal(redirectRule.Id, redirectRuleDto.Id);
+            Assert.Equal(redirectRule.RuleId, redirectRuleDto.Id);
             Assert.Equal(redirectRule.OldPattern, redirectRuleDto.OldPattern);
             Assert.Equal(redirectRule.NewPattern, redirectRuleDto.NewPattern);
 

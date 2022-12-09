@@ -2,17 +2,18 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.IO;
-using System.Web;
-using System.Web.Mvc;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Newtonsoft.Json;
 
 namespace Forte.EpiserverRedirects.Model.RedirectRule
 {
     public class RedirectRuleDtoModelBinder : IModelBinder
     {
-        public object BindModel(ControllerContext controllerContext, ModelBindingContext bindingContext)
+        public async Task BindModelAsync(ModelBindingContext bindingContext)
         {
-            var jsonBody = GetBody(controllerContext.HttpContext.Request);
+            var jsonBody = await GetBody(bindingContext.HttpContext.Request);
             var redirectRuleDtoProperties = JsonConvert.DeserializeObject<Dictionary<string,string>>(jsonBody);
 
             try
@@ -34,15 +35,16 @@ namespace Forte.EpiserverRedirects.Model.RedirectRule
                 var validationResult = new List<ValidationResult>();
                 if (Validator.TryValidateObject(redirectRule, new ValidationContext(redirectRule), validationResult, true))
                 {
-                    return redirectRule;
+                    bindingContext.Result = ModelBindingResult.Success(redirectRule);
+                    return;
                 }
-                
+
                 foreach (var vr in validationResult)
                 {
                     bindingContext.ModelState.AddModelError(string.Join(",", vr.MemberNames), vr.ErrorMessage);
                 }
 
-                return redirectRule;
+                bindingContext.Result = ModelBindingResult.Failed();
             }
             catch
             {
@@ -50,16 +52,11 @@ namespace Forte.EpiserverRedirects.Model.RedirectRule
             }
         }
 
-        private static string GetBody(HttpRequestBase request)
+        private static async Task<string> GetBody(HttpRequest request)
         {
-            var inputStream = request.InputStream;
-            inputStream.Position = 0;
+            using var reader = new StreamReader(request.Body);
 
-            using (var reader = new StreamReader(inputStream))
-            {
-                var body = reader.ReadToEnd();
-                return body;
-            }
+            return await reader.ReadToEndAsync();
         }
     }
 }

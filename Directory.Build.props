@@ -1,0 +1,8 @@
+<Project>
+ <PropertyGroup>
+   <MajorVersionNumber>3</MajorVersionNumber>
+   <MinorVersionNumber>0</MinorVersionNumber>
+   <BuildNumber>0</BuildNumber>
+   <VersionSuffix></VersionSuffix>
+ </PropertyGroup>
+</Project>

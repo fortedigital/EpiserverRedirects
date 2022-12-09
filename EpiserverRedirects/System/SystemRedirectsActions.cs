@@ -4,84 +4,88 @@ using System.Globalization;
 using System.Linq;
 using EPiServer;
 using EPiServer.Core;
-using EPiServer.ServiceLocation;
 using Forte.EpiserverRedirects.Model;
 using Forte.EpiserverRedirects.Model.RedirectRule;
 using Forte.EpiserverRedirects.Repository;
 
 namespace Forte.EpiserverRedirects.System
 {
-    public static class SystemRedirectsActions
+    public class SystemRedirectsActions
     {
-        public static void AddRedirects(PageData pageData, string oldUrl, CultureInfo cultureInfo,
-            SystemRedirectReason systemRedirectReason)
+        private readonly IContentLoader _contentRepository;
+        private readonly IRedirectRuleRepository _redirectRuleRepository;
+
+        public SystemRedirectsActions(IContentLoader contentRepository, IRedirectRuleRepository redirectRuleRepository)
         {
-            AddRedirects(pageData, oldUrl, systemRedirectReason);
-            HandleChildren(pageData, oldUrl, cultureInfo, systemRedirectReason);
+            _contentRepository = contentRepository;
+            _redirectRuleRepository = redirectRuleRepository;
         }
 
-        private static void AddRedirects(PageData pageData, string oldUrl, SystemRedirectReason systemRedirectReason)
+        public void AddRedirects(PageData pageData, string oldUrl, CultureInfo cultureInfo,
+            SystemRedirectReason systemRedirectReason, int priority)
+        {
+            AddRedirects(pageData, oldUrl, systemRedirectReason, priority);
+            HandleChildren(pageData, oldUrl, cultureInfo, systemRedirectReason, priority);
+        }
+
+        private void AddRedirects(PageData pageData, string oldUrl, SystemRedirectReason systemRedirectReason, int priority)
         {
             if (!(pageData.Status == VersionStatus.PreviouslyPublished || pageData.Status == VersionStatus.Published))
+            {
                 return;
+            }
 
-            var redirectRule = RedirectRule.NewFromSystem(
+            var redirectRule = RedirectRuleModel.NewFromSystem(
                 UrlPath.NormalizePath(oldUrl),
                 pageData.ContentLink.ID,
                 RedirectType.Permanent,
                 RedirectRuleType.ExactMatch,
-                SystemRedirectsHelper.GetSystemRedirectReason(systemRedirectReason));
-
-            var redirectRuleRepository = ServiceLocator.Current.GetInstance<IRedirectRuleRepository>();
+                SystemRedirectsHelper.GetSystemRedirectReason(systemRedirectReason),
+                priority);
 
             try
             {
-                redirectRuleRepository.Add(redirectRule);
+                _redirectRuleRepository.Add(redirectRule);
             }
-            catch (ApplicationException) { }
+            catch (ApplicationException)
+            {
+            }
         }
 
-        public static void DeleteRedirects(ContentReference deletedContent, IEnumerable<ContentReference> deletedDescendants)
+        public void DeleteRedirects(ContentReference deletedContent, IEnumerable<ContentReference> deletedDescendants)
         {
-            var redirectRuleRepository = ServiceLocator.Current.GetInstance<IRedirectRuleRepository>();
-
             var deletedDescendantsIds = deletedDescendants.Select(x => x.ID).ToList();
-            
+
             // Episerver DDS doe not handle query with Contains and empty collection
             var redirectsToDelete = deletedDescendantsIds.Any()
-                
-                ? redirectRuleRepository
+                ? _redirectRuleRepository
                     .GetAll()
                     .Where(x => deletedContent.ID == x.ContentId || (x.ContentId.HasValue && deletedDescendantsIds.Contains(x.ContentId.Value)))
-                    .Select(x => x.Id.ExternalId)
+                    .Select(x => x.RuleId)
                     .ToList()
-
-                : redirectRuleRepository
+                : _redirectRuleRepository
                     .GetAll()
-                    .Where(x => deletedContent.ID == x.ContentId )
-                    .Select(x => x.Id.ExternalId)
+                    .Where(x => deletedContent.ID == x.ContentId)
+                    .Select(x => x.RuleId)
                     .ToList();
 
             foreach (var redirect in redirectsToDelete)
             {
-                redirectRuleRepository.Delete(redirect);
+                _redirectRuleRepository.Delete(redirect);
             }
         }
 
-        private static void HandleChildren(PageData data, string oldUrl, CultureInfo cultureInfo,
-            SystemRedirectReason systemRedirectReason)
+        private void HandleChildren(PageData data, string oldUrl, CultureInfo cultureInfo, SystemRedirectReason systemRedirectReason, int priority)
         {
             var languageSelector = new LanguageSelector(cultureInfo.Name);
-            var pageDataCollection = DataFactory.Instance.GetChildren(data.PageLink, languageSelector);
+            var pageDataCollection = _contentRepository.GetChildren<PageData>(data.PageLink, languageSelector);
 
             foreach (var pageData in pageDataCollection)
             {
                 var oldChildUrl = SystemRedirectsHelper.Combine(oldUrl, pageData.URLSegment);
-                AddRedirects(pageData, oldChildUrl, systemRedirectReason);
-                HandleChildren(pageData, oldChildUrl, cultureInfo, systemRedirectReason);
+                AddRedirects(pageData, oldChildUrl, systemRedirectReason, priority);
+                HandleChildren(pageData, oldChildUrl, cultureInfo, systemRedirectReason, priority);
             }
         }
-
-
     }
 }

@@ -4,7 +4,6 @@ using EPiServer.Web.Routing;
 using Forte.EpiserverRedirects.Model.RedirectRule;
 using Forte.EpiserverRedirects.Redirect;
 using Forte.EpiserverRedirects.Request;
-using Forte.EpiserverRedirects.Resolver;
 using Moq;
 
 namespace Forte.EpiserverRedirects.Tests.Builder.Redirect
@@ -12,30 +11,18 @@ namespace Forte.EpiserverRedirects.Tests.Builder.Redirect
     public class RedirectBuilder
     {
         private IRedirect _redirect;
-        private readonly RedirectRule _redirectRule = new RedirectRule();
+        private readonly RedirectRuleModel _redirectRule = new RedirectRuleModel();
         internal RedirectBuilder() { }
 
-        public RedirectBuilder WithHttp_1_0_ResponseStatusCodeResolver(out IResponseStatusCodeResolver responseStatusCodeResolver)
-        {
-            responseStatusCodeResolver = new Http_1_0_ResponseStatusCodeResolver();
-            return this;
-        }
-        
-        public RedirectBuilder WithHttp_1_1_ResponseStatusCodeResolver(out IResponseStatusCodeResolver responseStatusCodeResolver)
-        {
-            responseStatusCodeResolver = new Http_1_1_ResponseStatusCodeResolver();
-            return this;
-        }
-        
         public RedirectBuilder WithHttpRequest(out Uri request, string requestPath)
         {
             request = HttpRequest(requestPath);
             return this;
         }
         
-        public RedirectBuilder WithHttpResponseMock(out Mock<IHttpResponse> httpResponseMock)
+        public RedirectBuilder WithHttpResponseMock(out Mock<IRedirectHttpResponse> httpResponseMock)
         {
-            httpResponseMock = new Mock<IHttpResponse>();
+            httpResponseMock = new Mock<IRedirectHttpResponse>();
             return this;
         }
         
@@ -51,7 +38,7 @@ namespace Forte.EpiserverRedirects.Tests.Builder.Redirect
 
         private static Uri HttpRequest(string requestUrl) => new Uri(requestUrl, UriKind.Relative);
 
-        public RedirectBuilder WithContentRedirectRule(out RedirectRule redirectRule, int? contentReferenceId = null)
+        public RedirectBuilder WithContentRedirectRule(out RedirectRuleModel redirectRule, int? contentReferenceId = null)
         {
             _redirectRule.ContentId = contentReferenceId ?? new Random().Next(1, 1000);
 
@@ -61,7 +48,7 @@ namespace Forte.EpiserverRedirects.Tests.Builder.Redirect
             return this;
         }
 
-        public RedirectBuilder WithExactMatchRedirectRule(out RedirectRule redirectRule, string newPattern)
+        public RedirectBuilder WithExactMatchRedirectRule(out RedirectRuleModel redirectRule, string newPattern)
         {
             _redirectRule.RedirectRuleType = RedirectRuleType.ExactMatch;
             _redirectRule.NewPattern = newPattern;
@@ -71,8 +58,8 @@ namespace Forte.EpiserverRedirects.Tests.Builder.Redirect
             _redirect = new ExactMatchRedirect(_redirectRule);
             return this;
         }
-        
-        public RedirectBuilder WithRegexRedirectRule(out RedirectRule redirectRule, string oldPattern, string newPattern)
+
+        public RedirectBuilder WithRegexRedirectRule(out RedirectRuleModel redirectRule, string oldPattern, string newPattern)
         {
             _redirectRule.RedirectRuleType = RedirectRuleType.Regex;
             _redirectRule.OldPattern = oldPattern;
@@ -81,18 +68,6 @@ namespace Forte.EpiserverRedirects.Tests.Builder.Redirect
             redirectRule = _redirectRule;
             
             _redirect = new RegexRedirect(_redirectRule);
-            return this;
-        }
-        
-        public RedirectBuilder WithWildcardRedirectRule(out RedirectRule redirectRule, string oldPattern, string newPattern)
-        {
-            _redirectRule.RedirectRuleType = RedirectRuleType.Wildcard;
-            _redirectRule.OldPattern = oldPattern;
-            _redirectRule.NewPattern = newPattern;
-
-            redirectRule = _redirectRule;
-
-            _redirect = new WildcardRedirect(_redirectRule);
             return this;
         }
         

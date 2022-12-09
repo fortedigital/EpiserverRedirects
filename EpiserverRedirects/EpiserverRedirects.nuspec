@@ -4,20 +4,29 @@
         <id>Forte.EpiserverRedirects</id>
         <version>$version$</version>
         <title>Forte.EpiserverRedirects</title>
-        <authors>Forte_ Digital</authors>
+        <authors>Forte Digital</authors>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <description>Episerver plugin to manage redirects</description>
         <projectUrl>https://github.com/fortedigital/EpiserverRedirects</projectUrl>
         <dependencies>
-            <dependency id="EPiServer.CMS.Core" version="[11.11.0, 12)" />
-            <dependency id="EPiServer.Framework" version="[11.11.0, 12)" />
-            <dependency id="EPiServer.CMS.UI.Core" version="[11.13.1, 12)" />
-            <dependency id="Microsoft.Owin" version="[3.0.1, 5)" />
-            <dependency id="CsvHelper" version="7.0" />
+            <group targetFramework="net6.0">
+                <dependency id="EPiServer.Framework" version="[12.0.3,13.0)" />
+                <dependency id="EPiServer.CMS.UI.Core" version="[12.0.3,13.0)" />
+                <dependency id="EPiServer.CMS.AspNetCore.Routing" version="[12.0.3,13.0)" />
+                <dependency id="CsvHelper" version="27.2.1" />
+            </group>
         </dependencies>
+<!--    Related comment: https://world.optimizely.com/forum/developer-forum/cms-12/thread-container/2021/10/how-to-create-add-on-for-cms-12/#265130-->
+        <contentFiles>
+            <files include="any/any/modules/_protected/Forte.EpiserverRedirects/Forte.EpiserverRedirects.zip"
+                   buildAction="None"
+                   copyToOutput="true"/>
+        </contentFiles>
     </metadata>
     <files>
-        <file src="bin/Forte.EpiserverRedirects.dll" target="lib\net45" />
-        <file src="bin/Forte.EpiserverRedirects.zip" target="content\modules\_protected\Forte.EpiserverRedirects" />
+        <file src="bin/Release/Forte.EpiserverRedirects.dll" target="lib/net6.0" />
+        <file src="bin/Release/Forte.EpiserverRedirects.zip"
+              target="contentFiles/any/any/modules/_protected/Forte.EpiserverRedirects" />
+        <file src="InstallModule.targets" target="build/net6.0/Forte.EpiserverRedirects.targets" />
     </files>
 </package>

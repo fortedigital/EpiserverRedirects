@@ -1,8 +1,7 @@
 ﻿using System.Linq;
-using System.Web.Mvc;
 using EPiServer.Shell.Services.Rest;
-using Forte.EpiserverRedirects.Mapper;
 using Forte.EpiserverRedirects.Repository;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Forte.EpiserverRedirects.Component
 {
@@ -10,12 +9,10 @@ namespace Forte.EpiserverRedirects.Component
     public class RedirectsComponentStore : RestControllerBase
     {
         private readonly IRedirectRuleRepository _redirectRuleRepository;
-        private readonly IRedirectRuleMapper _redirectRuleMapper;
 
-        public RedirectsComponentStore(IRedirectRuleRepository redirectRuleRepository, IRedirectRuleMapper redirectRuleMapper)
+        public RedirectsComponentStore(IRedirectRuleRepository redirectRuleRepository)
         {
             _redirectRuleRepository = redirectRuleRepository;
-            _redirectRuleMapper = redirectRuleMapper;
         }
 
         [HttpGet]

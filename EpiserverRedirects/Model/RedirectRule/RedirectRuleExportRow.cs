@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Linq;
-using Castle.Core.Internal;
 using CsvHelper.Configuration.Attributes;
-using Settings = Forte.EpiserverRedirects.Configuration.Configuration;
-
 
 namespace Forte.EpiserverRedirects.Model.RedirectRule
 {
@@ -42,7 +38,7 @@ namespace Forte.EpiserverRedirects.Model.RedirectRule
         [Index(10)]
         public string CreatedBy { get; set; }
         
-        public static RedirectRuleExportRow CreateFromRedirectRule(RedirectRule redirectRule)
+        public static RedirectRuleExportRow CreateFromRedirectRule(IRedirectRule redirectRule)
         {
             return new RedirectRuleExportRow
             {
