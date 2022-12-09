@@ -10,7 +10,7 @@ namespace Forte.EpiserverRedirects.Tests.Repository
     public class TestRepository : IRedirectRuleRepository
     {
         private readonly HashSet<RedirectRuleModel> _redirectsHashSet;
-        
+
         public TestRepository()
         {
             _redirectsHashSet = new HashSet<RedirectRuleModel>();
@@ -23,13 +23,13 @@ namespace Forte.EpiserverRedirects.Tests.Repository
 
         public IRedirectRule GetById(Guid id)
         {
-            var redirectRule =
-                _redirectsHashSet.FirstOrDefault(r => r.RuleId == id);
+            var redirectRule = _redirectsHashSet.FirstOrDefault(r => r.RuleId == id);
+
             return redirectRule;
         }
 
         public IQueryable<IRedirectRule> GetAll() => _redirectsHashSet.AsQueryable();
-        
+
         public IRedirectRule Add(IRedirectRule redirectRule)
         {
             (redirectRule as RedirectRuleModel).RuleId = Guid.NewGuid();
@@ -38,24 +38,33 @@ namespace Forte.EpiserverRedirects.Tests.Repository
             return redirectRule;
         }
 
+        public void AddRange(IEnumerable<IRedirectRule> redirectRules)
+        {
+            foreach (var redirectRule in redirectRules)
+            {
+                Add(redirectRule);
+            }
+        }
+
         public IRedirectRule Update(IRedirectRule redirectRule)
         {
             var redirectRuleToUpdate =
                 _redirectsHashSet.FirstOrDefault(r => r.RuleId == redirectRule.RuleId);
-            
-            if(redirectRuleToUpdate==null)
+
+            if (redirectRuleToUpdate == null)
             {
                 throw new KeyNotFoundException("No existing redirect with this GUID");
             }
 
             WriteToModel(redirectRule, redirectRuleToUpdate);
+
             return redirectRule;
         }
 
         public bool Delete(Guid id)
         {
             var redirectRule = _redirectsHashSet.FirstOrDefault(r => r.RuleId == id);
-            
+
             return redirectRule != null && _redirectsHashSet.Remove(redirectRule);
         }
 

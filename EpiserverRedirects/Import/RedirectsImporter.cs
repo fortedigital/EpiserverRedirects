@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using Forte.EpiserverRedirects.Configuration;
 using Forte.EpiserverRedirects.Model.RedirectRule;
 using Forte.EpiserverRedirects.Repository;
@@ -18,11 +19,7 @@ namespace Forte.EpiserverRedirects.Import
 
         public void ImportRedirects(IEnumerable<RedirectRuleImportRow> redirectsToImport)
         {
-            foreach (var redirectDefinition in redirectsToImport)
-            {
-                var dto = CreateRedirectRule(redirectDefinition);
-                _redirectRuleRepository.Add(dto);
-            }
+            _redirectRuleRepository.AddRange(redirectsToImport.Select(CreateRedirectRule));
         }
 
         private IRedirectRule CreateRedirectRule(RedirectRuleImportRow redirectRow)

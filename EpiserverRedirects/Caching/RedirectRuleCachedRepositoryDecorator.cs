@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Forte.EpiserverRedirects.Model.RedirectRule;
 using Forte.EpiserverRedirects.Repository;
@@ -26,6 +27,12 @@ namespace Forte.EpiserverRedirects.Caching
             var rule = _repository.Add(redirectRule);
             ClearCache();
             return rule;
+        }
+
+        public void AddRange(IEnumerable<IRedirectRule> redirectRules)
+        {
+            _repository.AddRange(redirectRules);
+            ClearCache();
         }
 
         public IRedirectRule Update(IRedirectRule redirectRule)

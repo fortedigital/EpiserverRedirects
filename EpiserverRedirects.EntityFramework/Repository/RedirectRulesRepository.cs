@@ -2,6 +2,7 @@
 using Forte.EpiserverRedirects.Model.RedirectRule;
 using Forte.EpiserverRedirects.Repository;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 
@@ -36,6 +37,17 @@ namespace Forte.EpiserverRedirects.EntityFramework.Repository
             _dbContext.RedirectRules.Add(entity);
             _dbContext.SaveChanges();
             return entity;
+        }
+
+        public void AddRange(IEnumerable<IRedirectRule> redirectRules)
+        {
+            foreach (var redirectRule in redirectRules)
+            {
+                var entity = _mapper.ToNewEntity(redirectRule);
+                _dbContext.RedirectRules.Add(entity);
+            }
+
+            _dbContext.SaveChanges();
         }
 
         public IRedirectRule Update(IRedirectRule redirectRule)
