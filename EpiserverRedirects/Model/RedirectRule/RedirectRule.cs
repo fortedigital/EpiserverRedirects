@@ -2,7 +2,7 @@
 using EPiServer.Data.Dynamic;
 using System;
 
-
+// In order to have backward compability (with DDS) we have to preserve both namespace and class name.
 namespace Forte.EpiserverRedirects.Model.RedirectRule
 {
     [EPiServerDataStore(AutomaticallyRemapStore = true)]
