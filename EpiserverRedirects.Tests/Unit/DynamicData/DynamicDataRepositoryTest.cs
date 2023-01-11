@@ -1,14 +1,13 @@
-﻿using EPiServer.Data;
+﻿using System;
+using System.Linq;
+using EPiServer.Data;
 using Forte.EpiserverRedirects.DynamicData;
 using Forte.EpiserverRedirects.Model.RedirectRule;
 using Forte.EpiserverRedirects.Repository;
 using Moq;
-using System;
-using System.Linq;
 using Xunit;
 
-
-namespace Forte.EpiserverRedirects.Tests.Unit.DynamicDataStore
+namespace Forte.EpiserverRedirects.Tests.Unit.DynamicData
 {
     public class DynamicDataRepositoryTest
     {

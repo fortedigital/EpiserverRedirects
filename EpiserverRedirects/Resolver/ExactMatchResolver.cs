@@ -23,10 +23,10 @@ namespace Forte.EpiserverRedirects.Resolver
             var encodedOldPath = Uri.EscapeUriString(oldPath.ToString());
             var rule = _redirectRuleResolverRepository
                 .GetAll()
-                .Where(r => r.IsActive && r.RedirectRuleType == RedirectRuleType.ExactMatch)
+                .Where(r => r.IsActive && r.RedirectRuleType == RedirectRuleType.ExactMatch && r.OldPattern == encodedOldPath)
                 .OrderBy(x => x.Priority)
                 .AsEnumerable()
-                .FirstOrDefault(r => r.OldPattern == encodedOldPath);
+                .FirstOrDefault();
 
             var result = ResolveRule(rule, r => new ExactMatchRedirect(r));
             return Task.FromResult(result);

@@ -1,4 +1,6 @@
-﻿using Forte.EpiserverRedirects.EntityFramework;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Forte.EpiserverRedirects.EntityFramework.Model;
 using Forte.EpiserverRedirects.EntityFramework.Repository;
 using Forte.EpiserverRedirects.Model.RedirectRule;
@@ -7,13 +9,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Moq;
 using Moq.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using Xunit;
 
-
-namespace EpiserverRedirects.EntityFramework.Tests.Repository
+namespace Forte.EpiserverRedirects.EntityFramework.Tests.Repository
 {
     public class RedirectRulesRepositoryTest
     {
