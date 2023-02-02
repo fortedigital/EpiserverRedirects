@@ -54,24 +54,24 @@ namespace Forte.EpiserverRedirects.System
 
         public void DeleteRedirects(ContentReference deletedContent, IEnumerable<ContentReference> deletedDescendants)
         {
-            var deletedDescendantsIds = deletedDescendants.Select(x => x.ID).ToList();
+            // We cast this list to nullable as ContentId in the redirect rule is nullable as well SQL query builder had
+            // issues with converting expression containing <nullable>.HasValue
+            var deletedDescendantsIds = deletedDescendants.Select(x => (int?)x.ID).ToList();
 
-            // Episerver DDS doe not handle query with Contains and empty collection
+            // Episerver DDS does not handle query with Contains and empty collection
             var redirectsToDelete = deletedDescendantsIds.Any()
                 ? _redirectRuleRepository
                     .GetAll()
-                    .Where(x => deletedContent.ID == x.ContentId || (x.ContentId.HasValue && deletedDescendantsIds.Contains(x.ContentId.Value)))
-                    .Select(x => x.RuleId)
+                    .Where(x => deletedContent.ID == x.ContentId || deletedDescendantsIds.Contains(x.ContentId))
                     .ToList()
                 : _redirectRuleRepository
                     .GetAll()
                     .Where(x => deletedContent.ID == x.ContentId)
-                    .Select(x => x.RuleId)
                     .ToList();
 
             foreach (var redirect in redirectsToDelete)
             {
-                _redirectRuleRepository.Delete(redirect);
+                _redirectRuleRepository.Delete(redirect.RuleId);
             }
         }
 
