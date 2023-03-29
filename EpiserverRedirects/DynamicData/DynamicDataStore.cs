@@ -5,46 +5,59 @@ using System;
 using System.Linq;
 
 
-namespace Forte.EpiserverRedirects.DynamicData
+namespace Forte.EpiserverRedirects.DynamicData;
+
+/// <summary>
+/// Serves as a wrapper on the EPiServer.Data.Dynamic.DynamicDataStore class for testability purpose
+/// </summary>
+/// <typeparam name="T"></typeparam>
+public class DynamicDataStore<T> : IDynamicDataStore<T>
+    where T : class, IDynamicData
 {
-    /// <summary>
-    /// Serves as a wrapper on the EPiServer.Data.Dynamic.DynamicDataStore class for testability purpose
-    /// </summary>
-    /// <typeparam name="T"></typeparam>
-    public class DynamicDataStore<T> : IDynamicDataStore<T>
-         where T : class, IDynamicData
+    private readonly ExtendedDynamicDataStoreFactory _dataStoreFactory;
+
+    public DynamicDataStore(ExtendedDynamicDataStoreFactory dataStoreFactory)
     {
-        private readonly DynamicDataStore _store;
+        _dataStoreFactory = dataStoreFactory;
+    }
 
-        public DynamicDataStore(ExtendedDynamicDataStoreFactory dataStoreFactory)
-        {
-            _store = dataStoreFactory.GetStore<T>();
-        }
+    public IQueryable<T> Items()
+    {
+        return CallActionOnDisposableStore(store => store.Items<T>());
+    }
 
-        public IQueryable<T> Items()
-        {
-            return _store.Items<T>();
-        }
+    public T GetById(Guid id)
+    {
+        return CallActionOnDisposableStore(store => store.Items<T>()
+            .FirstOrDefault(o => o.Id.ExternalId == id));
+    }
 
-        public T GetById(Guid id)
-        {
-            return _store.Items<T>()
-                .FirstOrDefault(o => o.Id.ExternalId == id);
-        }
+    public Identity Save(T item)
+    {
+        return CallActionOnDisposableStore(store => store.Save(item));
+    }
 
-        public Identity Save(T item)
-        {
-            return _store.Save(item);
-        }
+    public void Delete(Guid id)
+    {
+        CallActionOnDisposableStore(store => store.Delete(Identity.NewIdentity(id)));
+    }
 
-        public void Delete(Guid id)
-        {
-            _store.Delete(Identity.NewIdentity(id));
-        }
+    public void DeleteAll()
+    {
+        CallActionOnDisposableStore(s => s.DeleteAll());
+    }
 
-        public void DeleteAll()
-        {
-            _store.DeleteAll();
-        }
+    private void CallActionOnDisposableStore(Action<DynamicDataStore> storeAction)
+    {
+        using var store = _dataStoreFactory.GetStore<T>();
+
+        storeAction(store);
+    }
+
+    private TReturnType CallActionOnDisposableStore<TReturnType>(Func<DynamicDataStore, TReturnType> storeFunc)
+    {
+        using var store = _dataStoreFactory.GetStore<T>();
+
+        return storeFunc(store);
     }
 }
