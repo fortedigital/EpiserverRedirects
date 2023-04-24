@@ -59,7 +59,19 @@ namespace Forte.EpiserverRedirects.Model
                 throw new ArgumentException(InvalidUrlExceptionMessage, e);
             }
         }
-        
+
+        public static string NormalizeNewPath(string url)
+        {
+            if (string.IsNullOrEmpty(url))
+            {
+                return url;
+            }
+                
+            var isAbsoluteUriParseOk = Uri.TryCreate(url.Trim(), UriKind.Absolute, out var uri);
+            var path = isAbsoluteUriParseOk ? uri.AbsoluteUri : NormalizePath(url);
+            
+            return path;
+        }
         public static UrlPath FromUri(Uri uri)
         {
             try
