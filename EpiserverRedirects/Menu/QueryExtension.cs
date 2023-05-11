@@ -78,6 +78,11 @@ namespace Forte.EpiserverRedirects.Menu
                 rules = rules.Where(rr => rr.Priority <= query.Priority);
             }
 
+            if (query.HostId != "1" && !string.IsNullOrEmpty(query.HostId))
+            {
+                rules = rules.Where(rr => rr.HostId == Parser.ParseHostIdNullable(query.HostId));
+            }
+
             rules = ApplySorting(rules, query.SortColumns);
             allRedirectsCount = rules.Count();
             return rules

@@ -32,7 +32,8 @@ namespace Forte.EpiserverRedirects.Tests.Unit.DynamicData
                 IsActive = true,
                 CreatedBy = "CREATED_BY_ORIGINAL",
                 Notes = "NOTES_NOTES_ORIGINAL",
-                Priority = 2222
+                Priority = 2222,
+                HostId = Guid.NewGuid()
             };
             _model = new RedirectRuleModel
             {
@@ -47,7 +48,8 @@ namespace Forte.EpiserverRedirects.Tests.Unit.DynamicData
                 IsActive = false,
                 CreatedBy = "CREATED_BY_MODIFIED",
                 Notes = "NOTES_NOTES_MODIFIED",
-                Priority = 8888
+                Priority = 8888,
+                HostId = Guid.NewGuid()
             };
         }
 
@@ -68,6 +70,7 @@ namespace Forte.EpiserverRedirects.Tests.Unit.DynamicData
             Assert.Equal("CREATED_BY_MODIFIED", actual.CreatedBy);
             Assert.Equal("NOTES_NOTES_MODIFIED", actual.Notes);
             Assert.Equal(8888, actual.Priority);
+            Assert.Equal(_model.HostId, actual.HostId);
         }
 
         [Fact]
@@ -87,6 +90,7 @@ namespace Forte.EpiserverRedirects.Tests.Unit.DynamicData
             Assert.Equal("CREATED_BY_ORIGINAL", _entity.CreatedBy);
             Assert.Equal("NOTES_NOTES_MODIFIED", _entity.Notes);
             Assert.Equal(8888, _entity.Priority);
+            Assert.Equal(_model.HostId, _entity.HostId);
         }
     }
 }

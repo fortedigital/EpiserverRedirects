@@ -124,7 +124,14 @@ namespace Forte.EpiserverRedirects.Model.RedirectRule
 
         public static int? ParseContentIdNullable(string value) => ParseNullableInt(value);
         public static int? ParsePriorityNullable(string value) => ParseNullableInt(value);
-        
+        public static Guid? ParseHostIdNullable(string value)
+        {
+            if(value == "0")
+            {
+                return null;
+            }
+            return Guid.TryParse(value, out var guidValue) ? guidValue : null;
+        }
 
         private static int? ParseNullableInt(string value)
         {

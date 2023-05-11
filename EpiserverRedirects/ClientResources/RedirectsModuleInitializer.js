@@ -21,6 +21,8 @@
             //Register the store
             registry.create("redirectsComponent.redirectsStore", this._getRestPath("RedirectsComponentStore"));
             registry.create("redirectsMenu.redirectsStore", this._getRestPath("RedirectRuleStore"));
+            registry.create("redirectsMenu.hostStore", this._getRestPath("HostStore/Get"));
+            registry.create("redirectsMenu.hostStoreForFilter", this._getRestPath("HostStore/GetForFilter"));
         },
         _getRestPath: function (name) {
             return routes.getRestPath({ moduleArea: "Forte.EpiserverRedirects", storeName: name });

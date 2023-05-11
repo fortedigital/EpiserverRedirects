@@ -2,6 +2,7 @@
     "dojo/_base/declare",
     "dojo/text!./RedirectsMenuForm.html",
     "dojo/on",
+    "dojo",
 
     "dijit/_WidgetBase",
     "dijit/_TemplatedMixin",
@@ -12,13 +13,17 @@
     "dijit/form/NumberTextBox",
     "dijit/form/Select",
     "dijit/form/Textarea",
-    "redirects/Moment"
+    "redirects/Moment",
+    "epi/dependency",
+        "dojo/data/ObjectStore",
+        "dojo/store/Memory",
 ],
 
     function (
         declare,
         template,
         on,
+        dojo,
 
         _WidgetBase,
         _TemplatedMixin,
@@ -30,13 +35,26 @@
         Select,
         TextArea,
         moment,
+        dependency,
+        ObjectStore,
     ) {
 
+        var allHosts = "0";
         return declare([_WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin], {
             templateString: template,
             id: "",
-
+            store: null,
+            hostSelect: null,
+            label: null,
+            
             postCreate: function () {
+
+                var registry = dependency.resolve("epi.storeregistry");
+                this.store = this.store || registry.get("redirectsMenu.hostStore");
+                var os = new ObjectStore({ objectStore: this.store });
+                this.hostSelect = new Select({store: os, labelAttr: "name", class: "form-input"}, "domainInputDiv");
+                this.label = dojo.create("label", {innerHTML:"Host:", style: "float:left"}, "domainLabelDiv");
+                
                 on(this.saveButton, "click", () => this.onSaveClick(this._getModel()));
                 on(this.cancelButton, "click", () => this.onCancelClick());
                 on(this.deleteButton, "click", () => this.onDeleteClick());
@@ -79,7 +97,7 @@
 
                 this.createdOnTextBox.set("disabled", true);
                 this.createdByTextBox.set("disabled", true);
-
+                this.hostSelect.set("value", model.hostId == null ? allHosts : model.hostId);
                 document.getElementById("createdOnInputDiv").style.display = 'block';
                 document.getElementById("createdByInputDiv").style.display = 'block';
             },
@@ -97,7 +115,7 @@
                 this.notesTextarea.set("value", "");
                 this.deleteButton.set("disabled", true);
                 this.saveButton.set("disabled", true);
-
+                this.hostSelect.set("value", allHosts);
                 document.getElementById("createdOnInputDiv").style.display = 'none';
                 document.getElementById("createdByInputDiv").style.display = 'none';
             },
@@ -113,6 +131,7 @@
                     redirectType: this.redirectTypeSelect.get("value"),
                     isActive: this.isActiveSelect.get("value"),
                     notes: this.notesTextarea.get("value"),
+                    hostId: this.hostSelect.get("value"),
                 };
                 return model;
             },

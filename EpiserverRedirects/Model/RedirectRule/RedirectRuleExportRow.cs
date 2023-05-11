@@ -38,6 +38,9 @@ namespace Forte.EpiserverRedirects.Model.RedirectRule
         [Index(10)]
         public string CreatedBy { get; set; }
         
+        [Index(11), Optional]
+        public Guid? Host { get; set; }
+        
         public static RedirectRuleExportRow CreateFromRedirectRule(IRedirectRule redirectRule)
         {
             return new RedirectRuleExportRow
@@ -52,7 +55,8 @@ namespace Forte.EpiserverRedirects.Model.RedirectRule
                 IsActive = redirectRule.IsActive.ToString().ToUpper(),
                 CreatedOn = redirectRule.CreatedOn.ToString("dd/MM/yyyy H:mm:ss"),
                 CreatedBy = redirectRule.CreatedBy,
-                Notes = redirectRule.Notes
+                Notes = redirectRule.Notes,
+                Host = redirectRule.HostId
             };
         }
     }

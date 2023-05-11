@@ -49,14 +49,14 @@ public class DynamicDataStore<T> : IDynamicDataStore<T>
 
     private void CallActionOnDisposableStore(Action<DynamicDataStore> storeAction)
     {
-        using var store = _dataStoreFactory.GetStore<T>();
+        using var store = _dataStoreFactory.GetOrCreateStore<T>();
 
         storeAction(store);
     }
 
     private TReturnType CallActionOnDisposableStore<TReturnType>(Func<DynamicDataStore, TReturnType> storeFunc)
     {
-        using var store = _dataStoreFactory.GetStore<T>();
+        using var store = _dataStoreFactory.GetOrCreateStore<T>();
 
         return storeFunc(store);
     }

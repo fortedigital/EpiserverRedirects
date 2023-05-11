@@ -23,6 +23,7 @@ namespace Forte.EpiserverRedirects.Repository
             to.IsActive = from.IsActive;
             to.Notes = from.Notes;
             to.Priority = from.Priority;
+            to.HostId = from.HostId;
         }
     }
 }

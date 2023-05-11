@@ -1,4 +1,5 @@
 using System;
+using EPiServer.Web;
 using Forte.EpiserverRedirects.Configuration;
 using Forte.EpiserverRedirects.Mapper;
 using Forte.EpiserverRedirects.Menu;
@@ -12,9 +13,16 @@ namespace Forte.EpiserverRedirects.Tests.Builder.WithRepository
     {
         protected override ControllerBuilder ThisBuilder => this;
 
-        private IRedirectRuleModelMapper _redirectRuleMapper = new RedirectRuleModelMapper(new RedirectsOptions { DefaultRedirectRulePriority = 100 });
+        private Mock<ISiteDefinitionRepository> _siteDefinitionRepository;
+        private IRedirectRuleModelMapper _redirectRuleMapper;
         private readonly Mock<ControllerContext> _controllerContext = new Mock<ControllerContext>();
 
+        public ControllerBuilder()
+        {
+            _siteDefinitionRepository = new Mock<ISiteDefinitionRepository>();
+            _redirectRuleMapper = new RedirectRuleModelMapper(new RedirectsOptions(), _siteDefinitionRepository.Object);
+        }
+        
         public ControllerBuilder WithMapper(Func<RedirectRuleModel, RedirectRuleDto> mapper)
         {
             var mock = new Mock<IRedirectRuleModelMapper>();

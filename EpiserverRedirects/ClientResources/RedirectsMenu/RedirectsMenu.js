@@ -78,7 +78,7 @@ define("redirectsMenu/RedirectsMenu", [
             },
 
             _initializeGrid: function () {
-                this.redirectsMenuGrid.init(this.redirectsMenuViewModel.store);
+                this.redirectsMenuGrid.init(this.redirectsMenuViewModel.store, this.redirectsMenuViewModel.hostStore);
                 this.redirectsMenuGrid.on('dgrid-select', this._onSelectedItemChange.bind(this));
                 this.redirectsMenuGrid.on('.dgrid-content .dgrid-row:dblclick', this._onEditClick.bind(this));
 
@@ -90,13 +90,14 @@ define("redirectsMenu/RedirectsMenu", [
                 this.redirectsMenuGrid.contentId.onSearchBoxChange = (newValue) => this._onSearchChange({ contentId: newValue });
                 on(this.redirectsMenuGrid.redirectRuleType, "change", (newValue) => this._onSearchChange({ redirectRuleType: newValue }));
                 on(this.redirectsMenuGrid.redirectType, "change", (newValue) => this._onSearchChange({ redirectType: newValue }));
-                on(this.redirectsMenuGrid.priority, "change", (newValue) => this._onSearchChange({ priority: newValue }));
+                this.redirectsMenuGrid.priority.onSearchBoxChange = (newValue) => this._onSearchChange({ priority: newValue });
                 on(this.redirectsMenuGrid.redirectOrigin, "change", (newValue) => this._onSearchChange({ redirectOrigin: newValue }));
                 on(this.redirectsMenuGrid.isActive, "change", (newValue) => this._onSearchChange({ isActive: newValue }));
                 on(this.redirectsMenuGrid.createdOnFrom, "change", (newValue) => this._onSearchChange({ createdOnFrom: this._parseToUtcDateTime(newValue) }));
                 on(this.redirectsMenuGrid.createdOnTo, "change", (newValue) => this._onSearchChange({ createdOnTo: this._parseToUtcDateTime(newValue) }));
-                on(this.redirectsMenuGrid.createdBy, "change", (newValue) => this._onSearchChange({ createdBy: newValue }));
-                on(this.redirectsMenuGrid.notes, "change", (newValue) => this._onSearchChange({ notes: newValue }));
+                this.redirectsMenuGrid.createdBy.onSearchBoxChange = (newValue) => this._onSearchChange({ createdBy: newValue });
+                this.redirectsMenuGrid.notes.onSearchBoxChange = (newValue) => this._onSearchChange({ notes: newValue });
+                on(this.redirectsMenuGrid.hostName, "change", (newValue) => this._onSearchChange({ hostName: newValue }));
             },
 
             _parseToUtcDateTime: function (localDate) {
