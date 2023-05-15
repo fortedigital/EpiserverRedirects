@@ -11,18 +11,12 @@ namespace Forte.EpiserverRedirects.Mapper
     public class RedirectRuleModelMapper : IRedirectRuleModelMapper
     {
         private readonly RedirectsOptions _options;
-        private readonly ISiteDefinitionRepository _siteDefinitionRepository;
-        private IEnumerable<SiteDefinition> _allHosts;
-
-        public IEnumerable<SiteDefinition> AllHosts
-        {
-            get { return _allHosts ??= _siteDefinitionRepository.List(); }
-        }
+        private readonly Lazy<IEnumerable<SiteDefinition>> _allHosts;
 
         public RedirectRuleModelMapper(RedirectsOptions options, ISiteDefinitionRepository siteDefinitionRepository)
         {
             _options = options;
-           _siteDefinitionRepository = siteDefinitionRepository;
+            _allHosts = new Lazy<IEnumerable<SiteDefinition>>(siteDefinitionRepository.List());
         }
 
         public RedirectRuleDto ModelToDto(IRedirectRule source)
@@ -71,7 +65,7 @@ namespace Forte.EpiserverRedirects.Mapper
         {
             return hostId is null
                 ? "All hosts"
-                : AllHosts.Where(s => s.Id == hostId).Select(s => s.Name).FirstOrDefault();
+                : _allHosts.Value.Where(s => s.Id == hostId).Select(s => s.Name).FirstOrDefault();
         }
     }
 }

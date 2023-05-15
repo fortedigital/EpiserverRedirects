@@ -41,7 +41,7 @@ namespace Forte.EpiserverRedirects.Tests.Tests
         }
 
         [Fact]
-        public void Given_RedirectRuleDTO_Host_Map_ReturnsRedirectRule()
+        public void Given_RedirectRuleDTO_Map_ReturnsRedirectRuleWithValidHostId()
         {
             var options = new RedirectsOptions
             {
@@ -51,7 +51,6 @@ namespace Forte.EpiserverRedirects.Tests.Tests
             var mapper = new RedirectRuleModelMapper(options, new Mock<ISiteDefinitionRepository>().Object);
             var redirectRuleDto = RandomDataGenerator.CreateRandomRedirectRuleDto();
             redirectRuleDto.HostId = Guid.NewGuid();
-            redirectRuleDto.HostName = "Test host name";
             var redirectRule = mapper.DtoToModel(redirectRuleDto);
             
             Assert.Equal(redirectRuleDto.HostId, redirectRule.HostId);
@@ -93,7 +92,7 @@ namespace Forte.EpiserverRedirects.Tests.Tests
         }
 
         [Fact]
-        public void Given_RedirectRule_Host_Map_ReturnsRedirectRuleDto()
+        public void Given_RedirectRule_Map_ReturnsRedirectRuleDtoWithValidHostIdAndName()
         {
             var options = new RedirectsOptions
             {
@@ -101,8 +100,8 @@ namespace Forte.EpiserverRedirects.Tests.Tests
             };
             
             var siteDefinitionRepository =  new Mock<ISiteDefinitionRepository>();
-            var hostId = "2c62ad9b-a5a5-413b-bf05-83f583dddab4";
-            var hostName = "Kongsberg first test site name";
+            const string hostId = "2c62ad9b-a5a5-413b-bf05-83f583dddab4";
+            const string hostName = "Kongsberg first test site name";
             var siteDefinitions = new List<SiteDefinition>()
             {
                 new SiteDefinition()

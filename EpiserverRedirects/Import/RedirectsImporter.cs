@@ -13,20 +13,14 @@ namespace Forte.EpiserverRedirects.Import
     {
         private readonly IRedirectRuleRepository _redirectRuleRepository;
         private readonly RedirectsOptions _options;
-        private readonly ISiteDefinitionRepository _siteDefinitionRepository;
-        private IEnumerable<SiteDefinition> _allHosts;
+        private readonly Lazy<IEnumerable<SiteDefinition>> _allHosts;
 
         public RedirectsImporter(IRedirectRuleRepository redirectRuleRepository, RedirectsOptions options, ISiteDefinitionRepository siteDefinitionRepository)
         {
             _redirectRuleRepository = redirectRuleRepository;
             _options = options;
-            _siteDefinitionRepository = siteDefinitionRepository;
+            _allHosts = new Lazy<IEnumerable<SiteDefinition>>(siteDefinitionRepository.List());
         }
-        public IEnumerable<SiteDefinition> AllHosts
-        {
-            get { return _allHosts ??= _siteDefinitionRepository.List(); }
-        }
-
         public void ImportRedirects(IEnumerable<RedirectRuleImportRow> redirectsToImport)
         {
             _redirectRuleRepository.AddRange(redirectsToImport.Select(CreateRedirectRule));
@@ -59,14 +53,14 @@ namespace Forte.EpiserverRedirects.Import
             }
             if (Guid.TryParse(hostIdOrHostName, out var guid))
             {
-                if (AllHosts.Where(s => s.Id == guid).IsNullOrEmpty())
+                if (_allHosts.Value.Where(s => s.Id == guid).IsNullOrEmpty())
                 {
                     return null;
                 }
 
                 return guid;
             }
-            return AllHosts.FirstOrDefault(s => s.Name.Equals(hostIdOrHostName, StringComparison.InvariantCultureIgnoreCase))?.Id;
+            return _allHosts.Value.FirstOrDefault(s => s.Name.Equals(hostIdOrHostName, StringComparison.InvariantCultureIgnoreCase))?.Id;
         }
     }
 }
