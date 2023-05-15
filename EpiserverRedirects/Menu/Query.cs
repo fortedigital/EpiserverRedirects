@@ -24,6 +24,6 @@ namespace Forte.EpiserverRedirects.Menu
         public int? Priority { get; set; }
         public IEnumerable<SortColumn> SortColumns { get; set; }
         public ItemRange Range { get; set; }
-        public string HostId { get; set; }
+        public Guid? HostId { get; set; }
     }
 }

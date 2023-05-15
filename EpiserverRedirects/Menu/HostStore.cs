@@ -12,21 +12,16 @@ public class HostStore : RestControllerBase
 {
     private readonly ISiteDefinitionRepository _siteDefinitionRepository;
     private IEnumerable<HostDto> _allHosts;
-    private  List<HostDto> _options;
+    private readonly IList<HostDto> _options;
+    public static readonly HostDto AllDto  = new(Guid.Parse("5DAE2426-814E-496A-9099-1B53517A85C9"), "All");
+    public static readonly HostDto AllHostDto = new(Guid.Parse("7F757A26-1B69-486A-B335-41472ABE724A"), "All hosts");
 
     public HostStore(ISiteDefinitionRepository siteDefinitionRepository)
     { 
         _siteDefinitionRepository = siteDefinitionRepository;
+        _options = new List<HostDto> { AllDto, AllHostDto };
     }
-
-    public List<HostDto> Options
-    {
-        get {return _options ??= new List<HostDto>()
-        {
-            new HostDto() { Id = "1", Name = "All" }, //no filter
-            new HostDto() { Id = "0", Name = "All hosts" }
-        };}
-    }
+    
     public IEnumerable<HostDto> AllHosts
     {
         get { return _allHosts ??= _siteDefinitionRepository.List().Select(SiteDefinitionToHostDto); }
@@ -35,23 +30,18 @@ public class HostStore : RestControllerBase
     [HttpGet]
     public ActionResult Get()
     {
-        var hosts = AllHosts.Prepend(Options[1]);
+        var hosts = AllHosts.Prepend(AllHostDto);
         return Rest(hosts);
     }
     [HttpGet]
     public ActionResult GetForFilter()
     {
-        var hosts = Enumerable.Concat(Options, AllHosts);
+        var hosts = Enumerable.Concat(_options, AllHosts);
         return Rest(hosts);
     }
 
-    public HostDto SiteDefinitionToHostDto(SiteDefinition siteDefinition)
+    private static HostDto SiteDefinitionToHostDto(SiteDefinition siteDefinition)
     {
-        var host = new HostDto
-        {
-            Id = siteDefinition.Id.ToString(),
-            Name = siteDefinition.Name
-        };
-        return host;
+        return new HostDto(siteDefinition.Id, siteDefinition.Name);
     }
 }

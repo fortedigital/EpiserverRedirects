@@ -66,12 +66,7 @@ namespace Forte.EpiserverRedirects.Import
 
                 return guid;
             }
-            var hosts = AllHosts.Where(s => s.Name == hostIdOrHostName).ToList();
-            if (hosts.IsNullOrEmpty())
-            {
-                return null;
-            }
-            return hosts.Select(s=> s.Id).FirstOrDefault();
+            return AllHosts.FirstOrDefault(s => s.Name.Equals(hostIdOrHostName, StringComparison.InvariantCultureIgnoreCase))?.Id;
         }
     }
 }

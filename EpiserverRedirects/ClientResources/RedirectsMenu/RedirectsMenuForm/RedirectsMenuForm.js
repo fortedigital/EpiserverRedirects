@@ -39,7 +39,7 @@
         ObjectStore,
     ) {
 
-        var allHosts = "0";
+        var allHosts = "7F757A26-1B69-486A-B335-41472ABE724A";
         return declare([_WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin], {
             templateString: template,
             id: "",
@@ -97,7 +97,7 @@
 
                 this.createdOnTextBox.set("disabled", true);
                 this.createdByTextBox.set("disabled", true);
-                this.hostSelect.set("value", model.hostId == null ? allHosts : model.hostId);
+                this.hostSelect.set("value", model.hostId === null ? allHosts : model.hostId);
                 document.getElementById("createdOnInputDiv").style.display = 'block';
                 document.getElementById("createdByInputDiv").style.display = 'block';
             },
