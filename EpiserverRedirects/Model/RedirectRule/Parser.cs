@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using EPiServer.Shell.Services.Rest;
+using Forte.EpiserverRedirects.Menu;
 
 namespace Forte.EpiserverRedirects.Model.RedirectRule
 {
@@ -124,7 +125,22 @@ namespace Forte.EpiserverRedirects.Model.RedirectRule
 
         public static int? ParseContentIdNullable(string value) => ParseNullableInt(value);
         public static int? ParsePriorityNullable(string value) => ParseNullableInt(value);
-        
+        public static Guid? ParseHostIdNullable(string value)
+        {
+             if(Guid.TryParse(value, out var guidValue))
+             {
+                 return guidValue == HostStore.AllHostDto.Id ? null : guidValue;
+             }
+             return null;
+        }
+        public static Guid? ParseHostIdNullableFromQuery(string value)
+        {
+            if(Guid.TryParse(value, out var guidValue))
+            {
+                return guidValue;
+            }
+            return null;
+        }
 
         private static int? ParseNullableInt(string value)
         {

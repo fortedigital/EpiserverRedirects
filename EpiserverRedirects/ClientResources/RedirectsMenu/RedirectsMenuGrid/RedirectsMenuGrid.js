@@ -7,6 +7,7 @@
     'dgrid/Grid',
     'dgrid/extensions/Pagination',
     'dgrid/extensions/CompoundColumns',
+        "dojo/data/ObjectStore",
 
     'epi/shell/widget/SearchBox',
 
@@ -27,6 +28,7 @@
         Grid,
         Pagination,
         CompoundColumns,
+        ObjectStore,
 
         SearchBox,
 
@@ -52,12 +54,13 @@
             createdOnTo: null,
             createdBy: null,
             notes: null,
+            hostName: null,
 
             buildRendering: function () {
                 this.inherited(arguments);
             },
 
-            init: function (store) {
+            init: function (store, hostStore) {
                 this.oldPattern = new SearchBox();
                 this.newPattern = new SearchBox();
                 this.contentId = new SearchBox();
@@ -70,6 +73,7 @@
                 this.createdOnTo = this._createCreatedOnToFilter();
                 this.createdBy = new SearchBox();
                 this.notes = new SearchBox();
+                this.hostName = this._createHostTypeSelect(hostStore);
 
                 this.grid = new this._gridClass({
                     columns: [
@@ -163,6 +167,14 @@
                                 { field: 'notes', label: 'Notes' }
                             ]
                         },
+                        {
+                            renderHeaderCell: (node) => {
+                                node.appendChild(this.hostName.domNode);
+                            },
+                            children: [
+                                { field: 'hostName', label: 'Host Name'}
+                            ]
+                        },
                     ],
                     selectionMode: 'single',
                     cellNavigation: false,
@@ -196,6 +208,15 @@
                         { label: "ExactMatch", value: 1 },
                         { label: "Regex", value: 2 },
                     ]
+                });
+            },
+
+            _createHostTypeSelect: function (hostStore) {
+                var os = new ObjectStore({ objectStore: hostStore});
+                return new Select({
+                    name: "hostNameSelect",
+                    store: os, 
+                    labelAttr: "name",
                 });
             },
 

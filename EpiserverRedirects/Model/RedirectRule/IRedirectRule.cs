@@ -16,5 +16,6 @@ namespace Forte.EpiserverRedirects.Model.RedirectRule
         public string CreatedBy { get; set; }
         public string Notes { get; set; }
         public int Priority { get; set; }
+        public Guid? HostId { get; set; }
     }
 }

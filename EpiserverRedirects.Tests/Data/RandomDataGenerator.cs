@@ -10,9 +10,7 @@ namespace Forte.EpiserverRedirects.Tests.Data
     {
         private const int MaxNumberOfDirectories = 3;
         private const int MaxLengthOfDirectory = 6;
-        
         private static readonly Random RandomGenerator = new Random();
-        
         public static RedirectRuleModel CreateRandomRedirectRule()
         {
             return new RedirectRuleModel
@@ -27,7 +25,8 @@ namespace Forte.EpiserverRedirects.Tests.Data
                 CreatedBy = "user",
                 RedirectRuleType = RedirectRuleType.ExactMatch,
                 RedirectOrigin = RedirectOrigin.System,
-                Priority = RandomGenerator.Next(1, int.MaxValue)
+                Priority = RandomGenerator.Next(1, int.MaxValue),
+                HostId = null
             };
         }
 
@@ -45,10 +44,11 @@ namespace Forte.EpiserverRedirects.Tests.Data
                 CreatedBy = "user",
                 RedirectRuleType = RedirectRuleType.ExactMatch,
                 RedirectOrigin = RedirectOrigin.System,
-                Priority = RandomGenerator.Next(1, int.MaxValue)
+                Priority = RandomGenerator.Next(1, int.MaxValue),
+                HostId = null,
+                HostName = "All hosts"
             };
         }
-        
         private static string GetRandomPath()
         {
             var directoriesNumber = RandomGenerator.Next(1, MaxNumberOfDirectories);

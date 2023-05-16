@@ -1,4 +1,7 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using EPiServer.Web;
 using Forte.EpiserverRedirects.Configuration;
 using Forte.EpiserverRedirects.Model;
 using Forte.EpiserverRedirects.Model.RedirectRule;
@@ -8,10 +11,12 @@ namespace Forte.EpiserverRedirects.Mapper
     public class RedirectRuleModelMapper : IRedirectRuleModelMapper
     {
         private readonly RedirectsOptions _options;
+        private readonly Lazy<IEnumerable<SiteDefinition>> _allHosts;
 
-        public RedirectRuleModelMapper(RedirectsOptions options)
+        public RedirectRuleModelMapper(RedirectsOptions options, ISiteDefinitionRepository siteDefinitionRepository)
         {
             _options = options;
+            _allHosts = new Lazy<IEnumerable<SiteDefinition>>(siteDefinitionRepository.List());
         }
 
         public RedirectRuleDto ModelToDto(IRedirectRule source)
@@ -29,7 +34,9 @@ namespace Forte.EpiserverRedirects.Mapper
                 Notes = source.Notes,
                 CreatedOn = DateTime.SpecifyKind(source.CreatedOn, DateTimeKind.Utc),
                 CreatedBy = source.CreatedBy,
-                Priority = source.Priority
+                Priority = source.Priority,
+                HostId = source.HostId,
+                HostName = GetHostNameByHostId(source.HostId)
             };
 
             return destination;
@@ -47,10 +54,18 @@ namespace Forte.EpiserverRedirects.Mapper
                 IsActive = source.IsActive,
                 Notes = source.Notes,
                 ContentId = source.ContentId,
-                Priority = (source.Priority.HasValue && source.Priority > 0) ? source.Priority.Value : _options.DefaultRedirectRulePriority
+                Priority = (source.Priority.HasValue && source.Priority > 0) ? source.Priority.Value : _options.DefaultRedirectRulePriority,
+                HostId = source.HostId
             };
 
             return destination;
+        }
+
+        private string GetHostNameByHostId(Guid? hostId)
+        {
+            return hostId is null
+                ? "All hosts"
+                : _allHosts.Value.Where(s => s.Id == hostId).Select(s => s.Name).FirstOrDefault();
         }
     }
 }

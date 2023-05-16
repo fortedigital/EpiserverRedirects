@@ -30,7 +30,8 @@ namespace Forte.EpiserverRedirects.Menu
                     Notes = queryPropertiesDictionary["notes"],
                     Priority = Parser.ParsePriorityNullable(queryPropertiesDictionary["priority"]),
                     SortColumns = Parser.ParseSortColumns(request.QueryString.Value),
-                    Range = ItemRange.ReadHeaderFrom(request)
+                    Range = ItemRange.ReadHeaderFrom(request),
+                    HostId = Parser.ParseHostIdNullableFromQuery(queryPropertiesDictionary["hostName"])
                 };
 
                 bindingContext.Result = ModelBindingResult.Success(model);

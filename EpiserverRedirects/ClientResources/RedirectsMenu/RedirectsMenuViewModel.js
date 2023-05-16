@@ -8,6 +8,7 @@
     var clearAllGuid = "00000000-0000-0000-0000-000000000000";
     return declare([Stateful], {
         store: null,
+        hostStore: null,
 
         dialogTitle: "",
 
@@ -44,6 +45,7 @@
         constructor: function () {
             var registry = dependency.resolve("epi.storeregistry");
             this.store = this.store || registry.get("redirectsMenu.redirectsStore");
+            this.hostStore = this.hostStore || registry.get("redirectsMenu.hostStoreForFilter");
         },
 
         getRedirectRules: function () {
