@@ -5,6 +5,7 @@ using EPiServer.Core;
 using EPiServer.DataAbstraction;
 using EPiServer.Web.Routing;
 using Forte.EpiserverRedirects.Configuration;
+using Forte.EpiserverRedirects.Model;
 using Forte.EpiserverRedirects.System;
 
 namespace Forte.EpiserverRedirects.Events
@@ -76,16 +77,24 @@ namespace Forte.EpiserverRedirects.Events
                     continue;
                 }
 
-                var oldUrl = GetContentUrl(originalParent, language.Culture.Name, false);
+                var originalParentUrl = GetContentUrl(originalParent, language.Culture.Name, false);
 
-                if (oldUrl == null)
+                if (originalParentUrl == null)
                 {
                     continue;
                 }
 
+                var oldUrl = originalParentUrl + pageData.URLSegment;
+
+                var currentUrl = GetContentUrl(e.ContentLink, language.Culture.Name, false);
+                if (oldUrl == UrlPath.NormalizePath(currentUrl))
+                {
+                    continue;
+                }
+                
                 _systemRedirectsActions.AddRedirects(
                     pageData,
-                    oldUrl + pageData.URLSegment,
+                    oldUrl,
                     language.Culture,
                     SystemRedirectReason.MovedContent,
                     _redirectsOptions.SystemRedirectRulePriority);
