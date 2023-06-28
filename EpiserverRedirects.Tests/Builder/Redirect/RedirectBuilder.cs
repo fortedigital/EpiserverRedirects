@@ -14,9 +14,15 @@ namespace Forte.EpiserverRedirects.Tests.Builder.Redirect
         private readonly RedirectRuleModel _redirectRule = new RedirectRuleModel();
         internal RedirectBuilder() { }
 
-        public RedirectBuilder WithHttpRequest(out Uri request, string requestPath)
+        public RedirectBuilder WithRelativeHttpRequest(out Uri request, string requestPath)
         {
-            request = HttpRequest(requestPath);
+            request = HttpRequest(requestPath, UriKind.Relative);
+            return this;
+        }
+        
+        public RedirectBuilder WithAbsoluteHttpRequest(out Uri request, string requestPath)
+        {
+            request = HttpRequest(requestPath, UriKind.Absolute);
             return this;
         }
         
@@ -36,7 +42,7 @@ namespace Forte.EpiserverRedirects.Tests.Builder.Redirect
             return this;
         }
 
-        private static Uri HttpRequest(string requestUrl) => new Uri(requestUrl, UriKind.Relative);
+        private static Uri HttpRequest(string requestUrl, UriKind uriKind) => new Uri(requestUrl, uriKind);
 
         public RedirectBuilder WithContentRedirectRule(out RedirectRuleModel redirectRule, int? contentReferenceId = null)
         {

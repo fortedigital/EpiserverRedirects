@@ -4,6 +4,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using EPiServer;
 using EPiServer.Web;
+using Forte.EpiserverRedirects.Extensions;
 using Forte.EpiserverRedirects.Model;
 using Forte.EpiserverRedirects.Model.RedirectRule;
 using Forte.EpiserverRedirects.Redirect;
@@ -30,8 +31,9 @@ namespace Forte.EpiserverRedirects.Resolver
                 .Where(r => r.IsActive && r.RedirectRuleType == RedirectRuleType.Regex)
                 .OrderBy(x => x.Priority)
                 .AsEnumerable()
-                .FirstOrDefault(r => Regex.IsMatch(encodedOldPath, r.OldPattern, RegexOptions.IgnoreCase));
-            var result = ResolveRule(rule, r => new ExactMatchRedirect(r));
+                .FirstOrDefault(r => Regex.IsMatch(encodedOldPath, Uri.UnescapeDataString(r.OldPattern).ToStrictRegexPattern(), RegexOptions.IgnoreCase));
+            
+            var result = ResolveRule(rule, r => new RegexRedirect(r));
             return Task.FromResult(result);
         }
     }
