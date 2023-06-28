@@ -67,8 +67,13 @@ namespace Forte.EpiserverRedirects.Tests.Data
         
         private static string GetRandomDirectoryString(Random random)
         {
+            return GetRandomString(random, MaxLengthOfDirectory);
+        }
+
+        public static string GetRandomString(Random random, int characterAmount)
+        {
             const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-            return new string(Enumerable.Repeat(chars, random.Next(1, MaxLengthOfDirectory))
+            return new string(Enumerable.Repeat(chars, random.Next(1, characterAmount))
                 .Select(s => s[random.Next(s.Length)]).ToArray());
         }
     }
