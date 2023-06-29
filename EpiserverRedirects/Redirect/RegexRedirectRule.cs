@@ -1,5 +1,6 @@
 using System;
 using System.Text.RegularExpressions;
+using Forte.EpiserverRedirects.Extensions;
 using Forte.EpiserverRedirects.Model.RedirectRule;
 
 namespace Forte.EpiserverRedirects.Redirect
@@ -12,7 +13,7 @@ namespace Forte.EpiserverRedirects.Redirect
         
         protected override string GetPathWithoutContentId(Uri request)
         {
-            var newUrl = Regex.Replace(request.ToString(), RedirectRule.OldPattern,
+            var newUrl = Regex.Replace(request.AbsolutePath, RedirectRule.OldPattern.ToStrictRegexPattern(),
                 RedirectRule.NewPattern, RegexOptions.IgnoreCase);
             return newUrl;
         }
