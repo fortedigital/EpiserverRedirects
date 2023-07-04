@@ -13,7 +13,7 @@ namespace Forte.EpiserverRedirects.Tests.Tests
         {
             var contentRedirect = Redirect()
                 .WithContentRedirectRule(out var redirectRule)
-                .WithHttpRequest(out var httpRequest, "/requestPath")
+                .WithRelativeHttpRequest(out var httpRequest, "/requestPath")
                 .WithHttpResponseMock(out var httpResponseMock)
                 .WithUrlResolver(out var urlResolver)
                 .Create();
@@ -28,7 +28,7 @@ namespace Forte.EpiserverRedirects.Tests.Tests
         {
             var exactMatchRedirect = Redirect()
                 .WithExactMatchRedirectRule(out var redirectRule, "newUrl")
-                .WithHttpRequest(out var httpRequest, "/requestPath")
+                .WithRelativeHttpRequest(out var httpRequest, "/requestPath")
                 .WithHttpResponseMock(out var httpResponseMock)
                 .WithUrlResolver(out var urlResolver)
                 .Create();
@@ -39,18 +39,39 @@ namespace Forte.EpiserverRedirects.Tests.Tests
         }
         
         [Fact]
-        public void Given_RegexRedirectRule_ToRedirectResult_ReturnsCorrectResult()
+        public void Given_RegexRedirectRule_WhenNewPatternRelative_ReturnsCorrectResultInTheSameHost()
         {
+            const string urlBase = "https://localhost:8080";
+            
             var regexRedirect = Redirect()
-                .WithRegexRedirectRule(out var redirectRule, "(oldPattern)", "newPattern/$1")
-                .WithHttpRequest(out var httpRequest, "/requestPath/oldPattern")
+                .WithRegexRedirectRule(out var redirectRule, "/requestPath/(oldPattern)", "/newPattern/$1")
+                .WithAbsoluteHttpRequest(out var httpRequest, $"{urlBase}/requestPath/oldPattern")
                 .WithHttpResponseMock(out var httpResponseMock)
                 .WithUrlResolver(out var urlResolver)
                 .Create();
             
             regexRedirect.Execute(httpRequest, httpResponseMock.Object, urlResolver, false);
 
-            httpResponseMock.Verify(r => r.Redirect("/requestPath/newPattern/oldPattern", redirectRule.RedirectType), Times.Once);
+            httpResponseMock.Verify(r => r.Redirect("/newPattern/oldPattern", redirectRule.RedirectType), Times.Once);
+        }
+        
+        
+        [Fact]
+        public void Given_RegexRedirectRule_WhenNewPatternAbsolute_ReturnsCorrectResultInTheNewPatternHost()
+        {
+            const string urlBase = "https://localhost:8080";
+            const string newUrlBase = "https://localhost:4124";
+            
+            var regexRedirect = Redirect()
+                .WithRegexRedirectRule(out var redirectRule, "/requestPath/(oldPattern)", $"{newUrlBase}/newPattern/$1")
+                .WithAbsoluteHttpRequest(out var httpRequest, $"{urlBase}/requestPath/oldPattern")
+                .WithHttpResponseMock(out var httpResponseMock)
+                .WithUrlResolver(out var urlResolver)
+                .Create();
+            
+            regexRedirect.Execute(httpRequest, httpResponseMock.Object, urlResolver, false);
+
+            httpResponseMock.Verify(r => r.Redirect($"{newUrlBase}/newPattern/oldPattern", redirectRule.RedirectType), Times.Once);
         }
     }
 }
