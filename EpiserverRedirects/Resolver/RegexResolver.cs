@@ -3,6 +3,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using EPiServer;
+using Forte.EpiserverRedirects.Extensions;
 using Forte.EpiserverRedirects.Model;
 using Forte.EpiserverRedirects.Model.RedirectRule;
 using Forte.EpiserverRedirects.Redirect;
@@ -30,9 +31,9 @@ namespace Forte.EpiserverRedirects.Resolver
                     .Where(r => r.IsActive && r.RedirectRuleType == RedirectRuleType.Regex)
                     .OrderBy(x=> x.Priority)
                     .AsEnumerable()
-                    .FirstOrDefault(r => Regex.IsMatch(encodedOldPath, r.OldPattern, RegexOptions.IgnoreCase));
+                    .FirstOrDefault(r => Regex.IsMatch(encodedOldPath, Uri.UnescapeDataString(r.OldPattern).ToStrictRegexPattern(), RegexOptions.IgnoreCase));
 
-                return ResolveRule(rule, r => new ExactMatchRedirect(r));
+                return ResolveRule(rule, r => new RegexRedirect(r));
             });
         }
     }
