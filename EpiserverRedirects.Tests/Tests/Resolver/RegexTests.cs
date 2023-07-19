@@ -42,7 +42,7 @@ namespace Forte.EpiserverRedirects.Tests.Tests.Resolver
         {
             var resolver = RegexResolver()
                 .WithRandomExistingRules()
-                .WithRule(r=>r.WithOldPatternAndNewPattern("oldPattern", "newPattern/$1"), out var expectedRule)
+                .WithRule(r=>r.WithOldPatternAndNewPattern("/oldPattern", "newPattern/$1"), out var expectedRule)
                 .Create();
             
             var redirect = await resolver.ResolveRedirectRuleAsync(UrlPath.Parse("/oldPattern"));
