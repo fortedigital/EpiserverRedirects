@@ -91,11 +91,11 @@ namespace Forte.EpiserverRedirects.Extensions
 
         private static IRedirectRuleResolver GetCompositeRuleResolver(IServiceProvider provider)
         {
-            var contentLoader = provider.GetService<IContentLoader>();
+            var contentResolvers = provider.GetServices<ContentResolverBase>().ToArray();
 
             return new CompositeResolver(
-                new ExactMatchResolver(provider.GetInstance<IRedirectRuleRepository>(), contentLoader),
-                new RegexResolver(provider.GetInstance<IRedirectRuleRepository>(), contentLoader));
+                new ExactMatchResolver(provider.GetInstance<IRedirectRuleRepository>(), contentResolvers),
+                new RegexResolver(provider.GetInstance<IRedirectRuleRepository>(), contentResolvers));
         }
     }
 }

@@ -1,11 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using EPiServer;
 using Forte.EpiserverRedirects.Model;
 using Forte.EpiserverRedirects.Model.RedirectRule;
 using Forte.EpiserverRedirects.Redirect;
 using Forte.EpiserverRedirects.Repository;
+using Forte.EpiserverRedirects.Resolver.Content;
 using SiteDefinition = EPiServer.Web.SiteDefinition;
 
 namespace Forte.EpiserverRedirects.Resolver
@@ -14,7 +15,9 @@ namespace Forte.EpiserverRedirects.Resolver
     {
         private readonly IRedirectRuleRepository _redirectRuleResolverRepository;
 
-        public ExactMatchResolver(IRedirectRuleRepository redirectRuleResolverRepository, IContentLoader contentLoader) : base(contentLoader)
+        public ExactMatchResolver(
+            IRedirectRuleRepository redirectRuleResolverRepository,
+            IEnumerable<ContentResolverBase> contentResolvers) : base(contentResolvers)
         {
             _redirectRuleResolverRepository = redirectRuleResolverRepository;
         }
