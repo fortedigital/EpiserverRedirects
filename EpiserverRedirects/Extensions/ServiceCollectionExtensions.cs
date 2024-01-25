@@ -14,6 +14,8 @@ using Forte.EpiserverRedirects.System;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Linq;
+using System.Reflection;
+using Forte.EpiserverRedirects.Resolver.Content;
 
 
 namespace Forte.EpiserverRedirects.Extensions
@@ -71,6 +73,17 @@ namespace Forte.EpiserverRedirects.Extensions
                             });
                     }
                 });
+
+            var contentResolverBaseType = typeof(ContentResolverBase);
+            var contentResolvers = Assembly
+                .GetExecutingAssembly()
+                .GetTypes()
+                .Where(t => t.BaseType == contentResolverBaseType);
+            
+            foreach (var contentResolver in contentResolvers)
+            {
+                services.AddTransient(contentResolverBaseType, contentResolver);
+            }
 
             EventsHandlersScopeConfiguration.IsAutomaticRedirectsDisabled = redirectsOptions.AddAutomaticRedirects == false;
             return services;
