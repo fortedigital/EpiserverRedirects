@@ -1,5 +1,4 @@
-﻿using EPiServer;
-using EPiServer.ServiceLocation;
+﻿using EPiServer.ServiceLocation;
 using EPiServer.Shell.Modules;
 using Forte.EpiserverRedirects.Caching;
 using Forte.EpiserverRedirects.Configuration;
@@ -14,7 +13,7 @@ using Forte.EpiserverRedirects.System;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Linq;
-using System.Reflection;
+using Forte.EpiserverRedirects.Extensions.DependencyInjection;
 using Forte.EpiserverRedirects.Resolver.Content;
 
 
