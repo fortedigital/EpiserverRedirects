@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using EPiServer.Core;
 using EPiServer.Filters;
 using Forte.EpiserverRedirects.Model.RedirectRule;
 using Forte.EpiserverRedirects.Redirect;
@@ -11,9 +10,9 @@ namespace Forte.EpiserverRedirects.Resolver
 {
     public abstract class BaseRuleResolver
     {
-        private readonly IEnumerable<ContentResolverBase> _contentResolvers;
+        private readonly IEnumerable<RedirectContentResolverBase> _contentResolvers;
 
-        protected BaseRuleResolver(IEnumerable<ContentResolverBase> contentResolvers)
+        protected BaseRuleResolver(IEnumerable<RedirectContentResolverBase> contentResolvers)
         {
             _contentResolvers = contentResolvers;
         }
@@ -30,8 +29,10 @@ namespace Forte.EpiserverRedirects.Resolver
                 return constructRedirect(rule);
             }
 
-            IContent content = null;
-            if (_contentResolvers.All(contentResolver => !contentResolver.TryGet(rule, out content)))
+            var contentResolver = _contentResolvers
+                .FirstOrDefault(contentResolver => contentResolver.ProviderKey == rule.ContentProviderKey);
+
+            if (contentResolver is null || !contentResolver.TryGet(rule, out var content))
             {
                 return new NullRedirectRule();
             }

@@ -17,7 +17,7 @@ namespace Forte.EpiserverRedirects.Resolver
 
         public ExactMatchResolver(
             IRedirectRuleRepository redirectRuleResolverRepository,
-            IEnumerable<ContentResolverBase> contentResolvers) : base(contentResolvers)
+            IEnumerable<RedirectContentResolverBase> contentResolvers) : base(contentResolvers)
         {
             _redirectRuleResolverRepository = redirectRuleResolverRepository;
         }

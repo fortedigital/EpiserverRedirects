@@ -74,16 +74,6 @@ namespace Forte.EpiserverRedirects.Extensions
                     }
                 });
 
-            var contentResolverBaseType = typeof(ContentResolverBase);
-            var contentResolvers = Assembly
-                .GetExecutingAssembly()
-                .GetTypes()
-                .Where(t => t.BaseType == contentResolverBaseType);
-            
-            foreach (var contentResolver in contentResolvers)
-            {
-                services.AddTransient(contentResolverBaseType, contentResolver);
-            }
 
             EventsHandlersScopeConfiguration.IsAutomaticRedirectsDisabled = redirectsOptions.AddAutomaticRedirects == false;
             return services;
@@ -91,7 +81,7 @@ namespace Forte.EpiserverRedirects.Extensions
 
         private static IRedirectRuleResolver GetCompositeRuleResolver(IServiceProvider provider)
         {
-            var contentResolvers = provider.GetServices<ContentResolverBase>().ToArray();
+            var contentResolvers = provider.GetServices<RedirectContentResolverBase>().ToArray();
 
             return new CompositeResolver(
                 new ExactMatchResolver(provider.GetInstance<IRedirectRuleRepository>(), contentResolvers),
