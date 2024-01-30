@@ -12,7 +12,7 @@ namespace Forte.EpiserverRedirects.Tests.Builder.WithRepository.Resolver
         public override ExactMatchResolver Create()
         {
             CreateRepository();
-            return new ExactMatchResolver(RedirectRuleRepository, new []{ new CmsContentResolver(Mock.Of<IContentLoader>()) });
+            return new ExactMatchResolver(RedirectRuleRepository, new []{ new DefaultRedirectContentResolver(Mock.Of<IContentLoader>()) });
         }
     }
 }
