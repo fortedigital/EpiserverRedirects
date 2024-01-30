@@ -1,7 +1,6 @@
 using System;
 using EPiServer.Core;
 using EPiServer.Web.Routing;
-using Forte.EpiserverRedirects.Configuration;
 using Forte.EpiserverRedirects.Model.RedirectRule;
 using Forte.EpiserverRedirects.Request;
 
@@ -13,10 +12,14 @@ namespace Forte.EpiserverRedirects.Redirect
         public int Priority => RedirectRule.Priority;
 
         protected IRedirectRule RedirectRule { get; }
+        private readonly ContentReference _contentReference;
 
         protected Redirect(IRedirectRule redirectRule)
         {
             RedirectRule = redirectRule;
+            _contentReference = redirectRule.ContentId.HasValue 
+                ? new ContentReference(redirectRule.ContentId.Value, RedirectRule.ContentProviderKey)
+                : null;
         }
 
         protected abstract string GetPathWithoutContentId(Uri request, bool shouldPreserveQueryString);
@@ -32,15 +35,8 @@ namespace Forte.EpiserverRedirects.Redirect
 
         private string GetPathFromContentId(IUrlResolver contentUrlResolver, Uri request, bool shouldPreserveQueryString)
         {
-            var newUrl = GetUrl(contentUrlResolver) ?? GetUrl(contentUrlResolver, Constants.CommerceCatalogContentProviderKey);
+            var newUrl = contentUrlResolver.GetUrl(_contentReference, null);
             return shouldPreserveQueryString ? newUrl + request.Query : newUrl;
-        }
-
-        private string GetUrl(IUrlResolver contentUrlResolver, string providerKey = null)
-        {
-            var contentReference = new ContentReference(RedirectRule.ContentId.Value, providerKey);
-            var newUrl = contentUrlResolver.GetUrl(contentReference, null);
-            return newUrl;
         }
     }
 }

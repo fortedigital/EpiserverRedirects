@@ -17,6 +17,8 @@ namespace Forte.EpiserverRedirects.Model.RedirectRule
 
         public int? ContentId { get; set; }
 
+        public Guid ContentProviderId { get; set; }
+
         [Required]
         public RedirectRuleType RedirectRuleType { get; set; }
 

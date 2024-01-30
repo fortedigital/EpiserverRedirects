@@ -1,13 +1,24 @@
 ﻿using System;
 using System.Threading.Tasks;
 using EPiServer.Shell.Services.Rest;
+using Forte.EpiserverRedirects.Configuration;
+using Forte.EpiserverRedirects.Menu.ContentProviders;
 using Forte.EpiserverRedirects.Model.RedirectRule;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.Extensions.Options;
 
 namespace Forte.EpiserverRedirects.Menu
 {
     public class QueryModelBinder : IModelBinder
     {
+        private readonly ContentProvidersOptions _contentProvidersOptions;
+
+        public QueryModelBinder(IOptions<ContentProvidersOptions> contentProvidersOptions)
+        {
+            _contentProvidersOptions = contentProvidersOptions.Value;
+        }
+        
         public Task BindModelAsync(ModelBindingContext bindingContext)
         {
             var request = bindingContext.HttpContext.Request;
@@ -15,11 +26,14 @@ namespace Forte.EpiserverRedirects.Menu
 
             try
             {
+                var contentProviderKey = GetContentProviderKey(queryPropertiesDictionary);
+                
                 var model = new Query
                 {
                     OldPattern = queryPropertiesDictionary["oldPattern"],
                     NewPattern = queryPropertiesDictionary["newPattern"],
                     ContentId = Parser.ParseContentIdNullable(queryPropertiesDictionary["contentId"]),
+                    ContentProviderKey = contentProviderKey,
                     RedirectType = Parser.ParseRedirectTypeNullable(queryPropertiesDictionary["redirectType"]),
                     RedirectRuleType = Parser.ParseRedirectRuleTypeNullable(queryPropertiesDictionary["redirectRuleType"]),
                     RedirectOrigin = Parser.ParseRedirectOriginNullable(queryPropertiesDictionary["redirectOrigin"]),
@@ -42,6 +56,13 @@ namespace Forte.EpiserverRedirects.Menu
             {
                 throw new Exception("Failed to parse query string from http request");
             }
+        }
+
+        private string GetContentProviderKey(IQueryCollection queryPropertiesDictionary)
+        {
+            return !Guid.TryParse(queryPropertiesDictionary["contentProviderId"], out var id) 
+                ? ContentProviderConstants.AllKey 
+                : _contentProvidersOptions.GetContentProviderKey(id);
         }
     }
 }
