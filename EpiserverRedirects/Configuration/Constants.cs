@@ -5,7 +5,5 @@
         public const string ModuleName = "Forte.EpiserverRedirects";
 
         public const string BaseRoutePath = "Forte.EpiserverRedirects";
-
-        public const string CommerceCatalogContentProviderKey = "CatalogContent";
     }
 }
