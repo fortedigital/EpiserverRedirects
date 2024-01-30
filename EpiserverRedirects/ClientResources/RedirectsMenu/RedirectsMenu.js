@@ -78,7 +78,7 @@ define("redirectsMenu/RedirectsMenu", [
             },
 
             _initializeGrid: function () {
-                this.redirectsMenuGrid.init(this.redirectsMenuViewModel.store, this.redirectsMenuViewModel.hostStore);
+                this.redirectsMenuGrid.init(this.redirectsMenuViewModel.store, this.redirectsMenuViewModel.hostStore, this.redirectsMenuViewModel.contentProvidersStore);
                 this.redirectsMenuGrid.on('dgrid-select', this._onSelectedItemChange.bind(this));
                 this.redirectsMenuGrid.on('.dgrid-content .dgrid-row:dblclick', this._onEditClick.bind(this));
 
@@ -88,6 +88,7 @@ define("redirectsMenu/RedirectsMenu", [
                 this.redirectsMenuGrid.oldPattern.onSearchBoxChange = (newValue) => this._onSearchChange({ oldPattern: newValue });
                 this.redirectsMenuGrid.newPattern.onSearchBoxChange = (newValue) => this._onSearchChange({ newPattern: newValue });
                 this.redirectsMenuGrid.contentId.onSearchBoxChange = (newValue) => this._onSearchChange({ contentId: newValue });
+                on(this.redirectsMenuGrid.contentProviders, "change", (newValue) => this._onSearchChange({ contentProviderId: newValue }));
                 on(this.redirectsMenuGrid.redirectRuleType, "change", (newValue) => this._onSearchChange({ redirectRuleType: newValue }));
                 on(this.redirectsMenuGrid.redirectType, "change", (newValue) => this._onSearchChange({ redirectType: newValue }));
                 this.redirectsMenuGrid.priority.onSearchBoxChange = (newValue) => this._onSearchChange({ priority: newValue });
