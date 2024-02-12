@@ -45,6 +45,7 @@
             oldPattern: null,
             newPattern: null,
             contentId: null,
+            contentProviders: null,
             redirectRuleType: null,
             redirectType: null,
             priority: null,
@@ -60,10 +61,11 @@
                 this.inherited(arguments);
             },
 
-            init: function (store, hostStore) {
+            init: function (store, hostStore, contentProvidersStore) {
                 this.oldPattern = new SearchBox();
                 this.newPattern = new SearchBox();
                 this.contentId = new SearchBox();
+                this.contentProviders = this._createContentProvidersSelect(contentProvidersStore)
                 this.redirectRuleType = this._createRedirectRuleTypeSelect();
                 this.redirectType = this._createRedirectTypeSelect();
                 this.priority = new SearchBox();
@@ -99,6 +101,14 @@
                             },
                             children: [
                                 { field: 'contentId', label: 'Content Id' }
+                            ]
+                        },
+                        {
+                            renderHeaderCell: (node) => {
+                                node.appendChild(this.contentProviders.domNode);
+                            },
+                            children: [
+                                { field: 'contentProviderId', label: 'Content provider', renderCell: (object, value, node) => node.append(this._getContentProviderText(value)) }
                             ]
                         },
                         {
@@ -215,7 +225,16 @@
                 var os = new ObjectStore({ objectStore: hostStore});
                 return new Select({
                     name: "hostNameSelect",
-                    store: os, 
+                    store: os,
+                    labelAttr: "name",
+                });
+            },
+
+            _createContentProvidersSelect: function (contentProvidersStore) {
+                let os = new ObjectStore({ objectStore: contentProvidersStore })
+                return new Select({
+                    name: "contentProvidersSelect",
+                    store: os,
                     labelAttr: "name",
                 });
             },
@@ -284,6 +303,14 @@
                     default:
                         return statusCode;
                 }
+            },
+
+            _getContentProviderText: function (optionId) {
+                const options = this.contentProviders?.options ?? []
+
+                const option = options.find(o => o.value === optionId)
+
+                return option?.label ?? "";
             },
 
             _getRedirectRuleTypeText: function (redirectRuleType) {

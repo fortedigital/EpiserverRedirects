@@ -32,7 +32,7 @@
             this.mode = value;
         },
 
-        searchQueryModel: { oldPattern: "", newPattern: "", redirectRuleType: "", redirectType: ""},
+        searchQueryModel: { oldPattern: "", newPattern: "", redirectRuleType: "", redirectType: "", contentProviderId: "" },
 
         _searchQueryModelGetter: function () {
             return this.searchQueryModel;
@@ -46,6 +46,7 @@
             var registry = dependency.resolve("epi.storeregistry");
             this.store = this.store || registry.get("redirectsMenu.redirectsStore");
             this.hostStore = this.hostStore || registry.get("redirectsMenu.hostStoreForFilter");
+            this.contentProvidersStore = this.contentProvidersStore || registry.get("redirectsMenu.contentProvidersForFilter");
         },
 
         getRedirectRules: function () {

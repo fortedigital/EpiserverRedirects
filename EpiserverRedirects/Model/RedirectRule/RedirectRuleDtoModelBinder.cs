@@ -25,6 +25,7 @@ namespace Forte.EpiserverRedirects.Model.RedirectRule
                     OldPattern = redirectRuleDtoProperties["oldPattern"],
                     NewPattern = redirectRuleDtoProperties["newPattern"],
                     ContentId = Parser.ParseContentIdNullable(redirectRuleDtoProperties["contentId"]),
+                    ContentProviderId = Parser.ParseContentProviderIdNullable(redirectRuleDtoProperties["contentProviderKey"]),
                     RedirectType = Parser.ParseRedirectType(redirectRuleDtoProperties["redirectType"]),
                     Priority = Parser.ParsePriorityNullable(redirectRuleDtoProperties["priority"]),
                     RedirectRuleType = Parser.ParseRedirectRuleType(redirectRuleDtoProperties["redirectRuleType"]),

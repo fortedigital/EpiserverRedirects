@@ -12,10 +12,14 @@ namespace Forte.EpiserverRedirects.Redirect
         public int Priority => RedirectRule.Priority;
 
         protected IRedirectRule RedirectRule { get; }
+        private readonly ContentReference _contentReference;
 
         protected Redirect(IRedirectRule redirectRule)
         {
             RedirectRule = redirectRule;
+            _contentReference = redirectRule.ContentId.HasValue 
+                ? new ContentReference(redirectRule.ContentId.Value, RedirectRule.ContentProviderKey)
+                : null;
         }
 
         protected abstract string GetPathWithoutContentId(Uri request, bool shouldPreserveQueryString);
@@ -31,8 +35,7 @@ namespace Forte.EpiserverRedirects.Redirect
 
         private string GetPathFromContentId(IUrlResolver contentUrlResolver, Uri request, bool shouldPreserveQueryString)
         {
-            var contentReference = new ContentReference(RedirectRule.ContentId.Value);
-            var newUrl = contentUrlResolver.GetUrl(contentReference, null);
+            var newUrl = contentUrlResolver.GetUrl(_contentReference, null);
             return shouldPreserveQueryString ? newUrl + request.Query : newUrl;
         }
     }

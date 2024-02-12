@@ -3,6 +3,7 @@ using Forte.EpiserverRedirects.Model.RedirectRule;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using Forte.EpiserverRedirects.Menu.ContentProviders;
 
 
 namespace Forte.EpiserverRedirects.Menu
@@ -31,6 +32,11 @@ namespace Forte.EpiserverRedirects.Menu
             if (query.ContentId != null)
             {
                 rules = rules.Where(rr => rr.ContentId == query.ContentId);
+            }
+            
+            if (query.ContentProviderKey != ContentProviderConstants.AllKey)
+            {
+                rules = rules.Where(rr => rr.ContentProviderKey == query.ContentProviderKey);
             }
 
             if (query.RedirectType != null)

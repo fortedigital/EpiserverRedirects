@@ -16,6 +16,7 @@ namespace Forte.EpiserverRedirects.Repository
         public static void MapForUpdate(IRedirectRule from, IRedirectRule to)
         {
             to.ContentId = from.ContentId;
+            to.ContentProviderKey = from.ContentProviderKey;
             to.OldPattern = from.OldPattern;
             to.NewPattern = from.NewPattern;
             to.RedirectType = from.RedirectType;

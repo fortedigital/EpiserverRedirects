@@ -5,7 +5,9 @@ using EPiServer.Web;
 using Forte.EpiserverRedirects.Configuration;
 using Forte.EpiserverRedirects.Mapper;
 using Forte.EpiserverRedirects.Model;
+using Forte.EpiserverRedirects.Tests.Builder;
 using Forte.EpiserverRedirects.Tests.Data;
+using Microsoft.Extensions.Options;
 using Moq;
 using Xunit;
 
@@ -13,6 +15,8 @@ namespace Forte.EpiserverRedirects.Tests.Tests
 {
     public class MapperTests
     {
+        private readonly IOptions<ContentProvidersOptions> _contentProvidersOptions = ContentProvidersOptionsBuilder.Create().Object;
+
         [Fact]
         public void Given_RedirectRuleDTO_Map_ReturnsRedirectRule()
         {
@@ -21,7 +25,11 @@ namespace Forte.EpiserverRedirects.Tests.Tests
                 DefaultRedirectRulePriority = 100,
             };
             
-            var mapper = new RedirectRuleModelMapper(options, new Mock<ISiteDefinitionRepository>().Object);
+            var mapper = new RedirectRuleModelMapper(
+                options,
+                new Mock<ISiteDefinitionRepository>().Object,
+                _contentProvidersOptions);
+            
             var redirectRuleDto = RandomDataGenerator.CreateRandomRedirectRuleDto();
             var redirectRule = mapper.DtoToModel(redirectRuleDto);
 
@@ -48,7 +56,11 @@ namespace Forte.EpiserverRedirects.Tests.Tests
                 DefaultRedirectRulePriority = 100,
             };
             
-            var mapper = new RedirectRuleModelMapper(options, new Mock<ISiteDefinitionRepository>().Object);
+            var mapper = new RedirectRuleModelMapper(
+                options,
+                new Mock<ISiteDefinitionRepository>().Object,
+                _contentProvidersOptions);
+            
             var redirectRuleDto = RandomDataGenerator.CreateRandomRedirectRuleDto();
             redirectRuleDto.HostId = Guid.NewGuid();
             var redirectRule = mapper.DtoToModel(redirectRuleDto);
@@ -67,7 +79,11 @@ namespace Forte.EpiserverRedirects.Tests.Tests
             var siteDefinitionRepository =  new Mock<ISiteDefinitionRepository>();
             siteDefinitionRepository.Setup(s => s.List()).Returns(Enumerable.Empty<SiteDefinition>());
 
-            var mapper = new RedirectRuleModelMapper(options,  siteDefinitionRepository.Object);
+            var mapper = new RedirectRuleModelMapper(
+                options,
+                siteDefinitionRepository.Object,
+                _contentProvidersOptions);
+
             var redirectRule = RandomDataGenerator.CreateRandomRedirectRule();
             var redirectRuleDto = mapper.ModelToDto(redirectRule);
 
@@ -113,7 +129,7 @@ namespace Forte.EpiserverRedirects.Tests.Tests
             };
             siteDefinitionRepository.Setup(s => s.List()).Returns(siteDefinitions);
 
-            var mapper = new RedirectRuleModelMapper(options, siteDefinitionRepository.Object);
+            var mapper = new RedirectRuleModelMapper(options, siteDefinitionRepository.Object, _contentProvidersOptions);
             var redirectRule = RandomDataGenerator.CreateRandomRedirectRule();
             redirectRule.HostId = Guid.Parse(hostId);
             var redirectRuleDto = mapper.ModelToDto(redirectRule);

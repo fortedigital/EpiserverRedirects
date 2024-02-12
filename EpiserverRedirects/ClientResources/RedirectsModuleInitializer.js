@@ -23,6 +23,8 @@
             registry.create("redirectsMenu.redirectsStore", this._getRestPath("RedirectRuleStore"));
             registry.create("redirectsMenu.hostStore", this._getRestPath("HostStore/Get"));
             registry.create("redirectsMenu.hostStoreForFilter", this._getRestPath("HostStore/GetForFilter"));
+            registry.create("redirectsMenu.contentProviders", this._getRestPath("ContentProviderStore/GetContentProviders"));
+            registry.create("redirectsMenu.contentProvidersForFilter", this._getRestPath("ContentProviderStore/GetContentProvidersForFilter"));
         },
         _getRestPath: function (name) {
             return routes.getRestPath({ moduleArea: "Forte.EpiserverRedirects", storeName: name });

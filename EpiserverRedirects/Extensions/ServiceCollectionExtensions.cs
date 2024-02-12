@@ -1,5 +1,4 @@
-﻿using EPiServer;
-using EPiServer.ServiceLocation;
+﻿using EPiServer.ServiceLocation;
 using EPiServer.Shell.Modules;
 using Forte.EpiserverRedirects.Caching;
 using Forte.EpiserverRedirects.Configuration;
@@ -14,6 +13,8 @@ using Forte.EpiserverRedirects.System;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Linq;
+using Forte.EpiserverRedirects.Extensions.DependencyInjection;
+using Forte.EpiserverRedirects.Resolver.Content;
 
 
 namespace Forte.EpiserverRedirects.Extensions
@@ -35,6 +36,8 @@ namespace Forte.EpiserverRedirects.Extensions
             {
                 repositoryConfig.AddDynamicDataRuleRepository();
             }
+
+            services.AddContentProviderResolvers();
 
             services.AddSingleton(redirectsOptions);
             services.AddSingleton(redirectsOptions.Caching);
@@ -72,17 +75,18 @@ namespace Forte.EpiserverRedirects.Extensions
                     }
                 });
 
+
             EventsHandlersScopeConfiguration.IsAutomaticRedirectsDisabled = redirectsOptions.AddAutomaticRedirects == false;
             return services;
         }
 
         private static IRedirectRuleResolver GetCompositeRuleResolver(IServiceProvider provider)
         {
-            var contentLoader = provider.GetService<IContentLoader>();
+            var contentResolvers = provider.GetServices<RedirectContentResolverBase>().ToArray();
 
             return new CompositeResolver(
-                new ExactMatchResolver(provider.GetInstance<IRedirectRuleRepository>(), contentLoader),
-                new RegexResolver(provider.GetInstance<IRedirectRuleRepository>(), contentLoader));
+                new ExactMatchResolver(provider.GetInstance<IRedirectRuleRepository>(), contentResolvers),
+                new RegexResolver(provider.GetInstance<IRedirectRuleRepository>(), contentResolvers));
         }
     }
 }

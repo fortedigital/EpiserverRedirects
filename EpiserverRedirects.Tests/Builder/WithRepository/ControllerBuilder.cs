@@ -5,6 +5,7 @@ using Forte.EpiserverRedirects.Mapper;
 using Forte.EpiserverRedirects.Menu;
 using Forte.EpiserverRedirects.Model.RedirectRule;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using Moq;
 
 namespace Forte.EpiserverRedirects.Tests.Builder.WithRepository
@@ -20,7 +21,11 @@ namespace Forte.EpiserverRedirects.Tests.Builder.WithRepository
         public ControllerBuilder()
         {
             _siteDefinitionRepository = new Mock<ISiteDefinitionRepository>();
-            _redirectRuleMapper = new RedirectRuleModelMapper(new RedirectsOptions(), _siteDefinitionRepository.Object);
+
+            _redirectRuleMapper = new RedirectRuleModelMapper(
+                new RedirectsOptions(),
+                _siteDefinitionRepository.Object,
+                ContentProvidersOptionsBuilder.Create().Object);
         }
         
         public ControllerBuilder WithMapper(Func<RedirectRuleModel, RedirectRuleDto> mapper)

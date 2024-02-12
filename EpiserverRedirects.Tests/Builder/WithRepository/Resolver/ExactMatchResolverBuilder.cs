@@ -1,5 +1,6 @@
 using EPiServer;
 using Forte.EpiserverRedirects.Resolver;
+using Forte.EpiserverRedirects.Resolver.Content;
 using Moq;
 
 namespace Forte.EpiserverRedirects.Tests.Builder.WithRepository.Resolver
@@ -11,7 +12,7 @@ namespace Forte.EpiserverRedirects.Tests.Builder.WithRepository.Resolver
         public override ExactMatchResolver Create()
         {
             CreateRepository();
-            return new ExactMatchResolver(RedirectRuleRepository, Mock.Of<IContentLoader>());
+            return new ExactMatchResolver(RedirectRuleRepository, new []{ new DefaultRedirectContentResolver(Mock.Of<IContentLoader>()) });
         }
     }
 }

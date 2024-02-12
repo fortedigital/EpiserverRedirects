@@ -45,16 +45,21 @@
             id: "",
             store: null,
             hostSelect: null,
+            contentProvidersStore: null,
+            contentProvidersSelect: null,
             label: null,
             
             postCreate: function () {
-
                 var registry = dependency.resolve("epi.storeregistry");
                 this.store = this.store || registry.get("redirectsMenu.hostStore");
                 var os = new ObjectStore({ objectStore: this.store });
                 this.hostSelect = new Select({store: os, labelAttr: "name", class: "form-input"}, "domainInputDiv");
                 this.label = dojo.create("label", {innerHTML:"Host:", style: "float:left"}, "domainLabelDiv");
-                
+                this.contentProvidersStore = this.contentProvidersStore || registry.get("redirectsMenu.contentProviders");
+                let contentProvidersOs = new ObjectStore({ objectStore: this.contentProvidersStore });
+
+                this.contentProvidersSelect = new Select({ store: contentProvidersOs, labelAttr: "name", class: "form-input" }, "contentProvidersSelect");
+
                 on(this.saveButton, "click", () => this.onSaveClick(this._getModel()));
                 on(this.cancelButton, "click", () => this.onCancelClick());
                 on(this.deleteButton, "click", () => this.onDeleteClick());
@@ -84,6 +89,7 @@
                 this.oldPatternTextBox.set("value", model.oldPattern);
                 this.newPatternTextBox.set("value", model.newPattern);
                 this.contentIdTextBox.set("value", model.contentId);
+                this.contentProvidersSelect.set("value", model.contentProviderId);
                 this.redirectRuleTypeSelect.set("value", model.redirectRuleType);
                 this.redirectTypeSelect.set("value", model.redirectType);
                 this.priorityTextBox.set("value", model.priority);
@@ -126,6 +132,7 @@
                     oldPattern: this.oldPatternTextBox.get("value"),
                     newPattern: this.newPatternTextBox.get("value"),
                     contentId: this.contentIdTextBox.get("value"),
+                    contentProviderKey: this.contentProvidersSelect.get("value"),
                     priority: this.priorityTextBox.get("value"),
                     redirectRuleType: this.redirectRuleTypeSelect.get("value"),
                     redirectType: this.redirectTypeSelect.get("value"),

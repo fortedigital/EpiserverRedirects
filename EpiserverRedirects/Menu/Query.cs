@@ -13,6 +13,7 @@ namespace Forte.EpiserverRedirects.Menu
         public string OldPattern { get; set; }
         public string NewPattern { get; set; }
         public int? ContentId { get; set; }
+        public string ContentProviderKey { get; set; }
         public RedirectType? RedirectType { get; set; }
         public RedirectRuleType? RedirectRuleType { get; set; }
         public RedirectOrigin? RedirectOrigin { get; set; }
