@@ -4,14 +4,16 @@ using Forte.EpiserverRedirects.SqlServer.Design;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Forte.EpiserverRedirects.SqlServer.Migrations
 {
     [DbContext(typeof(SqlRedirectRulesDbContext))]
-    partial class SqlRedirectRulesDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240212095949_AddContentProviderKeyToRedirectRule")]
+    partial class AddContentProviderKeyToRedirectRule
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
