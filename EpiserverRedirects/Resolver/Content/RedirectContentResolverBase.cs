@@ -7,7 +7,7 @@ namespace Forte.EpiserverRedirects.Resolver.Content;
 
 public abstract class RedirectContentResolverBase
 {
-    private readonly IContentLoader contentLoader;
+    private readonly IContentLoader _contentLoader;
 
     public abstract Guid ProviderId { get; }
     public abstract string ProviderKey { get; }
@@ -15,12 +15,18 @@ public abstract class RedirectContentResolverBase
 
     protected RedirectContentResolverBase(IContentLoader contentLoader)
     {
-        this.contentLoader = contentLoader;
+        _contentLoader = contentLoader;
     }
 
     public bool TryGet(IRedirectRule rule, out IContent content)
     {
-        var contentReference = new ContentReference(rule.ContentId.Value, ProviderKey);
-        return contentLoader.TryGet(contentReference, out content);
+        if (rule.ContentId.HasValue)
+        {
+            var contentReference = new ContentReference(rule.ContentId.Value, ProviderKey);
+            return _contentLoader.TryGet(contentReference, out content);
+        }
+
+        content = null;
+        return false;
     }
 }
