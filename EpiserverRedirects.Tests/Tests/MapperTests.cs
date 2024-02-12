@@ -15,7 +15,7 @@ namespace Forte.EpiserverRedirects.Tests.Tests
 {
     public class MapperTests
     {
-        private readonly IOptions<ContentProvidersOptions> contentProvidersOptions = ContentProvidersOptionsBuilder.Create().Object;
+        private readonly IOptions<ContentProvidersOptions> _contentProvidersOptions = ContentProvidersOptionsBuilder.Create().Object;
 
         [Fact]
         public void Given_RedirectRuleDTO_Map_ReturnsRedirectRule()
@@ -28,7 +28,7 @@ namespace Forte.EpiserverRedirects.Tests.Tests
             var mapper = new RedirectRuleModelMapper(
                 options,
                 new Mock<ISiteDefinitionRepository>().Object,
-                contentProvidersOptions);
+                _contentProvidersOptions);
             
             var redirectRuleDto = RandomDataGenerator.CreateRandomRedirectRuleDto();
             var redirectRule = mapper.DtoToModel(redirectRuleDto);
@@ -59,7 +59,7 @@ namespace Forte.EpiserverRedirects.Tests.Tests
             var mapper = new RedirectRuleModelMapper(
                 options,
                 new Mock<ISiteDefinitionRepository>().Object,
-                contentProvidersOptions);
+                _contentProvidersOptions);
             
             var redirectRuleDto = RandomDataGenerator.CreateRandomRedirectRuleDto();
             redirectRuleDto.HostId = Guid.NewGuid();
@@ -82,7 +82,7 @@ namespace Forte.EpiserverRedirects.Tests.Tests
             var mapper = new RedirectRuleModelMapper(
                 options,
                 siteDefinitionRepository.Object,
-                contentProvidersOptions);
+                _contentProvidersOptions);
 
             var redirectRule = RandomDataGenerator.CreateRandomRedirectRule();
             var redirectRuleDto = mapper.ModelToDto(redirectRule);
@@ -129,7 +129,7 @@ namespace Forte.EpiserverRedirects.Tests.Tests
             };
             siteDefinitionRepository.Setup(s => s.List()).Returns(siteDefinitions);
 
-            var mapper = new RedirectRuleModelMapper(options, siteDefinitionRepository.Object, contentProvidersOptions);
+            var mapper = new RedirectRuleModelMapper(options, siteDefinitionRepository.Object, _contentProvidersOptions);
             var redirectRule = RandomDataGenerator.CreateRandomRedirectRule();
             redirectRule.HostId = Guid.Parse(hostId);
             var redirectRuleDto = mapper.ModelToDto(redirectRule);
