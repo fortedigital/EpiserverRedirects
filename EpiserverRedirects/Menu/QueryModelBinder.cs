@@ -60,9 +60,9 @@ namespace Forte.EpiserverRedirects.Menu
 
         private string GetContentProviderKey(IQueryCollection queryPropertiesDictionary)
         {
-            return !Guid.TryParse(queryPropertiesDictionary["contentProviderId"], out var id) 
-                ? ContentProviderConstants.AllKey 
-                : _contentProvidersOptions.GetContentProviderKey(id);
+            return Guid.TryParse(queryPropertiesDictionary["contentProviderId"], out var id) 
+                ? _contentProvidersOptions.GetContentProviderKey(id) 
+                : ContentProviderConstants.AllKey;
         }
     }
 }
