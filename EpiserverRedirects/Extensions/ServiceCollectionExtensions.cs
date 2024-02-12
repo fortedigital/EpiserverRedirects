@@ -37,6 +37,8 @@ namespace Forte.EpiserverRedirects.Extensions
                 repositoryConfig.AddDynamicDataRuleRepository();
             }
 
+            services.AddContentProviderResolvers();
+
             services.AddSingleton(redirectsOptions);
             services.AddSingleton(redirectsOptions.Caching);
             services.AddScoped<RequestHandler>();
