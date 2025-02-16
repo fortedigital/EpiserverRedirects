@@ -47,7 +47,7 @@ namespace Forte.EpiserverRedirects.Model
                     return url;
                 }
                 
-                var isAbsoluteUriParseOk = Uri.TryCreate(url.Trim(), UriKind.Absolute, out var uri);
+                var isAbsoluteUriParseOk = TryCreateAbsoluteWebUri(url.Trim(), out var uri);
                 var path = isAbsoluteUriParseOk ? uri.LocalPath : url;
                 var normalizedPath = NormalizePath(path);
 
@@ -66,12 +66,13 @@ namespace Forte.EpiserverRedirects.Model
             {
                 return url;
             }
-                
-            var isAbsoluteUriParseOk = Uri.TryCreate(url.Trim(), UriKind.Absolute, out var uri);
+
+            var isAbsoluteUriParseOk = TryCreateAbsoluteWebUri(url.Trim(), out var uri);
             var path = isAbsoluteUriParseOk ? uri.AbsoluteUri : NormalizePath(url);
             
             return path;
         }
+
         public static UrlPath FromUri(Uri uri)
         {
             try
@@ -92,6 +93,14 @@ namespace Forte.EpiserverRedirects.Model
         private UrlPath(string oldPath)
         {
             Path = new Uri(oldPath, UriKind.Relative);
+        }
+        
+        private static bool TryCreateAbsoluteWebUri(string uriString, out Uri result)
+        {
+            // On Linux a relative uriString is recognized as an absolute file path.
+            // To prevent this, we do an extra web scheme check on the result.
+            return Uri.TryCreate(uriString, UriKind.Absolute, out result) &&
+                   (result.Scheme == Uri.UriSchemeHttp || result.Scheme == Uri.UriSchemeHttps);
         }
 
         public static string NormalizePath(string path)
