@@ -22,10 +22,17 @@ public class ContentProvidersOptions
     {
         if (providerKey?.ToLower() == ContentProviderConstants.AllKey || providerKey == string.Empty) return ContentProviderConstants.AllId;
         
+        var contentProviderOption = GetContentProviderOption(providerKey);
+            
+        return contentProviderOption.Id;
+    }
+    
+    public ContentProviderOption GetContentProviderOption(string providerKey)
+    {
         var contentProviderOption = ContentProviders.FirstOrDefault(cp => cp.Key == providerKey) 
                                     ?? GetDefaultContentProviderOption();
             
-        return contentProviderOption.Id;
+        return contentProviderOption;
     }
     
 
