@@ -101,7 +101,7 @@ namespace Forte.EpiserverRedirects.Model.RedirectRule
             };
         }
 
-        public static RedirectRuleModel NewFromImport(string oldPattern, int contentId, RedirectType redirectType,
+        public static RedirectRuleModel NewFromImport(string oldPattern, int contentId, string contentProviderKey, RedirectType redirectType,
             RedirectRuleType redirectRuleType, bool isActive, string notes, int priority, Guid? hostId)
         {
             return new RedirectRuleModel
@@ -109,6 +109,7 @@ namespace Forte.EpiserverRedirects.Model.RedirectRule
                 RedirectOrigin = RedirectOrigin.Import,
                 OldPattern = UrlPath.ExtractRelativePath(oldPattern),
                 ContentId = contentId,
+                ContentProviderKey = contentProviderKey,
                 RedirectType = redirectType,
                 RedirectRuleType = redirectRuleType,
                 IsActive = isActive,

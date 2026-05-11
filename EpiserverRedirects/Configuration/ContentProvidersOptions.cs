@@ -22,14 +22,22 @@ public class ContentProvidersOptions
     {
         if (providerKey?.ToLower() == ContentProviderConstants.AllKey || providerKey == string.Empty) return ContentProviderConstants.AllId;
         
-        var contentProviderOption = GetContentProviderOption(providerKey);
+        var contentProviderOption = GetContentProviderOptionByKey(providerKey);
             
         return contentProviderOption.Id;
     }
     
-    public ContentProviderOption GetContentProviderOption(string providerKey)
+    public ContentProviderOption GetContentProviderOptionByKey(string providerKey)
     {
         var contentProviderOption = ContentProviders.FirstOrDefault(cp => cp.Key == providerKey) 
+                                    ?? GetDefaultContentProviderOption();
+            
+        return contentProviderOption;
+    }
+    
+    public ContentProviderOption GetContentProviderOptionByName(string name)
+    {
+        var contentProviderOption = ContentProviders.FirstOrDefault(cp => cp.Name == name) 
                                     ?? GetDefaultContentProviderOption();
             
         return contentProviderOption;

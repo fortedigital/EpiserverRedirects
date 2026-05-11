@@ -63,7 +63,7 @@ namespace Forte.EpiserverRedirects.Model.RedirectRule
                 CreatedBy = redirectRule.CreatedBy,
                 Notes = redirectRule.Notes,
                 Host = redirectRule.HostId,
-                ContentProvider = contentProvidersOptions.GetContentProviderOption(redirectRule.ContentProviderKey).Name,
+                ContentProvider = contentProvidersOptions.GetContentProviderOptionByKey(redirectRule.ContentProviderKey).Name,
             };
         }
     }

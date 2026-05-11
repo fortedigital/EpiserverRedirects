@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using EPiServer.Shell.Services.Rest;
+using Forte.EpiserverRedirects.Configuration;
 using Forte.EpiserverRedirects.Menu;
 using Forte.EpiserverRedirects.Menu.ContentProviders;
 
@@ -98,6 +99,11 @@ namespace Forte.EpiserverRedirects.Model.RedirectRule
             }
 
             return null;
+        }
+
+        public static string ParseContentProviderKey(string contentProviderName, ContentProvidersOptions options)
+        {
+            return options.GetContentProviderOptionByName(contentProviderName).Key;
         }
 
         public static IEnumerable<SortColumn> ParseSortColumns(string sortQuery)
