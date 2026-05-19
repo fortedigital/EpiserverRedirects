@@ -37,7 +37,7 @@ public class ContentProvidersOptions
     
     public ContentProviderOption GetContentProviderOptionByName(string name)
     {
-        var contentProviderOption = ContentProviders.FirstOrDefault(cp => cp.Name == name) 
+        var contentProviderOption = ContentProviders.FirstOrDefault(cp => cp.Name.Equals(name, StringComparison.InvariantCultureIgnoreCase)) 
                                     ?? GetDefaultContentProviderOption();
             
         return contentProviderOption;
