@@ -11,6 +11,7 @@ using Forte.EpiserverRedirects.Model.RedirectRule;
 using Forte.EpiserverRedirects.Repository;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 
 namespace Forte.EpiserverRedirects.Export
 {
@@ -19,11 +20,13 @@ namespace Forte.EpiserverRedirects.Export
     {
         private readonly IRedirectRuleRepository _redirectRuleRepository;
         private readonly IMimeTypeResolver _mimeTypeResolver;
+        private readonly IOptions<ContentProvidersOptions> _contentProvidersOptions;
 
-        public ExportRedirectsController(IRedirectRuleRepository redirectRuleRepository, IMimeTypeResolver mimeTypeResolver)
+        public ExportRedirectsController(IRedirectRuleRepository redirectRuleRepository, IMimeTypeResolver mimeTypeResolver, IOptions<ContentProvidersOptions> contentProvidersOptions)
         {
             _redirectRuleRepository = redirectRuleRepository;
             _mimeTypeResolver = mimeTypeResolver;
+            _contentProvidersOptions = contentProvidersOptions;
         }
 
         [HttpGet]
@@ -59,7 +62,8 @@ namespace Forte.EpiserverRedirects.Export
                 {
                     var redirectRules = _redirectRuleRepository
                         .GetAll()
-                        .Select(RedirectRuleExportRow.CreateFromRedirectRule);
+                        .ToArray()
+                        .Select(x => RedirectRuleExportRow.CreateFromRedirectRule(x, _contentProvidersOptions.Value));
 
                     csvWriter.WriteRecords(redirectRules);
                 }

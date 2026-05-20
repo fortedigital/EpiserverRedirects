@@ -6,6 +6,7 @@ using EPiServer.Web;
 using Forte.EpiserverRedirects.Configuration;
 using Forte.EpiserverRedirects.Model.RedirectRule;
 using Forte.EpiserverRedirects.Repository;
+using Microsoft.Extensions.Options;
 
 namespace Forte.EpiserverRedirects.Import
 {
@@ -13,12 +14,14 @@ namespace Forte.EpiserverRedirects.Import
     {
         private readonly IRedirectRuleRepository _redirectRuleRepository;
         private readonly RedirectsOptions _options;
+        private readonly IOptions<ContentProvidersOptions> _contentProvidersOptions;
         private readonly Lazy<IEnumerable<SiteDefinition>> _allHosts;
 
-        public RedirectsImporter(IRedirectRuleRepository redirectRuleRepository, RedirectsOptions options, ISiteDefinitionRepository siteDefinitionRepository)
+        public RedirectsImporter(IRedirectRuleRepository redirectRuleRepository, RedirectsOptions options, ISiteDefinitionRepository siteDefinitionRepository, IOptions<ContentProvidersOptions> contentProvidersOptions)
         {
             _redirectRuleRepository = redirectRuleRepository;
             _options = options;
+            _contentProvidersOptions = contentProvidersOptions;
             _allHosts = new Lazy<IEnumerable<SiteDefinition>>(siteDefinitionRepository.List());
         }
         public void ImportRedirects(IEnumerable<RedirectRuleImportRow> redirectsToImport)
@@ -38,6 +41,7 @@ namespace Forte.EpiserverRedirects.Import
                     redirectRow.Notes,
                     redirectRow.Priority ?? _options.DefaultRedirectRulePriority, DetermineHostId(redirectRow.Host))
                 : RedirectRuleModel.NewFromImport(redirectRow.OldPattern, redirectRow.ContentId.Value,
+                    Parser.ParseContentProviderKey(redirectRow.ContentProviderName, _contentProvidersOptions.Value),
                     Parser.ParseRedirectType(redirectRow.RedirectType),
                     Parser.ParseRedirectRuleType(redirectRow.RedirectRuleType),
                     Parser.ParseBoolean(redirectRow.IsActive),

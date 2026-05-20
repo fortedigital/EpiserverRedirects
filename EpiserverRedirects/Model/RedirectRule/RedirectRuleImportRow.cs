@@ -34,6 +34,9 @@ namespace Forte.EpiserverRedirects.Model.RedirectRule
         [Index(8), Optional]
         public string Host { get; set; }
 
+        [Index(9)]
+        public string ContentProviderName { get; set; }
+
         public static string[] FieldNames => typeof(RedirectRuleImportRow).GetProperties().Where(
                 prop => Attribute.IsDefined(prop, typeof(IndexAttribute)))
             .OrderBy(property => property

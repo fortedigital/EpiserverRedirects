@@ -1,5 +1,6 @@
 ﻿using System;
 using CsvHelper.Configuration.Attributes;
+using Forte.EpiserverRedirects.Configuration;
 
 namespace Forte.EpiserverRedirects.Model.RedirectRule
 {
@@ -41,7 +42,12 @@ namespace Forte.EpiserverRedirects.Model.RedirectRule
         [Index(11), Optional]
         public Guid? Host { get; set; }
         
-        public static RedirectRuleExportRow CreateFromRedirectRule(IRedirectRule redirectRule)
+        [Index(12)]
+        public string ContentProvider { get; set; }
+        
+        public static RedirectRuleExportRow CreateFromRedirectRule(
+            IRedirectRule redirectRule,
+            ContentProvidersOptions contentProvidersOptions)
         {
             return new RedirectRuleExportRow
             {
@@ -56,7 +62,8 @@ namespace Forte.EpiserverRedirects.Model.RedirectRule
                 CreatedOn = redirectRule.CreatedOn.ToString("dd/MM/yyyy H:mm:ss"),
                 CreatedBy = redirectRule.CreatedBy,
                 Notes = redirectRule.Notes,
-                Host = redirectRule.HostId
+                Host = redirectRule.HostId,
+                ContentProvider = contentProvidersOptions.GetContentProviderOptionByKey(redirectRule.ContentProviderKey).Name,
             };
         }
     }
