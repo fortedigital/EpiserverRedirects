@@ -10,8 +10,9 @@ namespace Forte.EpiserverRedirects.Repository
         IRedirectRule GetById(Guid id);
         IQueryable<IRedirectRule> GetAll();
         IRedirectRule Add(IRedirectRule redirectRule);
-        void AddRange(IEnumerable<IRedirectRule> redirectRules);
+        IEnumerable<IRedirectRule> AddRange(IEnumerable<IRedirectRule> redirectRules);
         IRedirectRule Update(IRedirectRule redirectRule);
+        IEnumerable<IRedirectRule> UpdateRange(IEnumerable<IRedirectRule> redirectRules);
         bool Delete(Guid id);
         bool ClearAll();
     }

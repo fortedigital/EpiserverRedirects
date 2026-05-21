@@ -39,7 +39,7 @@ namespace Forte.EpiserverRedirects.EntityFramework.Repository
             return entity;
         }
 
-        public void AddRange(IEnumerable<IRedirectRule> redirectRules)
+        public IEnumerable<IRedirectRule> AddRange(IEnumerable<IRedirectRule> redirectRules)
         {
             foreach (var redirectRule in redirectRules)
             {
@@ -48,6 +48,7 @@ namespace Forte.EpiserverRedirects.EntityFramework.Repository
             }
 
             _dbContext.SaveChanges();
+            return redirectRules;
         }
 
         public IRedirectRule Update(IRedirectRule redirectRule)
@@ -62,6 +63,26 @@ namespace Forte.EpiserverRedirects.EntityFramework.Repository
             _dbContext.RedirectRules.Update(entity);
             _dbContext.SaveChanges();
             return entity;
+        }
+
+        public IEnumerable<IRedirectRule> UpdateRange(IEnumerable<IRedirectRule> redirectRules)
+        {
+            var updatedRules = new List<IRedirectRule>();
+            foreach (var redirectRule in redirectRules)
+            {
+                var entity = _dbContext.RedirectRules.FirstOrDefault(rule => rule.RuleId == redirectRule.RuleId);
+                if (entity == null)
+                {
+                    throw new ArgumentException("No existing redirect with this GUID");
+                }
+
+                _mapper.MapForUpdate(redirectRule, entity);
+                _dbContext.RedirectRules.Update(entity);
+                updatedRules.Add(entity);
+            }
+            
+            _dbContext.SaveChanges();
+            return updatedRules;
         }
 
         public bool Delete(Guid id)

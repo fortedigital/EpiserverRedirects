@@ -38,12 +38,14 @@ namespace Forte.EpiserverRedirects.Tests.Repository
             return redirectRule;
         }
 
-        public void AddRange(IEnumerable<IRedirectRule> redirectRules)
+        public IEnumerable<IRedirectRule> AddRange(IEnumerable<IRedirectRule> redirectRules)
         {
             foreach (var redirectRule in redirectRules)
             {
                 Add(redirectRule);
             }
+
+            return redirectRules;
         }
 
         public IRedirectRule Update(IRedirectRule redirectRule)

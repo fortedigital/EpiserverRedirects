@@ -1,6 +1,6 @@
-﻿define("redirectsMenu-form/RedirectsMenuForm", [
+﻿define("redirectsMenu-form/RedirectsMenuEditSingleForm", [
     "dojo/_base/declare",
-    "dojo/text!./RedirectsMenuForm.html",
+    "dojo/text!./RedirectsMenuEditSingleForm.html",
     "dojo/on",
     "dojo",
 
@@ -140,7 +140,7 @@
                     notes: this.notesTextarea.get("value"),
                     hostId: this.hostSelect.get("value"),
                 };
-                return model;
+                return { redirectRules: [model] };
             },
 
             onSaveClick(model) { },

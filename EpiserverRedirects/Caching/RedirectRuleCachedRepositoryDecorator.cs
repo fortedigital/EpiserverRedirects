@@ -29,10 +29,11 @@ namespace Forte.EpiserverRedirects.Caching
             return rule;
         }
 
-        public void AddRange(IEnumerable<IRedirectRule> redirectRules)
+        public IEnumerable<IRedirectRule> AddRange(IEnumerable<IRedirectRule> redirectRules)
         {
-            _repository.AddRange(redirectRules);
+            var rules = _repository.AddRange(redirectRules);
             ClearCache();
+            return rules;
         }
 
         public IRedirectRule Update(IRedirectRule redirectRule)
@@ -40,6 +41,13 @@ namespace Forte.EpiserverRedirects.Caching
             var rule = _repository.Update(redirectRule);
             ClearCache();
             return rule;
+        }
+
+        public IEnumerable<IRedirectRule> UpdateRange(IEnumerable<IRedirectRule> redirectRules)
+        {
+            var rules = _repository.UpdateRange(redirectRules);
+            ClearCache();
+            return rules;
         }
 
         public bool Delete(Guid id)

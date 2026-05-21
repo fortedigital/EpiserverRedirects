@@ -54,11 +54,11 @@
         },
 
         addRedirectRule: function (newModel) {
-            return this.store.add(newModel);
+            return this.store.add({ operation: "create", ...newModel});
         },
 
         updateRedirectRule: function (model) {
-            return this.store.put(model);
+            return this.store.put({ operation: "update", ...model});
         },
 
         deleteRedirectRule: function (id) {

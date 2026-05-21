@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using EPiServer.Shell.Services.Rest;
@@ -46,35 +47,42 @@ namespace Forte.EpiserverRedirects.Menu
             return Rest(redirects);
         }
 
-        [HttpPost]
-        public ActionResult Post(RedirectRuleDto dto)
+        public ActionResult Post(RedirectRulesDto request)
         {
             if (!ViewData.ModelState.IsValid)
             {
                 return null;
             }
 
-            var newRedirectRule = _redirectRuleMapper.DtoToModel(dto);
-            RedirectRuleModel.FromManual(newRedirectRule);
-            newRedirectRule = _redirectRuleRepository.Add(newRedirectRule);
-            var newRedirectRuleDto = _redirectRuleMapper.ModelToDto(newRedirectRule);
-
-            return Rest(newRedirectRuleDto);
+            return request.Operation switch
+            {
+                RedirectRuleOperation.Create => AddRedirectRule(request.RedirectRules),
+                RedirectRuleOperation.Update => UpdateRedirectRule(request.RedirectRules),
+                _ => throw new ArgumentOutOfRangeException()
+            };
         }
 
-        [HttpPut]
-        public ActionResult Put(RedirectRuleDto dto)
+        private ActionResult AddRedirectRule(IEnumerable<RedirectRuleDto> dtos)
         {
-            if (!ViewData.ModelState.IsValid)
+            var newRedirectRules = dtos.Select(d =>
             {
-                return null;
-            }
+                var result = _redirectRuleMapper.DtoToModel(d);
+                RedirectRuleModel.FromManual(result);
+                return result;
+            });
+            newRedirectRules = _redirectRuleRepository.AddRange(newRedirectRules);
+            var newRedirectRuleDtos = newRedirectRules.Select(_redirectRuleMapper.ModelToDto);
 
-            var updatedRedirectRule = _redirectRuleMapper.DtoToModel(dto);
-            updatedRedirectRule = _redirectRuleRepository.Update(updatedRedirectRule);
-            var updatedRedirectRuleDto = _redirectRuleMapper.ModelToDto(updatedRedirectRule);
+            return Rest(newRedirectRuleDtos);
+        }
 
-            return Rest(updatedRedirectRuleDto);
+        private ActionResult UpdateRedirectRule(IEnumerable<RedirectRuleDto> dtos)
+        {
+            var updatedRedirectRules = dtos.Select(_redirectRuleMapper.DtoToModel);
+            updatedRedirectRules = _redirectRuleRepository.UpdateRange(updatedRedirectRules);
+            var updatedRedirectRuleDtos = updatedRedirectRules.Select(_redirectRuleMapper.ModelToDto) ;
+            
+            return Rest(updatedRedirectRuleDtos);
         }
 
         [HttpDelete]
