@@ -82,8 +82,6 @@ define("redirectsMenu/RedirectsMenu", [
                     } else {
                         this.redirectsMenuMultipleFormDialog.hide() 
                     }
-                    
-                    this.deleteButton.set('disabled', !value);
                 });
 
                 this.redirectsMenuViewModel.watch("searchQueryModel", (name, oldValue, value) => {
@@ -176,7 +174,7 @@ define("redirectsMenu/RedirectsMenu", [
             _onDeselectedItemChange: function (event) {
                 this.selectedModels = this.selectedModels.filter(x => event.rows.find(r => r.id !== x.id));
 
-                this.deleteButton.set('disabled', this.selectedModels.length !== 0);
+                this.deleteButton.set('disabled', this.selectedModels.length === 0);
                 this.editButton.set('disabled', !this._isEditable(this.selectedModels));
             },
             
@@ -200,8 +198,8 @@ define("redirectsMenu/RedirectsMenu", [
                 this.redirectsMenuViewModel.set("mode", "");
                 this.redirectsMenuGrid.clearSelection();
                 this.selectedModels = [];
-                this.deleteButton.set("disabled", false);
-                this.editButton.set("disabled", false);
+                this.deleteButton.set("disabled", true);
+                this.editButton.set("disabled", true);
             },
 
             _handleError: function (error) {

@@ -65,6 +65,7 @@
             for (const id of ids) {
                 this.store.remove(id);
             }
+            return Promise.resolve();
         },
 
         clearRedirectRules: function() {
