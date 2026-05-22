@@ -143,7 +143,7 @@ define("redirectsMenu/RedirectsMenu", [
             _onDeleteClick: function () {
                 this.redirectsMenuViewModel.set("mode", "");
                 // TODO Delete multiple items
-                this.redirectsMenuViewModel.deleteRedirectRule(this.selectedModels[0].id).then((response) => this._refreshView());
+                this.redirectsMenuViewModel.deleteRedirectRule(this.selectedModels.map(x => x.id)).then((response) => this._refreshView());
             },
 
             _onClearAllClick: function() {
@@ -169,7 +169,7 @@ define("redirectsMenu/RedirectsMenu", [
                 this.selectedModels.push(event.rows.map(x => x.data));
                 this.selectedModels = this.selectedModels.flat()
 
-                this.deleteButton.set('disabled', this.selectedModels.length !== 0);
+                this.deleteButton.set('disabled', this.selectedModels.length === 0);
                 this.editButton.set('disabled', !this._isEditable(this.selectedModels));
             },
 

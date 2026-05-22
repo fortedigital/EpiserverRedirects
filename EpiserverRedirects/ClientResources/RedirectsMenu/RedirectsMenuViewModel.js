@@ -61,10 +61,12 @@
             return this.store.put({ operation: "update", ...model});
         },
 
-        deleteRedirectRule: function (id) {
-            return this.store.remove(id);
+        deleteRedirectRule: function (ids) {
+            for (const id of ids) {
+                this.store.remove(id);
+            }
         },
-        
+
         clearRedirectRules: function() {
             return this.store.remove(clearAllGuid);
         }
