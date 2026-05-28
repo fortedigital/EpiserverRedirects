@@ -31,6 +31,12 @@ namespace Forte.EpiserverRedirects.Model.RedirectRule
             Enum.TryParse<RedirectRuleType>(value, out var redirectRuleType);
             return redirectRuleType;
         }
+        
+        public static RedirectRuleOperation ParseRedirectRuleOperation(string value)
+        {
+            Enum.TryParse<RedirectRuleOperation>(value, true, out var redirectRuleType);
+            return redirectRuleType;
+        }
 
         public static RedirectRuleType? ParseRedirectRuleTypeNullable(string value)
         {

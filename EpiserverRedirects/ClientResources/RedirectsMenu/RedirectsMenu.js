@@ -15,8 +15,8 @@ define("redirectsMenu/RedirectsMenu", [
     "redirectsMenu/RedirectsMenuViewModel",
     "redirects/Moment",
     "redirectsMenu-grid/RedirectsMenuGrid",
-    "redirectsMenu-form/RedirectsMenuForm",
-
+    "redirectsMenu-form/RedirectsMenuEditSingleForm",
+    "redirectsMenu-multipleForm/RedirectsMenuEditMultipleForm",
 
     "xstyle/css!./RedirectsMenu.css",
 ], function (
@@ -36,12 +36,13 @@ define("redirectsMenu/RedirectsMenu", [
     RedirectsMenuViewModel,
     moment,
     RedirectsMenuGrid,
-    RedirectsMenuForm
+    RedirectsMenuEditSingleForm,
+    RedirectsMenuEditMultipleForm
 ) {
         return declare([_WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin], {
             templateString: template,
             redirectsMenuViewModel: null,
-            selectedModel: null,
+            selectedModels: null,
 
             buildRendering: function () {
                 this.inherited(arguments);
@@ -49,6 +50,7 @@ define("redirectsMenu/RedirectsMenu", [
 
             postCreate: function () {
                 this.redirectsMenuViewModel = new RedirectsMenuViewModel();
+                this.selectedModels = [];
 
                 this._initializeGrid();
                 this._initializeForm();
@@ -67,9 +69,19 @@ define("redirectsMenu/RedirectsMenu", [
                 this.editButton.set('disabled', true);
 
                 this.redirectsMenuViewModel.watch("mode", (name, oldValue, value) => {
-                    !value ? this.redirectsMenuFormDialog.hide() : this.redirectsMenuFormDialog.show();
-                    this.redirectsMenuFormDialog.set("title", this.redirectsMenuViewModel.get("dialogTitle"));
-                    this.deleteButton.set('disabled', !value);
+                    if (value && value === "edit" || value === "add"){
+                        this.redirectsMenuFormDialog.show();
+                        this.redirectsMenuFormDialog.set("title", this.redirectsMenuViewModel.get("dialogTitle"));
+                    } else {
+                        this.redirectsMenuFormDialog.hide()
+                    }
+                    
+                    if (value && value === "edit-multiple"){
+                        this.redirectsMenuMultipleFormDialog.show()
+                        this.redirectsMenuMultipleFormDialog.set("title", this.redirectsMenuViewModel.get("dialogTitle"));
+                    } else {
+                        this.redirectsMenuMultipleFormDialog.hide() 
+                    }
                 });
 
                 this.redirectsMenuViewModel.watch("searchQueryModel", (name, oldValue, value) => {
@@ -80,6 +92,7 @@ define("redirectsMenu/RedirectsMenu", [
             _initializeGrid: function () {
                 this.redirectsMenuGrid.init(this.redirectsMenuViewModel.store, this.redirectsMenuViewModel.hostStore, this.redirectsMenuViewModel.contentProvidersStore);
                 this.redirectsMenuGrid.on('dgrid-select', this._onSelectedItemChange.bind(this));
+                this.redirectsMenuGrid.on('dgrid-deselect', this._onDeselectedItemChange.bind(this));
                 this.redirectsMenuGrid.on('.dgrid-content .dgrid-row:dblclick', this._onEditClick.bind(this));
 
                 var searchQueryModel = this.redirectsMenuViewModel.get("searchQueryModel");
@@ -106,9 +119,13 @@ define("redirectsMenu/RedirectsMenu", [
             },
 
             _initializeForm: function () {
-                this.redirectsMenuForm.onSaveClick = this._onSaveForm.bind(this);
-                this.redirectsMenuForm.onDeleteClick = this._onDeleteClick.bind(this);
-                this.redirectsMenuForm.onCancelClick = this._onCancelFormClick.bind(this);
+                this.redirectsMenuEditSingleForm.onSaveClick = this._onSaveForm.bind(this);
+                this.redirectsMenuEditSingleForm.onDeleteClick = this._onDeleteClick.bind(this);
+                this.redirectsMenuEditSingleForm.onCancelClick = this._onCancelFormClick.bind(this);
+
+                this.redirectsMenuEditMultipleForm.onSaveClick = this._onSaveForm.bind(this);
+                this.redirectsMenuEditMultipleForm.onDeleteClick = this._onDeleteClick.bind(this);
+                this.redirectsMenuEditMultipleForm.onCancelClick = this._onCancelFormClick.bind(this);
             },
 
             _updateGrid: function () {
@@ -117,15 +134,15 @@ define("redirectsMenu/RedirectsMenu", [
 
             _onAddNewClick: function () {
                 this.redirectsMenuViewModel.set("mode", "add");
-                this.redirectsMenuForm.updateView({}, this.redirectsMenuViewModel.get("mode"));
+                this.redirectsMenuEditSingleForm.updateView({}, this.redirectsMenuViewModel.get("mode"));
                 this.redirectsMenuGrid.clearSelection();
             },
 
             _onDeleteClick: function () {
                 this.redirectsMenuViewModel.set("mode", "");
-                this.redirectsMenuViewModel.deleteRedirectRule(this.selectedModel.id).then((response) => this._refreshView());
+                this.redirectsMenuViewModel.deleteRedirectRule(this.selectedModels.map(x => x.id)).then((response) => this._refreshView());
             },
-            
+
             _onClearAllClick: function() {
                 if (window.confirm("Do you really want to clear all redirect rules?")) {
                     this.redirectsMenuViewModel.clearRedirectRules().then((r) => this._refreshView());
@@ -133,22 +150,39 @@ define("redirectsMenu/RedirectsMenu", [
             },
 
             _onEditClick: function () {
-                if (this.selectedModel.redirectRuleType === "System") return;
-
-                this.redirectsMenuViewModel.set("mode", "edit");
-                this.redirectsMenuForm.updateView(this.selectedModel, this.redirectsMenuViewModel.get("mode"));
+                if(!this._isEditable(this.selectedModels)) return;
+                
+                if(this.selectedModels.length === 1){
+                    this.redirectsMenuViewModel.set("mode", "edit");
+                    this.redirectsMenuEditSingleForm.updateView(this.selectedModels[0], this.redirectsMenuViewModel.get("mode"));
+                } else {
+                    this.redirectsMenuViewModel.set("mode", "edit-multiple");
+                    this.redirectsMenuEditMultipleForm.updateView(this.selectedModels, this.redirectsMenuViewModel.get("mode"));
+                }
             },
 
             _onSelectedItemChange: function (event) {
-                this.selectedModel = event.rows[0].data;
+                this.selectedModels.push(event.rows.map(x => x.data));
+                this.selectedModels = this.selectedModels.flat()
 
-                this.deleteButton.set('disabled', !this.selectedModel);
-                this.editButton.set('disabled', this.selectedModel.redirectRuleType === "System");
+                this.deleteButton.set('disabled', this.selectedModels.length === 0);
+                this.editButton.set('disabled', !this._isEditable(this.selectedModels));
+            },
+
+            _onDeselectedItemChange: function (event) {
+                this.selectedModels = this.selectedModels.filter(x => event.rows.find(r => r.id !== x.id));
+
+                this.deleteButton.set('disabled', this.selectedModels.length === 0);
+                this.editButton.set('disabled', !this._isEditable(this.selectedModels));
+            },
+            
+            _isEditable: function(selectedModels){
+                return selectedModels.length > 0;
             },
 
             _onSaveForm: function (model) {
                 var mode = this.redirectsMenuViewModel.get("mode");
-                if (mode === "edit") {
+                if (mode === "edit" || mode === "edit-multiple") {
                     this.redirectsMenuViewModel.updateRedirectRule(model)
                         .then(response => this._refreshView(), error => this._handleError(error));
                 } else if (mode === "add") {
@@ -161,13 +195,13 @@ define("redirectsMenu/RedirectsMenu", [
                 this._updateGrid();
                 this.redirectsMenuViewModel.set("mode", "");
                 this.redirectsMenuGrid.clearSelection();
-                this.selectedModel = null;
-                this.deleteButton.set("disabled", !this.selectedModel);
-                this.editButton.set("disabled", !this.selectedModel);
+                this.selectedModels = [];
+                this.deleteButton.set("disabled", true);
+                this.editButton.set("disabled", true);
             },
 
             _handleError: function (error) {
-                this.redirectsMenuForm.showDuplicateMessage();
+                this.redirectsMenuEditSingleForm.showDuplicateMessage();
             },
 
             _onCancelFormClick: function () {

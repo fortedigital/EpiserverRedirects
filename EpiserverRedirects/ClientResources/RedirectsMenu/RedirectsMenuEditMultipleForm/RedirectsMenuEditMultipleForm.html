@@ -1,0 +1,65 @@
+﻿<div>
+    <div class="epi-formArea">
+        <div class="epi-size10">
+            <div class="epi-form-container__section__row">
+                <label id="contentProvidersLabelMultipleForm" for="contentProvidersSelectMultipleForm">Content provider:</label>
+                <div id="contentProvidersSelectMultipleForm"></div>
+            </div>
+
+            <div class="epi-form-container__section__row">
+                <label for="redirectRuleType">Redirect Rule type:</label>
+                <select class="form-input" name="redirectRuleTypeSelect"
+                        data-dojo-attach-point="redirectRuleTypeSelect"
+                        data-dojo-type="dijit/form/Select">
+                    <option value=1 selected = "selected">ExactMatch</option>
+                    <option value=2>Regex</option>
+<!--                    <option value=3>Wildcard</option>-->
+                </select>
+            </div>
+
+            <div class="epi-form-container__section__row">
+                <label for="redirectTypeSelect">Redirect type:</label>
+                <select class="form-input" name="redirectTypeSelect"
+                        data-dojo-attach-point="redirectTypeSelect"
+                        data-dojo-type="dijit/form/Select">
+                    <option value="1" selected = "selected">Permanent</option>
+                    <option value="2">Temporary</option>
+                </select>
+            </div>
+            
+            <div class="epi-form-container__section__row">
+                <label for="priorityMultipleForm">Priority:</label>
+                <input class="form-input" type="number" name="priorityMultipleForm"
+                       required
+                       min="1" max="2147483647"
+                       data-dojo-props="intermediateChanges:true,constraints:{min:1,max:2147483647,places:0},"
+                       data-dojo-type="dijit/form/NumberTextBox"
+                       data-dojo-attach-point="priorityTextBox" id="priorityMultipleForm" />
+            </div>
+            <div class="epi-form-container__section__row">
+                <label for="isActiveSelect">Is active:</label>
+                <select class="form-input" name="isActiveSelect"
+                        data-dojo-attach-point="isActiveSelect"
+                        data-dojo-type="dijit/form/Select">
+                    <option value=true selected = "selected">Active</option>
+                    <option value=false>Not active</option>
+                </select>
+            </div>
+
+            <div id="domain" class="epi-form-container__section__row">
+                <div id="domainLabelSelectorMultipleForm"></div>
+                <div id="domainInputSelectorMultipleForm"></div>
+            </div>
+
+            <div data-dojo-attach-point="duplicateAlert" class="alert-danger">
+                <span>Unable to save because of duplicate old url</span>
+            </div>
+
+        </div>
+        <div class="epi-buttonContainer">
+            <button class="Salt" data-dojo-type="dijit/form/Button" data-dojo-attach-point="saveButton" type="button">Save</button>
+            <button data-dojo-type="dijit/form/Button" data-dojo-attach-point="deleteButton" type="button">Delete</button>
+            <button data-dojo-type="dijit/form/Button" data-dojo-attach-point="cancelButton" type="button">Cancel</button>
+        </div>
+    </div>
+</div>

@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Forte.EpiserverRedirects.Model.RedirectRule
 {
-    [ModelBinder(typeof(RedirectRuleDtoModelBinder))]
     public class RedirectRuleDto : IValidatableObject
     {
         public Guid? Id { get; set; }
