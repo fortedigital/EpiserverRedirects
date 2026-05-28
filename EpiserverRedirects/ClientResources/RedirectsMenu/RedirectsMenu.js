@@ -140,7 +140,6 @@ define("redirectsMenu/RedirectsMenu", [
 
             _onDeleteClick: function () {
                 this.redirectsMenuViewModel.set("mode", "");
-                // TODO Delete multiple items
                 this.redirectsMenuViewModel.deleteRedirectRule(this.selectedModels.map(x => x.id)).then((response) => this._refreshView());
             },
 
@@ -153,7 +152,6 @@ define("redirectsMenu/RedirectsMenu", [
             _onEditClick: function () {
                 if(!this._isEditable(this.selectedModels)) return;
                 
-                // TODO Edit mode
                 if(this.selectedModels.length === 1){
                     this.redirectsMenuViewModel.set("mode", "edit");
                     this.redirectsMenuEditSingleForm.updateView(this.selectedModels[0], this.redirectsMenuViewModel.get("mode"));
