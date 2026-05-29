@@ -50,9 +50,13 @@ namespace Forte.EpiserverRedirects.Tests.Tests
                 .WithRandomExistingRules()
                 .Create();
 
-            var redirectDto = new RedirectRuleDto("randomOldPath", "randomNewPath");
+            var redirectDto = new RedirectRulesDto
+            {
+                Operation = RedirectRuleOperation.Create,
+                RedirectRules = new[] { new RedirectRuleDto("randomOldPath", "randomNewPath") },
+            };
 
-            var newRedirect = restController.Post(redirectDto).GetEntityFromActionResult();
+            var newRedirect = restController.Post(redirectDto).GetEntitiesFromActionResult().Single();
             var expectedRedirect = restController.Get(newRedirect.Id.Value).GetEntityFromActionResult();
 
             Assert.NotNull(expectedRedirect);
@@ -78,7 +82,13 @@ namespace Forte.EpiserverRedirects.Tests.Tests
             var expectedNewUrl = "/updatedNewUrl";
             randomRedirectDto.NewPattern = expectedNewUrl;
 
-            restController.Put(randomRedirectDto);
+            var request = new RedirectRulesDto
+            {
+                Operation = RedirectRuleOperation.Update,
+                RedirectRules = new[] { randomRedirectDto }
+            };
+
+            restController.Post(request);
             var updatedRedirect = restController
                 .Get(randomRedirectDto.Id.Value)
                 .GetEntityFromActionResult();
@@ -95,8 +105,14 @@ namespace Forte.EpiserverRedirects.Tests.Tests
 
             var redirectDto = new RedirectRuleDto(Guid.NewGuid(), "/NonExistentOldPath", "/randomNewUrl",
                 RedirectType.Temporary);
+            
+            var request = new RedirectRulesDto
+            {
+                Operation = RedirectRuleOperation.Update,
+                RedirectRules = new[] { redirectDto }
+            };
 
-            Assert.Throws<KeyNotFoundException>(() => restController.Put(redirectDto));
+            Assert.Throws<KeyNotFoundException>(() => restController.Post(request));
         }
 
         [Theory]

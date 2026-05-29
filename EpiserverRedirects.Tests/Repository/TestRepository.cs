@@ -40,12 +40,7 @@ namespace Forte.EpiserverRedirects.Tests.Repository
 
         public IEnumerable<IRedirectRule> AddRange(IEnumerable<IRedirectRule> redirectRules)
         {
-            foreach (var redirectRule in redirectRules)
-            {
-                Add(redirectRule);
-            }
-
-            return redirectRules;
+            return redirectRules.Select(Add).ToArray();
         }
 
         public IRedirectRule Update(IRedirectRule redirectRule)
@@ -61,6 +56,11 @@ namespace Forte.EpiserverRedirects.Tests.Repository
             WriteToModel(redirectRule, redirectRuleToUpdate);
 
             return redirectRule;
+        }
+
+        public IEnumerable<IRedirectRule> UpdateRange(IEnumerable<IRedirectRule> redirectRules)
+        {
+            return redirectRules.Select(Update).ToArray();
         }
 
         public bool Delete(Guid id)
