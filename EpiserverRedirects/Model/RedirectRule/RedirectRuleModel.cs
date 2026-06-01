@@ -64,14 +64,21 @@ namespace Forte.EpiserverRedirects.Model.RedirectRule
             };
         }
 
-        public static RedirectRuleModel NewFromSystem(string oldPattern, int contentId, RedirectType redirectType,
-            RedirectRuleType redirectRuleType, string notes, int priority)
+        public static RedirectRuleModel NewFromSystem(
+            string oldPattern,
+            int contentId,
+            string contentProviderKey,
+            RedirectType redirectType,
+            RedirectRuleType redirectRuleType,
+            string notes,
+            int priority)
         {
             return new RedirectRuleModel
             {
                 RedirectOrigin = RedirectOrigin.System,
                 OldPattern = oldPattern,
                 ContentId = contentId,
+                ContentProviderKey = contentProviderKey,
                 RedirectType = redirectType,
                 RedirectRuleType = redirectRuleType,
                 IsActive = true,
