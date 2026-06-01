@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <IsPackable>false</IsPackable>
     <AssemblyName>Forte.EpiserverRedirects.EntityFramework.Tests</AssemblyName>
     <RootNamespace>Forte.EpiserverRedirects.EntityFramework.Tests</RootNamespace>
