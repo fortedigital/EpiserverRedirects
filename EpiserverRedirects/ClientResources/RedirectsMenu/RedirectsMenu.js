@@ -170,7 +170,7 @@ define("redirectsMenu/RedirectsMenu", [
             },
 
             _onDeselectedItemChange: function (event) {
-                this.selectedModels = this.selectedModels.filter(x => event.rows.find(r => r.id !== x.id));
+                this.selectedModels = this.selectedModels.filter(x => !event.rows.find(r => r.id === x.id));
 
                 this.deleteButton.set('disabled', this.selectedModels.length === 0);
                 this.editButton.set('disabled', !this._isEditable(this.selectedModels));
