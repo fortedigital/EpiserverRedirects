@@ -79,7 +79,7 @@
                 this.id = firstItem.id;
                 this.duplicateAlert.hidden = true;
 
-                if (mode === "edit") {
+                if (mode === "edit-multiple") {
                     this._updateEditMode(firstItem);
                 }
                 else if (mode === "add") {
@@ -93,6 +93,7 @@
                 this.redirectTypeSelect.set("value", model.redirectType);
                 this.priorityTextBox.set("value", model.priority);
                 this.isActiveSelect.set("value", model.isActive.toString());
+                this.notesTextarea.set("value", "");
 
                 this.deleteButton.set("disabled", false);
 
@@ -124,6 +125,7 @@
                         redirectType: this.redirectTypeSelect.get("value"),
                         priority: this.priorityTextBox.get("value"),
                         isActive: this.isActiveSelect.get("value"),
+                        notes: this.notesTextarea.get("value"),
                         hostId: this.hostSelect.get("value"),
                     }))
                 };
