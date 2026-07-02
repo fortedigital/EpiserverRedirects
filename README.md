@@ -91,19 +91,24 @@ Import redirects from CSV file
 
 To import redirects, in the "Redirects" tab upload a CSV file in the following format (no columns headers, semicolon as the delimiter)
 
-Columns:
-- old URL (just URL paths, without the domains)
-- new URL (just URL paths, without the domains)
-- type (Permanent or Temporary)
-- rule type (ExactMatch or Regex)
-- is active (TRUE or FALSE)
-- comment
-- priority (int)
-- match to content (TRUE or FALSE) TRUE enforces that redirect is to URL, not to the ContentReference
+Columns (in order):
+
+| # | Column | Required | Description |
+|---|--------|----------|-------------|
+| 0 | old URL | yes | Old URL path, without the domain |
+| 1 | new URL | yes | New URL path, without the domain |
+| 2 | content id | no | Id of the content to redirect to; leave empty to redirect to the new URL path |
+| 3 | rule type | yes | `ExactMatch` or `Regex` |
+| 4 | redirect type | yes | `Permanent` or `Temporary` |
+| 5 | priority | no | Integer priority (lower number wins); leave empty to use the default |
+| 6 | is active | yes | `TRUE` or `FALSE` |
+| 7 | notes | yes | Free-text comment |
+| 8 | host | no | Host the rule applies to; leave empty to apply to all hosts |
+| 9 | content provider name | yes | Key of the content provider used to resolve the content id |
 
 Example:
 ```
-/easee;/elbillader/;Permanent;ExactMatch;TRUE;COMMENT;1;FALSE  
-/fondet;/los-fondet/;Permanent;ExactMatch;TRUE;COMMENT;1;FALSE
+/easee;/elbillader/;;ExactMatch;Permanent;1;TRUE;COMMENT;;
+/fondet;/los-fondet/;42;ExactMatch;Permanent;1;TRUE;COMMENT;example.com;CommerceProvider
 ```
 When uploading files multiple times, duplicate redirections are overwritten.
