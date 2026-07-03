@@ -186,7 +186,7 @@
                             ]
                         },
                     ],
-                    selectionMode: 'multiple',
+                    selectionMode: 'toggle',
                     cellNavigation: false,
                     store: store,
                     pagingLinks: 1,
