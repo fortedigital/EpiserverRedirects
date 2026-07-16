@@ -1,6 +1,6 @@
 ﻿using EPiServer.Data;
 using EPiServer.Data.Dynamic;
-using Forte.EpiserverRedirects.DynamicData.Internal;
+using EPiServer.Shell.Composition;
 using System;
 using System.Linq;
 
@@ -14,9 +14,9 @@ namespace Forte.EpiserverRedirects.DynamicData;
 public class DynamicDataStore<T> : IDynamicDataStore<T>
     where T : class, IDynamicData
 {
-    private readonly ExtendedDynamicDataStoreFactory _dataStoreFactory;
+    private readonly DynamicDataStoreFactory _dataStoreFactory;
 
-    public DynamicDataStore(ExtendedDynamicDataStoreFactory dataStoreFactory)
+    public DynamicDataStore(DynamicDataStoreFactory dataStoreFactory)
     {
         _dataStoreFactory = dataStoreFactory;
     }
@@ -49,14 +49,14 @@ public class DynamicDataStore<T> : IDynamicDataStore<T>
 
     private void CallActionOnDisposableStore(Action<DynamicDataStore> storeAction)
     {
-        using var store = _dataStoreFactory.GetOrCreateStore<T>();
+        using var store = _dataStoreFactory.GetOrCreateStore(typeof(T));
 
         storeAction(store);
     }
 
     private TReturnType CallActionOnDisposableStore<TReturnType>(Func<DynamicDataStore, TReturnType> storeFunc)
     {
-        using var store = _dataStoreFactory.GetOrCreateStore<T>();
+        using var store = _dataStoreFactory.GetOrCreateStore(typeof(T));
 
         return storeFunc(store);
     }

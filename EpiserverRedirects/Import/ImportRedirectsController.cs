@@ -1,12 +1,11 @@
 ﻿using System;
+using System.Text.Json;
 using CsvHelper;
 using Forte.EpiserverRedirects.Configuration;
 using Forte.EpiserverRedirects.Model.RedirectRule;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
 using MissingFieldException = System.MissingFieldException;
 
 namespace Forte.EpiserverRedirects.Import
@@ -16,9 +15,9 @@ namespace Forte.EpiserverRedirects.Import
     {
         private readonly RedirectsLoader _redirectDefinitionsLoader;
         private readonly RedirectsImporter _redirectsImporter;
-        private static readonly JsonSerializerSettings SerializerSettings = new JsonSerializerSettings
+        private static readonly JsonSerializerOptions SerializerSettings = new ()
         {
-            ContractResolver = new CamelCasePropertyNamesContractResolver()
+            PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
         };
 
         public ImportRedirectsController(RedirectsLoader redirectDefinitionsLoader, RedirectsImporter redirectsImporter)
@@ -69,7 +68,7 @@ namespace Forte.EpiserverRedirects.Import
 
         private ActionResult CreateJsonResult(object data)
         {
-            var json = JsonConvert.SerializeObject(data, SerializerSettings);
+            var json = JsonSerializer.Serialize(data, SerializerSettings);
             return Content(json, "application/json");
         }
     }

@@ -2,8 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Castle.Core.Internal;
+using EPiServer.Applications;
 using EPiServer.Web;
 using Forte.EpiserverRedirects.Configuration;
+using Forte.EpiserverRedirects.Extensions;
 using Forte.EpiserverRedirects.Model.RedirectRule;
 using Forte.EpiserverRedirects.Repository;
 using Microsoft.Extensions.Options;
@@ -15,14 +17,14 @@ namespace Forte.EpiserverRedirects.Import
         private readonly IRedirectRuleRepository _redirectRuleRepository;
         private readonly RedirectsOptions _options;
         private readonly IOptions<ContentProvidersOptions> _contentProvidersOptions;
-        private readonly Lazy<IEnumerable<SiteDefinition>> _allHosts;
+        private readonly Lazy<IEnumerable<Application>> _allHosts;
 
-        public RedirectsImporter(IRedirectRuleRepository redirectRuleRepository, RedirectsOptions options, ISiteDefinitionRepository siteDefinitionRepository, IOptions<ContentProvidersOptions> contentProvidersOptions)
+        public RedirectsImporter(IRedirectRuleRepository redirectRuleRepository, RedirectsOptions options, IApplicationRepository siteDefinitionRepository, IOptions<ContentProvidersOptions> contentProvidersOptions)
         {
             _redirectRuleRepository = redirectRuleRepository;
             _options = options;
             _contentProvidersOptions = contentProvidersOptions;
-            _allHosts = new Lazy<IEnumerable<SiteDefinition>>(siteDefinitionRepository.List());
+            _allHosts = new Lazy<IEnumerable<Application>>(siteDefinitionRepository.List());
         }
         public void ImportRedirects(IEnumerable<RedirectRuleImportRow> redirectsToImport)
         {
