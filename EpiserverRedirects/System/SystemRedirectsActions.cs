@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Linq;
 using EPiServer;
 using EPiServer.Core;
+using EPiServer.Web.Routing;
 using Forte.EpiserverRedirects.Model;
 using Forte.EpiserverRedirects.Model.RedirectRule;
 using Forte.EpiserverRedirects.Repository;
@@ -21,23 +22,25 @@ namespace Forte.EpiserverRedirects.System
             _redirectRuleRepository = redirectRuleRepository;
         }
 
-        public void AddRedirects(PageData pageData, string oldUrl, CultureInfo cultureInfo,
+        public void AddRedirects(IContent content, string oldUrl, CultureInfo cultureInfo,
             SystemRedirectReason systemRedirectReason, int priority)
         {
-            AddRedirects(pageData, oldUrl, systemRedirectReason, priority);
-            HandleChildren(pageData, oldUrl, cultureInfo, systemRedirectReason, priority);
+            AddRedirects(content, oldUrl, systemRedirectReason, priority);
+            HandleChildren(content, oldUrl, cultureInfo, systemRedirectReason, priority);
         }
 
-        private void AddRedirects(PageData pageData, string oldUrl, SystemRedirectReason systemRedirectReason, int priority)
+        private void AddRedirects(IContent content, string oldUrl, SystemRedirectReason systemRedirectReason, int priority)
         {
-            if (!(pageData.Status == VersionStatus.PreviouslyPublished || pageData.Status == VersionStatus.Published))
+            var status = (content as IVersionable)?.Status;
+            if (status != VersionStatus.PreviouslyPublished && status != VersionStatus.Published)
             {
                 return;
             }
 
             var redirectRule = RedirectRuleModel.NewFromSystem(
                 UrlPath.NormalizePath(oldUrl),
-                pageData.ContentLink.ID,
+                content.ContentLink.ID,
+                content.ContentLink.ProviderName,
                 RedirectType.Permanent,
                 RedirectRuleType.ExactMatch,
                 SystemRedirectsHelper.GetSystemRedirectReason(systemRedirectReason),
@@ -75,16 +78,22 @@ namespace Forte.EpiserverRedirects.System
             }
         }
 
-        private void HandleChildren(PageData data, string oldUrl, CultureInfo cultureInfo, SystemRedirectReason systemRedirectReason, int priority)
+        private void HandleChildren(IContent content, string oldUrl, CultureInfo cultureInfo, SystemRedirectReason systemRedirectReason, int priority)
         {
             var languageSelector = new LanguageSelector(cultureInfo.Name);
-            var pageDataCollection = _contentRepository.GetChildren<PageData>(data.PageLink, languageSelector);
+            var children = _contentRepository.GetChildren<IContent>(content.ContentLink, languageSelector);
 
-            foreach (var pageData in pageDataCollection)
+            foreach (var child in children)
             {
-                var oldChildUrl = SystemRedirectsHelper.Combine(oldUrl, pageData.URLSegment);
-                AddRedirects(pageData, oldChildUrl, systemRedirectReason, priority);
-                HandleChildren(pageData, oldChildUrl, cultureInfo, systemRedirectReason, priority);
+                var routeSegment = (child as IRoutable)?.RouteSegment;
+                if (routeSegment == null)
+                {
+                    continue;
+                }
+
+                var oldChildUrl = SystemRedirectsHelper.Combine(oldUrl, routeSegment);
+                AddRedirects(child, oldChildUrl, systemRedirectReason, priority);
+                HandleChildren(child, oldChildUrl, cultureInfo, systemRedirectReason, priority);
             }
         }
     }

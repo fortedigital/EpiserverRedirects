@@ -6,6 +6,7 @@ using EPiServer.DataAbstraction;
 using EPiServer.Web.Routing;
 using Forte.EpiserverRedirects.Configuration;
 using Forte.EpiserverRedirects.Model;
+using Forte.EpiserverRedirects.Resolver.Content;
 using Forte.EpiserverRedirects.System;
 
 namespace Forte.EpiserverRedirects.Events
@@ -72,7 +73,14 @@ namespace Forte.EpiserverRedirects.Events
 
             foreach (var language in _languageBranchRepository.ListEnabled())
             {
-                if (!(_contentRepository.Get<IContentData>(e.ContentLink, language.Culture) is PageData pageData))
+                var content = _contentRepository.Get<IContentData>(e.ContentLink, language.Culture) as IContent;
+                if (content == null || !IsCmsOrCatalogContent(content))
+                {
+                    continue;
+                }
+
+                var routeSegment = (content as IRoutable)?.RouteSegment;
+                if (routeSegment == null)
                 {
                     continue;
                 }
@@ -84,7 +92,7 @@ namespace Forte.EpiserverRedirects.Events
                     continue;
                 }
 
-                var oldUrl = originalParentUrl + pageData.URLSegment;
+                var oldUrl = originalParentUrl + routeSegment;
 
                 var currentUrl = GetContentUrl(e.ContentLink, language.Culture.Name, false);
                 if (oldUrl == UrlPath.NormalizePath(currentUrl))
@@ -93,7 +101,7 @@ namespace Forte.EpiserverRedirects.Events
                 }
                 
                 _systemRedirectsActions.AddRedirects(
-                    pageData,
+                    content,
                     oldUrl,
                     language.Culture,
                     SystemRedirectReason.MovedContent,
@@ -119,29 +127,29 @@ namespace Forte.EpiserverRedirects.Events
                 return;
             }
 
-            var oldUrl = GetContentUrl(lastVersion.ContentLink, lastVersion.LanguageBranch);
+            var oldUrl = GetContentUrl(lastVersion.ContentLink, lastVersion.LanguageBranch, false);
 
             if (oldUrl == null)
             {
                 return;
             }
 
-            var newUrl = GetContentUrl(e.ContentLink, e.Content.LanguageBranch());
+            var newUrl = GetContentUrl(e.ContentLink, e.Content.LanguageBranch(), false);
 
             if (oldUrl == newUrl)
             {
                 return;
             }
 
-            var lastVersionPageData = _contentRepository.Get<IContentData>(lastVersion.ContentLink) as PageData;
+            var lastVersionContent = _contentRepository.Get<IContentData>(lastVersion.ContentLink) as IContent;
 
-            if (lastVersionPageData == null)
+            if (lastVersionContent == null || !IsCmsOrCatalogContent(lastVersionContent))
             {
                 return;
             }
 
             _systemRedirectsActions.AddRedirects(
-                lastVersionPageData,
+                lastVersionContent,
                 oldUrl,
                 SystemRedirectsHelper.GetCultureInfo(e),
                 SystemRedirectReason.PublishedContent,
@@ -171,7 +179,7 @@ namespace Forte.EpiserverRedirects.Events
                 return;
             }
 
-            var oldUrl = _urlResolver.GetUrl(e.ContentLink, null);
+            var oldUrl = GetContentUrl(e.ContentLink, null, false);
             e.Items.Add(OldUrlKey, oldUrl);
         }
 
@@ -189,18 +197,21 @@ namespace Forte.EpiserverRedirects.Events
                 return;
             }
 
-            var newUrl = _urlResolver.GetUrl(e.ContentLink, null);
+            var newUrl = GetContentUrl(e.ContentLink, null, false);
 
             if (newUrl != oldUrl)
             {
-                var pageData = _contentRepository.Get<IContentData>(e.ContentLink) as PageData;
+                var content = _contentRepository.Get<IContentData>(e.ContentLink) as IContent;
 
-                _systemRedirectsActions.AddRedirects(
-                    pageData,
-                    oldUrl,
-                    SystemRedirectsHelper.GetCultureInfo(e),
-                    SystemRedirectReason.SavedContent,
-                    _redirectsOptions.SystemRedirectRulePriority);
+                if (content != null && IsCmsOrCatalogContent(content))
+                {
+                    _systemRedirectsActions.AddRedirects(
+                        content,
+                        oldUrl,
+                        SystemRedirectsHelper.GetCultureInfo(e),
+                        SystemRedirectReason.SavedContent,
+                        _redirectsOptions.SystemRedirectRulePriority);
+                }
             }
 
             e.Items.Remove(OldUrlKey);
@@ -215,6 +226,9 @@ namespace Forte.EpiserverRedirects.Events
 
             _systemRedirectsActions.DeleteRedirects(e.ContentLink, ((DeleteContentEventArgs) e).DeletedDescendents);
         }
+
+        private static bool IsCmsOrCatalogContent(IContent content) =>
+            content is PageData || content.ContentLink.ProviderName == CommerceRedirectContentResolver.CatalogProviderKey;
 
         private string GetContentUrl(ContentReference contentReference, string language, bool validateTemplate = true)
         {
